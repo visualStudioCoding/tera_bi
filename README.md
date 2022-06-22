@@ -4,4 +4,4 @@ ___
 ******
 
 ## openJDK
-    * 외부링크: <https://jdk.java.net/archive//>
+    * 외부링크: <https://jdk.java.net/archive/>
