@@ -4,4 +4,5 @@ ___
 ******
 
 ## openJDK
-    * 외부링크: <https://jdk.java.net/archive/>
+    * version : 11.0.2
+    * 다운로드 : [openJDK](https://jdk.java.net/archive/, "jdk download link")
