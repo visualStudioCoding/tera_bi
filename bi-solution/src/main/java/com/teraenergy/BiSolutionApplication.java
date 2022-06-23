@@ -1,4 +1,4 @@
-package com.teraenergy.bisolution;
+package com.teraenergy;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

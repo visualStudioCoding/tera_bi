@@ -1,0 +1,17 @@
+# thymeleaf
+spring.thymeleaf.prefix=classpath:templates/
+spring.thymeleaf.suffix=.html
+spring.thymeleaf.cache=false
+
+#mariadb 설정
+spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
+spring.datasource.url=jdbc:mariadb://14.49.44.142:3308/bi_solution?characterEncoding=UTF-8&serverTimezone=UTC
+spring.datasource.username=tera_bi
+spring.datasource.password=tera202206
+
+# mapper.xml 위치 지정
+mybatis.mapper-locations:classpath:mappers/*.xml
+# model 프로퍼티 camel case 설정
+mybatis.configuration.map-underscore-to-camel-case=true
+# mapper 로그레벨 설정
+logging.level.com.prototype.domain.repository=TRACE
