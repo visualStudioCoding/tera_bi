@@ -1,9 +1,13 @@
 package com.teraenergy.bisolution.realEstate;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.json.JSONArray;
+import org.slf4j.Logger;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,11 +27,14 @@ public class RealEstateController {
     private static final String PROGRAM_ID = "RealEstate";
 
     @GetMapping("/tradeRealAptList")
-    public List<?> tradeRealAptList() throws Exception {
-        RealEstateDTO realEstateDTO = new RealEstateDTO();
+    public Object tradeRealAptList(RealEstateDTO realEstateDTO) throws Exception {
 
-        System.out.println("selectList = {} : " + commonService.selectList(realEstateDTO, PROGRAM_ID + ".getTradeTealAptList"));
+        List<RealEstateDTO> data = (List<RealEstateDTO>) commonService.selectList(realEstateDTO, PROGRAM_ID + ".getTradeTealAptList");
+        System.out.println(data);
+        Map<String,Object> result = new HashMap<>();
+		result.put("data", data);
+        result.put("sucess", true);
 
-        return commonService.selectList(realEstateDTO, PROGRAM_ID + ".getTradeTealAptList");
+        return result;
     }
 }

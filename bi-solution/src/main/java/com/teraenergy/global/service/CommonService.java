@@ -21,14 +21,14 @@ public interface CommonService {
 	Object selectContents(Object paramDTO, String queryId) throws Exception;
 
 	/* 등록 */
-	void insertContents(Object paramDTO, String queryId) throws Exception;
+	int insertContents(Object paramDTO, String queryId) throws Exception;
 
 	/* 등록하고 키 반환 */
 	Object insertSelectKey(Object paramDTO, String queryId) throws Exception;
 
 	/* 수정 */
-	void updateContents(Object paramDTO, String queryId) throws Exception;
+	int updateContents(Object paramDTO, String queryId) throws Exception;
 
 	/* 삭제 */
-	void deleteContents(Object paramDTO, String queryId) throws Exception;
+	int deleteContents(Object paramDTO, String queryId) throws Exception;
 }

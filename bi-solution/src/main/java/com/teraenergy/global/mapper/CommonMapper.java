@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.mybatis.spring.SqlSessionTemplate;
 
-@Repository
+@Repository("commonMapper")
 public class CommonMapper {
 
     @Autowired
@@ -60,36 +60,36 @@ public class CommonMapper {
 	}
 
 	/* 등록 */
-	public void insertContents(final Object paramDTO, final String queryId) throws Exception {
+	public int insertContents(final Object paramDTO, final String queryId) throws Exception {
 		String mQueryId = "";
 		if (queryId != null && (queryId.equals("") || queryId.indexOf(".") < 0)) {
 			mQueryId = queryId + ".insertContents";
 		} else {
 			mQueryId = queryId;
 		}
-		template.insert(PACKAGE_NAME + mQueryId, paramDTO);
+		return template.insert(PACKAGE_NAME + mQueryId, paramDTO);
 	}
 
 	/* 수정 */
-	public void updateContents(final Object paramDTO, final String queryId) throws Exception {
+	public int updateContents(final Object paramDTO, final String queryId) throws Exception {
 		String mQueryId = "";
 		if (queryId != null && (queryId.equals("") || queryId.indexOf(".") < 0)) {
 			mQueryId = queryId + ".updateContents";
 		} else {
 			mQueryId = queryId;
 		}
-		template.update(PACKAGE_NAME + mQueryId, paramDTO);
+		return template.update(PACKAGE_NAME + mQueryId, paramDTO);
 	}
 
 	/* 삭제 */
-	public void deleteContents(final Object paramDTO, final String queryId) throws Exception {
+	public int deleteContents(final Object paramDTO, final String queryId) throws Exception {
 		String mQueryId = "";
 		if (queryId != null && (queryId.equals("") || queryId.indexOf(".") < 0)) {
 			mQueryId = queryId + ".deleteContents";
 		} else {
 			mQueryId = queryId;
 		}
-		template.delete(PACKAGE_NAME + mQueryId, paramDTO);
+		return template.delete(PACKAGE_NAME + mQueryId, paramDTO);
 	}
 
 	/* 정보를 입력하고 입력한 키 반환 */

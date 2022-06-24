@@ -8,6 +8,6 @@
 		<setting name="jdbcTypeForNull" value="NULL"/>
 	</settings>
 	<typeAliases>
-		<typeAlias alias="realEstateDTO" type="com.teraenergy.bisolution.realEstate.RealEstateDTO"/>
+		<package name="bi" />
 	</typeAliases>
 </configuration>

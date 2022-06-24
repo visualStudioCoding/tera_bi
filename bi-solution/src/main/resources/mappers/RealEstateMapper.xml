@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="bi.RealEstate">
+    <select id="getTradeTealAptList" parameterType="com.teraenergy.bisolution.realEstate.RealEstateDTO" resultType="com.teraenergy.bisolution.realEstate.RealEstateDTO">
+            SELECT
+                  apt_nm
+                  , land_area
+                  , land_no
+                  , road_nm
+                  , dong
+                  , eupmyundong_cd
+                  , sigungu_cd
+                  , trade_month
+                  , trade_year
+                  , built_year
+                  , payment
+                  , idx
+                  , layer
+            FROM 
+                  trade_real_apt
+            WHERE 
+                  1=1
+            LIMIT
+                  0,10
+	</select>
+</mapper>

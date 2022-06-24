@@ -3,7 +3,8 @@ package com.teraenergy.global.service.impl;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 
 import com.teraenergy.global.mapper.CommonMapper;
@@ -12,7 +13,7 @@ import com.teraenergy.global.service.CommonService;
 @Service("commonService")
 public class CommonServiceImpl implements CommonService {
 
-    @Autowired
+    @Resource(name="commonMapper")
 	private CommonMapper commonMapper;
 
 	@Override
@@ -36,8 +37,8 @@ public class CommonServiceImpl implements CommonService {
 	}
 
 	@Override
-	public void insertContents(final Object paramDTO, final String queryId) throws Exception {
-		commonMapper.insertContents(paramDTO, queryId);
+	public int insertContents(final Object paramDTO, final String queryId) throws Exception {
+		return commonMapper.insertContents(paramDTO, queryId);
 	}
 
 	@Override
@@ -46,12 +47,12 @@ public class CommonServiceImpl implements CommonService {
 	}
 
 	@Override
-	public void updateContents(final Object paramDTO, final String queryId) throws Exception {
-		commonMapper.updateContents(paramDTO, queryId);
+	public int updateContents(final Object paramDTO, final String queryId) throws Exception {
+		return commonMapper.updateContents(paramDTO, queryId);
 	}
 
 	@Override
-	public void deleteContents(final Object paramDTO, final String queryId) throws Exception {
-		commonMapper.deleteContents(paramDTO, queryId);
+	public int deleteContents(final Object paramDTO, final String queryId) throws Exception {
+		return commonMapper.deleteContents(paramDTO, queryId);
 	}
 }
