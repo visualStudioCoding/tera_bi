@@ -11,7 +11,7 @@ spring:
 
     # url: jdbc:mariadb://14.49.44.142:3308/bi_solution?characterEncoding=UTF-8&serverTimezone=UTC
     hikari:
-      jdbc-url: jdbc:mysql://14.49.44.142:3308/bi_solution?characterEncoding=UTF-8&serverTimezone=UTC
+      jdbc-url: jdbc:log4jdbc:mysql://14.49.44.142:3308/bi_solution?characterEncoding=UTF-8&serverTimezone=UTC
       username: tera_bi
       password: tera202206
 
@@ -25,10 +25,9 @@ mybatis:
   config-location: classpath:mybatis-config.xml
   # configuration:
   #   map-underscore-to-camel-case: "true"
-
-logging:
-  level:
-    com:
-      prototype:
-        domain:
-          repository: TRACE
+# logging:
+#   level:
+#     com:
+#       prototype:
+#         domain:
+#           repository: TRACE
