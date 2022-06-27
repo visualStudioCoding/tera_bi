@@ -36,6 +36,7 @@ public class CommonMapper {
 		}
 		return template.selectMap(PACKAGE_NAME + mQueryId, paramDTO, mapKey);
 	}
+	
 
 	/* 레코드 카운트 조회 */
 	public int selectCount(final Object paramDTO, final String queryId) throws Exception {
