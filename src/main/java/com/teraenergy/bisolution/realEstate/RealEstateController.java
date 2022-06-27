@@ -7,14 +7,13 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.teraenergy.global.service.CommonService;
 
-@RestController
-@RequestMapping("/api")
+@Controller
 public class RealEstateController {
 
     @Resource(name="commonService")
@@ -23,7 +22,14 @@ public class RealEstateController {
     private static final String PROGRAM_ID = "RealEstate";
     
     @GetMapping("/all-trade-real-apt")
-    public Object getAllTradeRealApt(RealEstateDTO realEstateDTO) throws Exception {
+    public String getAllTradeRealApt() throws Exception {
+
+        return PROGRAM_ID + "/list.html";
+    }
+
+    @ResponseBody
+    @GetMapping("/api/all-trade-real-apt")
+    public Object getApiAllTradeRealApt(RealEstateDTO realEstateDTO) throws Exception {
 
         Map<String,Object> result = new HashMap<>();
         
