@@ -5,7 +5,7 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-application-nipa.yml
+jasypt-encryptor-password.txt
 
 ### STS ###
 .apt_generated

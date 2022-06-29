@@ -48,8 +48,13 @@ dependencies {
 
 	implementation('ch.qos.logback:logback-classic')
 
+	// https://mvnrepository.com/artifact/com.github.ulisesbocchio/jasypt-spring-boot-starter
+	implementation group: 'com.github.ulisesbocchio', name: 'jasypt-spring-boot-starter', version: '3.0.4'
 
 
+}
 
-
+test {
+	useJUnitPlatform()
+	systemProperty "jasypt.encryptor.password", System.getProperties().get("jasypt.encryptor.password")
 }
