@@ -20,10 +20,10 @@ spring:
 
     # url: jdbc:mariadb://14.49.44.142:3308/bi_solution?characterEncoding=UTF-8&serverTimezone=UTC
     hikari:
-      # jdbc-url: jdbc:log4jdbc:mysql://14.49.44.142:3308/bi_solution?characterEncoding=UTF-8&serverTimezone=UTC
-      jdbc-url: jdbc:log4jdbc:mysql://3.35.156.44:3306/bi_solution?characterEncoding=UTF-8&serverTimezone=UTC
-      username: tera_bi
-      password: ENC(+snoIMv61JsMV1LZyRm4YLmumnqlHEji)
+      jdbc-url: ENC(/GsOcer45GplEA7B20QLZLny9PKrTKmO7pFNJIGsD6VOZ7BESEGUMT53HSsI+55bFkkzCk0cPDNe/jHLW9SBtpje2pOwLML5/LetiUkdqbP6Pmew1TQuc+YItwoO3guhAzMvaBriyAA=)
+#      jdbc-url: jdbc:log4jdbc:mysql://3.35.156.44:3306/bi_solution?characterEncoding=UTF-8&serverTimezone=UTC
+      username: ENC(GhItq8d/n6ZkP9MEw3kSGQ==)
+      password: ENC(3VgcVo4IYeZnKRazHa63BRy/5uA0fBFP)
 
   devtools:
     livereload:

@@ -35,8 +35,9 @@ public class JasyptConfig {
         encryptor.setPassword(encryptKey);
         encryptor.setStringOutputType(stringOutputType);
         encryptor.setKeyObtentionIterations(keyObtentionIterations);
-//        String source = "encryptKey";
-//        System.out.println("plane :: {}, encrypt :: {}" + source + encryptor.encrypt(source));
+//        String source = "암호화할 평문";
+//        System.out.println("plane :: {} " + source + ", encrypt :: {} " + encryptor.encrypt(source));
+//        System.out.println("decrypt :: {} " + jasypt.decrypt(encryptor.encrypt(source));
         return encryptor;
     }
 
