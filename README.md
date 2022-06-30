@@ -1,6 +1,3 @@
-# tera_bi
-
-
 # JDK 11.0.2
 다운로드: https://jdk.java.net/archive/
 
