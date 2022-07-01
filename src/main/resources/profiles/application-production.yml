@@ -1,0 +1,12 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+spring:
+  datasource:
+    # url: jdbc:mariadb://localhost:3308/bi_solution?characterEncoding=UTF-8&serverTimezone=UTC
+    hikari:
+      jdbc-url: ENC(Lf83qG39GDPua7RhuMWHNFuHkkpNVs/euV3PayRcvBYK20znWGJLZlHEh7q1r9o72Azrqywde7H16uoZCUlCSYCTY0VQ2nInDm1Uct6c5ABf6Q5sDyX3n6CVRTKC+vUb)
+      username: ENC(XZPgJxY36iY857nLYH66bQ==)
+      password: ENC(LovkE7rMb7CjfIwu/YbV57fA3r810HIP)

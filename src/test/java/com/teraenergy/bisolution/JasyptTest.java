@@ -11,7 +11,7 @@ public class JasyptTest {
         jasypt.setPassword(password);
         jasypt.setAlgorithm("PBEWithMD5AndDES");
 
-        String encryptedText = jasypt.encrypt(password);
+        String encryptedText = jasypt.encrypt("tera202206");
         String decryptedText = jasypt.decrypt(encryptedText);
 
         System.out.println("encryptedText = " + encryptedText);

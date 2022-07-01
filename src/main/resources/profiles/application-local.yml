@@ -1,0 +1,14 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+spring:
+  datasource:
+    # driver-class-name: org.mariadb.jdbc.Driver
+    #driver-class-name: com.mysql.cj.jdbc.Driver
+    # url: jdbc:mariadb://14.49.44.142:3308/bi_solution?characterEncoding=UTF-8&serverTimezone=UTC
+    hikari:
+      jdbc-url: ENC(sep6Ad4aYVjH1sFs8CKMDSa1BPaal39V/5snOLORNaS/IOBi0Ee7Y5cshTA8jpUeokPdMP6vR8Alynsy5+NjSzd0yhtQLfQv1K7nv3ABso9HdHXhhs79v0JDu4Lew6m5)
+      username: ENC(XZPgJxY36iY857nLYH66bQ==)
+      password: ENC(LovkE7rMb7CjfIwu/YbV57fA3r810HIP)

@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.teraenergy'
-version = '0.0.1-SNAPSHOT'
+version = '0.1.1'
 sourceCompatibility = '11'
 
 configurations {
@@ -28,6 +28,8 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	// https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client
+	implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '3.0.6'
 	// runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 	runtimeOnly 'mysql:mysql-connector-java'
 	// https://mvnrepository.com/artifact/com.zaxxer/HikariCP
@@ -52,6 +54,23 @@ dependencies {
 	implementation group: 'com.github.ulisesbocchio', name: 'jasypt-spring-boot-starter', version: '3.0.4'
 
 
+}
+
+// 기본 application Properties 외에 Profiles별 application-{profiles} 를 인식하기 위한 설정
+sourceSets {
+	main {
+		resources {
+			srcDirs("src/main/resources", "src/main/resources/profiles")
+		}
+	}
+}
+
+// 기본 application Properties 외에 application 소스가 인식 되었을 때 어떻게 처리할 것인지 처리.
+// DuplicatesStrategy.INCLUDE -> 포함하여 인식
+tasks {
+	processResources {
+		duplicatesStrategy = DuplicatesStrategy.INCLUDE
+	}
 }
 
 test {
