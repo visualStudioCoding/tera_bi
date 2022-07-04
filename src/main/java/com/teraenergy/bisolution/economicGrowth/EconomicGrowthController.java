@@ -14,6 +14,6 @@ public class EconomicGrowthController {
     @GetMapping("/main")
     public String economicGrowthMain() throws Exception {
         System.out.println(DIRECTORY + PROGRAM_ID + "Main");
-        return DIRECTORY + "main";
+        return DIRECTORY + PROGRAM_ID + "Main";
     }
 }
