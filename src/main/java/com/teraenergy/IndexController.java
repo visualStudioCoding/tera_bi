@@ -1,10 +1,12 @@
 package com.teraenergy;
 
 import com.teraenergy.global.configuration.ApiKeyConfiguration;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,8 +15,11 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+@Slf4j
 @Controller
 public class IndexController {
 
@@ -34,8 +39,9 @@ public class IndexController {
         return "index";
     }
 
-    @RequestMapping("/getIncome")
-    public StringBuilder getIncomes(String url, String parameter) throws IOException {
+    @ResponseBody
+    @GetMapping("/getIncome")
+    public Object getIncomes(String url, String parameter) throws IOException {
 
         // api 키 추가
         String[] params = parameter.split("apiKey=");
@@ -74,8 +80,11 @@ public class IndexController {
         }
         rd.close();
         conn.disconnect();
-        System.out.println(sb.toString());
-
-        return sb;
+        log.info(sb.toString());
+        Map<String, Object> result = new HashMap<>();
+        result.put("data", sb);
+        result.put("success", "성공");
+        log.info(String.valueOf(result));
+        return result;
     }
 }

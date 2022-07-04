@@ -90,11 +90,37 @@
     </div>
     </body>
     <#include "common/footer.ftl">
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="/js/bi/economyInfo/personalIncome.js"></script>
     <script>
+        let errorMsg = "error";
+        let param = {
+            "itmId":"T20+T21+T22+",
+            "objL1": "ALL",
+            "objL2": "",
+            "objL3": "",
+            "objL4": "",
+            "objL5": "",
+            "objL6": "",
+            "objL7": "",
+            "objL8": "",
+            "prdSe": "M",
+            "startPrdDe": "",
+            "endPrdDe": "",
+            "newEstPrdCnt" : "1",
+            "loadGubun":"2",
+            "orgId": "101",
+            "tblId": "DT_1B040A3"
+        }
         window.onload = function(){
-            getIncome()
+            getIncome();
+            //ajax가 정상 호출 되었을때 실행 되는 함수
+            let fn = function( data ) {
+                // console.log(JSON.stringify(data) + " <- ajax");
+                alert(data.success);
+                console.log(data.data)
+            }
+            //공통모듈 ajax 함수 호출하기
+            kosisApiAjax("/getIncome", fn, 'get', param, errorMsg);
         }
     </script>
 </html>
