@@ -12,3 +12,8 @@ spring:
       jdbc-url: ENC(sep6Ad4aYVjH1sFs8CKMDSa1BPaal39V/5snOLORNaS/IOBi0Ee7Y5cshTA8jpUeokPdMP6vR8Alynsy5+NjSzd0yhtQLfQv1K7nv3ABso9HdHXhhs79v0JDu4Lew6m5)
       username: ENC(XZPgJxY36iY857nLYH66bQ==)
       password: ENC(LovkE7rMb7CjfIwu/YbV57fA3r810HIP)
+
+open-api:
+  kosis-key: ENC(TNkNVnrwQfccqMRbJQgYsW+iw+9MpSxP36QdHOuYREt6viqi5egecAU9sAlYJDVoZuvuLr9w+EY=)
+  enara-key: ENC(SNQoha/X8+2pkeb22fHWpVmwhVcfoH1pZDckmm2Y6Fs=)
+  enara-id: ENC(nrNwP4o7Aau+1li/O9BBYkgjz2vr060k)

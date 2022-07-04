@@ -48,8 +48,3 @@ spring:
   config:
     activate:
       on-profile: production
-
-
-
-
-

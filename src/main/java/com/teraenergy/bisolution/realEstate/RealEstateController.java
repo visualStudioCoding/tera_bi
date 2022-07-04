@@ -1,6 +1,7 @@
 package com.teraenergy.bisolution.realEstate;
 
 
+import com.teraenergy.global.configuration.ApiKeyConfiguration;
 import com.teraenergy.global.service.CommonService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,12 @@ public class RealEstateController {
 
     @Resource(name = "commonService")
     private CommonService commonService;
+
+    private final ApiKeyConfiguration apiKeyConfiguration;
+
+    public RealEstateController(ApiKeyConfiguration apiKeyConfiguration) {
+        this.apiKeyConfiguration = apiKeyConfiguration;
+    }
 
     @GetMapping("/all-trade-real-apt")
     public String getAllTradeRealApt() throws Exception {

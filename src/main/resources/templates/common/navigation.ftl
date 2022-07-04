@@ -17,7 +17,7 @@
                                 <a class="nav-link active" aria-current="page" href="#">메인</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">경제성장지표</a>
+                                <a class="nav-link" href="economicGrowth/main">경제성장지표</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#">생활수준지표</a>
