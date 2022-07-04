@@ -31,7 +31,7 @@ public class RealEstateController {
     @GetMapping("/all-trade-real-apt")
     public String getAllTradeRealApt() throws Exception {
         System.out.println(DIRECTORY + PROGRAM_ID + "List");
-        return DIRECTORY + "list";
+        return DIRECTORY + PROGRAM_ID + "Main";
     }
 
     @ResponseBody

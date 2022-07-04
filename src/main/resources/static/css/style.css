@@ -56,3 +56,20 @@
 #contents{
     margin-top: 10px;
 }
+
+.nav{
+    padding-left:30px;
+}
+
+.row{
+    margin-top:50px;
+    margin-bottom:50px;
+}
+
+.activator{
+    width:60%;
+    margin:auto;
+}
+.card{
+    padding-bottom:20px;
+}
