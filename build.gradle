@@ -57,6 +57,8 @@ dependencies {
 
 }
 
+apply plugin: 'eclipse'
+
 // 기본 application Properties 외에 Profiles별 application-{profiles} 를 인식하기 위한 설정
 sourceSets {
 	main {

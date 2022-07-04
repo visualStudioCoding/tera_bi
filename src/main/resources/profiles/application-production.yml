@@ -12,6 +12,6 @@ spring:
       password: ENC(LovkE7rMb7CjfIwu/YbV57fA3r810HIP)
 
 open-api:
-  kosis-key: ENC(TNkNVnrwQfccqMRbJQgYsW+iw+9MpSxP36QdHOuYREt6viqi5egecAU9sAlYJDVoZuvuLr9w+EY=)
+  kosis-key: ENC(0BJV6leG2vBkRHeT3cjxi/H0i4hTSr3Xn46FHHi3vwLWe3geKqj8QRLV6IQhKEp9ffm2C8EGMqk=)
   enara-key: ENC(SNQoha/X8+2pkeb22fHWpVmwhVcfoH1pZDckmm2Y6Fs=)
   enara-id: ENC(nrNwP4o7Aau+1li/O9BBYkgjz2vr060k)
