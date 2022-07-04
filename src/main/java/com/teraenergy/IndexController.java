@@ -17,9 +17,9 @@ public class IndexController {
     @GetMapping("/")
     public String indexPage(Model model) {
         model.addAttribute("hello", "index page!!");
-//        System.out.println(apiKeyConfiguration.getKosisKey());
-//        System.out.println(apiKeyConfiguration.getEnaraId());
-//        System.out.println(apiKeyConfiguration.getEnaraKey());
+        System.out.println(apiKeyConfiguration.getKosisKey());
+        System.out.println(apiKeyConfiguration.getEnaraId());
+        System.out.println(apiKeyConfiguration.getEnaraKey());
 
         return "index";
     }
