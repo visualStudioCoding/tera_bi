@@ -26,6 +26,9 @@
                                 <a class="nav-link" href="#">종합주가지수</a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link" href="#">부동산시장동향</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="#">삶의만족도</a>
                             </li>
                         </ul>
