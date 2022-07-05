@@ -28,14 +28,14 @@ public class RealEstateController {
         this.apiKeyConfiguration = apiKeyConfiguration;
     }
 
-    @GetMapping("/all-trade-real-apt")
+    @GetMapping("/main")
     public String getAllTradeRealApt() throws Exception {
         System.out.println(DIRECTORY + PROGRAM_ID + "List");
         return DIRECTORY + PROGRAM_ID + "Main";
     }
 
     @ResponseBody
-    @GetMapping("/api/all-trade-real-apt")
+    @GetMapping("/api/genderPopulation")
     public Object getApiAllTradeRealApt(RealEstateDTO realEstateDTO) throws Exception {
 
         Map<String, Object> result = new HashMap<>();

@@ -81,12 +81,11 @@ let kosisApiAjax = function(url, fn, methodType, param, errorMsg){
  * ------------------
  */
 let enaraApiAjax = function(url, fn, methodType, param, errorMsg){
-    let apiUrl = "http://www.index.go.kr/openApi/xml_stts.do";
+    let apiUrl = "https://www.index.go.kr/openApi/xml_stts.do";
     let parameter = "?" + "userId=";
-    parameter += "&" + "idntfcId=";
     parameter += "&" + "statsCode=" + param.statsCode;
-    console.log(parameter);
-    console.log(param);
+    console.log("enaraApiAjax: ", parameter);
+    console.log("enaraApiAjax: ", param);
 
     let data = {url:apiUrl, parameter:parameter};
 

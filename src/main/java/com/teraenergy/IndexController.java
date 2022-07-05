@@ -39,7 +39,10 @@ public class IndexController {
     @GetMapping("/getIncome")
     public Object getIncomes(String url, String parameter) throws Exception {
 
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter);
+        //kosis = json, enara = xml
+        String format = "json";
+        String site = "kosis";
+        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
 
         Map<String, Object> result = new HashMap<>();
         result.put("data", stringBuilder);

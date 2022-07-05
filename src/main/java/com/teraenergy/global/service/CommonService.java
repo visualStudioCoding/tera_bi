@@ -32,5 +32,5 @@ public interface CommonService {
 	/* 삭제 */
 	int deleteContents(Object paramDTO, String queryId) throws Exception;
 
-	StringBuilder getApiResult(String url, String parameter) throws Exception;
+	StringBuilder getApiResult(String url, String parameter, String format, String site) throws Exception;
 }
