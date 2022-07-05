@@ -1,27 +1,23 @@
 package com.teraenergy;
 
 import com.teraenergy.global.configuration.ApiKeyConfiguration;
+import com.teraenergy.global.service.CommonService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
+import javax.annotation.Resource;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
 @Controller
 public class IndexController {
+
+    @Resource(name = "commonService")
+    private CommonService commonService;
 
     private final ApiKeyConfiguration apiKeyConfiguration;
 
@@ -41,48 +37,12 @@ public class IndexController {
 
     @ResponseBody
     @GetMapping("/getIncome")
-    public Object getIncomes(String url, String parameter) throws IOException {
+    public Object getIncomes(String url, String parameter) throws Exception {
 
-        // api 키 추가
-        String[] params = parameter.split("apiKey=");
-        String param1 = params[0];
-        String param2 = params[1];
-        parameter = params[0] + "apiKey=" + apiKeyConfiguration.getKosisKey() + param2;
-        System.out.println(parameter);
+        StringBuilder stringBuilder = commonService.getApiResult(url, parameter);
 
-        // url생성
-        StringBuilder loadUrl = new StringBuilder(url);
-        loadUrl.append(parameter);
-        System.out.println(loadUrl);
-
-        // 생성된 url로 api 연결
-        URL apiUrl = new URL(loadUrl.toString());
-        HttpURLConnection conn = (HttpURLConnection) apiUrl.openConnection();
-        conn.setRequestMethod("GET");
-        conn.setRequestProperty("Content-type", "application/json");
-        System.out.println("Response code:" + conn.getResponseCode());
-
-        // 서버로부터 데이터 읽어오기
-        BufferedReader rd;
-
-        if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300){
-            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        }else{
-            rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
-        }
-
-        StringBuilder sb = new StringBuilder();
-        String line;
-
-        // 결과값을 읽을 수 있는 동안 반복
-        while((line = rd.readLine()) != null){
-            sb.append(line);
-        }
-        rd.close();
-        conn.disconnect();
-        log.info(sb.toString());
         Map<String, Object> result = new HashMap<>();
-        result.put("data", sb);
+        result.put("data", stringBuilder);
         result.put("success", "성공");
         log.info(String.valueOf(result));
         return result;

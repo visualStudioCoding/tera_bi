@@ -176,4 +176,18 @@
     </div>
 </div>
 <#include "*/common/footer.ftl"/>
+<script src="/js/bi/economicGrowth/economicGrowth.js"></script>
+<script>
+    let errorMsg = "api 호출 에러";
+    let enaraParam = {"statsCode": "101002"}
+    window.onload = function(){
+        //ajax가 정상 호출 되었을때 실행 되는 함수
+        let callBackFn = function( data ) {
+            alert(data.success);
+            console.log(data.data)
+        }
+        //공통모듈 ajax 함수 호출하기
+        enaraApiAjax("/getIncome", callBackFn, 'get', enaraParam, errorMsg);
+    }
+</script>
 
