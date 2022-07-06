@@ -144,7 +144,7 @@ public class CommonServiceImpl implements CommonService {
 		String enaraKey = apiKeyConfiguration.getEnaraKey();
 		String enaraId = apiKeyConfiguration.getEnaraId();
 
-		enaraKey = enaraId + "idntfcId=" + enaraKey;
+		enaraKey = enaraId + "&idntfcId=" + enaraKey;
 
 		String apiKey = apiKeyConfiguration.getKosisKey();
 

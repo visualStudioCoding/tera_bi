@@ -81,7 +81,7 @@ let kosisApiAjax = function(url, fn, methodType, param, errorMsg){
  * ------------------
  */
 let enaraApiAjax = function(url, fn, methodType, param, errorMsg){
-    let apiUrl = "https://www.index.go.kr/openApi/xml_stts.do";
+    let apiUrl = "http://www.index.go.kr/openApi/xml_stts.do";
     let parameter = "?" + "userId=";
     parameter += "&" + "statsCode=" + param.statsCode;
     console.log("enaraApiAjax: ", parameter);
@@ -90,7 +90,7 @@ let enaraApiAjax = function(url, fn, methodType, param, errorMsg){
     let data = {url:apiUrl, parameter:parameter};
 
     // 데이터 값이 잘 넘어왔는지 확인
-    console.log(url);
+    console.log("url: ", url);
     console.log(data);
     console.log(methodType);
     console.log(errorMsg);
