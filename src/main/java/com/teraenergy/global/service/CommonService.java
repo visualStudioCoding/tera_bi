@@ -33,4 +33,10 @@ public interface CommonService {
 	int deleteContents(Object paramDTO, String queryId) throws Exception;
 
 	StringBuilder getApiResult(String url, String parameter, String format, String site) throws Exception;
+
+	List<?> apiJsonParser(StringBuilder stringBuilder) throws Exception;
+
+	Map<?,?> apiXmlParser(StringBuilder stringBuilder) throws Exception;
+
+	String getCtyNm(String areaCd) throws Exception;
 }

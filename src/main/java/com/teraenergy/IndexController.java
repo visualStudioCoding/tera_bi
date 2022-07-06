@@ -47,7 +47,7 @@ public class IndexController {
         Map<String, Object> result = new HashMap<>();
         result.put("data", stringBuilder);
         result.put("success", "성공");
-        log.info(String.valueOf(result));
+//        log.info(String.valueOf(result));
         return result;
     }
 }

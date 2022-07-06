@@ -24,4 +24,25 @@
             LIMIT
                   0,10
 	</select>
+    <insert id="insertGenderPopulation" parameterType="hashMap">
+        INSERT INTO gender_population
+            (yr_dt
+            , mon_dt
+            , gender
+            , area_cd
+            , cty_nm
+            , dst_nm
+            , unit
+            , val)
+        VALUES
+            (#{yrDt}
+            , #{monDt}
+            , #{gender}
+            , #{areaCd}
+            , #{ctyNm}
+            , #{dstNm}
+            , #{unit}
+            , #{val}
+            )
+    </insert>
 </mapper>

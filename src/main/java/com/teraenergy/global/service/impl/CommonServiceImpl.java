@@ -13,7 +13,11 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import com.teraenergy.global.configuration.ApiKeyConfiguration;
+import com.teraenergy.global.configuration.AreaNameConfiguration;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 
 import com.teraenergy.global.mapper.CommonMapper;
@@ -78,7 +82,7 @@ public class CommonServiceImpl implements CommonService {
 	@Override
 	public StringBuilder getApiResult(String url, String parameter, String format, String site) throws Exception {
 
-		parameter = GenerateUrl(parameter, site);
+		parameter = generateUrl(parameter, site);
 		StringBuilder stringBuilder = new StringBuilder();
 
 		log.info(parameter);
@@ -110,8 +114,6 @@ public class CommonServiceImpl implements CommonService {
 			while ((line = bufferedReader.readLine()) != null) {
 				stringBuilder.append(line);
 			}
-			bufferedReader.close();
-			httpURLConnection.disconnect();
 
 			if("json".equals(format)) {
 
@@ -125,7 +127,7 @@ public class CommonServiceImpl implements CommonService {
 				document.getDocumentElement().normalize();
 
 				// 파싱할 tag
-				NodeList nList = document.getElementsByTagName("baseinfo");
+				NodeList nList = document.getElementsByTagName("지표");
 				//HIT Tag 정보들을  검색
 				Node firstNode = document.getElementsByTagName("지표").item(0);
 				NodeList childNodeList = firstNode.getChildNodes();
@@ -133,13 +135,16 @@ public class CommonServiceImpl implements CommonService {
 				System.out.println(nodeMapData.toString());
 			}
 
+			bufferedReader.close();
+			httpURLConnection.disconnect();
+
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
 		return stringBuilder;
 	}
 
-	public String GenerateUrl(String parameter, String site) {
+	public String generateUrl(String parameter, String site) {
 
 		String enaraKey = apiKeyConfiguration.getEnaraKey();
 		String enaraId = apiKeyConfiguration.getEnaraId();
@@ -178,6 +183,24 @@ public class CommonServiceImpl implements CommonService {
 			}
 		}
 		return dataMap;
+	}
+
+	public JSONArray apiJsonParser(StringBuilder stringBuilder) throws ParseException {
+		JSONParser jsonParser = new JSONParser();
+		return (JSONArray) jsonParser.parse(String.valueOf(stringBuilder));
+	}
+
+	public Map<String,Object> apiXmlParser(StringBuilder stringBuilder) {
+
+		Map<String, Object> result = new HashMap<>();
+
+
+		return result;
+	}
+
+	@Override
+	public String getCtyNm(String areaCd) {
+		return AreaNameConfiguration.areaName(areaCd);
 	}
 
 

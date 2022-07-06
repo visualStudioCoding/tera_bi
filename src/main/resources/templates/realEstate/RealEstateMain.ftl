@@ -181,7 +181,7 @@
 <script>
     let errorMsg = "error";
     let kosisParam = {
-        "itmId":"T20+T21+T22+",
+        "itmId":"T21+T22+",
         "objL1": "ALL",
         "objL2": "",
         "objL3": "",
@@ -206,7 +206,7 @@
             console.log(data.data)
         }
         //공통모듈 ajax 함수 호출하기
-        kosisApiAjax("/getIncome", callBackFn, 'get', kosisParam, errorMsg);
+        kosisApiAjax("/realEstate/api/genderPopulation", callBackFn, 'get', kosisParam, errorMsg);
     }
 </script>
 
