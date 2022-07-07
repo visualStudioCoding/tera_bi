@@ -75,5 +75,48 @@ public class RealEstateController {
 //        log.info(String.valueOf(result));
         return result;
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    @ResponseBody
+    @GetMapping("/api/AptSalesStatus")
+    public Object getAptSalesStatus(String url, String parameter) throws Exception {
+
+        //kosis = json, enara = xml
+        String format = "json";
+        String site = "kosis";
+        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+
+        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> dataMap = new HashMap<>();
+        for (Object jsonObject : jsonList) {
+            JSONObject jsonData = (JSONObject) jsonObject;
+
+            String year = (String) jsonData.get("PRD_DE");
+            year = year.substring(0, 4);
+            String month = (String) jsonData.get("PRD_DE");
+            month = month.substring(4, 6);
+
+            String gender = (String) jsonData.get("ITM_NM_ENG");
+            gender = gender.contains("Male") ? "남" : "여";
+
+            dataMap.put("yrDt", year);
+            dataMap.put("monDt", month);
+            dataMap.put("gender", gender);
+            dataMap.put("ctyNm", commonService.getCtyNm((String) jsonData.get("C1")));
+            dataMap.put("areaCd", jsonData.get("C1"));
+            dataMap.put("dstNm", jsonData.get("C1_NM"));
+            dataMap.put("unit", jsonData.get("UNIT_NM"));
+            dataMap.put("val", jsonData.get("DT"));
+
+            commonService.insertContents(dataMap, PROGRAM_ID + ".insertGenderPopulation");
+
+        }
+
+        result.put("data", dataMap);
+        result.put("success", "성공");
+//        log.info(String.valueOf(result));
+        return result;
+    }
 }
 
