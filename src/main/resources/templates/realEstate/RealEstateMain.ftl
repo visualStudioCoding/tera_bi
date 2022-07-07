@@ -26,9 +26,21 @@
                         </label>
                     </div>
                 </div>
-                <button type="button" class="btn btn-outline-secondary activator">실행</button>
+                <button type="button" class="btn btn-outline-secondary activator" onclick="fnGenderPopulation()">실행</button>
             </div>
         </div>
+        <form id="formGenderPopulation" name="formGenderPopulation">
+            <input type="hidden" id="itmId" name="itmId" value="T21+T22+"/>
+            <input type="hidden" id="objL1" name="objL1" value="ALL"/>
+            <input type="hidden" id="prdSe" name="prdSe" value="M"/>
+            <input type="hidden" id="startPrdDe" name="startPrdDe" value=""/>
+            <input type="hidden" id="endPrdDe" name="endPrdDe" value=""/>
+            <input type="hidden" id="newEstPrdCnt" name="newEstPrdCnt" value="1"/>
+            <input type="hidden" id="loadGubun" name="loadGubun" value="2"/>
+            <input type="hidden" id="orgId" name="orgId" value="101"/>
+            <input type="hidden" id="tblId" name="tblId" value="DT_1B040A3"/>
+        </form>
+
         <div class="col">
             <div class="card">
                 <div class="card-header">
@@ -178,36 +190,4 @@
 <#include "*/common/footer.ftl"/>
 
 <script src="/js/bi/realEstate/realEstate.js"></script>
-<script>
-    let errorMsg = "error";
-    let kosisParam = {
-        "itmId":"T21+T22+",
-        "objL1": "ALL",
-        "objL2": "",
-        "objL3": "",
-        "objL4": "",
-        "objL5": "",
-        "objL6": "",
-        "objL7": "",
-        "objL8": "",
-        "prdSe": "M",
-        "startPrdDe": "",
-        "endPrdDe": "",
-        "newEstPrdCnt" : "1",
-        "loadGubun":"2",
-        "orgId": "101",
-        "tblId": "DT_1B040A3"
-    }
-    window.onload = function(){
-        // getIncome();
-        //ajax가 정상 호출 되었을때 실행 되는 함수
-        let callBackFn = function( data ) {
-            alert(data.success);
-            console.log(data.data)
-        }
-        //공통모듈 ajax 함수 호출하기
-        kosisApiAjax("/realEstate/api/genderPopulation", callBackFn, 'get', kosisParam, errorMsg);
-    }
-</script>
-
 
