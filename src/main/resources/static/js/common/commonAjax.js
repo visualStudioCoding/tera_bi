@@ -48,9 +48,7 @@ let kosisApiAjax = function(url, fn, methodType, param, errorMsg){
     parameter += "&" + "prdSe=" + param.prdSe;
     parameter += "&" + "startPrdDe=" + param.startPrdDe;
     parameter += "&" + "endPrdDe=" + param.endPrdDe;
-    if(param.newEstPrdCnt != undefined) {
-        parameter += "&" + "newEstPrdCnt=" + param.newEstPrdCnt;
-    }
+    parameter += "&" + "newEstPrdCnt=" + param.newEstPrdCnt;
     parameter += "&" + "loadGubun=" + param.loadGubun;
     parameter += "&" + "orgId=" + param.orgId;
     parameter += "&" + "tblId=" + param.tblId;
