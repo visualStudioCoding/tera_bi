@@ -13,7 +13,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import com.teraenergy.global.configuration.ApiKeyConfiguration;
-import com.teraenergy.global.configuration.AreaNameConfiguration;
+import com.teraenergy.global.common.utilities.AreaNameUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
@@ -200,7 +200,7 @@ public class CommonServiceImpl implements CommonService {
 
 	@Override
 	public String getCtyNm(String areaCd) {
-		return AreaNameConfiguration.areaName(areaCd);
+		return AreaNameUtil.areaName(areaCd);
 	}
 
 

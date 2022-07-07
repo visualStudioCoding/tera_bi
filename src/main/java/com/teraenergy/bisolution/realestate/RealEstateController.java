@@ -1,20 +1,18 @@
-package com.teraenergy.bisolution.realEstate;
+package com.teraenergy.bisolution.realestate;
 
 
-import com.teraenergy.global.configuration.ApiKeyConfiguration;
 import com.teraenergy.global.service.CommonService;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -31,10 +29,11 @@ public class RealEstateController {
 
     @GetMapping("/main")
     public String getAllTradeRealApt() throws Exception {
-        System.out.println(DIRECTORY + PROGRAM_ID + "List");
+        log.info(DIRECTORY + PROGRAM_ID + "List");
         return DIRECTORY + PROGRAM_ID + "Main";
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @ResponseBody
     @GetMapping("/api/genderPopulation")
     public Object getGenderPopulation(String url, String parameter) throws Exception {
@@ -43,14 +42,12 @@ public class RealEstateController {
         String format = "json";
         String site = "kosis";
         StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
-        @SuppressWarnings("unchecked") JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
 
         Map<String, Object> result = new HashMap<>();
         Map<String, Object> dataMap = new HashMap<>();
         for (Object jsonObject : jsonList) {
             JSONObject jsonData = (JSONObject) jsonObject;
-
-
 
             String year = (String) jsonData.get("PRD_DE");
             year = year.substring(0, 4);

@@ -1,4 +1,4 @@
-package com.teraenergy.bisolution.realEstate;
+package com.teraenergy.bisolution.realestate;
 
 import org.apache.ibatis.type.Alias;
 
