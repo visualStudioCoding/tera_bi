@@ -2,18 +2,20 @@
  * commonAjax 공통모듈
  * ------------------
  */
+
 let commonAjax = function(url, data, fn, methodType, errorMsg){
     // 데이터 값이 잘 넘어왔는지 확인
     console.log("url : ", url);
     console.log("data : ", data);
     console.log("methodType : ", methodType);
-    console.log("errorMsg : ", errorMsg);
+     console.log("errorMsg : ", errorMsg);
     let request = $.ajax({
         url: url,
         method: methodType,
         data: data,
         dataType: "json"
     });
+
 
     //콜백함수
     request.done(fn);
@@ -50,6 +52,7 @@ let kosisApiAjax = function(url, fn, methodType, param, errorMsg){
     parameter += "&" + "loadGubun=" + param.loadGubun;
     parameter += "&" + "orgId=" + param.orgId;
     parameter += "&" + "tblId=" + param.tblId;
+
     console.log(parameter);
     console.log(param);
 
