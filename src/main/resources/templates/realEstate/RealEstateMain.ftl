@@ -66,9 +66,20 @@
                         </label>
                     </div>
                 </div>
-                <button type="button" class="btn btn-outline-secondary activator">실행</button>
+                <button type="button" class="btn btn-outline-secondary activator" onclick="fnAptSalesStatus()">실행</button>
             </div>
         </div>
+        <form id="formAptSalesStatus" name="formAptSalesStatus">
+            <input type="hidden" id="itmId" name="itmId" value="13103114448T1+"/>
+            <input type="hidden" id="objL1" name="objL1" value="ALL"/>
+            <input type="hidden" id="prdSe" name="prdSe" value="M"/>
+            <input type="hidden" id="startPrdDe" name="startPrdDe" value=""/>
+            <input type="hidden" id="endPrdDe" name="endPrdDe" value=""/>
+            <input type="hidden" id="newEstPrdCnt" name="newEstPrdCnt" value="1"/>
+            <input type="hidden" id="loadGubun" name="loadGubun" value="2"/>
+            <input type="hidden" id="orgId" name="orgId" value="408"/>
+            <input type="hidden" id="tblId" name="tblId" value="DT_408_2006_S0064"/>
+        </form>
     </div>
     <div class="row">
         <div class="col">

@@ -114,12 +114,12 @@
         window.onload = function(){
             // getIncome();
             //ajax가 정상 호출 되었을때 실행 되는 함수
-            let callBackFn = function( data ) {
-                alert(data.success);
-                console.log(data.data)
-            }
+            // let callBackFn = function( data ) {
+            //     alert(data.success);
+            //     console.log(data.data)
+            // }
             //공통모듈 ajax 함수 호출하기
-            kosisApiAjax("/getIncome", callBackFn, 'get', kosisParam, errorMsg);
+            // kosisApiAjax("/getIncome", callBackFn, 'get', kosisParam, errorMsg);
         }
     </script>
 </html>

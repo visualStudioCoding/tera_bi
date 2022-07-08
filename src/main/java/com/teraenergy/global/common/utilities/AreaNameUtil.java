@@ -9,7 +9,8 @@ public final class AreaNameUtil {
     public static String areaName(String areaCd) {
         if(areaCd.length() <= 5) {areaCd = areaCd.substring(0, 2);}
         if(areaCd.contains(".")) {
-            String[] areaCdArray = areaCd.split(".");
+            System.out.println(areaCd.contains("."));
+            String[] areaCdArray = areaCd.split("\\.");
             areaCd = areaCdArray[1].substring(0, 4);
         }
         return getName(areaCd);

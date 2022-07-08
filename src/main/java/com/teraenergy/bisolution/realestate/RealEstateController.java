@@ -28,7 +28,7 @@ public class RealEstateController {
     private CommonService commonService;
 
     @GetMapping("/main")
-    public String getAllTradeRealApt() throws Exception {
+    public String realEstateMain() throws Exception {
         log.info(DIRECTORY + PROGRAM_ID + "List");
         return DIRECTORY + PROGRAM_ID + "Main";
     }
@@ -56,17 +56,22 @@ public class RealEstateController {
 
             String gender = (String) jsonData.get("ITM_NM_ENG");
             gender = gender.contains("Male") ? "남" : "여";
+            String ctyName = commonService.getCtyNm((String) jsonData.get("C1"));
+            String areaCd = (String) jsonData.get("C1");
 
             dataMap.put("yrDt", year);
             dataMap.put("monDt", month);
             dataMap.put("gender", gender);
-            dataMap.put("ctyNm", commonService.getCtyNm((String) jsonData.get("C1")));
-            dataMap.put("areaCd", jsonData.get("C1"));
+            dataMap.put("ctyNm", ctyName);
+            dataMap.put("areaCd", areaCd);
             dataMap.put("dstNm", jsonData.get("C1_NM"));
             dataMap.put("unit", jsonData.get("UNIT_NM"));
             dataMap.put("val", jsonData.get("DT"));
 
-            commonService.insertContents(dataMap, PROGRAM_ID + ".insertGenderPopulation");
+            //세종특별자치시 중복 제외
+            if(!"36110".equals(areaCd)) {
+                commonService.insertContents(dataMap, PROGRAM_ID + ".insertGenderPopulation");
+            }
 
         }
 
@@ -78,7 +83,7 @@ public class RealEstateController {
 
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
-    @GetMapping("/api/AptSalesStatus")
+    @GetMapping("/api/aptSalesStatus")
     public Object getAptSalesStatus(String url, String parameter) throws Exception {
 
         //kosis = json, enara = xml
@@ -97,20 +102,20 @@ public class RealEstateController {
             String month = (String) jsonData.get("PRD_DE");
             month = month.substring(4, 6);
 
-            String gender = (String) jsonData.get("ITM_NM_ENG");
-            gender = gender.contains("Male") ? "남" : "여";
+            String ctyName = commonService.getCtyNm((String) jsonData.get("C1"));
 
             dataMap.put("yrDt", year);
             dataMap.put("monDt", month);
-            dataMap.put("gender", gender);
-            dataMap.put("ctyNm", commonService.getCtyNm((String) jsonData.get("C1")));
-            dataMap.put("areaCd", jsonData.get("C1"));
+            dataMap.put("ctyNm", ctyName);
             dataMap.put("dstNm", jsonData.get("C1_NM"));
             dataMap.put("unit", jsonData.get("UNIT_NM"));
             dataMap.put("val", jsonData.get("DT"));
 
-            commonService.insertContents(dataMap, PROGRAM_ID + ".insertGenderPopulation");
-
+            String areaCd = (String) jsonData.get("C1");
+            //세종특별자치시 중복 제외
+            if(!"13102114448A.00090001".equals(areaCd)) {
+                commonService.insertContents(dataMap, PROGRAM_ID + ".insertAptSalesStatus");
+            }
         }
 
         result.put("data", dataMap);
