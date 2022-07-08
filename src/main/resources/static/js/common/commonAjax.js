@@ -94,6 +94,8 @@ let enaraApiAjax = function(url, fn, methodType, param, errorMsg){
     console.log(data);
     console.log(methodType);
     console.log(errorMsg);
+
+    // ajax 데이터 넘기기
     let request = $.ajax({
         url: url,
         method: methodType,

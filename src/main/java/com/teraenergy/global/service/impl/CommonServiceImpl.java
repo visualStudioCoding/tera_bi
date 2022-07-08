@@ -1,16 +1,17 @@
 package com.teraenergy.global.service.impl;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import com.teraenergy.global.configuration.ApiKeyConfiguration;
 import com.teraenergy.global.common.utilities.AreaNameUtil;
@@ -23,8 +24,11 @@ import org.springframework.stereotype.Service;
 import com.teraenergy.global.mapper.CommonMapper;
 import com.teraenergy.global.service.CommonService;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 @Slf4j
 @Service("commonService")
@@ -119,20 +123,20 @@ public class CommonServiceImpl implements CommonService {
 
 			}
 			if("xml".equals(format)) {
-				DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-				DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-				Document document = documentBuilder.parse(url);
-
-				// root tag
-				document.getDocumentElement().normalize();
-
-				// 파싱할 tag
-				NodeList nList = document.getElementsByTagName("지표");
-				//HIT Tag 정보들을  검색
-				Node firstNode = document.getElementsByTagName("지표").item(0);
-				NodeList childNodeList = firstNode.getChildNodes();
-				Map<String, Object> nodeMapData = getNodeList(childNodeList);
-				System.out.println(nodeMapData.toString());
+//				DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+//				DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+//				Document document = documentBuilder.parse(url);
+//
+//				// root tag
+//				document.getDocumentElement().normalize();
+//
+//				// 파싱할 tag
+//				NodeList nList = document.getElementsByTagName("지표");
+//				//HIT Tag 정보들을  검색
+//				Node firstNode = document.getElementsByTagName("지표").item(0);
+//				NodeList childNodeList = firstNode.getChildNodes();
+//				Map<String, Object> nodeMapData = getNodeList(childNodeList);
+//				System.out.println(nodeMapData.toString());
 			}
 
 			bufferedReader.close();
@@ -158,13 +162,21 @@ public class CommonServiceImpl implements CommonService {
 		if("enara".equals(site)) {
 			apiKey = enaraKey;
 			str = "userId=";
-		}
 
-		// api 키 추가
-		String[] params = parameter.split(str);
-		String param1 = params[0];
-		String param2 = params[1];
-		parameter = param1 + str + apiKey + param2;
+			String[] params = parameter.split(str);
+			String param1 = params[0];
+			String param2 = params[1];
+			parameter = param1 + str + apiKey + param2;
+
+		}else{
+
+			System.out.println(apiKey);
+			String[] params = parameter.split(str);
+			String param1 = params[0];
+			String param2 = params[1];
+			parameter = param1 + str + apiKey + param2;
+
+		}
 
 		return parameter;
 	}
@@ -190,12 +202,69 @@ public class CommonServiceImpl implements CommonService {
 		return (JSONArray) jsonParser.parse(String.valueOf(stringBuilder));
 	}
 
-	public Map<String,Object> apiXmlParser(StringBuilder stringBuilder) {
+	public Map<String,Object> apiXmlParser(StringBuilder stringBuilder) throws ParserConfigurationException, IOException, SAXException {
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+//		DocumentBuilder documentBuilder = factory.newDocumentBuilder();
+//		Document document = documentBuilder.parse(String.valueOf(stringBuilder));
+		InputStream is = new ByteArrayInputStream((stringBuilder.toString()).getBytes());
 
-		Map<String, Object> result = new HashMap<>();
+		DocumentBuilder documentBuilder = factory.newDocumentBuilder();
+		Document document = documentBuilder.parse(is);
 
+		Element root = document.getDocumentElement();
 
-		return result;
+		NodeList children = root.getChildNodes();
+		NodeList items = root.getElementsByTagName("분류1");
+
+		NodeList inner_title = items.item(0).getChildNodes();
+
+		Node inner_data = items.item(0);
+		NodeList inner_list = inner_data.getChildNodes();
+
+		Node inner_dataList = inner_list.item(0);
+
+		System.out.println(items.item(0).getAttributes());
+
+		for(int j = 0 ; j < inner_title.getLength(); j++){
+			Element elm = (Element)inner_dataList;
+			System.out.println((inner_title.item(j).getNodeName()).toString() + ":" + (elm.getAttribute("주기")).toString());
+			System.out.println("값 : " + inner_title.item(j).getTextContent().toString());
+		}
+
+//		System.out.println(items.getLength());
+//		System.out.println((items.getClass()).toString());
+
+		System.out.println("=====================================================");
+		for(int i = 0 ; i < items.getLength(); i++){
+			Node item = items.item(i);
+			NodeList text = item.getChildNodes();
+			String itemValue = text.item(i).getTextContent();
+//			System.out.println(item);
+//			System.out.println(text.item(i));
+//			System.out.println(itemValue);
+		}
+
+//		for( int i = 0 ; i < children.getLength(); i++){
+//			Node node = children.item(i);
+//			if(node.getNodeType() == Node.ELEMENT_NODE){
+//				Element elm = (Element)node;
+//				System.out.println(elm.getNodeName());
+//			}
+//		}
+//		System.out.println("====================================");
+//
+//		Element middle = (Element) children;
+//		NodeList grand_children = middle.getChildNodes();
+//
+//		for( int j = 0 ; j < grand_children.getLength(); j++){
+//			Node node = grand_children.item(j);
+//			if(node.getNodeType() == Node.ELEMENT_NODE){
+//				Element elm = (Element)node;
+//				System.out.println(elm.getNodeName());
+//			}
+//		}
+
+		return null;
 	}
 
 	@Override
