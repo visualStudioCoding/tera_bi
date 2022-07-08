@@ -86,7 +86,7 @@ public class CommonServiceImpl implements CommonService {
 	@Override
 	public StringBuilder getApiResult(String url, String parameter, String format, String site) throws Exception {
 
-		parameter = generateUrl(parameter, site);
+		parameter = generateParameter(parameter, site);
 		StringBuilder stringBuilder = new StringBuilder();
 
 		log.info(parameter);
@@ -119,26 +119,6 @@ public class CommonServiceImpl implements CommonService {
 				stringBuilder.append(line);
 			}
 
-			if("json".equals(format)) {
-
-			}
-			if("xml".equals(format)) {
-//				DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-//				DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-//				Document document = documentBuilder.parse(url);
-//
-//				// root tag
-//				document.getDocumentElement().normalize();
-//
-//				// 파싱할 tag
-//				NodeList nList = document.getElementsByTagName("지표");
-//				//HIT Tag 정보들을  검색
-//				Node firstNode = document.getElementsByTagName("지표").item(0);
-//				NodeList childNodeList = firstNode.getChildNodes();
-//				Map<String, Object> nodeMapData = getNodeList(childNodeList);
-//				System.out.println(nodeMapData.toString());
-			}
-
 			bufferedReader.close();
 			httpURLConnection.disconnect();
 
@@ -148,7 +128,7 @@ public class CommonServiceImpl implements CommonService {
 		return stringBuilder;
 	}
 
-	public String generateUrl(String parameter, String site) {
+	public String generateParameter(String parameter, String site) {
 
 		String enaraKey = apiKeyConfiguration.getEnaraKey();
 		String enaraId = apiKeyConfiguration.getEnaraId();
@@ -162,21 +142,13 @@ public class CommonServiceImpl implements CommonService {
 		if("enara".equals(site)) {
 			apiKey = enaraKey;
 			str = "userId=";
-
-			String[] params = parameter.split(str);
-			String param1 = params[0];
-			String param2 = params[1];
-			parameter = param1 + str + apiKey + param2;
-
-		}else{
-
-			System.out.println(apiKey);
-			String[] params = parameter.split(str);
-			String param1 = params[0];
-			String param2 = params[1];
-			parameter = param1 + str + apiKey + param2;
-
 		}
+
+		// api 키 추가
+		String[] params = parameter.split(str);
+		String param1 = params[0];
+		String param2 = params[1];
+		parameter = param1 + str + apiKey + param2;
 
 		return parameter;
 	}

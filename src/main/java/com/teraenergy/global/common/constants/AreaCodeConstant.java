@@ -16,7 +16,7 @@ public final class AreaCodeConstant {
     public static final List<String> GWANGJU = List.of("29", "0006");
     public static final List<String> DAEJEON = List.of("30", "0007");
     public static final List<String> ULSAN = List.of("31", "0008");
-    public static final List<String> SEJONG = List.of("36");
+    public static final List<String> SEJONG = List.of("36", "0009");
     public static final List<String> GYEONGGI = List.of("41", "0010");
     public static final List<String> GANGWON = List.of("42", "0011");
     public static final List<String> CHUNGBUK = List.of("43", "0012");
