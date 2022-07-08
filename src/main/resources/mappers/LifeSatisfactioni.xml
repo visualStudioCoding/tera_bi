@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="bi.LifeSatisfaction">
+    <select id="getLifeSatisfaction" parameterType="com.teraenergy.bisolution.realestate.RealEstateDTO" resultType="com.teraenergy.bisolution.realestate.RealEstateDTO">
+            SELECT
+                  apt_nm
+                  , land_area
+                  , land_no
+                  , road_nm
+                  , dong
+                  , eupmyundong_cd
+                  , sigungu_cd
+                  , trade_month
+                  , trade_year
+                  , built_year
+                  , payment
+                  , idx
+                  , layer
+            FROM 
+                  trade_real_apt
+            WHERE 
+                  1=1
+            LIMIT
+                  0,10
+	</select>
+
+    <!--삶의만족도-->
+    <insert id="insertLifeSatisfaction" parameterType="hashMap">
+        INSERT INTO life_stsfc
+            (yr_dt
+            , top_grp
+            , mid_grp
+            , sml_grp
+            , unit
+            , val
+            , reg_dt
+            )
+        VALUES
+            (#{yrDt}
+            , #{topgrp}
+            , #{midgrp}
+            , #{smlgrp}
+            , #{unit}
+            , #{val}
+            , now()
+            )
+    </insert>
+
+    <!--월별 결혼-->
+    <insert id="insertMarriage" parameterType="hashMap">
+        INSERT INTO marriage
+            (yr_dt
+            , mon_dt
+            , area_cd
+            , cty_nm
+            , dst_nm
+            , unit
+            , val
+            , reg_dt
+            )
+        VALUES
+            (#{yrdt}
+            , #{mondt}
+            , #{areacd}
+            , #{ctynm}
+            , #{dstnm}
+            , #{unit}
+            , #{val}
+            , now()
+            )
+    </insert>
+</mapper>
