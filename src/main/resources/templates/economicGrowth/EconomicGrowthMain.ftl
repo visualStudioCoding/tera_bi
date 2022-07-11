@@ -9,6 +9,7 @@
                     월별 환율
                 </div>
                 <div class="card-body">
+                    <span>년도 선택</span>
                     <select class="form-select" aria-label="Default select example">
                         <option selected>Open this select menu</option>
                         <option value="1">One</option>
@@ -19,12 +20,6 @@
                         <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
                         <label class="form-check-label" for="flexCheckDefault">
                             Default checkbox
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-                        <label class="form-check-label" for="flexCheckChecked">
-                            Checked checkbox
                         </label>
                     </div>
                 </div>
@@ -37,24 +32,13 @@
                     소비자/근원/생활 물가상승률
                 </div>
                 <div class="card-body">
+                    <span>년도 선택</span>
                     <select class="form-select" aria-label="Default select example">
                         <option selected>Open this select menu</option>
                         <option value="1">One</option>
                         <option value="2">Two</option>
                         <option value="3">Three</option>
                     </select>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                            Default checkbox
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-                        <label class="form-check-label" for="flexCheckChecked">
-                            Checked checkbox
-                        </label>
-                    </div>
                 </div>
                 <button type="button" class="btn btn-outline-secondary activator" onclick="fnGetInflationRate()">실행</button>
             </div>
@@ -67,24 +51,13 @@
                     한국은행 기준금리
                 </div>
                 <div class="card-body">
+                    <span>년도 선택</span>
                     <select class="form-select" aria-label="Default select example">
                         <option selected>Open this select menu</option>
                         <option value="1">One</option>
                         <option value="2">Two</option>
                         <option value="3">Three</option>
                     </select>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                            Default checkbox
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-                        <label class="form-check-label" for="flexCheckChecked">
-                            Checked checkbox
-                        </label>
-                    </div>
                 </div>
                 <button type="button" class="btn btn-outline-secondary activator">실행</button>
             </div>
@@ -96,7 +69,8 @@
                 </div>
                 <form name="gdpAndgni_opt">
                     <div class="card-body">
-                        <select class="form-select" name="PrdDe" aria-label="Default select example">
+                        <span>년도 선택</span>
+                        <select class="form-select" name="prdDe" aria-label="Default select example">
                             <option selected>데이터를 호출할 년도를 선택하세요</option>
                             <#list 1953..1999 as i>
                                 <option value=${i?replace(",","")}>${i?replace(",","")}년</option>
@@ -125,7 +99,7 @@
                 <form name="stateDebt_opt">
                     <div class="card-body">
                         <span>년도 선택</span>
-                        <select class="form-select" name="PrdDe" aria-label="Default select example">
+                        <select class="form-select" name="prdDe" aria-label="Default select example">
                             <option selected>데이터를 호출할 년도를 선택하세요</option>
                             <#list 1997..1999 as i>
                                 <option value=${i?replace(",","")}>${i?replace(",","")}년</option>
@@ -149,27 +123,26 @@
                 <div class="card-header">
                     경제성장률(시도)
                 </div>
-                <div class="card-body">
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                            Default checkbox
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-                        <label class="form-check-label" for="flexCheckChecked">
-                            Checked checkbox
-                        </label>
-                    </div>
+                <form name="growthRate_opt">
+                    <div class="card-body">
+                        <span>년도 선택</span>
+                        <select class="form-select" name="prdDe" aria-label="Default select example">
+                            <option selected>데이터를 호출할 년도를 선택하세요</option>
+                            <#list 1986..1999 as i>
+                                <option value=${i?replace(",","")}>${i?replace(",","")}년</option>
+                            </#list>
+                            <#list 2000..2020 as j>
+                                <option value=${j?replace(",","")}>${j?replace(",","")}년</option>
+                            </#list>
+                        </select>
+                        <#assign name_list = ["itmId", "objL1", "prdSe", "loadGubun", "orgId", "tblId"]>
+                        <#assign val_list = ["T10+", "ALL", "Y", "2", "101", "DT_1YL20571"]>
+                        <#list 0..5 as k>
+                            <input type="hidden" name=${name_list[k]} value=${val_list[k]}  />
+                        </#list>
                 </div>
-                <button type="button" class="btn btn-outline-secondary activator">실행</button>
+                </form>
+                <button type="button" class="btn btn-outline-secondary activator" onclick="getGrowthRate()">실행</button>
             </div>
         </div>
     </div>

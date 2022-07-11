@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -28,11 +31,12 @@ public class EconomicGrowthController {
 
     @GetMapping("/main")
     public String economicGrowthMain() throws Exception {
-        log.info(DIRECTORY + PROGRAM_ID + "main");
-        return DIRECTORY + PROGRAM_ID + "main";
+        log.info(DIRECTORY + PROGRAM_ID + "List");
+        return DIRECTORY + PROGRAM_ID + "Main";
     }
 
     //getInflationRate
+    @Transactional(rollbackFor = Exception.class)
     @ResponseBody
     @GetMapping("/api/getMonthlyExchangeRate")
     public Object getInflationRate(String url, String parameter) throws Exception {
@@ -53,7 +57,20 @@ public class EconomicGrowthController {
 //        log.info(String.valueOf(result));
         return result;
     }
+    @ResponseBody
+    @GetMapping("api/getStateDebtList")
+    public Object getStateDebtList() throws Exception {
+        Map<String, Object> dataMap = new HashMap<>();
+        Map<String, Object> result = new HashMap<>();
 
+        List<ArrayList> resultList = (List<ArrayList>) commonService.selectList(dataMap, PROGRAM_ID + ".selectStateDebt");
+
+        result.put("title", "국가채무현황");
+        result.put("datas",resultList);
+        result.put("result", "success");
+
+        return result;
+    }
     // 국가채무현황
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
@@ -96,6 +113,7 @@ public class EconomicGrowthController {
     }
 
     // 경제활동별 GDP 및 GNI
+    @Transactional(rollbackFor = Exception.class)
     @ResponseBody
     @GetMapping("/api/getGdpAndGni")
     public Object getGdpAndGni(String url, String parameter) throws Exception {
@@ -141,6 +159,41 @@ public class EconomicGrowthController {
                 commonService.insertContents(dataMap, PROGRAM_ID + ".insertGNI");
             }
 
+        }
+        result.put("data", dataMap);
+        result.put("success", "성공");
+
+        return result;
+    }
+    @Transactional(rollbackFor = Exception.class)
+    @ResponseBody
+    @GetMapping("/api/getGrowthRate")
+    public Object getGrowthRate(String url, String parameter) throws Exception {
+        System.out.println(url);
+        System.out.println(parameter);
+        String format = "json";
+        String site = "kosis";
+
+        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+        JSONArray jsonArray = (JSONArray) commonService.apiJsonParser(stringBuilder);
+
+        Map<String, Object> dataMap = new HashMap<>();
+        Map<String, Object> result = new HashMap<>();
+
+        for(Object jsonObject : jsonArray){
+            JSONObject jsonData = (JSONObject) jsonObject;
+
+            String yrdt = (String) jsonData.get("PRD_DE");
+            String city = (String) jsonData.get("C1_NM");
+            String unit = (String) jsonData.get("UNIT_NM");
+            String value = (String) jsonData.get("DT");
+
+            dataMap.put("yr_dt", yrdt);
+            dataMap.put("cty_nm", city);
+            dataMap.put("unit", unit);
+            dataMap.put("val", value);
+
+            commonService.insertContents(dataMap, PROGRAM_ID + ".insertGrowthRate");
         }
 
         result.put("data", dataMap);
