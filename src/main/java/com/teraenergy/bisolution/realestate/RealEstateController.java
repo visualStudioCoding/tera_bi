@@ -5,6 +5,7 @@ import com.teraenergy.global.service.CommonService;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +28,12 @@ public class RealEstateController {
     @Resource(name = "commonService")
     private CommonService commonService;
 
+    @Resource(name = "realEstateService")
+    private RealEstateService realEstateService;
+
+    private static final String FORMAT = "json";
+    private static final String SITE = "kosis";
+
     @GetMapping("/main")
     public String realEstateMain() throws Exception {
         log.info(DIRECTORY + PROGRAM_ID + "List");
@@ -38,46 +45,51 @@ public class RealEstateController {
     @GetMapping("/api/genderPopulation")
     public Object getGenderPopulation(String url, String parameter) throws Exception {
 
-        //kosis = json, enara = xml
-        String format = "json";
-        String site = "kosis";
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
-        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
-
         Map<String, Object> result = new HashMap<>();
         Map<String, Object> dataMap = new HashMap<>();
-        for (Object jsonObject : jsonList) {
-            JSONObject jsonData = (JSONObject) jsonObject;
 
-            String year = (String) jsonData.get("PRD_DE");
-            year = year.substring(0, 4);
-            String month = (String) jsonData.get("PRD_DE");
-            month = month.substring(4, 6);
+        Map<String, String> splitParams = realEstateService.splitParameter(parameter);
 
-            String gender = (String) jsonData.get("ITM_NM_ENG");
-            gender = gender.contains("Male") ? "남" : "여";
-            String ctyName = commonService.getCtyNm((String) jsonData.get("C1"));
-            String areaCd = (String) jsonData.get("C1");
+        for (int month = 1; month <= 12; month++) {
 
-            dataMap.put("yrDt", year);
-            dataMap.put("monDt", month);
-            dataMap.put("gender", gender);
-            dataMap.put("ctyNm", ctyName);
-            dataMap.put("areaCd", areaCd);
-            dataMap.put("dstNm", jsonData.get("C1_NM"));
-            dataMap.put("unit", jsonData.get("UNIT_NM"));
-            dataMap.put("val", jsonData.get("DT"));
+            parameter = realEstateService.stringCombination(splitParams, month);
 
-            //세종특별자치시 중복 제외
-            if(!"36110".equals(areaCd)) {
-                commonService.insertContents(dataMap, PROGRAM_ID + ".insertGenderPopulation");
+            StringBuilder stringBuilder = commonService.getApiResult(url, parameter, FORMAT, SITE);
+            JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+
+
+            for (Object jsonObject : jsonList) {
+                JSONObject jsonData = (JSONObject) jsonObject;
+
+                String year = (String) jsonData.get("PRD_DE");
+                year = year.substring(0, 4);
+                String getMonth = (String) jsonData.get("PRD_DE");
+                getMonth = getMonth.substring(4, 6);
+
+                String gender = (String) jsonData.get("ITM_NM_ENG");
+                gender = gender.contains("Male") ? "남" : "여";
+                String ctyName = commonService.getCtyNm((String) jsonData.get("C1"), "");
+                String areaCd = (String) jsonData.get("C1");
+
+                dataMap.put("yrDt", year);
+                dataMap.put("monDt", getMonth);
+                dataMap.put("gender", gender);
+                dataMap.put("ctyNm", ctyName);
+                dataMap.put("areaCd", areaCd);
+                dataMap.put("dstNm", jsonData.get("C1_NM"));
+                dataMap.put("unit", jsonData.get("UNIT_NM"));
+                dataMap.put("val", jsonData.get("DT"));
+
+                //세종특별자치시 중복 제외
+                if(!"36110".equals(areaCd)) {
+                    commonService.insertContents(dataMap, PROGRAM_ID + ".insertGenderPopulation");
+                }
+
             }
-
         }
 
         result.put("data", dataMap);
         result.put("success", "성공");
-//        log.info(String.valueOf(result));
         return result;
     }
 
@@ -86,41 +98,92 @@ public class RealEstateController {
     @GetMapping("/api/aptSalesStatus")
     public Object getAptSalesStatus(String url, String parameter) throws Exception {
 
-        //kosis = json, enara = xml
-        String format = "json";
-        String site = "kosis";
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
-        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
-
         Map<String, Object> result = new HashMap<>();
         Map<String, Object> dataMap = new HashMap<>();
-        for (Object jsonObject : jsonList) {
-            JSONObject jsonData = (JSONObject) jsonObject;
 
-            String year = (String) jsonData.get("PRD_DE");
-            year = year.substring(0, 4);
-            String month = (String) jsonData.get("PRD_DE");
-            month = month.substring(4, 6);
+        Map<String, String> splitParams = realEstateService.splitParameter(parameter);
 
-            String ctyName = commonService.getCtyNm((String) jsonData.get("C1"));
+        for (int month = 1; month <= 12; month++) {
 
-            dataMap.put("yrDt", year);
-            dataMap.put("monDt", month);
-            dataMap.put("ctyNm", ctyName);
-            dataMap.put("dstNm", jsonData.get("C1_NM"));
-            dataMap.put("unit", jsonData.get("UNIT_NM"));
-            dataMap.put("val", jsonData.get("DT"));
+            parameter = realEstateService.stringCombination(splitParams, month);
 
-            String areaCd = (String) jsonData.get("C1");
-            //세종특별자치시 중복 제외
-            if(!"13102114448A.00090001".equals(areaCd)) {
-                commonService.insertContents(dataMap, PROGRAM_ID + ".insertAptSalesStatus");
+            StringBuilder stringBuilder = commonService.getApiResult(url, parameter, FORMAT, SITE);
+            JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+
+            for (Object jsonObject : jsonList) {
+                JSONObject jsonData = (JSONObject) jsonObject;
+
+                String year = (String) jsonData.get("PRD_DE");
+                year = year.substring(0, 4);
+                String getMonth = (String) jsonData.get("PRD_DE");
+                getMonth = getMonth.substring(4, 6);
+
+                String ctyName = commonService.getCtyNm((String) jsonData.get("C1"), "");
+
+                dataMap.put("yrDt", year);
+                dataMap.put("monDt", getMonth);
+                dataMap.put("ctyNm", ctyName);
+                dataMap.put("dstNm", jsonData.get("C1_NM"));
+                dataMap.put("unit", jsonData.get("UNIT_NM"));
+                dataMap.put("val", jsonData.get("DT"));
+
+                String areaCd = (String) jsonData.get("C1");
+                //세종특별자치시 중복 제외
+                if (!"13102114448A.00090001".equals(areaCd)) {
+                    commonService.insertContents(dataMap, PROGRAM_ID + ".insertAptSalesStatus");
+                }
             }
         }
 
         result.put("data", dataMap);
         result.put("success", "성공");
-//        log.info(String.valueOf(result));
+        return result;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @ResponseBody
+    @GetMapping("/api/unsoldHouse")
+    public Object getUnsoldHouse(String url, String parameter) throws Exception {
+
+        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> dataMap = new HashMap<>();
+
+        Map<String, String> splitParams = realEstateService.splitParameter(parameter);
+
+        for (int month = 1; month <= 12; month++) {
+
+            parameter = realEstateService.stringCombination(splitParams, month);
+
+            StringBuilder stringBuilder = commonService.getApiResult(url, parameter, FORMAT, SITE);
+            JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+
+            for (Object jsonObject : jsonList) {
+                JSONObject jsonData = (JSONObject) jsonObject;
+
+                String year = (String) jsonData.get("PRD_DE");
+                year = year.substring(0, 4);
+                String getMonth = (String) jsonData.get("PRD_DE");
+                getMonth = getMonth.substring(4, 6);
+
+                String ctyName = commonService.getCtyNm((String) jsonData.get("C1"), "other");
+
+                dataMap.put("yrDt", year);
+                dataMap.put("monDt", getMonth);
+                dataMap.put("ctyNm", ctyName);
+                dataMap.put("dstNm", jsonData.get("C1_NM"));
+                dataMap.put("unit", jsonData.get("UNIT_NM"));
+                dataMap.put("val", jsonData.get("DT"));
+
+                String areaCd = (String) jsonData.get("C1");
+                //세종특별자치시 중복 제외
+                if (!"13102114448A.00090001".equals(areaCd)) {
+                    commonService.insertContents(dataMap, PROGRAM_ID + ".insertAptSalesStatus");
+                }
+            }
+        }
+
+        result.put("data", dataMap);
+        result.put("success", "성공");
         return result;
     }
 }

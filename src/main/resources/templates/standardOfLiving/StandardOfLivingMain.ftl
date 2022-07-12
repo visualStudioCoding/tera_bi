@@ -22,7 +22,7 @@
                         </#list>
                     </div>
                 </form>
-                <button type="button" class="btn btn-outline-secondary activator" onclick="getLargeData()">실행</button>
+                <button type="button" class="btn btn-outline-secondary activator" onclick="getCapitaPersonal()">실행</button>
             </div>
         </div>
         <div class="col">
@@ -30,21 +30,16 @@
                 <div class="card-header">
                     1인당 국민총소득
                 </div>
-                <div class="card-body">
-                    <span>년도 선택</span>
-                    <select class="form-select" name="prdDe" aria-label="Default select example">
-                        <option selected>데이터를 호출할 년도를 선택하세요</option>
-                        <#list 2000..2020 as j>
-                            <option value=${j?c}>${j?c}년</option>
-                        </#list>
-                    </select>
-                    <#assign name_list = ["itmId", "objL1", "prdSe", "loadGubun", "orgId", "tblId"]>
-                    <#assign val_list = ["T3+", "ALL", "Y", "2", "101", "INH_1C86_04"]>
-                    <#list 0..5 as k>
-                        <input type="hidden" name=${name_list[k]} value=${val_list[k]}  />
-                    </#list>
-                </div>
-                <button type="button" class="btn btn-outline-secondary activator">실행</button>
+                <form name="getGrossNationalIncome">
+                    <div class="card-body">
+                        <span>년도 선택</span>
+                        <select class="form-select" name="prdDe" aria-label="Default select example" disabled>
+                            <option selected>해당 API는 년도를 선택할 수 없습니다.</option>
+                        </select>
+                            <input type="hidden" name="statsCode" value="422101"  />
+                    </div>
+                </form>
+                <button type="button" class="btn btn-outline-secondary activator" onclick="getGrossNationalIncome()">실행</button>
             </div>
         </div>
     </div>

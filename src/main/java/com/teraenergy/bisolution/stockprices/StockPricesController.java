@@ -3,10 +3,9 @@ package com.teraenergy.bisolution.stockprices;
 
 import com.teraenergy.global.service.CommonService;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.XML;
-import org.json.simple.JSONArray;
-import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,47 +50,19 @@ public class StockPricesController {
 
         JSONObject xmlJSONObj = XML.toJSONObject(String.valueOf(stringBuilder));
         String jsonPrettyPrintString = xmlJSONObj.toString(4);
-        JSONParser jsonParser = new JSONParser();
-        org.json.JSONArray sss = (org.json.JSONArray) jsonParser.parse(jsonPrettyPrintString);
-        System.out.println(jsonParser.parse(jsonPrettyPrintString));
-        System.out.println(sss);
 
+        JSONObject object = new JSONObject(jsonPrettyPrintString);
 
+        // 배열을 가져옵니다.
+        JSONArray jArray = object.getJSONArray("표");
+        System.out.println(object.toString());
 
-        //JSONArray jsonArray = (JSONArray) jsonParser.parse(jsonPrettyPrintString);
-        //System.out.println(jsonArray);
+        String title = object.getString("표");
 
-        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
-        Document documentInfo = null;
-        documentInfo = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(url);
-        documentInfo.getDocumentElement().normalize();
+        System.out.println(object.getString("표"));
 
-        // 제일 첫번째 태그
-        Element root = documentInfo.getDocumentElement();
-        //Root: 지표
-        System.out.println("Root: " + documentInfo.getDocumentElement().getNodeName());
+        return null;
 
-        NodeList children = root.getElementsByTagName(tagName);
-        System.out.println("nodeList: " + children);
-
-        Map<String, Object> dataMap = new HashMap<>();
-        for (int idx = 0; idx < children.getLength(); idx++) {
-            Node node = children.item(idx);
-            NamedNodeMap attributes = node.getAttributes();
-            Node attr = attributes.item(idx);
-            Element childElement = (Element) node;
-            dataMap.put("attr", attr.getNodeValue());
-
-        }
-
-
-
-        Map<String, Object> result = new HashMap<>();
-
-        result.put("data", dataMap);
-        result.put("success", "성공");
-//        log.info(String.valueOf(result));
-        return result;
     }
 }
 
