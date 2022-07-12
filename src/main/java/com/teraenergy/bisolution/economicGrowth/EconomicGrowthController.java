@@ -38,21 +38,24 @@ public class EconomicGrowthController {
     //getInflationRate
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
-    @GetMapping("/api/getMonthlyExchangeRate")
-    public Object getInflationRate(String url, String parameter) throws Exception {
-        System.out.println(url);
-        System.out.println(parameter);
+    @GetMapping("/api/getMonthlyExchangeRateList")
+//    public Object getInflationRate(String url, String parameter) throws Exception {
+
+    public Object getInflationRate() throws Exception {
+        String url = "http://www.index.go.kr/openApi/xml_stts.do";
+        String parameter = "?userId=&statsCode=106801";
+
         //kosis = json, enara = xml
         String format = "xml";
         String site = "enara";
         StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
 
-        Map xmlList = commonService.apiXmlParser(stringBuilder);
+        List<Map<String, Object>> xmlList = commonService.apiXmlParser(stringBuilder, "월");
 
-//        System.out.println(xmlList);
+        System.out.println(xmlList);
 
         Map<String, Object> result = new HashMap<>();
-        result.put("data", stringBuilder);
+        result.put("data", xmlList);
         result.put("success", "성공");
 //        log.info(String.valueOf(result));
         return result;
