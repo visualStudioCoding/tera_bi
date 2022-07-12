@@ -143,7 +143,6 @@ public class Sche {
 
 
 
-
     @Scheduled(cron = "01 * * * * *")
     public void test2() {
         System.out.println("test222222222222222222222222222222222222");
