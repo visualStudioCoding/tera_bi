@@ -70,4 +70,52 @@
             , now()
             )
     </insert>
+
+    <!--월별 결혼-->
+    <insert id="insertDivorce" parameterType="hashMap">
+        INSERT INTO divorce
+            (yr_dt
+            , mon_dt
+            , area_cd
+            , cty_nm
+            , dst_nm
+            , unit
+            , val
+            , reg_dt
+            )
+        VALUES
+            (#{yrdt}
+            , #{mondt}
+            , #{areacd}
+            , #{ctynm}
+            , #{dstnm}
+            , #{unit}
+            , #{val}
+            , now()
+            )
+    </insert>
+
+    <!--스케쥴러 테스트1-->
+    <insert id="insertTest1" parameterType="hashMap">
+        INSERT INTO test1
+            (yr_dt
+            , mon_dt
+            , area_cd
+            , cty_nm
+            , dst_nm
+            , unit
+            , val
+            , reg_dt
+            )
+        VALUES
+            (#{yrdt}
+            , #{mondt}
+            , #{areacd}
+            , #{ctynm}
+            , #{dstnm}
+            , #{unit}
+            , #{val}
+            , now()
+            )
+    </insert>
 </mapper>
