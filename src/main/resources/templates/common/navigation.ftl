@@ -13,7 +13,7 @@
 
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a href="/economicGrowth/main" class="nav-link px-2 text-white">경제성장지표</a></li>
-                    <li><a href="/standardLiving/main" class="nav-link px-2 text-white">생활수준지표</a></li>
+                    <li><a href="/standardOfLiving/main" class="nav-link px-2 text-white">생활수준지표</a></li>
                     <li><a href="/stockPrices/main" class="nav-link px-2 text-white">종합주가지수</a></li>
                     <li><a href="/realEstate/main" class="nav-link px-2 text-white">부동산시장동향</a></li>
                     <li><a href="/lifeSatisfaction/main" class="nav-link px-2 text-white">삶의 만족도</a></li>

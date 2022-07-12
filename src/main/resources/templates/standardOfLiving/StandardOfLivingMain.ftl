@@ -6,27 +6,23 @@
                 <div class="card-header">
                     1인당 개인소득(시도)
                 </div>
-                <div class="card-body">
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                            Default checkbox
-                        </label>
+                <form name="capitalPersonal_opt">
+                    <div class="card-body">
+                        <span>년도 선택</span>
+                        <select class="form-select" name="prdDe" aria-label="Default select example">
+                            <option selected>데이터를 호출할 년도를 선택하세요</option>
+                            <#list 2000..2020 as j>
+                                <option value=${j?c}>${j?c}년</option>
+                            </#list>
+                        </select>
+                        <#assign name_list = ["itmId", "objL1", "prdSe", "loadGubun", "orgId", "tblId"]>
+                        <#assign val_list = ["T3+", "ALL", "Y", "2", "101", "INH_1C86_04"]>
+                        <#list 0..5 as k>
+                            <input type="hidden" name=${name_list[k]} value=${val_list[k]}  />
+                        </#list>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-                        <label class="form-check-label" for="flexCheckChecked">
-                            Checked checkbox
-                        </label>
-                    </div>
-                </div>
-                <button type="button" class="btn btn-outline-secondary activator">실행</button>
+                </form>
+                <button type="button" class="btn btn-outline-secondary activator" onclick="getLargeData()">실행</button>
             </div>
         </div>
         <div class="col">
@@ -35,24 +31,18 @@
                     1인당 국민총소득
                 </div>
                 <div class="card-body">
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                    <span>년도 선택</span>
+                    <select class="form-select" name="prdDe" aria-label="Default select example">
+                        <option selected>데이터를 호출할 년도를 선택하세요</option>
+                        <#list 2000..2020 as j>
+                            <option value=${j?c}>${j?c}년</option>
+                        </#list>
                     </select>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                            Default checkbox
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-                        <label class="form-check-label" for="flexCheckChecked">
-                            Checked checkbox
-                        </label>
-                    </div>
+                    <#assign name_list = ["itmId", "objL1", "prdSe", "loadGubun", "orgId", "tblId"]>
+                    <#assign val_list = ["T3+", "ALL", "Y", "2", "101", "INH_1C86_04"]>
+                    <#list 0..5 as k>
+                        <input type="hidden" name=${name_list[k]} value=${val_list[k]}  />
+                    </#list>
                 </div>
                 <button type="button" class="btn btn-outline-secondary activator">실행</button>
             </div>
@@ -65,24 +55,13 @@
                     소득분배지표
                 </div>
                 <div class="card-body">
+                    <span>년도 선택</span>
                     <select class="form-select" aria-label="Default select example">
                         <option selected>Open this select menu</option>
                         <option value="1">One</option>
                         <option value="2">Two</option>
                         <option value="3">Three</option>
                     </select>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                            Default checkbox
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-                        <label class="form-check-label" for="flexCheckChecked">
-                            Checked checkbox
-                        </label>
-                    </div>
                 </div>
                 <button type="button" class="btn btn-outline-secondary activator">실행</button>
             </div>
@@ -93,24 +72,13 @@
                     최저임금 일반현황
                 </div>
                 <div class="card-body">
+                    <span>년도 선택</span>
                     <select class="form-select" aria-label="Default select example">
                         <option selected>Open this select menu</option>
                         <option value="1">One</option>
                         <option value="2">Two</option>
                         <option value="3">Three</option>
                     </select>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                            Default checkbox
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-                        <label class="form-check-label" for="flexCheckChecked">
-                            Checked checkbox
-                        </label>
-                    </div>
                 </div>
                 <button type="button" class="btn btn-outline-secondary activator">실행</button>
             </div>
@@ -118,4 +86,5 @@
     </div>
 </div>
 <#include "*/common/footer.ftl"/>
+<script src="/js/bi/standardOfLiving/standardOfLiving.js"></script>
 

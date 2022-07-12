@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bi.StandardOfLiving">
+    <insert id="insertCapitaPersonal" parameterType="hashMap">
+        INSERT INTO capita_income
+            (yr_dt, cty_nm, unit, val)
+        VALUES(#{yr_dt}, #{cty_nm}, #{unit}, #{val});
+    </insert>
+
+
+</mapper>
