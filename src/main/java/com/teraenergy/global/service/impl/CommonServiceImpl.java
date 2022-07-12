@@ -13,6 +13,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import com.teraenergy.global.configuration.ApiKeyConfiguration;
 import com.teraenergy.global.common.utilities.AreaNameUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.groovy.parser.antlr4.util.StringUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -214,14 +215,15 @@ public class CommonServiceImpl implements CommonService {
 
 					for(int k = 0 ; k < sub_category.getLength(); k++){
 						Node content = sub_category.item(k);
-
-						if(content.getTextContent().equals(" ") && sub_category.item(k) == null) {
+						if(content.getTextContent().trim().equals("")){
 							continue;
 						}
-						System.out.println(content.getTextContent());
-						System.out.println(sub_category.item(k).getAttributes());
-					}
+//						System.out.println(content.getTextContent());
+//						System.out.println(sub_category.item(k).getAttributes().getNamedItem("주기").getNodeValue());
 
+						map.put(sub_category.item(k).getAttributes().getNamedItem("주기").getNodeValue(), content.getTextContent());
+
+					}
 
 //					for(int k = 0 ; k < sub_category.getLength(); k++){
 ////						System.out.println(sub_categories.getLength()); -> 538
