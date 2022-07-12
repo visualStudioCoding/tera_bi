@@ -38,5 +38,5 @@ public interface CommonService {
 
 	Map<?,?> apiXmlParser(StringBuilder stringBuilder) throws Exception;
 
-	String getCtyNm(String areaCd) throws Exception;
+	String getCtyNm(String areaCd, String other) throws Exception;
 }

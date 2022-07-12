@@ -240,8 +240,8 @@ public class CommonServiceImpl implements CommonService {
 	}
 
 	@Override
-	public String getCtyNm(String areaCd) {
-		return AreaNameUtil.areaName(areaCd);
+	public String getCtyNm(String areaCd, String other) {
+		return AreaNameUtil.areaName(areaCd, other);
 	}
 
 
