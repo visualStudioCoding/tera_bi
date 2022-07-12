@@ -71,7 +71,7 @@
             )
     </insert>
 
-    <!--월별 결혼-->
+    <!--월별 이혼-->
     <insert id="insertDivorce" parameterType="hashMap">
         INSERT INTO divorce
             (yr_dt
@@ -95,7 +95,7 @@
             )
     </insert>
 
-    <!--스케쥴러 테스트1 -->
+    <!--스케쥴러 테스트 -->
     <insert id="insertTest1" parameterType="hashMap">
         INSERT INTO test1
             (yr_dt
