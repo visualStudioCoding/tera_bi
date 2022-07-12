@@ -53,16 +53,37 @@
     //3. 월별 이혼
     function api3(){
         const frm = document.forms['frm3'];
-        let param = fnParam(frm);
+        //let param = fnParam(frm);
         let errorMsg = "error";
-
+        let result="";
+        let formon="";  //for 문에서 현재 월
         //ajax가 정상 호출 되었을때 실행 되는 함수
         let callBackFn = function( data ) {
-            alert(data.success + " ,  " +data.size);
+            //alert(data.data.yrdt + " " + data.data.mondt + " " + data.success + " ,  " +data.size);
+            result += data.data.yrdt + " " + data.data.mondt + " " + data.success + " ,  " +data.size + "\n";
             console.log(data.data)
+
+            //if(data.data.mondt == 12) {
+            if(formon == 12) {
+                alert(result);
+            }
         }
+        let syear = frm.startPrdDe.value;
+        syear = syear.substr(0,4);
+        let month = ["01","02","03","04","05","06","07","08","09","10","11","12"];
+
+        for(let i=0;i<month.length;i++){
+            let yearmonth = syear + month[i];
+            frm.startPrdDe.value = yearmonth;
+            //frm.endPrdDe.value = yearmonth;
+            let param = fnParam(frm);
+            console.log(param);
+            formon = month[i];  //현재 작업중인 월
+            kosisApiAjax("/lifeSatisfaction/Divorce", callBackFn, 'get', param, errorMsg);
+        }
+
         //공통모듈 ajax 함수 호출하기
-        kosisApiAjax("/life/Marriage", callBackFn, 'get', param, errorMsg);
+        //kosisApiAjax("/lifeSatisfaction/Divorce", callBackFn, 'get', param, errorMsg);
     }
 </script>
 <div class="container">
@@ -165,7 +186,7 @@
                 <input type="hidden" id="newEstPrdCnt" name="newEstPrdCnt" value=""/>
             <div class="card">
                 <div class="card-header">
-                    시도/시군구/월별 혼인 (월)
+                    2. 시도/시군구/월별 혼인 (월)
                 </div>
                 <div class="card-body">
                     <#--<select class="form-select" aria-label="Default select example">
@@ -206,7 +227,7 @@
                 <input type="hidden" id="newEstPrdCnt" name="newEstPrdCnt" value=""/>
             <div class="card">
                 <div class="card-header">
-                    시도/시군구/월별 이혼 (월)
+                    3. 시도/시군구/월별 이혼 (월)
                 </div>
                <div class="card-body">
                     <#--<select class="form-select" aria-label="Default select example">
