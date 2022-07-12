@@ -39,5 +39,5 @@ public interface CommonService {
 
 	List<Map<String,Object>> apiXmlParser(StringBuilder stringBuilder, String period) throws Exception;
 
-	String getCtyNm(String areaCd) throws Exception;
+	String getCtyNm(String areaCd, String other) throws Exception;
 }

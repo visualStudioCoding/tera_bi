@@ -11,15 +11,18 @@ function fnParam(frm){
         "objL7": "",
         "objL8": "",
         "prdSe": frm.prdSe.value,
-        "startPrdDe": frm.startPrdDe.value,
-        "endPrdDe": frm.endPrdDe.value,
-        "newEstPrdCnt" : frm.newEstPrdCnt.value,
+        "startPrdDe": frm.prdDe.value,
+        "endPrdDe": frm.prdDe.value,
+        "newEstPrdCnt" : "",
         "loadGubun": frm.loadGubun.value,
         "orgId": frm.orgId.value,
         "tblId": frm.tblId.value
     }
 }
 function fnGenderPopulation(){
+    // const prdDeYear = $("#genderPrdDeYear").val();
+    //const prdDeMonth = $("#genderPrdDeMonth").val();
+    // $("#prdDe").val(prdDeYear);
     const frm = document.forms['formGenderPopulation'];
     let param = fnParam(frm);
     // getIncome();
