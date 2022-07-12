@@ -3,10 +3,7 @@ package com.teraenergy.global.service.impl;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.annotation.Resource;
 import javax.xml.parsers.DocumentBuilder;
@@ -174,10 +171,10 @@ public class CommonServiceImpl implements CommonService {
 		return (JSONArray) jsonParser.parse(String.valueOf(stringBuilder));
 	}
 
-	public Map<String,Object> apiXmlParser(StringBuilder stringBuilder) throws ParserConfigurationException, IOException, SAXException {
+	public List<Map<String,Object>> apiXmlParser(StringBuilder stringBuilder, String period) throws ParserConfigurationException, IOException, SAXException {
+		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-//		DocumentBuilder documentBuilder = factory.newDocumentBuilder();
-//		Document document = documentBuilder.parse(String.valueOf(stringBuilder));
 		InputStream is = new ByteArrayInputStream((stringBuilder.toString()).getBytes());
 
 		DocumentBuilder documentBuilder = factory.newDocumentBuilder();
@@ -185,58 +182,63 @@ public class CommonServiceImpl implements CommonService {
 
 		Element root = document.getDocumentElement();
 
-		NodeList children = root.getChildNodes();
-		NodeList items = root.getElementsByTagName("분류1");
 
-		NodeList inner_title = items.item(0).getChildNodes();
+		NodeList table = root.getElementsByTagName("표");
 
-		Node inner_data = items.item(0);
-		NodeList inner_list = inner_data.getChildNodes();
+		for(int i = 0 ; i < table.getLength(); i++){
+			NodeList inner_table = table.item(i).getChildNodes();
+//			항목
+			Element columns = (Element) inner_table;
 
-		Node inner_dataList = inner_list.item(0);
+			if(period.equals(columns.getAttribute("주기"))){
+//				분류1
+				NodeList category = inner_table.item(0).getChildNodes();
 
-		System.out.println(items.item(0).getAttributes());
+				for(int j = 0; j < category.getLength(); j++) {
+//					분류1 길이 = 3
+					NodeList categories = inner_table.item(0).getChildNodes();
+//					열 길이 = 538
+					NodeList sub_category = categories.item(j).getChildNodes();
+					System.out.println(sub_category.getLength());
 
-		for(int j = 0 ; j < inner_title.getLength(); j++){
-			Element elm = (Element)inner_dataList;
-			System.out.println((inner_title.item(j).getNodeName()).toString() + ":" + (elm.getAttribute("주기")).toString());
-			System.out.println("값 : " + inner_title.item(j).getTextContent().toString());
+					Element details = (Element) categories.item(j);
+					System.out.println("type : " + details.getAttribute("이름"));
+
+					Map<String, Object> map = new HashMap<>();
+
+					map.put("type", details.getAttribute("이름"));
+
+//					Element sub_side = (Element) sub_category;
+////					System.out.println(sub_side.getTextContent());
+////					System.out.println(sub_category.item(j).getAttributes().getNamedItem("주기").getNodeValue());
+
+					for(int k = 0 ; k < sub_category.getLength(); k++){
+						Node content = sub_category.item(k);
+
+						if(content.getTextContent().equals(" ") && sub_category.item(k) == null) {
+							continue;
+						}
+						System.out.println(content.getTextContent());
+						System.out.println(sub_category.item(k).getAttributes());
+					}
+
+
+//					for(int k = 0 ; k < sub_category.getLength(); k++){
+////						System.out.println(sub_categories.getLength()); -> 538
+//						System.out.println(sub_category.item(k).getTextContent().trim());
+////						NodeList sub = sub_categories.item(k).getChildNodes();
+////						Element sub_side = (Element) sub_category.item(k).getChildNodes();
+////						Element category_year = (Element) sub_categories.item(j);
+//						System.out.println(sub_side.getAttribute("주기").trim());
+//
+//						map.put(sub_side.getAttribute("주기"), sub_category.item(k).getTextContent());
+//					}
+					result.add(map);
+				}
+			}
 		}
 
-//		System.out.println(items.getLength());
-//		System.out.println((items.getClass()).toString());
-
-		System.out.println("=====================================================");
-		for(int i = 0 ; i < items.getLength(); i++){
-			Node item = items.item(i);
-			NodeList text = item.getChildNodes();
-			String itemValue = text.item(i).getTextContent();
-//			System.out.println(item);
-//			System.out.println(text.item(i));
-//			System.out.println(itemValue);
-		}
-
-//		for( int i = 0 ; i < children.getLength(); i++){
-//			Node node = children.item(i);
-//			if(node.getNodeType() == Node.ELEMENT_NODE){
-//				Element elm = (Element)node;
-//				System.out.println(elm.getNodeName());
-//			}
-//		}
-//		System.out.println("====================================");
-//
-//		Element middle = (Element) children;
-//		NodeList grand_children = middle.getChildNodes();
-//
-//		for( int j = 0 ; j < grand_children.getLength(); j++){
-//			Node node = grand_children.item(j);
-//			if(node.getNodeType() == Node.ELEMENT_NODE){
-//				Element elm = (Element)node;
-//				System.out.println(elm.getNodeName());
-//			}
-//		}
-
-		return null;
+		return result;
 	}
 
 	@Override

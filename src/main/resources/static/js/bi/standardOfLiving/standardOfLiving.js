@@ -1,5 +1,9 @@
 let errorMsg = "api 호출 에러";
-let enaraParam = {"statsCode": "106801"}
+
+function getenaraParam(form){
+
+    let enaraParam = {"statsCode": form.statsCode.value}
+}
 
 function getKosisParam(form) {
 
@@ -83,6 +87,18 @@ function getCapitaPersonal(){
     }
     kosisApiAjax("/standardOfLiving/api/getCapitaPersonal", callBackFn, 'get', params, errorMsg)
 
+}
+
+function getGrossNationalIncome(){
+    let formData = document.forms["getGrossNationalIncome"]
+
+    let params = getenaraParam(formData)
+
+    let callBackFn = function(data){
+        alert(data.success);
+        console.log(data.data)
+    }
+    enaraApiAjax("/standardOfLiving/api/getGrossNationalIncome", callBackFn, 'get', params, errorMsg)
 }
 
 function getLargeData(){

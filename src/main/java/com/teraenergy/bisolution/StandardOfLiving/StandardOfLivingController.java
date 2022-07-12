@@ -71,4 +71,12 @@ public class StandardOfLivingController {
         return result;
     }
 
+    @Transactional
+    @ResponseBody
+    @GetMapping("/api/getGrossNationalIncome")
+    public Object getGrossNationalIncome(String url, String parameter){
+
+        return null;
+    }
+
 }
