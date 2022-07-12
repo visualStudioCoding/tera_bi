@@ -17,9 +17,9 @@
                   , payment
                   , idx
                   , layer
-            FROM 
+            FROM
                   trade_real_apt
-            WHERE 
+            WHERE
                   1=1
             LIMIT
                   0,10
@@ -39,6 +39,23 @@
             , #{monDt}
             , #{gender}
             , #{areaCd}
+            , #{ctyNm}
+            , #{dstNm}
+            , #{unit}
+            , #{val}
+            )
+    </insert>
+    <insert id="insertAptSalesStatus" parameterType="hashMap">
+        INSERT INTO apt_account
+            (yr_dt
+            , mon_dt
+            , cty_nm
+            , dst_nm
+            , unit
+            , val)
+        VALUES
+            (#{yrDt}
+            , #{monDt}
             , #{ctyNm}
             , #{dstNm}
             , #{unit}

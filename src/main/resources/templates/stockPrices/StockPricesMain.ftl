@@ -26,8 +26,11 @@
                         </label>
                     </div>
                 </div>
-                <button type="button" class="btn btn-outline-secondary activator">실행</button>
+                <button type="button" class="btn btn-outline-secondary activator" onclick="fnCompositeIndex()">실행</button>
             </div>
+            <form id="formCompositeIndex" name="formCompositeIndex">
+                <input type="hidden" id="statsCode" name="itmId" value="108001"/>
+            </form>
         </div>
         <div class="col">
             <div class="card">
@@ -60,4 +63,7 @@
     </div>
 </div>
 <#include "*/common/footer.ftl"/>
+
+<script src="/js/bi/stockPrices/stockPrices.js"></script>
+
 

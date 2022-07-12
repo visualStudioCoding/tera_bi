@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bi.EconomicGrowth">
+    <select id="selectStateDebt" parameterType="hashMap" resultType="hashMap">
+        select yr_dt as yrDt, unit, val from national_debt
+    </select>
+
+    <insert id="insertStateDebt" parameterType="hashMap">
+        INSERT INTO national_debt
+            (yr_dt, unit, val)
+        VALUES(#{yr_dt}, #{unit}, #{val});
+
+    </insert>
+
+    <insert id="insertGDP" parameterType="hashMap">
+        INSERT INTO bi_solution.gdp
+            (yr_dt, unit, val)
+        VALUES(#{yr_dt}, #{unit}, #{val});
+
+    </insert>
+
+    <insert id="insertGDI" parameterType="hashMap">
+        INSERT INTO bi_solution.gdi
+            (yr_dt, unit, val)
+        VALUES(#{yr_dt}, #{unit}, #{val});
+
+    </insert>
+
+    <insert id="insertGNI" parameterType="hashMap">
+        INSERT INTO bi_solution.gni
+            (yr_dt, unit, val)
+        VALUES(#{yr_dt}, #{unit}, #{val});
+
+    </insert>
+
+    <insert id="insertGrowthRate" parameterType="hashMap">
+        INSERT INTO bi_solution.enmc_grrt
+            (yr_dt, cty_nm, unit, val)
+        VALUES(#{yr_dt}, #{cty_nm}, #{unit}, #{val});
+    </insert>
+
+
+</mapper>
