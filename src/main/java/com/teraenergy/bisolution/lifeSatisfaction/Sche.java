@@ -22,6 +22,7 @@ public class Sche {
     public void test1() throws Exception {
 
         System.out.println("스케줄러 test1 시작 - 01초에 실행됨");
+        System.out.println("스케줄러 test1 시작 - 01초에 실행됨");
 
         String url = "https://kosis.kr/openapi/Param/statisticsParameterData.do";
         String[] parameter = new String[12];
