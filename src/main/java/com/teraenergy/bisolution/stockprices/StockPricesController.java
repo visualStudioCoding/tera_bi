@@ -1,6 +1,8 @@
 package com.teraenergy.bisolution.stockprices;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.teraenergy.global.service.CommonService;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
@@ -44,22 +46,32 @@ public class StockPricesController {
         //kosis = json, enara = xml
         String format = "xml";
         String site = "enara";
-        String tagName = "분류1";
         StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
-        url = url + parameter;
+        try{
+            org.json.JSONArray table = commonService.apiXmlParser(stringBuilder);
 
-        JSONObject xmlJSONObj = XML.toJSONObject(String.valueOf(stringBuilder));
-        String jsonPrettyPrintString = xmlJSONObj.toString(4);
+            org.json.JSONObject obj = table.getJSONObject(1); // 표 주기="월"
 
-        JSONObject object = new JSONObject(jsonPrettyPrintString);
+            org.json.JSONArray category = obj.getJSONArray("항목");
 
-        // 배열을 가져옵니다.
-        JSONArray jArray = object.getJSONArray("표");
-        System.out.println(object.toString());
+            org.json.JSONObject cate = category.getJSONObject(0);
 
-        String title = object.getString("표");
+            org.json.JSONArray classification = cate.getJSONArray("분류1"); // 찾을 key
 
-        System.out.println(object.getString("표"));
+            for (int j = 0; j < classification.length(); j++) {
+                org.json.JSONObject objClassification = classification.getJSONObject(j);
+                System.out.println(objClassification.get("이름"));
+                org.json.JSONArray rows = objClassification.getJSONArray("열");
+                for (int y = 0; y < rows.length(); y++) {
+                    org.json.JSONObject row = rows.getJSONObject(y);
+                    System.out.println(row.get("주기"));
+                    System.out.println(row.get("content"));
+                }
+            }
+
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return null;
 

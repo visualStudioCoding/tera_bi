@@ -47,7 +47,7 @@ public class EconomicGrowthController {
         String site = "enara";
         StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
 
-        Map xmlList = commonService.apiXmlParser(stringBuilder);
+        org.json.JSONArray xmlList = commonService.apiXmlParser(stringBuilder);
 
 //        System.out.println(xmlList);
 

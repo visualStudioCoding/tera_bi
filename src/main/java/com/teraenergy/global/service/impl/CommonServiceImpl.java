@@ -16,6 +16,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import com.teraenergy.global.configuration.ApiKeyConfiguration;
 import com.teraenergy.global.common.utilities.AreaNameUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONObject;
+import org.json.XML;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -174,69 +176,11 @@ public class CommonServiceImpl implements CommonService {
 		return (JSONArray) jsonParser.parse(String.valueOf(stringBuilder));
 	}
 
-	public Map<String,Object> apiXmlParser(StringBuilder stringBuilder) throws ParserConfigurationException, IOException, SAXException {
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-//		DocumentBuilder documentBuilder = factory.newDocumentBuilder();
-//		Document document = documentBuilder.parse(String.valueOf(stringBuilder));
-		InputStream is = new ByteArrayInputStream((stringBuilder.toString()).getBytes());
-
-		DocumentBuilder documentBuilder = factory.newDocumentBuilder();
-		Document document = documentBuilder.parse(is);
-
-		Element root = document.getDocumentElement();
-
-		NodeList children = root.getChildNodes();
-		NodeList items = root.getElementsByTagName("분류1");
-
-		NodeList inner_title = items.item(0).getChildNodes();
-
-		Node inner_data = items.item(0);
-		NodeList inner_list = inner_data.getChildNodes();
-
-		Node inner_dataList = inner_list.item(0);
-
-		System.out.println(items.item(0).getAttributes());
-
-		for(int j = 0 ; j < inner_title.getLength(); j++){
-			Element elm = (Element)inner_dataList;
-			System.out.println((inner_title.item(j).getNodeName()).toString() + ":" + (elm.getAttribute("주기")).toString());
-			System.out.println("값 : " + inner_title.item(j).getTextContent().toString());
-		}
-
-//		System.out.println(items.getLength());
-//		System.out.println((items.getClass()).toString());
-
-		System.out.println("=====================================================");
-		for(int i = 0 ; i < items.getLength(); i++){
-			Node item = items.item(i);
-			NodeList text = item.getChildNodes();
-			String itemValue = text.item(i).getTextContent();
-//			System.out.println(item);
-//			System.out.println(text.item(i));
-//			System.out.println(itemValue);
-		}
-
-//		for( int i = 0 ; i < children.getLength(); i++){
-//			Node node = children.item(i);
-//			if(node.getNodeType() == Node.ELEMENT_NODE){
-//				Element elm = (Element)node;
-//				System.out.println(elm.getNodeName());
-//			}
-//		}
-//		System.out.println("====================================");
-//
-//		Element middle = (Element) children;
-//		NodeList grand_children = middle.getChildNodes();
-//
-//		for( int j = 0 ; j < grand_children.getLength(); j++){
-//			Node node = grand_children.item(j);
-//			if(node.getNodeType() == Node.ELEMENT_NODE){
-//				Element elm = (Element)node;
-//				System.out.println(elm.getNodeName());
-//			}
-//		}
-
-		return null;
+	public org.json.JSONArray apiXmlParser(StringBuilder stringBuilder) throws ParserConfigurationException, IOException, SAXException {
+		JSONObject jsonObject = XML.toJSONObject(String.valueOf(stringBuilder));
+		JSONObject root = jsonObject.getJSONObject("지표");
+		JSONObject statistics = root.getJSONObject("통계표");
+		return statistics.getJSONArray("표");
 	}
 
 	@Override

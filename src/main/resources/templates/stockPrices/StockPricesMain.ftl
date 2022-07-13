@@ -57,7 +57,7 @@
                         </label>
                     </div>
                 </div>
-                <button type="button" class="btn btn-outline-secondary activator">실행</button>
+                <button type="button" id="MonthlyExchangeRate" class="btn btn-outline-secondary activator" onclick="getMonthlyExchangeRate()">실행</button>
             </div>
         </div>
     </div>
