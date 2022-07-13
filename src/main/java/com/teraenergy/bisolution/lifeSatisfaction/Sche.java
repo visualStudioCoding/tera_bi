@@ -148,7 +148,7 @@ public class Sche {
     }
 
 
-//1.삶의 만족도
+//1.삶의  만족도
     @Scheduled(cron = "* * 4 * * *")
     public void LifeSatisfaction_Schedule() throws Exception {
         String url = "https://kosis.kr/openapi/Param/statisticsParameterData.do";
