@@ -118,4 +118,31 @@
             , now()
             )
     </insert>
+
+    <!--스케쥴 삶의만족도-->
+    <insert id="insertSchedule_LifeSatisfaction" parameterType="hashMap">
+        INSERT INTO life_stsfc
+        (yr_dt
+        , top_grp
+        , mid_grp
+        , sml_grp
+        , unit
+        , val
+        , reg_dt
+        )
+        VALUES
+            (#{yrDt}
+            , #{topgrp}
+            , #{midgrp}
+            , #{smlgrp}
+            , #{unit}
+            , #{val}
+            , now()
+            )
+        ON DUPLICATE KEY UPDATE
+             yr_dt   = #{yrDt}
+            ,mid_grp = #{midgrp}
+            ,sml_grp = #{smlgrp}
+            ,top_grp = #{topgrp}
+    </insert>
 </mapper>
