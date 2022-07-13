@@ -119,7 +119,7 @@
             )
     </insert>
 
-    <!--스케쥴 삶의만족도-->
+    <!--스케쥴  삶의만족도-->
     <insert id="insertSchedule_LifeSatisfaction" parameterType="hashMap">
         INSERT INTO life_stsfc
         (yr_dt

@@ -151,7 +151,6 @@ public class Sche {
 //1.삶의 만족도
     @Scheduled(cron = "01 * * * * *")
     public void LifeSatisfaction_Schedule() throws Exception {
-        System.out.println("1111111111111111111111111111111");
         String url = "https://kosis.kr/openapi/Param/statisticsParameterData.do";
         String parameter = "?method=getList&apiKey=&itmId=T1+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&newEstPrdCnt=1&loadGubun=2&orgId=417&tblId=DT_417001_0002";
         //https://kosis.kr/openapi/Param/statisticsParameterData.do?method=getList&apiKey=MDE5NGY4NzM1YzIxMDJmY2FlNTJkMTg0NThiZDJmMjQ=&itmId=T1+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&newEstPrdCnt=1&loadGubun=2&orgId=417&tblId=DT_417001_0002
@@ -251,7 +250,6 @@ public class Sche {
             commonService.insertContents(dataMap, PROGRAM_ID + ".insertSchedule_LifeSatisfaction");//LifeSatisfaction.insertLifeSatisfaction
             cnt++;
         }  //for
-        System.out.println("22222222222222222222222222222222222222");
 
     }
 }
