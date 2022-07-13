@@ -37,7 +37,7 @@
             , reg_dt
             )
         VALUES
-            (#{yrDt}
+            (#{yrdt}
             , #{topgrp}
             , #{midgrp}
             , #{smlgrp}
@@ -45,6 +45,11 @@
             , #{val}
             , now()
             )
+            ON DUPLICATE KEY UPDATE
+             yr_dt   = #{yrdt}
+             ,mid_grp = #{midgrp}
+             ,sml_grp = #{smlgrp}
+             ,top_grp = #{topgrp}
     </insert>
 
     <!--월별 결혼-->
@@ -69,6 +74,12 @@
             , #{val}
             , now()
             )
+            ON DUPLICATE KEY UPDATE
+                 yr_dt   = #{yrdt}
+                 ,mon_dt = #{mondt}
+                 ,area_cd = #{areacd}
+                 ,cty_nm = #{ctynm}
+                 ,dst_nm = #{dstnm}
     </insert>
 
     <!--월별 이혼-->
@@ -93,6 +104,39 @@
             , #{val}
             , now()
             )
+            ON DUPLICATE KEY UPDATE
+                 yr_dt   = #{yrdt}
+                 ,mon_dt = #{mondt}
+                 ,area_cd = #{areacd}
+                 ,cty_nm = #{ctynm}
+                 ,dst_nm = #{dstnm}
+    </insert>
+
+    <!--고용률-->
+    <insert id="insertEmplyrate" parameterType="hashMap">
+        INSERT INTO emply_rate
+            (yr_dt
+            , mon_dt
+            , cty_nm
+            , grp
+            , unit
+            , val
+            , reg_dt
+            )
+        VALUES
+            (#{yrdt}
+            , #{mondt}
+            , #{ctynm}
+            , #{grp}
+            , #{unit}
+            , #{val}
+            , now()
+            )
+            ON DUPLICATE KEY UPDATE
+                 yr_dt   = #{yrdt}
+                 ,mon_dt = #{mondt}
+                 ,cty_nm = #{ctynm}
+                 ,grp = #{grp}
     </insert>
 
     <!--스케쥴러 테스트 -->
@@ -119,30 +163,5 @@
             )
     </insert>
 
-    <!--스케쥴  삶의만족도-->
-    <insert id="insertSchedule_LifeSatisfaction" parameterType="hashMap">
-        INSERT INTO life_stsfc
-        (yr_dt
-        , top_grp
-        , mid_grp
-        , sml_grp
-        , unit
-        , val
-        , reg_dt
-        )
-        VALUES
-            (#{yrDt}
-            , #{topgrp}
-            , #{midgrp}
-            , #{smlgrp}
-            , #{unit}
-            , #{val}
-            , now()
-            )
-        ON DUPLICATE KEY UPDATE
-             yr_dt   = #{yrDt}
-            ,mid_grp = #{midgrp}
-            ,sml_grp = #{smlgrp}
-            ,top_grp = #{topgrp}
-    </insert>
+
 </mapper>

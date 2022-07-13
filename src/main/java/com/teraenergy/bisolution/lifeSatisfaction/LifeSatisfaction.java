@@ -57,7 +57,7 @@ public class LifeSatisfaction {
     @ResponseBody
     @GetMapping("/lifeSatisfaction/LifeSatisfaction")
     public Object LifeSatisfaction_Parse(String url, String parameter) throws Exception {
-        log.info(DIRECTORY + PROGRAM_ID + "LifeSatisfaction");
+        log.info(DIRECTORY + PROGRAM_ID + "LifeSatisfaction");  //DT_417001_0002 // life_stsfc
         //return DIRECTORY + PROGRAM_ID + "Main";
         System.out.println("url : " + url);
         System.out.println("parameter : " + parameter);
@@ -142,7 +142,7 @@ public class LifeSatisfaction {
             //점수
             String val = (String)jsonData.get("DT");
 
-            dataMap.put("yrDt", yrdt);
+            dataMap.put("yrdt", yrdt);
             dataMap.put("topgrp", topgrp);
             dataMap.put("midgrp", midgrp);
             dataMap.put("smlgrp", smlgrp);
@@ -153,7 +153,7 @@ public class LifeSatisfaction {
                 continue;
             }
 
-            commonService.insertContents(dataMap, PROGRAM_ID + ".insertLifeSatisfaction");//LifeSatisfaction.insertLifeSatisfaction
+           commonService.insertContents(dataMap, PROGRAM_ID + ".insertLifeSatisfaction");//LifeSatisfaction.insertLifeSatisfaction
             cnt++;
         }
 
@@ -385,6 +385,66 @@ public class LifeSatisfaction {
 
             commonService.insertContents(dataMap, PROGRAM_ID + ".insertDivorce");//LifeSatisfaction.insertMarriage
             cnt++;
+        }
+
+        result.put("data", dataMap);
+        result.put("size", cnt);
+        result.put("success", "성공");
+
+        return result;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @ResponseBody
+    @GetMapping("/lifeSatisfaction/emplyrate")
+    public Object Emplyrate_Parse(String url, String parameter) throws Exception {
+        log.info(DIRECTORY + PROGRAM_ID + "Divorce");
+        System.out.println("url : " + url);
+        System.out.println("parameter : " + parameter);
+
+        //DT_1DA7014S
+        //kosis = json, enara = xml
+        String format = "json";
+        String site = "kosis";
+        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        //
+        // {"err":"30","errMsg":"데이터가 존재하지 않습니다."}
+
+        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> dataMap = new HashMap<>();
+        int cnt=1;
+        for (Object jsonObject : jsonList) {
+            JSONObject jsonData = (JSONObject) jsonObject;
+
+            //아이템 - 고용률
+            String item = (String) jsonData.get("ITM_NM");
+            //시도
+            String ctyNm = (String) jsonData.get("C1_NM");
+            //남녀
+            String grp = (String) jsonData.get("C2_NM");
+            //고용률이고 계는 뺀다
+            if("고용률".equals(item) && !"계".equals(ctyNm) && !"계".equals(grp)) {
+                //년도
+                String prdde = (String) jsonData.get("PRD_DE");
+                String yrdt = prdde.substring(0, 4);
+                //월
+                String monDt = prdde.substring(4, 6);
+                //점수단위(%)
+                String unit = (String) jsonData.get("UNIT_NM");
+                //고용률
+                String val = (String) jsonData.get("DT");
+
+                dataMap.put("yrdt", yrdt);
+                dataMap.put("mondt", monDt);
+                dataMap.put("ctynm", ctyNm);
+                dataMap.put("grp", grp);
+                dataMap.put("unit", unit);
+                dataMap.put("val", val);
+
+                commonService.insertContents(dataMap, PROGRAM_ID + ".insertEmplyrate");//LifeSatisfaction.insertMarriage
+                cnt++;
+            }
         }
 
         result.put("data", dataMap);
