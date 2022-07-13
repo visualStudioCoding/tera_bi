@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @Component
 public interface CommonService {
@@ -37,7 +36,7 @@ public interface CommonService {
 
 	List<?> apiJsonParser(StringBuilder stringBuilder) throws Exception;
 
-	List<Map<String,Object>> apiXmlParser(StringBuilder stringBuilder, String period) throws Exception;
+	org.json.JSONArray apiXmlParser(StringBuilder stringBuilder) throws Exception;
 
 	String getCtyNm(String areaCd, String other) throws Exception;
 }

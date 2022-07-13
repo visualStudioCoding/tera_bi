@@ -13,7 +13,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import com.teraenergy.global.configuration.ApiKeyConfiguration;
 import com.teraenergy.global.common.utilities.AreaNameUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.groovy.parser.antlr4.util.StringUtils;
+import org.json.JSONObject;
+import org.json.XML;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -172,75 +173,11 @@ public class CommonServiceImpl implements CommonService {
 		return (JSONArray) jsonParser.parse(String.valueOf(stringBuilder));
 	}
 
-	public List<Map<String,Object>> apiXmlParser(StringBuilder stringBuilder, String period) throws ParserConfigurationException, IOException, SAXException {
-		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
-
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		InputStream is = new ByteArrayInputStream((stringBuilder.toString()).getBytes());
-
-		DocumentBuilder documentBuilder = factory.newDocumentBuilder();
-		Document document = documentBuilder.parse(is);
-
-		Element root = document.getDocumentElement();
-
-
-		NodeList table = root.getElementsByTagName("표");
-
-		for(int i = 0 ; i < table.getLength(); i++){
-			NodeList inner_table = table.item(i).getChildNodes();
-//			항목
-			Element columns = (Element) inner_table;
-
-			if(period.equals(columns.getAttribute("주기"))){
-//				분류1
-				NodeList category = inner_table.item(0).getChildNodes();
-
-				for(int j = 0; j < category.getLength(); j++) {
-//					분류1 길이 = 3
-					NodeList categories = inner_table.item(0).getChildNodes();
-//					열 길이 = 538
-					NodeList sub_category = categories.item(j).getChildNodes();
-					System.out.println(sub_category.getLength());
-
-					Element details = (Element) categories.item(j);
-					System.out.println("type : " + details.getAttribute("이름"));
-
-					Map<String, Object> map = new HashMap<>();
-
-					map.put("type", details.getAttribute("이름"));
-
-//					Element sub_side = (Element) sub_category;
-////					System.out.println(sub_side.getTextContent());
-////					System.out.println(sub_category.item(j).getAttributes().getNamedItem("주기").getNodeValue());
-
-					for(int k = 0 ; k < sub_category.getLength(); k++){
-						Node content = sub_category.item(k);
-						if(content.getTextContent().trim().equals("")){
-							continue;
-						}
-//						System.out.println(content.getTextContent());
-//						System.out.println(sub_category.item(k).getAttributes().getNamedItem("주기").getNodeValue());
-
-						map.put(sub_category.item(k).getAttributes().getNamedItem("주기").getNodeValue(), content.getTextContent());
-
-					}
-
-//					for(int k = 0 ; k < sub_category.getLength(); k++){
-////						System.out.println(sub_categories.getLength()); -> 538
-//						System.out.println(sub_category.item(k).getTextContent().trim());
-////						NodeList sub = sub_categories.item(k).getChildNodes();
-////						Element sub_side = (Element) sub_category.item(k).getChildNodes();
-////						Element category_year = (Element) sub_categories.item(j);
-//						System.out.println(sub_side.getAttribute("주기").trim());
-//
-//						map.put(sub_side.getAttribute("주기"), sub_category.item(k).getTextContent());
-//					}
-					result.add(map);
-				}
-			}
-		}
-
-		return result;
+	public org.json.JSONArray apiXmlParser(StringBuilder stringBuilder) throws ParserConfigurationException, IOException, SAXException {
+		JSONObject jsonObject = XML.toJSONObject(String.valueOf(stringBuilder));
+		JSONObject root = jsonObject.getJSONObject("지표");
+		JSONObject statistics = root.getJSONObject("통계표");
+		return statistics.getJSONArray("표");
 	}
 
 	@Override

@@ -52,10 +52,10 @@ public class EconomicGrowthController {
 
         List<Map<String, Object>> xmlList = commonService.apiXmlParser(stringBuilder, "월");
 
-        System.out.println(xmlList);
+//        System.out.println(xmlList);
 
         Map<String, Object> result = new HashMap<>();
-        result.put("data", xmlList);
+        result.put("data", stringBuilder);
         result.put("success", "성공");
 //        log.info(String.valueOf(result));
         return result;
