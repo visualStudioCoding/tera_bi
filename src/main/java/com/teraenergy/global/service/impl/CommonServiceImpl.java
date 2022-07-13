@@ -3,10 +3,7 @@ package com.teraenergy.global.service.impl;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.annotation.Resource;
 import javax.xml.parsers.DocumentBuilder;

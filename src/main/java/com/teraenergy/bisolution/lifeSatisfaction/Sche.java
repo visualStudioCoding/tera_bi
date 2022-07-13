@@ -7,6 +7,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import javax.crypto.spec.PSource;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,9 +19,13 @@ public class Sche {
     @Resource(name = "commonService")
     private CommonService commonService;
 
-    @Scheduled(cron = "0 0/2 * * * *")   //2분마다
+    //@Scheduled(cron = "0 0/2 * * * *")   //2분마다
+    @Scheduled(cron = "0 0 4 * * *")   //4시마다
     public void test1() throws Exception {
 
+        System.out.println("스케줄러 test1 시작 - 01초에 실행됨");
+        System.out.println("스케줄러 test1 시작 - 01초에 실행됨");
+        System.out.println("스케줄러 test1 시작 - 01초에 실행됨");
         System.out.println("스케줄러 test1 시작 - 01초에 실행됨");
         System.out.println("스케줄러 test1 시작 - 01초에 실행됨");
 
@@ -143,9 +148,108 @@ public class Sche {
     }
 
 
+//1.삶의  만족도
+    @Scheduled(cron = "* * 4 * * *")
+    public void LifeSatisfaction_Schedule() throws Exception {
+        String url = "https://kosis.kr/openapi/Param/statisticsParameterData.do";
+        String parameter = "?method=getList&apiKey=&itmId=T1+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&newEstPrdCnt=1&loadGubun=2&orgId=417&tblId=DT_417001_0002";
+        //https://kosis.kr/openapi/Param/statisticsParameterData.do?method=getList&apiKey=MDE5NGY4NzM1YzIxMDJmY2FlNTJkMTg0NThiZDJmMjQ=&itmId=T1+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&newEstPrdCnt=1&loadGubun=2&orgId=417&tblId=DT_417001_0002
+        //DT_417001_0002
 
-    @Scheduled(cron = "01 * * * * *")
-    public void test2() {
-        System.out.println("test222222222222222222222222222222222222");
+        String format = "json";
+        String site = "kosis";
+        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        //
+        // {"err":"30","errMsg":"데이터가 존재하지 않습니다."}
+
+        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> dataMap = new HashMap<>();
+        int cnt=1;
+        for (Object jsonObject : jsonList) {
+            JSONObject jsonData = (JSONObject) jsonObject;
+
+            //년도
+            String yrdt = (String) jsonData.get("PRD_DE");
+            //yr_dt = yr_dt.substring(0, 4);
+            //중분류
+            String midgrp = (String) jsonData.get("C1_NM");
+
+            //소분류 - 점수종류 (0~10)
+            String smlgrp = (String) jsonData.get("C2_NM");
+            if(smlgrp.equals("ⓞ 전혀 만족하지 않는다")) {
+                smlgrp = "0";
+            } else if(smlgrp.equals("ⓞ 전혀 만족하지 않는다")) {
+                smlgrp = "0";
+            } else if(smlgrp.equals("①")) {
+                smlgrp = "1";
+            } else if(smlgrp.equals("②")) {
+                smlgrp = "2";
+            } else if(smlgrp.equals("③")) {
+                smlgrp = "3";
+            } else if(smlgrp.equals("④")) {
+                smlgrp = "4";
+            } else if(smlgrp.equals("⑤ 보통")) {
+                smlgrp = "5";
+            } else if(smlgrp.equals("⑥")) {
+                smlgrp = "6";
+            } else if(smlgrp.equals("⑦")) {
+                smlgrp = "7";
+            } else if(smlgrp.equals("⑧")) {
+                smlgrp = "8";
+            } else if(smlgrp.equals("⑨")) {
+                smlgrp = "9";
+            } else if(smlgrp.equals("⑩ 매우 만족한다")) {
+                smlgrp = "10";
+            }
+
+            //대분류
+            String topgrp="";
+
+            //대분류 - 중분류보고 만든다
+            if(midgrp != null) {
+                if (midgrp.equals("전체")) {
+                    topgrp = "전체";
+                } else if (midgrp.equals("도시(동부)")) {
+                    topgrp = "동읍면부별";
+                } else if (midgrp.equals("농어촌(읍면부)")) {
+                    topgrp = "동읍면부별";
+                } else if (midgrp.equals("남자")) {
+                    topgrp = "성별";
+                } else if (midgrp.equals("여자")) {
+                    topgrp = "성별";
+                } else if (midgrp.equals("19~29세") || midgrp.equals("30~39세") || midgrp.equals("40~49세") || midgrp.equals("50~59세") || midgrp.equals("60~69세")|| midgrp.equals("60세 이상")|| midgrp.equals("65세 이상")) {
+                    topgrp = "연령별";
+                } else if (midgrp.equals("전문관리") || midgrp.equals("사무") || midgrp.equals("서비스판매") || midgrp.equals("농림어업") || midgrp.equals("기능노무") || midgrp.equals("기타")) {
+                    topgrp = "직업별";
+                } else if (midgrp.equals("100만원 미만") || midgrp.equals("100~200만원 미만") || midgrp.equals("200~300만원 미만") || midgrp.equals("300~400만원 미만") || midgrp.equals("400~500만원 미만") || midgrp.equals("500~600만원 미만") || midgrp.equals("600만원 이상")) {
+                    topgrp = "가구소득별";
+                } else if (midgrp.equals("초졸 이하") || midgrp.equals("중졸") || midgrp.equals("고졸") || midgrp.equals("대졸 이상")) {
+                    topgrp = "교육정도별";
+                }
+            }
+
+            //점수단위(%)
+            String unit = (String) jsonData.get("UNIT_NM");
+
+            //점수
+            String val = (String)jsonData.get("DT");
+
+            dataMap.put("yrDt", yrdt);
+            dataMap.put("topgrp", topgrp);
+            dataMap.put("midgrp", midgrp);
+            dataMap.put("smlgrp", smlgrp);
+            dataMap.put("unit", unit);
+            dataMap.put("val", val);
+
+            if(smlgrp.equals("평균")) {
+                continue;
+            }
+
+            //commonService.insertContents(dataMap, PROGRAM_ID + ".insertLifeSatisfaction");//LifeSatisfaction.insertLifeSatisfaction
+            commonService.insertContents(dataMap, PROGRAM_ID + ".insertSchedule_LifeSatisfaction");//LifeSatisfaction.insertLifeSatisfaction
+            cnt++;
+        }  //for
+
     }
 }

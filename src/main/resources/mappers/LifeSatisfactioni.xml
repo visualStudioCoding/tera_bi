@@ -71,7 +71,7 @@
             )
     </insert>
 
-    <!--월별 결혼-->
+    <!--월별 이혼-->
     <insert id="insertDivorce" parameterType="hashMap">
         INSERT INTO divorce
             (yr_dt
@@ -95,7 +95,7 @@
             )
     </insert>
 
-    <!--스케쥴러 테스트1-->
+    <!--스케쥴러 테스트 -->
     <insert id="insertTest1" parameterType="hashMap">
         INSERT INTO test1
             (yr_dt
@@ -117,5 +117,32 @@
             , #{val}
             , now()
             )
+    </insert>
+
+    <!--스케쥴  삶의만족도-->
+    <insert id="insertSchedule_LifeSatisfaction" parameterType="hashMap">
+        INSERT INTO life_stsfc
+        (yr_dt
+        , top_grp
+        , mid_grp
+        , sml_grp
+        , unit
+        , val
+        , reg_dt
+        )
+        VALUES
+            (#{yrDt}
+            , #{topgrp}
+            , #{midgrp}
+            , #{smlgrp}
+            , #{unit}
+            , #{val}
+            , now()
+            )
+        ON DUPLICATE KEY UPDATE
+             yr_dt   = #{yrDt}
+            ,mid_grp = #{midgrp}
+            ,sml_grp = #{smlgrp}
+            ,top_grp = #{topgrp}
     </insert>
 </mapper>
