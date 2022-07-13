@@ -50,12 +50,12 @@ public class EconomicGrowthController {
         String site = "enara";
         StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
 
-        List<Map<String, Object>> xmlList = commonService.apiXmlParser(stringBuilder, "월");
+//        List<Map<String, Object>> xmlList = commonService.apiXmlParser(stringBuilder);
 
-        System.out.println(xmlList);
+//        System.out.println(xmlList);
 
         Map<String, Object> result = new HashMap<>();
-        result.put("data", xmlList);
+        result.put("data", stringBuilder);
         result.put("success", "성공");
 //        log.info(String.valueOf(result));
         return result;
