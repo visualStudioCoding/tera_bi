@@ -14,6 +14,7 @@
                         <select class="form-select" aria-label="Default select example" disabled>
                             <option selected>해당 API는 당일 데이터 호출만 가능합니다. </option>
                         </select>
+                        <input type="hidden" name="apiType" value="KeyStatisticList">
                     </div>
                 </form>
                 <button type="button" id="MonthlyExchangeRate" class="btn btn-outline-secondary activator" onclick="getMonthlyExchangeRate()">실행</button>

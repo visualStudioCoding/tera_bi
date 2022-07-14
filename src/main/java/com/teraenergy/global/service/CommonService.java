@@ -3,6 +3,7 @@ package com.teraenergy.global.service;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -35,6 +36,8 @@ public interface CommonService {
 	StringBuilder getApiResult(String url, String parameter, String format, String site) throws Exception;
 
 	List<?> apiJsonParser(StringBuilder stringBuilder) throws Exception;
+
+	JSONObject ecosApiJsonParser(StringBuilder stringBuilder) throws Exception;
 
 	org.json.JSONObject apiXmlParser(StringBuilder stringBuilder) throws Exception;
 }
