@@ -41,12 +41,17 @@ public class EconomicGrowthController {
     @GetMapping("/api/getMonthlyExchangeRate")
     public Object getInflationRate(String url, String parameter) throws Exception {
 
+        System.out.println(url);
+        System.out.println(parameter);
+
         //kosis = json, enara = xml
-        String format = "xml";
-        String site = "enara";
+        String format = "json";
+        String site = "ecos";
         StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
 
-        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        org.json.JSONObject jsonObj = commonService.ecosApiJsonParser(stringBuilder);
+
+        org.json.JSONArray jsonList = jsonObj.getJSONArray("row");
 
         Map<String, Object> dataMap = new HashMap<>();
         Map<String, Object> result = new HashMap<>();
@@ -60,8 +65,29 @@ public class EconomicGrowthController {
                 String year = date.substring(0, 3);
                 String month = date.substring(4,5);
                 String day = date.substring(6,7);
-            }else if("시장금리".equals(jsonData.get("CLASS_NAME")) && jsonData.get("KEYSTAT_NAME").toString().contains("기준금리")){
+                dataMap.put("yr_dt", year);
+                dataMap.put("mon_dt", month);
+                dataMap.put("dy_dt", day);
+                dataMap.put("unit", unit);
+                dataMap.put("val", baseMoneyRate);
+                System.out.println(dataMap);
 
+            }else if("환율".equals(jsonData.get("CLASS_NAME"))){
+                String[] type = jsonData.get("KEYSTAT_NAME").toString().split(" ");
+                String det_type = type[0];
+                String exMoneyRate = (String) jsonData.get("DATA_VALUE");
+                String unit = (String) jsonData.get("UNIT_NAME");
+                String date = (String) jsonData.get("CYCLE");
+                String year = date.substring(0, 3);
+                String month = date.substring(4,5);
+                String day = date.substring(6,7);
+                dataMap.put("yr_dt", year);
+                dataMap.put("mon_dt", month);
+                dataMap.put("dy_dt", day);
+                dataMap.put("type", det_type);
+                dataMap.put("unit", unit);
+                dataMap.put("val", exMoneyRate);
+                System.out.println(dataMap);
             }
         }
 

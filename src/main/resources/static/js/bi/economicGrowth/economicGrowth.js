@@ -48,7 +48,7 @@ function getKosisParam(form) {
 // }
 
 function getEcosParam(form){
-    let ecosParma = form.apiType.value
+    let ecosParam = form.apiType.value
 
     return ecosParam;
 }

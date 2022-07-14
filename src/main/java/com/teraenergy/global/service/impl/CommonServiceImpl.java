@@ -140,20 +140,37 @@ public class CommonServiceImpl implements CommonService {
 
 		String str = "apiKey=";
 
+		if("kosis".equals(site)) {
+			String[] params = parameter.split(str);
+			String param1 = params[0];
+			String param2 = params[1];
+			parameter = param1 + str + apiKey + param2;
+		}
+
 		if("enara".equals(site)) {
 			apiKey = enaraKey;
 			str = "userId=";
+
+			String[] params = parameter.split(str);
+			String param1 = params[0];
+			String param2 = params[1];
+			parameter = param1 + str + apiKey + param2;
 		}
 		if("ecos".equals(site)){
 			apiKey = ecosKey;
-			str = "KeyStatisticList/";
+			str = "apiKey";
+
+			String[] params = parameter.split(str);
+			String param1 = params[0];
+			String param2 = params[1];
+			parameter = param1 + apiKey + param2;
 		}
 
 		// api 키 추가
-		String[] params = parameter.split(str);
-		String param1 = params[0];
-		String param2 = params[1];
-		parameter = param1 + str + apiKey + param2;
+//		String[] params = parameter.split(str);
+//		String param1 = params[0];
+//		String param2 = params[1];
+//		parameter = param1 + str + apiKey + param2;
 
 		return parameter;
 	}
@@ -161,6 +178,12 @@ public class CommonServiceImpl implements CommonService {
 	public JSONArray apiJsonParser(StringBuilder stringBuilder) throws ParseException {
 		JSONParser jsonParser = new JSONParser();
 		return (JSONArray) jsonParser.parse(String.valueOf(stringBuilder));
+	}
+	public org.json.JSONObject ecosApiJsonParser(StringBuilder stringBuilder) throws ParseException {
+		JSONParser jsonParser = new JSONParser();
+		JSONObject jsonObject = (JSONObject) jsonParser.parse(String.valueOf(stringBuilder));
+		JSONObject root = jsonObject.getJSONObject("KeyStatisticList");
+		return root.getJSONObject("root");
 	}
 
 	public org.json.JSONObject apiXmlParser(StringBuilder stringBuilder) throws ParserConfigurationException, IOException, SAXException {
