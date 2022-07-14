@@ -7,5 +7,17 @@
         VALUES(#{yr_dt}, #{cty_nm}, #{unit}, #{val});
     </insert>
 
+    <insert id="insertGniCapita" parameterType="hashMap">
+        INSERT INTO gni_capita
+            (yr_dt, unit, gdi_val, gni_val)
+        VALUES(#{yr_dt}, #{unit}, #{gdi_val}, #{gni_val});
+    </insert>
+
+    <insert id="insertIncomeDistributionIndex" parameterType="hashMap">
+        INSERT INTO gini_cfcnt
+            (yr_dt, val)
+        VALUES(#{yr_dt}, #{val});
+    </insert>
+
 
 </mapper>

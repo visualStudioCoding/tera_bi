@@ -114,3 +114,29 @@ let enaraApiAjax = function(url, fn, methodType, param, errorMsg){
         alert( textStatus + " : " + errorMsg );
     });
 }
+
+let ecosApiAjax = function(url, fn, methodType, param, errorMsg){
+    let apiUrl = "https://ecos.bok.or.kr/api";
+    let parameter = param + "/apiKey/json/kr/1/100/";
+    let data = {url:apiUrl, parameter:parameter};
+
+    // 데이터 값이 잘 넘어왔는지 확인
+    console.log("url: ", url);
+    console.log(data);
+    console.log(methodType);
+    console.log(errorMsg);
+
+    let request = $.ajax({
+        url:url,
+        method:methodType,
+        data: data,
+        dataType: "json"
+    });
+
+    request.done(fn);
+    console.log(fn);
+
+    request.fail(function( jqXHR, textStatus ) {
+        alert( errorMsg + textStatus );
+    });
+}

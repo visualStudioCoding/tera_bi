@@ -132,6 +132,8 @@ public class CommonServiceImpl implements CommonService {
 		String enaraKey = apiKeyConfiguration.getEnaraKey();
 		String enaraId = apiKeyConfiguration.getEnaraId();
 
+		String ecosKey = apiKeyConfiguration.getEcosKey();
+
 		enaraKey = enaraId + "&idntfcId=" + enaraKey;
 
 		String apiKey = apiKeyConfiguration.getKosisKey();
@@ -141,6 +143,10 @@ public class CommonServiceImpl implements CommonService {
 		if("enara".equals(site)) {
 			apiKey = enaraKey;
 			str = "userId=";
+		}
+		if("ecos".equals(site)){
+			apiKey = ecosKey;
+			str = "KeyStatisticList/";
 		}
 
 		// api 키 추가
@@ -157,11 +163,10 @@ public class CommonServiceImpl implements CommonService {
 		return (JSONArray) jsonParser.parse(String.valueOf(stringBuilder));
 	}
 
-	public org.json.JSONArray apiXmlParser(StringBuilder stringBuilder) throws Exception{
+	public org.json.JSONObject apiXmlParser(StringBuilder stringBuilder) throws ParserConfigurationException, IOException, SAXException {
 		JSONObject jsonObject = XML.toJSONObject(String.valueOf(stringBuilder));
 		JSONObject root = jsonObject.getJSONObject("지표");
-		JSONObject statistics = root.getJSONObject("통계표");
-		return statistics.getJSONArray("표");
+		return root.getJSONObject("통계표");
 	}
 
 }

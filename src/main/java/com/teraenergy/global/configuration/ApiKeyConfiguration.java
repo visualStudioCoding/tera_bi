@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 @Setter //setter가 없으면 Setter가 없다고 에러를 뱉어준다.
 public class ApiKeyConfiguration {
     private String kosisKey;
+    private String ecosKey;
     private String enaraKey;
     private String enaraId;
 }

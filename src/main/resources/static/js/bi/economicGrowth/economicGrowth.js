@@ -24,31 +24,40 @@ function getKosisParam(form) {
     return kosisParam;
 }
 
-function getKosisParams(form, years) {
+// function getKosisParams(form, years) {
+//
+//     let kosisParam = {
+//         "itmId": form.itmId.value,
+//         "objL1": form.objL1.value,
+//         "objL2": "",
+//         "objL3": "",
+//         "objL4": "",
+//         "objL5": "",
+//         "objL6": "",
+//         "objL7": "",
+//         "objL8": "",
+//         "prdSe": form.prdSe.value,
+//         "startPrdDe": years,
+//         "endPrdDe": years,
+//         "newEstPrdCnt": "",
+//         "loadGubun": form.loadGubun.value,
+//         "orgId": form.orgId.value,
+//         "tblId": form.tblId.value
+//     }
+//     return kosisParam;
+// }
 
-    let kosisParam = {
-        "itmId": form.itmId.value,
-        "objL1": form.objL1.value,
-        "objL2": "",
-        "objL3": "",
-        "objL4": "",
-        "objL5": "",
-        "objL6": "",
-        "objL7": "",
-        "objL8": "",
-        "prdSe": form.prdSe.value,
-        "startPrdDe": years,
-        "endPrdDe": years,
-        "newEstPrdCnt": "",
-        "loadGubun": form.loadGubun.value,
-        "orgId": form.orgId.value,
-        "tblId": form.tblId.value
-    }
-    return kosisParam;
+function getEcosParam(form){
+    let ecosParma = form.apiType.value
+
+    return ecosParam;
 }
 
-
 function getMonthlyExchangeRate() {
+
+    let formData = document.forms["getMonthlyExchangeRate_opt"];
+
+    let params = getEcosParam(formData);
 
     //ajax가 정상 호출 되었을때 실행 되는 함수
     let callBackFn = function( data ) {
@@ -57,7 +66,7 @@ function getMonthlyExchangeRate() {
     }
     //공통모듈 ajax 함수 호출하기
     // kosisApiAjax("/getIncome", callBackFn, 'get', kosisParam, errorMsg);
-    enaraApiAjax("/economicGrowth/api/getMonthlyExchangeRate", callBackFn, 'get', enaraParam, errorMsg);
+    ecosApiAjax("/economicGrowth/api/getMonthlyExchangeRate", callBackFn, 'get', params, errorMsg);
 }
 
 function getStateDebt() {

@@ -3,6 +3,8 @@ let errorMsg = "api 호출 에러";
 function getenaraParam(form){
 
     let enaraParam = {"statsCode": form.statsCode.value}
+
+    return enaraParam;
 }
 
 function getKosisParam(form) {
@@ -10,7 +12,7 @@ function getKosisParam(form) {
     let kosisParam = {
         "itmId": form.itmId.value,
         "objL1": form.objL1.value,
-        "objL2": "",
+        "objL2": form.objL2.value,
         "objL3": "",
         "objL4": "",
         "objL5": "",
@@ -27,30 +29,6 @@ function getKosisParam(form) {
     }
     return kosisParam;
 }
-
-function getKosisParams(form, years) {
-
-    let kosisParam = {
-        "itmId": form.itmId.value,
-        "objL1": form.objL1.value,
-        "objL2": "",
-        "objL3": "",
-        "objL4": "",
-        "objL5": "",
-        "objL6": "",
-        "objL7": "",
-        "objL8": "",
-        "prdSe": form.prdSe.value,
-        "startPrdDe": years,
-        "endPrdDe": years,
-        "newEstPrdCnt": "",
-        "loadGubun": form.loadGubun.value,
-        "orgId": form.orgId.value,
-        "tblId": form.tblId.value
-    }
-    return kosisParam;
-}
-
 function getKosisParams(form, years) {
 
     let kosisParam = {
@@ -90,7 +68,8 @@ function getCapitaPersonal(){
 }
 
 function getGrossNationalIncome(){
-    let formData = document.forms["getGrossNationalIncome"]
+
+    let formData = document.forms["getGrossNationalIncome_opt"]
 
     let params = getenaraParam(formData)
 
@@ -99,6 +78,19 @@ function getGrossNationalIncome(){
         console.log(data.data)
     }
     enaraApiAjax("/standardOfLiving/api/getGrossNationalIncome", callBackFn, 'get', params, errorMsg)
+}
+
+function getIncomeDistributionIndex(){
+
+    let formData = document.forms["getIncomeDistributionIndex_opt"]
+
+    let params = getKosisParam(formData)
+
+    let callBackFn = function(data){
+        alert(data.success);
+        console.log(data.data)
+    }
+    kosisApiAjax("/standardOfLiving/api/getIncomeDistributionIndex", callBackFn, 'get', params, errorMsg)
 }
 
 function getLargeData(){
