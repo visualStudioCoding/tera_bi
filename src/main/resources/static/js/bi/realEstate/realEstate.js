@@ -3,7 +3,7 @@ function fnParam(frm){
     return kosisParam = {
         "itmId": frm.itmId.value,
         "objL1": frm.objL1.value,
-        "objL2": "",
+        "objL2": frm.objL2.value,
         "objL3": "",
         "objL4": "",
         "objL5": "",
@@ -45,6 +45,42 @@ function fnAptSalesStatus(){
     }
     //공통모듈 ajax 함수 호출하기
     kosisApiAjax("/realEstate/api/aptSalesStatus", callBackFn, 'get', param, errorMsg);
+}
+function fnUnsoldHouse(){
+    const frm = document.forms['formUnsoldHouse'];
+    let param = fnParam(frm);
+    // getIncome();
+    //ajax가 정상 호출 되었을때 실행 되는 함수
+    let callBackFn = function( data ) {
+        alert(data.success);
+        console.log(data.data)
+    }
+    //공통모듈 ajax 함수 호출하기
+    kosisApiAjax("/realEstate/api/unsoldHouse", callBackFn, 'get', param, errorMsg);
+}
+function fnAgeAptSales(){
+    const frm = document.forms['formAgeAptSales'];
+    let param = fnParam(frm);
+    // getIncome();
+    //ajax가 정상 호출 되었을때 실행 되는 함수
+    let callBackFn = function( data ) {
+        alert(data.success);
+        console.log(data.data)
+    }
+    //공통모듈 ajax 함수 호출하기
+    kosisApiAjax("/realEstate/api/ageAptSales", callBackFn, 'get', param, errorMsg);
+}
+function fnPopulationAge(){
+    const frm = document.forms['formPopulationAge'];
+    let param = fnParam(frm);
+    // getIncome();
+    //ajax가 정상 호출 되었을때 실행 되는 함수
+    let callBackFn = function( data ) {
+        alert(data.success);
+        console.log(data.data)
+    }
+    //공통모듈 ajax 함수 호출하기
+    kosisApiAjax("/realEstate/api/populationAge", callBackFn, 'get', param, errorMsg);
 }
 
 

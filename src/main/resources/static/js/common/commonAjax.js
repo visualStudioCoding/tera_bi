@@ -22,7 +22,7 @@ let commonAjax = function(url, data, fn, methodType, errorMsg){
     console.log(fn);
 
     request.fail(function( jqXHR, textStatus ) {
-        alert( errorMsg + textStatus );
+        alert( textStatus + " : " + errorMsg );
     });
 }
 
@@ -75,7 +75,7 @@ let kosisApiAjax = function(url, fn, methodType, param, errorMsg){
     console.log(fn);
 
     request.fail(function( jqXHR, textStatus ) {
-        alert( errorMsg + textStatus );
+        alert( textStatus + " : " + errorMsg );
     });
 }
 
@@ -111,6 +111,6 @@ let enaraApiAjax = function(url, fn, methodType, param, errorMsg){
     console.log(fn);
 
     request.fail(function( jqXHR, textStatus ) {
-        alert( errorMsg + textStatus );
+        alert( textStatus + " : " + errorMsg );
     });
 }

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="bi.RealEstate">
-    <select id="getTradeRealAptList" parameterType="com.teraenergy.bisolution.realestate.RealEstateDTO" resultType="com.teraenergy.bisolution.realestate.RealEstateDTO">
+    <select id="getTradeRealAptList" parameterType="realEstateDTO" resultType="realEstateDTO">
             SELECT
                   apt_nm
                   , land_area
@@ -56,6 +56,62 @@
         VALUES
             (#{yrDt}
             , #{monDt}
+            , #{ctyNm}
+            , #{dstNm}
+            , #{unit}
+            , #{val}
+            )
+    </insert>
+    <insert id="insertUnsoldHouse" parameterType="hashMap">
+        INSERT INTO unsold_house
+            (yr_dt
+            , mon_dt
+            , cty_nm
+            , dst_nm
+            , unit
+            , val)
+        VALUES
+            (#{yrDt}
+            , #{monDt}
+            , #{ctyNm}
+            , #{dstNm}
+            , #{unit}
+            , #{val}
+            )
+    </insert>
+    <insert id="insertAgeAptSales" parameterType="hashMap">
+        INSERT INTO age_apt
+            (yr_dt
+            , mon_dt
+            , age
+            , cty_nm
+            , dst_nm
+            , unit
+            , val)
+        VALUES
+            (#{yrDt}
+            , #{monDt}
+            , #{age}
+            , #{ctyNm}
+            , #{dstNm}
+            , #{unit}
+            , #{val}
+            )
+    </insert>
+    <insert id="insertPopulation" parameterType="hashMap">
+        INSERT INTO age_apt
+            (yr_dt
+            , mon_dt
+            , area_cd
+            , age
+            , cty_nm
+            , dst_nm
+            , unit
+            , val)
+        VALUES
+            (#{yrDt}
+            , #{monDt}
+            , #{age}
             , #{ctyNm}
             , #{dstNm}
             , #{unit}
