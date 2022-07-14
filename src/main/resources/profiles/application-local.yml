@@ -16,5 +16,6 @@ spring:
 
 open-api:
   kosis-key: ENC(0BJV6leG2vBkRHeT3cjxi/H0i4hTSr3Xn46FHHi3vwLWe3geKqj8QRLV6IQhKEp9ffm2C8EGMqk=)
+  ecos-key : ENC(c/He8UeNBODLuOqCvOi1Gwla3al1Cuc0bRk3dSNKrhE=)
   enara-key: ENC(SNQoha/X8+2pkeb22fHWpVmwhVcfoH1pZDckmm2Y6Fs=)
   enara-id: ENC(nrNwP4o7Aau+1li/O9BBYkgjz2vr060k)

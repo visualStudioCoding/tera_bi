@@ -38,28 +38,36 @@ public class EconomicGrowthController {
     //getInflationRate
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
-    @GetMapping("/api/getMonthlyExchangeRateList")
-//    public Object getInflationRate(String url, String parameter) throws Exception {
-
-    public Object getInflationRate() throws Exception {
-        String url = "http://www.index.go.kr/openApi/xml_stts.do";
-        String parameter = "?userId=&statsCode=106801";
+    @GetMapping("/api/getMonthlyExchangeRate")
+    public Object getInflationRate(String url, String parameter) throws Exception {
 
         //kosis = json, enara = xml
         String format = "xml";
         String site = "enara";
         StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
 
-//        List<Map<String, Object>> xmlList = commonService.apiXmlParser(stringBuilder);
+        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
 
-//        System.out.println(xmlList);
-
+        Map<String, Object> dataMap = new HashMap<>();
         Map<String, Object> result = new HashMap<>();
-        result.put("data", stringBuilder);
-        result.put("success", "성공");
-//        log.info(String.valueOf(result));
-        return result;
+
+        for(Object jsonObject : jsonList){
+            JSONObject jsonData = (JSONObject) jsonObject;
+            if("시장금리".equals(jsonData.get("CLASS_NAME")) && jsonData.get("KEYSTAT_NAME").toString().contains("기준금리")){
+                String baseMoneyRate = (String) jsonData.get("DATA_VALUE");
+                String unit = (String) jsonData.get("UNIT_NAME");
+                String date = (String) jsonData.get("CYCLE");
+                String year = date.substring(0, 3);
+                String month = date.substring(4,5);
+                String day = date.substring(6,7);
+            }else if("시장금리".equals(jsonData.get("CLASS_NAME")) && jsonData.get("KEYSTAT_NAME").toString().contains("기준금리")){
+
+            }
+        }
+
+        return null;
     }
+
     @ResponseBody
     @GetMapping("api/getStateDebtList")
     public Object getStateDebtList() throws Exception {

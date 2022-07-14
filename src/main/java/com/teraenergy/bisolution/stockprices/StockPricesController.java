@@ -48,26 +48,26 @@ public class StockPricesController {
         String site = "enara";
         StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
         try{
-            org.json.JSONArray table = commonService.apiXmlParser(stringBuilder);
-
-            org.json.JSONObject obj = table.getJSONObject(1); // 표 주기="월"
-
-            org.json.JSONArray category = obj.getJSONArray("항목");
-
-            org.json.JSONObject cate = category.getJSONObject(0);
-
-            org.json.JSONArray classification = cate.getJSONArray("분류1"); // 찾을 key
-
-            for (int j = 0; j < classification.length(); j++) {
-                org.json.JSONObject objClassification = classification.getJSONObject(j);
-                System.out.println(objClassification.get("이름"));
-                org.json.JSONArray rows = objClassification.getJSONArray("열");
-                for (int y = 0; y < rows.length(); y++) {
-                    org.json.JSONObject row = rows.getJSONObject(y);
-                    System.out.println(row.get("주기"));
-                    System.out.println(row.get("content"));
-                }
-            }
+//            org.json.JSONArray table = commonService.apiXmlParser(stringBuilder);
+//
+//            org.json.JSONObject obj = table.getJSONObject(1); // 표 주기="월"
+//
+//            org.json.JSONArray category = obj.getJSONArray("항목");
+//
+//            org.json.JSONObject cate = category.getJSONObject(0);
+//
+//            org.json.JSONArray classification = cate.getJSONArray("분류1"); // 찾을 key
+//
+//            for (int j = 0; j < classification.length(); j++) {
+//                org.json.JSONObject objClassification = classification.getJSONObject(j);
+//                System.out.println(objClassification.get("이름"));
+//                org.json.JSONArray rows = objClassification.getJSONArray("열");
+//                for (int y = 0; y < rows.length(); y++) {
+//                    org.json.JSONObject row = rows.getJSONObject(y);
+//                    System.out.println(row.get("주기"));
+//                    System.out.println(row.get("content"));
+//                }
+//            }
 
         }catch (Exception e) {
             e.printStackTrace();

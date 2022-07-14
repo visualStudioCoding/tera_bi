@@ -13,30 +13,36 @@
     </insert>
 
     <insert id="insertGDP" parameterType="hashMap">
-        INSERT INTO bi_solution.gdp
+        INSERT INTO gdp
             (yr_dt, unit, val)
         VALUES(#{yr_dt}, #{unit}, #{val});
 
     </insert>
 
     <insert id="insertGDI" parameterType="hashMap">
-        INSERT INTO bi_solution.gdi
+        INSERT INTO gdi
             (yr_dt, unit, val)
         VALUES(#{yr_dt}, #{unit}, #{val});
 
     </insert>
 
     <insert id="insertGNI" parameterType="hashMap">
-        INSERT INTO bi_solution.gni
+        INSERT INTO gni
             (yr_dt, unit, val)
         VALUES(#{yr_dt}, #{unit}, #{val});
 
     </insert>
 
     <insert id="insertGrowthRate" parameterType="hashMap">
-        INSERT INTO bi_solution.enmc_grrt
+        INSERT INTO enmc_grrt
             (yr_dt, cty_nm, unit, val)
         VALUES(#{yr_dt}, #{cty_nm}, #{unit}, #{val});
+    </insert>
+
+    <insert id="insertExchangeRate" parameterType="hashMap">
+        INSERT INTO exchn_rate
+            (yr_dt, mon_dt, dy_dt, type, var)
+        VALUES(#{yr_dt},#{mon_dt},#{dy_dt},#{type},#{var});
     </insert>
 
 

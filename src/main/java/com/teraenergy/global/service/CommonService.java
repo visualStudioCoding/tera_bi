@@ -36,5 +36,5 @@ public interface CommonService {
 
 	List<?> apiJsonParser(StringBuilder stringBuilder) throws Exception;
 
-	org.json.JSONArray apiXmlParser(StringBuilder stringBuilder) throws Exception;
+	org.json.JSONObject apiXmlParser(StringBuilder stringBuilder) throws Exception;
 }

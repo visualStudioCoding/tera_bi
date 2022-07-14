@@ -8,21 +8,14 @@
                 <div class="card-header">
                     월별 환율
                 </div>
-                <div class="card-body">
-                    <span>년도 선택</span>
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                            Default checkbox
-                        </label>
+                <form name="getMonthlyExchangeRate_opt">
+                    <div class="card-body">
+                        <span>년도 선택</span>
+                        <select class="form-select" aria-label="Default select example" disabled>
+                            <option selected>해당 API는 당일 데이터 호출만 가능합니다. </option>
+                        </select>
                     </div>
-                </div>
+                </form>
                 <button type="button" id="MonthlyExchangeRate" class="btn btn-outline-secondary activator" onclick="getMonthlyExchangeRate()">실행</button>
             </div>
         </div>
