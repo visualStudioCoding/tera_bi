@@ -1,5 +1,7 @@
 package com.teraenergy.global.configuration;
 
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.context.annotation.PropertySource;
 
 import com.zaxxer.hikari.HikariConfig;

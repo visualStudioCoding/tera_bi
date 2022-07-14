@@ -152,38 +152,16 @@ public class CommonServiceImpl implements CommonService {
 		return parameter;
 	}
 
-	public static Map<String,Object> getNodeList(NodeList nodeList){
-		Map<String, Object> dataMap = new HashMap<>();
-		for(int i = 0; i < nodeList.getLength(); i++){
-			String tagName = nodeList.item(i).getNodeName();
-			if(!"#text".equals(tagName)){
-				System.out.println("tagName = " + tagName);
-				if(nodeList.item(i).getChildNodes().getLength()>1){
-					dataMap.put(tagName,getNodeList(nodeList.item(i).getChildNodes()));
-				}else{
-					dataMap.put(tagName, nodeList.item(i).getTextContent());
-				}
-			}
-		}
-		return dataMap;
-	}
-
 	public JSONArray apiJsonParser(StringBuilder stringBuilder) throws ParseException {
 		JSONParser jsonParser = new JSONParser();
 		return (JSONArray) jsonParser.parse(String.valueOf(stringBuilder));
 	}
 
-	public org.json.JSONArray apiXmlParser(StringBuilder stringBuilder) throws ParserConfigurationException, IOException, SAXException {
+	public org.json.JSONArray apiXmlParser(StringBuilder stringBuilder) throws Exception{
 		JSONObject jsonObject = XML.toJSONObject(String.valueOf(stringBuilder));
 		JSONObject root = jsonObject.getJSONObject("지표");
 		JSONObject statistics = root.getJSONObject("통계표");
 		return statistics.getJSONArray("표");
 	}
-
-	@Override
-	public String getCtyNm(String areaCd, String other) {
-		return AreaNameUtil.areaName(areaCd, other);
-	}
-
 
 }
