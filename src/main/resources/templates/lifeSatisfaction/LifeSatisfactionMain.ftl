@@ -136,31 +136,8 @@
 <div class="container">
     <div class="row">
         <div class="col">
-                <form id="frm1" name="frm1">
-            <div class="card">
-                <#--https://kosis.kr/openapi/Param/statisticsParameterData.do
-                ?method=getList
-                &apiKey=MDE5NGY4NzM1YzIxMDJmY2FlNTJkMTg0NThiZDJmMjQ=
-                &itmId=T1+
-                &objL1=ALL
-                &objL2=ALL
-                &objL3=
-                &objL4=
-                &objL5=
-                &objL6=
-                &objL7=
-                &objL8=
-                &format=json
-                &jsonVD=Y
-                &prdSe=Y
-                &startPrdDe=2021
-                &endPrdDe=2021
-                &loadGubun=2
-                &orgId=417
-                &tblId=DT_417001_0002-->
-
-
-
+            <form id="frm1" name="frm1">
+                <div class="card">
                     <input type="hidden" id="itmId" name="itmId" value="T1+"/>
                     <input type="hidden" id="objL1" name="objL1" value="ALL"/>
                     <input type="hidden" id="objL2" name="objL2" value="ALL"/>
@@ -170,59 +147,19 @@
                     <input type="hidden" id="tblId" name="tblId" value="DT_417001_0002"/>
                     <input type="hidden" id="newEstPrdCnt" name="newEstPrdCnt" value=""/>
 
-                <div class="card-header">
-                    1.삶의 만족도 (년)
-                </div>
-                <div class="card-body">
-                    년도입력 <input type="text" name="startPrdDe" id="startPrdDe" value="" style="width:100%" >
-                   <#-- <select class="form-select" aria-label="Default select example">
-                        <option selected>...</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                            Default checkbox
-                        </label>
+                    <div class="card-header">
+                        1.삶의 만족도 (년)
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-                        <label class="form-check-label" for="flexCheckChecked">
-                            Checked checkbox
-                        </label>
-                    </div>-->
+                    <div class="card-body">
+                        년도입력 <input type="text" name="startPrdDe" id="startPrdDe" value="" style="width:100%" >
+                        <div id="rst1"></div>
+                    </div>
+                    <button type="button" class="btn btn-outline-secondary activator" onclick="api1();">실행</button>
                 </div>
-                <button type="button" class="btn btn-outline-secondary activator" onclick="api1();">실행</button>
-            </div>
             </form>
         </div>
         <div class="col">
             <form id="frm2" name="frm2">
-                <!-- https://kosis.kr/openapi/Param/statisticsParameterData.do
-                ?method=getList
-                &apiKey=MDE5NGY4NzM1YzIxMDJmY2FlNTJkMTg0NThiZDJmMjQ=
-                &itmId=T3+
-                &objL1=ALL
-                &objL2=
-                &objL3=
-                &objL4=
-                &objL5=
-                &objL6=
-                &objL7=
-                &objL8=
-                &format=json
-                &jsonVD=Y
-                &prdSe=M
-                &startPrdDe=202112
-                &endPrdDe=202112
-                &loadGubun=2
-                &orgId=101
-                &tblId=DT_1B83A35
-
-
-                -->
                 <input type="hidden" id="itmId" name="itmId" value="T3+"/>
                 <input type="hidden" id="objL1" name="objL1" value="ALL"/>
                 <input type="hidden" id="objL2" name="objL2" value=""/>
@@ -231,34 +168,35 @@
                 <input type="hidden" id="orgId" name="orgId" value="101"/>
                 <input type="hidden" id="tblId" name="tblId" value="DT_1B83A35"/>
                 <input type="hidden" id="newEstPrdCnt" name="newEstPrdCnt" value=""/>
-            <div class="card">
-                <div class="card-header">
-                    2. 시도/시군구/월별 혼인 (월)
-                </div>
-                <div class="card-body">
-                    <#--<select class="form-select" aria-label="Default select example">
-                        <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                            Default checkbox
-                        </label>
+                <div class="card">
+                    <div class="card-header">
+                        2. 시도/시군구/월별 혼인 (월)
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-                        <label class="form-check-label" for="flexCheckChecked">
-                            Checked checkbox
-                        </label>
-                    </div>-->
+                    <div class="card-body">
+                        <#--<select class="form-select" aria-label="Default select example">
+                            <option selected>Open this select menu</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                                Default checkbox
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                            <label class="form-check-label" for="flexCheckChecked">
+                                Checked checkbox
+                            </label>
+                        </div>-->
 
-                    년월입력 <input type="text" name="startPrdDe" id="startPrdDe" value="" style="width:100%" >
-                </div>
-                <button type="button" class="btn btn-outline-secondary activator" onclick="api2();">실행</button>
-            </div></form>
+                        년도 <input type="text" name="startPrdDe" id="startPrdDe" value="" style="width:100%" >
+                        <div id="rst2"></div>
+                    </div>
+                    <button type="button" class="btn btn-outline-secondary activator" onclick="api2();">실행</button>
+                </div></form>
         </div>
     </div>
     <div class="row">
@@ -272,34 +210,35 @@
                 <input type="hidden" id="orgId" name="orgId" value="101"/>
                 <input type="hidden" id="tblId" name="tblId" value="DT_1B83A35"/>
                 <input type="hidden" id="newEstPrdCnt" name="newEstPrdCnt" value=""/>
-            <div class="card">
-                <div class="card-header">
-                    3. 시도/시군구/월별 이혼 (월)
-                </div>
-               <div class="card-body">
-                    <#--<select class="form-select" aria-label="Default select example">
-                        <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                            Default checkbox
-                        </label>
+                <div class="card">
+                    <div class="card-header">
+                        3. 시도/시군구/월별 이혼 (월)
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-                        <label class="form-check-label" for="flexCheckChecked">
-                            Checked checkbox
-                        </label>
-                    </div>-->
-                   년월입력 <input type="text" name="startPrdDe" id="startPrdDe" value="" style="width:100%" >
-                </div>
+                    <div class="card-body">
+                        <#--<select class="form-select" aria-label="Default select example">
+                            <option selected>Open this select menu</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                                Default checkbox
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                            <label class="form-check-label" for="flexCheckChecked">
+                                Checked checkbox
+                            </label>
+                        </div>-->
+                        년도입력 <input type="text" name="startPrdDe" id="startPrdDe" value="" style="width:100%" >
+                        <div id="rst3"></div>
+                    </div>
 
-                <button type="button" class="btn btn-outline-secondary activator" onclick="api3();">실행</button>
-            </div></form>
+                    <button type="button" class="btn btn-outline-secondary activator" onclick="api3();">실행</button>
+                </div></form>
         </div>
         <div class="col">
             <form id="frm4" name="frm4">
@@ -372,44 +311,32 @@
             </div>
         </div>
         <div class="col">
-            <form id="frm4" name="frm4">
-                <input type="hidden" id="itmId" name="itmId" value="T10+T20+T50+T60+T80+T90+T100+"/>
-                <input type="hidden" id="objL1" name="objL1" value="ALL"/>
-                <input type="hidden" id="objL2" name="objL2" value="ALL"/>
-                <input type="hidden" id="prdSe" name="prdSe" value="M"/>
-                <input type="hidden" id="loadGubun" name="loadGubun" value="2"/>
-                <input type="hidden" id="orgId" name="orgId" value="101"/>
-                <input type="hidden" id="tblId" name="tblId" value="DT_1DA7014S"/>
-                <input type="hidden" id="newEstPrdCnt" name="newEstPrdCnt" value=""/>
-                <div class="card">
-                    <div class="card-header">
-                        4.고용률(시/군/구)
-                    </div>
-                    <div class="card-body">
-                        <#-- <select class="form-select" aria-label="Default select example">
-                             <option selected>Open this select menu</option>
-                             <option value="1">One</option>
-                             <option value="2">Two</option>
-                             <option value="3">Three</option>
-                         </select>
-                         <div class="form-check">
-                             <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                             <label class="form-check-label" for="flexCheckDefault">
-                                 Default checkbox
-                             </label>
-                         </div>
-                         <div class="form-check">
-                             <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-                             <label class="form-check-label" for="flexCheckChecked">
-                                 Checked checkbox
-                             </label>
-                         </div>-->
-                        년도입력 <input type="text" name="startPrdDe" id="startPrdDe" value="" style="width:100%" >
-                        <div id="rst4"></div>
-                    </div>
-                    <button type="button" class="btn btn-outline-secondary activator" onclick="api4();">실행</button>
+            <div class="card">
+                <div class="card-header">
+                    고용률(시/군/구)
                 </div>
-            </form>
+                <div class="card-body">
+                    <select class="form-select" aria-label="Default select example">
+                        <option selected>Open this select menu</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Default checkbox
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                        <label class="form-check-label" for="flexCheckChecked">
+                            Checked checkbox
+                        </label>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-outline-secondary activator">실행</button>
+            </div>
         </div>
     </div>
     <div class="row">
