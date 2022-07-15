@@ -302,34 +302,47 @@
             </div></form>
         </div>
         <div class="col">
-            <div class="card">
-                <div class="card-header">
-                    고용률(시/군/구)
-                </div>
-                <div class="card-body">
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                            Default checkbox
-                        </label>
+            <form id="frm4" name="frm4">
+                <input type="hidden" id="itmId" name="itmId" value="T10+T20+T50+T60+T80+T90+T100+"/>
+                <input type="hidden" id="objL1" name="objL1" value="ALL"/>
+                <input type="hidden" id="objL2" name="objL2" value="ALL"/>
+                <input type="hidden" id="prdSe" name="prdSe" value="M"/>
+                <input type="hidden" id="loadGubun" name="loadGubun" value="2"/>
+                <input type="hidden" id="orgId" name="orgId" value="101"/>
+                <input type="hidden" id="tblId" name="tblId" value="DT_1DA7014S"/>
+                <input type="hidden" id="newEstPrdCnt" name="newEstPrdCnt" value=""/>
+                <div class="card">
+                    <div class="card-header">
+                        4.고용률(시/군/구)
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-                        <label class="form-check-label" for="flexCheckChecked">
-                            Checked checkbox
-                        </label>
+                    <div class="card-body">
+                        <#-- <select class="form-select" aria-label="Default select example">
+                             <option selected>Open this select menu</option>
+                             <option value="1">One</option>
+                             <option value="2">Two</option>
+                             <option value="3">Three</option>
+                         </select>
+                         <div class="form-check">
+                             <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                             <label class="form-check-label" for="flexCheckDefault">
+                                 Default checkbox
+                             </label>
+                         </div>
+                         <div class="form-check">
+                             <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                             <label class="form-check-label" for="flexCheckChecked">
+                                 Checked checkbox
+                             </label>
+                         </div>-->
+                        년도입력 <input type="text" name="startPrdDe" id="startPrdDe" value="" style="width:100%" >
+                        <div id="rst4"></div>
                     </div>
+                    <button type="button" class="btn btn-outline-secondary activator" onclick="api4();">실행</button>
                 </div>
-                <button type="button" class="btn btn-outline-secondary activator">실행</button>
-            </div>
+            </form>
         </div>
-    </div> <div class="row">
+    </div>
+    <div class="row">
         <div class="col">
             <div class="card">
                 <div class="card-header">
