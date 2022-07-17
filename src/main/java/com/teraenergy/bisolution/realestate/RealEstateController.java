@@ -10,9 +10,7 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -245,17 +243,8 @@ public class RealEstateController {
         parameter = "?method=getList&apiKey=&itmId=T3+T4+&objL1=00+50+50110+50130+&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=M&startPrdDe=2022&endPrdDe=2022&loadGubun=2&orgId=101&tblId=DT_1B04005N";
         Map<String, Object> result = new HashMap<>();
         Map<String, String> splitParams = realEstateService.splitParameter(parameter);
-        List<Map<String, Object>> popList = new ArrayList<>();
-
-        String[] ages = {"계","10대","20대","30대","40대","50대","60대","70대","80대","90대","100세이상"};
-        Map<String, Object> population = new HashMap<>();
-
-        Map<String, Object> region = new HashMap<>();
-
-
 
         List<Map<String, Object>> dataList = new ArrayList<>();
-        List<Map<String, Object>> dataList_1 = new ArrayList<>();
         for (int month = 1; month <= 1; month++) {
             parameter = realEstateService.stringCombination(splitParams, month);
 
@@ -264,7 +253,6 @@ public class RealEstateController {
 
             for (Object jsonObject : jsonList) {
                 Map<String, Object> dataMap = new HashMap<>();
-                Map<String, Object> dataMap_1 = new HashMap<>();
                 JSONObject jsonData = (JSONObject) jsonObject;
 
                 String year = (String) jsonData.get("PRD_DE");
@@ -275,65 +263,43 @@ public class RealEstateController {
                 String ctyName = AreaNameUtil.areaName((String) jsonData.get("C1"), "");
                 String ageName = AgeUtil.getAgeName((String) jsonData.get("C2"));
 
-                if(jsonData.get("ITM_NM").toString().contains("여자")) {
-                    dataMap.put("yrDt", year);
-                    dataMap.put("monDt", getMonth);
-                    dataMap.put("age", ageName);
-                    dataMap.put("itmNm", jsonData.get("ITM_NM"));
-                    dataMap.put("ctyNm", ctyName);
-                    dataMap.put("dstNm", jsonData.get("C1_NM"));
-                    dataMap.put("womanCnt", jsonData.get("DT"));
-                    dataList.add(dataMap);
-                } else{
-                    dataMap_1.put("unit", jsonData.get("UNIT_NM"));
-                    dataMap_1.put("yrDt", year);
-                    dataMap_1.put("monDt", getMonth);
-                    dataMap_1.put("age", ageName);
-                    dataMap_1.put("itmNm", jsonData.get("ITM_NM"));
-                    dataMap_1.put("ctyNm", ctyName);
-                    dataMap_1.put("dstNm", jsonData.get("C1_NM"));
-                    dataMap_1.put("unit", jsonData.get("UNIT_NM"));
-                    dataMap_1.put("manCnt", jsonData.get("DT"));
-                    dataList_1.add(dataMap_1);
-                }
-
+                dataMap.put("yrDt", year);
+                dataMap.put("monDt", getMonth);
+                dataMap.put("age", ageName);
+                dataMap.put("itmNm", jsonData.get("ITM_NM"));
+                dataMap.put("ctyNm", ctyName);
+                dataMap.put("dstNm", jsonData.get("C1_NM"));
+                dataMap.put("unit", jsonData.get("UNIT_NM"));
+                dataMap.put("tmpCnt", jsonData.get("DT"));
 
                 String areaCd = (String) jsonData.get("C1");
+                dataMap.put("areaCd", areaCd);
 //                세종특별자치시 중복 제거
-//                if (!"36110".equals(areaCd)) {
-//                    dataList.add(dataMap);
-//                    //commonService.insertContents(dataMap, PROGRAM_ID + ".insertPopulationAge");
-//                }
-            }
-            for (int i = 0; i < ages.length; i++) {
-                int years = 0;
-                Map<String, Object> dataMap = new HashMap<>();
-
-                for (int j = 0; j < dataList.size(); j++) {
-                    if(i >= 1) {
-                        if (ages[i].equals(dataList.get(j).get("age")) && dataList.get(j).get("ctyNm").equals(dataList.get(j + 1).get("ctyNm")) && dataList.get(j).get("dstNm").equals(dataList.get(j + 1).get("dstNm"))) {
-                            years += Integer.parseInt((String) dataList.get(j).get("womanCnt"));
-                            dataMap.put("yrDt", dataList.get(j).get("yrDt"));
-                            dataMap.put("monDt", dataList.get(j).get("monDt"));
-                            dataMap.put("age", dataList.get(j).get("age"));
-                            dataMap.put("itmNm", dataList.get(j).get("itmNm"));
-                            dataMap.put("ctyNm", dataList.get(j).get("ctyNm"));
-                            dataMap.put("dstNm", dataList.get(j).get("dstNm"));
-                            dataMap.put("womanCnt", years);
-                        }
-                    }
-                    popList.add(dataMap);
+                if (!"36110".equals(areaCd)) {
+                    dataList.add(dataMap);
+                    commonService.insertContents(dataMap, PROGRAM_ID + ".insertPopulationAge");
                 }
             }
-
-            for (int i = 0; i < dataList_1.size(); i++) {
-
-            }
         }
+//        Map<String, Object> tmpMap = new HashMap<>();
+//        commonService.insertContents(tmpMap, PROGRAM_ID + ".insertManPopulation");
+//        commonService.updateContents(tmpMap, PROGRAM_ID + ".updateWomanPopulation");
 
-        result.put("data", popList);
+        result.put("data", dataList);
         result.put("success", "성공");
         return result;
     }
-}
 
+    @Transactional(rollbackFor = Exception.class)
+    @ResponseBody
+    @PostMapping("/populationAgeDivision")
+    public Object populationAgeDivision() throws Exception {
+
+        Map<String, Object> temp = new HashMap<>();
+        commonService.insertContents(temp, PROGRAM_ID + ".insertManPopulation");
+        commonService.updateContents(temp, PROGRAM_ID + ".updateWomanPopulation");
+
+        temp.put("success", "성공");
+        return temp;
+    }
+}

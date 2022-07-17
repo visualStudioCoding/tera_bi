@@ -76,8 +76,12 @@ function fnPopulationAge(){
     // getIncome();
     //ajax가 정상 호출 되었을때 실행 되는 함수
     let callBackFn = function( data ) {
+        commonAjax("/realEstate/populationAgeDivision", "", callBackDivision, 'post', 'error');
         alert(data.success);
         console.log(data.data)
+    }
+    let callBackDivision = function ( data ) {
+        alert(data.success);
     }
     //공통모듈 ajax 함수 호출하기
     kosisApiAjax("/realEstate/api/populationAge", callBackFn, 'get', param, errorMsg);
