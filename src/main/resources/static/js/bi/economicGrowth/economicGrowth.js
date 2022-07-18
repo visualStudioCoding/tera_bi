@@ -2,6 +2,64 @@ let errorMsg = "api 호출 에러";
 let enaraParam = {"statsCode": "106801"}
 
 function getKosisParam(form) {
+    let kosisParam;
+
+    if (form == document.forms["getInflationRate_opt"]){
+        let month;
+        if(form.prdDe_M.value < 10){
+            month = "0" + form.prdDe_M.value
+        }else{
+            month = form.prdDe_M.value
+        }
+
+        kosisParam = {
+            "itmId": form.itmId.value,
+            "objL1": form.objL1.value,
+            "objL2": "",
+            "objL3": "",
+            "objL4": "",
+            "objL5": "",
+            "objL6": "",
+            "objL7": "",
+            "objL8": "",
+            "prdSe": form.prdSe.value,
+            "startPrdDe": "",
+            "endPrdDe": "",
+            "newEstPrdCnt": "",
+            "loadGubun": form.loadGubun.value,
+            "orgId": form.orgId.value,
+            "tblId": form.tblId.value
+        }
+    }else {
+        kosisParam = {
+            "itmId": form.itmId.value,
+            "objL1": form.objL1.value,
+            "objL2": "",
+            "objL3": "",
+            "objL4": "",
+            "objL5": "",
+            "objL6": "",
+            "objL7": "",
+            "objL8": "",
+            "prdSe": form.prdSe.value,
+            "startPrdDe": form.prdDe.value,
+            "endPrdDe": form.prdDe.value,
+            "newEstPrdCnt": "",
+            "loadGubun": form.loadGubun.value,
+            "orgId": form.orgId.value,
+            "tblId": form.tblId.value
+        }
+    }
+    return kosisParam;
+}
+
+function getKosisParams(form, years, months) {
+    let month;
+    if(months < 10){
+        month = "0" + months
+    }else{
+        month = months
+    }
 
     let kosisParam = {
         "itmId": form.itmId.value,
@@ -14,8 +72,8 @@ function getKosisParam(form) {
         "objL7": "",
         "objL8": "",
         "prdSe": form.prdSe.value,
-        "startPrdDe": form.prdDe.value,
-        "endPrdDe": form.prdDe.value,
+        "startPrdDe": years + month,
+        "endPrdDe": years + month,
         "newEstPrdCnt": "",
         "loadGubun": form.loadGubun.value,
         "orgId": form.orgId.value,
@@ -23,29 +81,6 @@ function getKosisParam(form) {
     }
     return kosisParam;
 }
-
-// function getKosisParams(form, years) {
-//
-//     let kosisParam = {
-//         "itmId": form.itmId.value,
-//         "objL1": form.objL1.value,
-//         "objL2": "",
-//         "objL3": "",
-//         "objL4": "",
-//         "objL5": "",
-//         "objL6": "",
-//         "objL7": "",
-//         "objL8": "",
-//         "prdSe": form.prdSe.value,
-//         "startPrdDe": years,
-//         "endPrdDe": years,
-//         "newEstPrdCnt": "",
-//         "loadGubun": form.loadGubun.value,
-//         "orgId": form.orgId.value,
-//         "tblId": form.tblId.value
-//     }
-//     return kosisParam;
-// }
 
 function getEcosParam(form){
     let ecosParam = form.apiType.value
@@ -114,25 +149,51 @@ function getGrowthRate(){
 }
 
 
+
+function getInflationRate(){
+    let formData = document.forms["getInflationRate_opt"]
+
+    let params = getKosisParam(formData)
+
+    let callBackFn = function(data){
+        alert(data.success)
+        console.log(data.data)
+    }
+    //공통모듈 ajax 함수 호출하기
+    // kosisApiAjax("/getIncome", callBackFn, 'get', kosisParam, errorMsg);
+    kosisApiAjax("/economicGrowth/api/getInflationRate", callBackFn, 'get', params, errorMsg);
+}
+
+
 function getLargeData(){
     let years = [];
-    let formData = document.forms["growthRate_opt"]
+    let month = [];
+    let formData = document.forms["getInflationRate_opt"]
 
-    for(var i = 1987; i <= 2020; i++){
+    for(var i = 1966; i <= 2022; i++){
         years.push(i)
     }
-    for(var j = 0; j < years.length; j++){
+    for(var j = 1 ; j <=12; j++){
+        month.push(j);
+    }
 
-        let params = getKosisParams(formData, years[j])
+    for(var k = 0; k < years.length; k++){
+        for(var l = 0 ; l < month.length; l++){
+            if(years[k] == "2022" && month[l] == "6"){
+                break;
+            }
 
-        let callBackFn = function(data){
-            alert(data.success)
-            console.log(data.data)
+            let params = getKosisParams(formData, years[k], month[l])
+
+            let callBackFn = function(data){
+                alert(data.success)
+                console.log(data.data)
+            }
+            console.log(params)
+            //공통모듈 ajax 함수 호출하기
+            // kosisApiAjax("/getIncome", callBackFn, 'get', kosisParam, errorMsg);
+            kosisApiAjax("/economicGrowth/api/getInflationRate", callBackFn, 'get', params, errorMsg);
         }
-        console.log(params)
-        //공통모듈 ajax 함수 호출하기
-        // kosisApiAjax("/getIncome", callBackFn, 'get', kosisParam, errorMsg);
-        kosisApiAjax("/economicGrowth/api/getGrowthRate", callBackFn, 'get', params, errorMsg);
     }
 
 

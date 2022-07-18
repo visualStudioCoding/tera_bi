@@ -73,7 +73,7 @@ public class StandardOfLivingController {
         return result;
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @ResponseBody
     @GetMapping("/api/getGrossNationalIncome")
     public Object getGrossNationalIncome(String url, String parameter) throws Exception {
@@ -140,6 +140,7 @@ public class StandardOfLivingController {
         return result;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @ResponseBody
     @GetMapping("/api/getIncomeDistributionIndex")
     public Object getIncomeDistributionIndex(String url, String parameter) throws Exception {
