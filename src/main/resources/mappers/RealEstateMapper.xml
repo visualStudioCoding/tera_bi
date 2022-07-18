@@ -126,7 +126,11 @@
         , dst_nm
         , unit
         , man_cnt)
-        SELECT yr_dt, mon_dt, area_cd, age, cty_nm, dst_nm, unit, tmp_cnt FROM view_population WHERE itm_nm = '남자인구수';
+        SELECT yr_dt, mon_dt, area_cd, age, cty_nm, dst_nm, unit, SUM(tmp_cnt) as tmp_cnt
+        FROM view_population
+        WHERE itm_nm = '남자인구수'
+        GROUP BY yr_dt, mon_dt, area_cd, age, cty_nm , dst_nm, itm_nm
+        ORDER BY age DESC
     </insert>
     <update id="updateWomanPopulation" parameterType="hashMap">
         UPDATE population a
@@ -147,4 +151,7 @@
         AND a.dst_nm = b.dst_nm
         AND a.age = b.age
     </update>
+    <delete id="deletePopulationTmp" parameterType="hashMap">
+        DELETE FROM population_tmp
+    </delete>
 </mapper>

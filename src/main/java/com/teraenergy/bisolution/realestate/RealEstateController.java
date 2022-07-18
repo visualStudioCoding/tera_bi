@@ -239,13 +239,13 @@ public class RealEstateController {
     @ResponseBody
     @GetMapping("/api/populationAge")
     public Object getPopulationAge(String url, String parameter) throws Exception {
-        url = "https://kosis.kr/openapi/Param/statisticsParameterData.do";
-        parameter = "?method=getList&apiKey=&itmId=T3+T4+&objL1=00+50+50110+50130+&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=M&startPrdDe=2022&endPrdDe=2022&loadGubun=2&orgId=101&tblId=DT_1B04005N";
+//        url = "https://kosis.kr/openapi/Param/statisticsParameterData.do";
+//        parameter = "?method=getList&apiKey=&itmId=T3+T4+&objL1=00+50+50110+50130+&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=M&startPrdDe=2022&endPrdDe=2022&loadGubun=2&orgId=101&tblId=DT_1B04005N";
         Map<String, Object> result = new HashMap<>();
         Map<String, String> splitParams = realEstateService.splitParameter(parameter);
 
         List<Map<String, Object>> dataList = new ArrayList<>();
-        for (int month = 1; month <= 1; month++) {
+        for (int month = 7; month <= 12; month++) {
             parameter = realEstateService.stringCombination(splitParams, month);
 
             StringBuilder stringBuilder = commonService.getApiResult(url, parameter, FORMAT, SITE);
@@ -265,7 +265,8 @@ public class RealEstateController {
 
                 dataMap.put("yrDt", year);
                 dataMap.put("monDt", getMonth);
-                dataMap.put("age", ageName);
+//                dataMap.put("age", ageName);
+                dataMap.put("age", jsonData.get("C2"));
                 dataMap.put("itmNm", jsonData.get("ITM_NM"));
                 dataMap.put("ctyNm", ctyName);
                 dataMap.put("dstNm", jsonData.get("C1_NM"));
@@ -292,12 +293,13 @@ public class RealEstateController {
 
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
-    @PostMapping("/populationAgeDivision")
+    @GetMapping("/populationAgeDivision")
     public Object populationAgeDivision() throws Exception {
 
         Map<String, Object> temp = new HashMap<>();
         commonService.insertContents(temp, PROGRAM_ID + ".insertManPopulation");
         commonService.updateContents(temp, PROGRAM_ID + ".updateWomanPopulation");
+        commonService.deleteContents(temp, PROGRAM_ID + ".deletePopulationTmp");
 
         temp.put("success", "성공");
         return temp;
