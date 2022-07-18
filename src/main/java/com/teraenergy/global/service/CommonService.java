@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.json.JSONObject;
+import org.json.simple.JSONArray;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -37,7 +38,7 @@ public interface CommonService {
 
 	List<?> apiJsonParser(StringBuilder stringBuilder) throws Exception;
 
-	JSONObject ecosApiJsonParser(StringBuilder stringBuilder) throws Exception;
+	JSONArray ecosApiJsonParser(StringBuilder stringBuilder) throws Exception;
 
-	org.json.JSONObject apiXmlParser(StringBuilder stringBuilder) throws Exception;
+	JSONObject apiXmlParser(StringBuilder stringBuilder) throws Exception;
 }

@@ -1,53 +1,31 @@
 package com.teraenergy.bisolution.economicGrowth;
 
 import com.teraenergy.global.service.CommonService;
-import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-@Slf4j
-@Controller
-@RequestMapping("/economicGrowth")
-public class EconomicGrowthController {
-    private static final String PROGRAM_ID = "EconomicGrowth";
+@Component
+public class EconomicGrowthScheduler {
 
-    private static final String DIRECTORY = "economicGrowth/";
+    private static final String PROGRAM_ID = "EconomicGrowth";
 
     @Resource(name = "commonService")
     private CommonService commonService;
 
-    @Resource(name = "economicGrowthService")
-    private EconomicGrowthService economicGrowthService;
+    @Scheduled(cron = "* * 4 * * *")
+    public void monthlyExchangeRateScheduler() throws Exception {
+        String url = "https://ecos.bok.or.kr/api/";
+        String parameter = "KeyStatisticList/apiKey/json/kr/1/100/";
 
-    @GetMapping("/main")
-    public String economicGrowthMain() throws Exception {
-        log.info(DIRECTORY + PROGRAM_ID + "List");
-        return DIRECTORY + PROGRAM_ID + "Main";
-    }
-
-    //기준금리 및 환율
-    @Transactional(rollbackFor = Exception.class)
-    @ResponseBody
-    @GetMapping("/api/getMonthlyExchangeRate")
-    public Object getMonthlyExchangeRate(String url, String parameter) throws Exception {
-
-        System.out.println(url);
-        System.out.println(parameter);
-
-        //kosis = json, enara = xml
         String format = "json";
         String site = "ecos";
         StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
@@ -95,34 +73,14 @@ public class EconomicGrowthController {
                 commonService.insertContents(dataMap, PROGRAM_ID + ".insertExchangeRate");
             }
         }
-
-        result.put("data", dataMap);
-        result.put("success", "성공");
-
-        return result;
     }
 
-    @ResponseBody
-    @GetMapping("api/getStateDebtList")
-    public Object getStateDebtList() throws Exception {
-        Map<String, Object> dataMap = new HashMap<>();
-        Map<String, Object> result = new HashMap<>();
-
-        List<ArrayList> resultList = (List<ArrayList>) commonService.selectList(dataMap, PROGRAM_ID + ".selectStateDebt");
-
-        result.put("title", "국가채무현황");
-        result.put("datas",resultList);
-        result.put("result", "success");
-
-        return result;
-    }
-    // 국가채무현황
+    @Scheduled(cron="* * 4 * * *")
     @Transactional(rollbackFor = Exception.class)
-    @ResponseBody
-    @GetMapping("/api/getStateDebt")
-    public Object getstateDebt(String url, String parameter) throws Exception {
-        System.out.println(url);
-        System.out.println(parameter);
+    public void stateDebtScheduler() throws Exception {
+
+        String url = "https://kosis.kr/openapi/Param/statisticsParameterData.do";
+        String parameter = "?method=getList&apiKey=&itmId=T01+&objL1=01+&objL2=&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&newEstPrdCnt=1&loadGubun=2&orgId=102&tblId=DT_102N_A001";
         String format = "json";
         String site = "kosis";
 
@@ -130,7 +88,6 @@ public class EconomicGrowthController {
 
         JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
 
-        Map<String, Object> result = new HashMap<>();
         Map<String, Object> dataMap = new HashMap<>();
 
         for(Object jsonObject : jsonList){
@@ -149,21 +106,13 @@ public class EconomicGrowthController {
                 break;
             }
         }
-
-        result.put("data", dataMap);
-        result.put("success", "성공");
-
-
-        return result;
     }
 
-    // 경제활동별 GDP 및 GNI
+    @Scheduled(cron="* * 4 * * *")
     @Transactional(rollbackFor = Exception.class)
-    @ResponseBody
-    @GetMapping("/api/getGdpAndGni")
-    public Object getGdpAndGni(String url, String parameter) throws Exception {
-        System.out.println(url);
-        System.out.println(parameter);
+    public void gdpAndGniScheduler() throws Exception {
+        String url = "https://kosis.kr/openapi/Param/statisticsParameterData.do";
+        String parameter = "?method=getList&apiKey=&itmId=13103134593999+&objL1=13102134593ACC_ITEM.1400+13102134593ACC_ITEM.1600+13102134593ACC_ITEM.1800+&objL2=&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&newEstPrdCnt=1&loadGubun=2&orgId=301&tblId=DT_200Y006";
         String format = "json";
         String site = "kosis";
 
@@ -174,7 +123,6 @@ public class EconomicGrowthController {
         StringBuilder stringbuilder = commonService.getApiResult(url, parameter, format, site);
         JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringbuilder);
 
-        Map<String, Object> result = new HashMap<>();
         Map<String, Object> dataMap = new HashMap<>();
 
         for(Object jsonObject : jsonList){
@@ -205,19 +153,13 @@ public class EconomicGrowthController {
             }
 
         }
-        result.put("data", dataMap);
-        result.put("success", "성공");
-
-        return result;
     }
 
-    // 경제성장률
+    @Scheduled(cron="* * 4 * * *")
     @Transactional(rollbackFor = Exception.class)
-    @ResponseBody
-    @GetMapping("/api/getGrowthRate")
-    public Object getGrowthRate(String url, String parameter) throws Exception {
-        System.out.println(url);
-        System.out.println(parameter);
+    public void growthRateScheduler() throws Exception {
+        String url = "https://kosis.kr/openapi/Param/statisticsParameterData.do";
+        String parameter = "?method=getList&apiKey=&itmId=T10+&objL1=ALL&objL2=&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&newEstPrdCnt=1&loadGubun=2&orgId=101&tblId=DT_1YL20571";
         String format = "json";
         String site = "kosis";
 
@@ -225,7 +167,6 @@ public class EconomicGrowthController {
         JSONArray jsonArray = (JSONArray) commonService.apiJsonParser(stringBuilder);
 
         Map<String, Object> dataMap = new HashMap<>();
-        Map<String, Object> result = new HashMap<>();
 
         for(Object jsonObject : jsonArray){
             JSONObject jsonData = (JSONObject) jsonObject;
@@ -242,76 +183,18 @@ public class EconomicGrowthController {
 
             commonService.insertContents(dataMap, PROGRAM_ID + ".insertGrowthRate");
         }
-
-        result.put("data", dataMap);
-        result.put("success", "성공");
-
-        return result;
     }
 
-//    소비자/근원/생활 물가 상승률
+    @Scheduled(cron="* * 4 * * *")
     @Transactional(rollbackFor = Exception.class)
-    @ResponseBody
-    @GetMapping("/api/getInflationRate")
-    public Object getInflationRate(String url, String parameter) throws Exception {
+    public void getInflationRate() throws Exception {
+        String url = "https://kosis.kr/openapi/Param/statisticsParameterData.do";
+        String parameter = "?method=getList&apiKey=&itmId=T03+&objL1=0+1+3+&objL2=&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=M&newEstPrdCnt=1&loadGubun=2&orgId=101&tblId=DT_1J20042";
         String format = "json";
         String site = "kosis";
-        System.out.println(parameter);
-
-        Map<String, String> splitParams = economicGrowthService.splitParmas(parameter);
 
         Map<String, Object> dataMap = new HashMap<>();
         Map<String, Object> result = new HashMap<>();
-
-//        for(int year = 1966; year <= 2022; year++){
-//            for (int month = 1; month <= 12; month++) {
-//                String mon_dt = null;
-//                if(year == 2022 && month == 7){
-//                    break;
-//                }
-//                if(month < 10){
-//                    mon_dt = "0" + Integer.toString(month);
-//                }else{
-//                    mon_dt = Integer.toString(month);
-//                }
-//                parameter = economicGrowthService.combineParams(splitParams, Integer.toString(year), mon_dt);
-//                System.out.println(parameter);
-//                StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
-//                JSONArray jsonArray = (JSONArray) commonService.apiJsonParser(stringBuilder);
-//
-//
-//                String years = null;
-//                String months = null;
-//                String val = null;
-//                String unit = null;
-//
-//                for(Object jsonObject : jsonArray){
-//                    JSONObject jsonData = (JSONObject) jsonObject;
-//
-//                    years = jsonData.get("PRD_DE").toString().substring(0, 4);
-//                    months = jsonData.get("PRD_DE").toString().substring(4,6);
-//                    val = (String) jsonData.get("DT");
-//                    unit = (String) jsonData.get("ITM_NM");
-//
-//                    dataMap.put("val",val);
-//                    dataMap.put("yr_dt",years);
-//                    dataMap.put("mon_dt",months);
-//                    dataMap.put("unit", unit);
-//
-//                    if("총지수".equals(jsonData.get("C1_NM"))){
-//                        commonService.insertContents(dataMap, PROGRAM_ID + ".insertConsumerPriceInflation");
-//                    }else if("생활물가지수".equals(jsonData.get("C1_NM"))){
-//                        commonService.insertContents(dataMap, PROGRAM_ID + ".insertLivingInflationRate");
-//                    }else if("농산물및석유류제외지수".equals(jsonData.get("C1_NM"))){
-//                        commonService.insertContents(dataMap, PROGRAM_ID + ".insertCoreInflationRate");
-//                    }
-//                }
-//
-//                result.put("data",dataMap);
-//                result.put("success", "성공");
-//
-//            }
-//        }
 
         StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
         JSONArray jsonArray = (JSONArray) commonService.apiJsonParser(stringBuilder);
@@ -342,10 +225,5 @@ public class EconomicGrowthController {
                 commonService.insertContents(dataMap, PROGRAM_ID + ".insertCoreInflationRate");
             }
         }
-
-        result.put("data",dataMap);
-        result.put("success", "성공");
-
-        return result;
     }
 }
