@@ -139,6 +139,57 @@
                  ,grp = #{grp}
     </insert>
 
+    <!--실업률-->
+    <insert id="insertUmplrate" parameterType="hashMap">
+        INSERT INTO unmpl_rate
+            (yr_dt
+            , mon_dt
+            , cty_nm
+            , type
+            , unit
+            , val
+            , reg_dt
+            )
+        VALUES
+            (#{yrdt}
+            , #{mondt}
+            , #{ctynm}
+            , #{grp}
+            , #{unit}
+            , #{val}
+            , now()
+            )
+            ON DUPLICATE KEY UPDATE
+                 yr_dt   = #{yrdt}
+                 ,mon_dt = #{mondt}
+                 ,cty_nm = #{ctynm}
+                 ,type = #{grp}
+    </insert>
+
+    <!--전산업생산지수-->
+    <insert id="insertAllprindex" parameterType="hashMap">
+        INSERT INTO allpr_index
+            (yr_dt
+            , mon_dt
+            , type
+            , unit
+            , val
+            , reg_dt
+            )
+        VALUES
+            (#{yrdt}
+            , #{mondt}
+            , #{type}
+            , #{unit}
+            , #{val}
+            , now()
+            )
+            ON DUPLICATE KEY UPDATE
+                 yr_dt   = #{yrdt}
+                 ,mon_dt = #{mondt}
+                 ,type = #{type}
+    </insert>
+
     <!--스케쥴러 테스트 -->
     <insert id="insertTest1" parameterType="hashMap">
         INSERT INTO test1
@@ -163,5 +214,15 @@
             )
     </insert>
 
-
+    <select id="selectLifeSatisfaction" parameterType="HashMap" resultType="HashMap">
+        SELECT
+         *
+        FROM
+            life_stsfc
+        WHERE
+            1=1
+            order by yr_dt desc
+            LIMIT
+                  1
+    </select>
 </mapper>

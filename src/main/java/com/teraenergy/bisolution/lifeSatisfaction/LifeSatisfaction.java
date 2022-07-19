@@ -38,7 +38,7 @@ public class LifeSatisfaction {
 
     @GetMapping("/lifeSatisfaction/main")
 //    public String mainIndex(HttpServletResponse response,Model model) throws IOException {
-    public String mainIndex(Model model) throws IOException {
+    public String mainIndex(Model model) throws Exception {
         log.info(DIRECTORY + PROGRAM_ID + "Main");
         //return DIRECTORY + PROGRAM_ID + "Main";
         //response.setContentType("text/html;charset=euc-kr");
@@ -49,11 +49,18 @@ public class LifeSatisfaction {
         //out.print("year : " + sdf.format(today));
         String year = sdf.format(today);
 
+        //1.삶의 만족도
+        Map<String,Object> dataMap1 = new HashMap<>();
+        //dataMap.put("",);
+        dataMap1 = (Map<String, Object>) commonService.selectContents(null, PROGRAM_ID + ".selectLifeSatisfaction");
+        System.out.println("yr_dt : " + dataMap1.get("yr_dt"));
         model.addAttribute("year", year);
+        model.addAttribute("data", dataMap1);
         return DIRECTORY + PROGRAM_ID + "Main";
         //return DIRECTORY+ "index2";
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @ResponseBody
     @GetMapping("/lifeSatisfaction/LifeSatisfaction")
     public Object LifeSatisfaction_Parse(String url, String parameter) throws Exception {
@@ -394,11 +401,12 @@ public class LifeSatisfaction {
         return result;
     }
 
+    //4.고용률
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
     @GetMapping("/lifeSatisfaction/emplyrate")
     public Object Emplyrate_Parse(String url, String parameter) throws Exception {
-        log.info(DIRECTORY + PROGRAM_ID + "Divorce");
+        log.info(DIRECTORY + PROGRAM_ID + "emplyrate");
         System.out.println("url : " + url);
         System.out.println("parameter : " + parameter);
 
@@ -445,6 +453,120 @@ public class LifeSatisfaction {
                 commonService.insertContents(dataMap, PROGRAM_ID + ".insertEmplyrate");//LifeSatisfaction.insertMarriage
                 cnt++;
             }
+        }
+
+        result.put("data", dataMap);
+        result.put("size", cnt);
+        result.put("success", "성공");
+
+        return result;
+    }
+
+    //5.실업률
+    @Transactional(rollbackFor = Exception.class)
+    @ResponseBody
+    @GetMapping("/lifeSatisfaction/unmplrate")
+    public Object Unmplrate_Parse(String url, String parameter) throws Exception {
+        log.info(DIRECTORY + PROGRAM_ID + "unmplrate");
+        System.out.println("url : " + url);
+        System.out.println("parameter : " + parameter);
+
+        //DT_1DA7104S
+        //kosis = json, enara = xml
+        String format = "json";
+        String site = "kosis";
+        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        //
+        // {"err":"30","errMsg":"데이터가 존재하지 않습니다."}
+
+        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> dataMap = new HashMap<>();
+        int cnt=1;
+        for (Object jsonObject : jsonList) {
+            JSONObject jsonData = (JSONObject) jsonObject;
+
+            //아이템 - 실업률
+            String item = (String) jsonData.get("ITM_NM");
+            //시도
+            String ctyNm = (String) jsonData.get("C1_NM");
+            //남녀
+            String grp = (String) jsonData.get("C2_NM");
+            //고용률이고 계는 뺀다
+            if("실업률".equals(item) && !"계".equals(ctyNm) && !"계".equals(grp)) {
+                //년도
+                String prdde = (String) jsonData.get("PRD_DE");
+                String yrdt = prdde.substring(0, 4);
+                //월
+                String monDt = prdde.substring(4, 6);
+                //점수단위(%)
+                String unit = (String) jsonData.get("UNIT_NM");
+                //고용률
+                String val = (String) jsonData.get("DT");
+
+                dataMap.put("yrdt", yrdt);
+                dataMap.put("mondt", monDt);
+                dataMap.put("ctynm", ctyNm);
+                dataMap.put("grp", grp);
+                dataMap.put("unit", unit);
+                dataMap.put("val", val);
+
+                commonService.insertContents(dataMap, PROGRAM_ID + ".insertUmplrate");//LifeSatisfaction.insertMarriage
+                cnt++;
+            }
+        }
+
+        result.put("data", dataMap);
+        result.put("size", cnt);
+        result.put("success", "성공");
+
+        return result;
+    }
+
+    //6. 전산업생산지수
+    @Transactional(rollbackFor = Exception.class)
+    @ResponseBody
+    @GetMapping("/lifeSatisfaction/allprindex")
+    public Object Allprindex_Parse(String url, String parameter) throws Exception {
+        log.info(DIRECTORY + PROGRAM_ID + "allprindex");
+        System.out.println("url : " + url);
+        System.out.println("parameter : " + parameter);
+
+        //DT_1JH20151
+        //kosis = json, enara = xml
+        String format = "json";
+        String site = "kosis";
+        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        //
+        // {"err":"30","errMsg":"데이터가 존재하지 않습니다."}
+
+        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> dataMap = new HashMap<>();
+        int cnt=1;
+        for (Object jsonObject : jsonList) {
+            JSONObject jsonData = (JSONObject) jsonObject;
+
+            //산업
+            String type = (String) jsonData.get("C1_NM");
+            //년도
+            String prdde = (String) jsonData.get("PRD_DE");
+            String yrdt = prdde.substring(0, 4);
+            //월
+            String monDt = prdde.substring(4, 6);
+            //점수단위(%)
+            String unit = (String) jsonData.get("UNIT_NM");
+            //지수
+            String val = (String) jsonData.get("DT");
+
+            dataMap.put("yrdt", yrdt);
+            dataMap.put("mondt", monDt);
+            dataMap.put("type", type);
+            dataMap.put("unit", unit);
+            dataMap.put("val", val);
+
+            commonService.insertContents(dataMap, PROGRAM_ID + ".insertAllprindex");//LifeSatisfaction.insertMarriage
+            cnt++;
         }
 
         result.put("data", dataMap);
