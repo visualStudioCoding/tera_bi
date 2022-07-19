@@ -48,14 +48,39 @@ public class LifeSatisfaction {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
         //out.print("year : " + sdf.format(today));
         String year = sdf.format(today);
+        model.addAttribute("year", year);
 
         //1.삶의 만족도
         Map<String,Object> dataMap1 = new HashMap<>();
-        //dataMap.put("",);
         dataMap1 = (Map<String, Object>) commonService.selectContents(null, PROGRAM_ID + ".selectLifeSatisfaction");
-        System.out.println("yr_dt : " + dataMap1.get("yr_dt"));
-        model.addAttribute("year", year);
-        model.addAttribute("data", dataMap1);
+        model.addAttribute("data1", dataMap1);
+
+        //2.결혼
+        Map<String,Object> dataMap2 = new HashMap<>();
+        dataMap2 = (Map<String, Object>) commonService.selectContents(null, PROGRAM_ID + ".selectMarriage");
+        model.addAttribute("data2", dataMap2);
+
+        //3.이혼
+        Map<String,Object> dataMap3 = new HashMap<>();
+        dataMap3 = (Map<String, Object>) commonService.selectContents(null, PROGRAM_ID + ".selectDivorce");
+        model.addAttribute("data3", dataMap3);
+
+        //4. 고용률
+        Map<String,Object> dataMap4 = new HashMap<>();
+        dataMap4 = (Map<String, Object>) commonService.selectContents(null, PROGRAM_ID + ".selectEmplyrate");
+        model.addAttribute("data4", dataMap4);
+
+        //5.실업률
+        Map<String,Object> dataMap5 = new HashMap<>();
+        dataMap5 = (Map<String, Object>) commonService.selectContents(null, PROGRAM_ID + ".selectUnmplrate");
+        model.addAttribute("data5", dataMap5);
+
+        //6.전산업생산지수
+        Map<String,Object> dataMap6 = new HashMap<>();
+        dataMap6 = (Map<String, Object>) commonService.selectContents(null, PROGRAM_ID + ".selectAllprindex");
+        model.addAttribute("data6", dataMap6);
+
+
         return DIRECTORY + PROGRAM_ID + "Main";
         //return DIRECTORY+ "index2";
     }

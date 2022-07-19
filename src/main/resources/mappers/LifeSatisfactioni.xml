@@ -225,4 +225,65 @@
             LIMIT
                   1
     </select>
+
+    <select id="selectMarriage" parameterType="HashMap" resultType="HashMap">
+        SELECT
+         *
+        FROM
+            marriage
+        WHERE
+            1=1
+            order by yr_dt desc
+            LIMIT
+                  1
+    </select>
+
+    <select id="selectDivorce" parameterType="HashMap" resultType="HashMap">
+        SELECT
+            *
+        FROM
+            divorce
+        WHERE
+            1=1
+        order by yr_dt desc
+            LIMIT
+                  1
+    </select>
+
+    <select id="selectEmplyrate" parameterType="HashMap" resultType="HashMap">
+        SELECT
+            *
+        FROM
+            emply_rate
+        WHERE
+            1=1
+        order by yr_dt desc
+            LIMIT
+                  1
+    </select>
+
+    <select id="selectUnmplrate" parameterType="HashMap" resultType="HashMap">
+        SELECT
+            *
+        FROM
+            unmpl_rate
+        WHERE
+            1=1
+        order by yr_dt desc
+            LIMIT
+                  1
+    </select>
+
+    <select id="selectAllprindex" parameterType="HashMap" resultType="HashMap">
+        SELECT
+            *
+        FROM
+            allpr_index
+        WHERE
+            1=1
+        order by yr_dt desc
+            LIMIT
+                  1
+    </select>
+
 </mapper>

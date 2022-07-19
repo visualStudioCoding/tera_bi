@@ -210,14 +210,10 @@
                     <input type="hidden" id="newEstPrdCnt" name="newEstPrdCnt" value=""/>
 
                     <div class="card-header">
-                        1.삶의 만족도 (년)${data.yr_dt}
-
-
-
-
+                        1.삶의 만족도 (년)
                     </div>
                     <div class="card-body">
-                        년도입력 <input type="text" name="startPrdDe" id="startPrdDe" value="" style="width:100%" >
+                        년도입력 <input type="text" name="startPrdDe" id="startPrdDe" value="${data1.yr_dt}" style="width:100%" >
                         <div id="rst1"></div>
                     </div>
                     <button type="submit" class="btn btn-outline-secondary activator" >실행</button>
@@ -258,7 +254,7 @@
                             </label>
                         </div>-->
 
-                        년도 <input type="text" name="startPrdDe" id="startPrdDe" value="" style="width:100%" >
+                        년도 <input type="text" name="startPrdDe" id="startPrdDe" value="${data2.yr_dt}${data2.mon_dt}" style="width:100%" >
                         <div id="rst2"></div>
                     </div>
                     <button type="submit" class="btn btn-outline-secondary activator">실행</button>
@@ -299,7 +295,7 @@
                                 Checked checkbox
                             </label>
                         </div>-->
-                        년도입력 <input type="text" name="startPrdDe" id="startPrdDe" value="" style="width:100%" >
+                        년도입력 <input type="text" name="startPrdDe" id="startPrdDe" value="${data3.yr_dt}${data3.mon_dt}" style="width:100%" >
                         <div id="rst3"></div>
                     </div>
 
@@ -318,7 +314,7 @@
                 <input type="hidden" id="newEstPrdCnt" name="newEstPrdCnt" value=""/>
                 <div class="card">
                     <div class="card-header">
-                        4.고용률(시/군/구)
+                        4.고용률(시/군/구)(월)
                     </div>
                     <div class="card-body">
                         <#-- <select class="form-select" aria-label="Default select example">
@@ -339,7 +335,7 @@
                                  Checked checkbox
                              </label>
                          </div>-->
-                        년도입력 <input type="text" name="startPrdDe" id="startPrdDe" value="" style="width:100%" >
+                        년도입력 <input type="text" name="startPrdDe" id="startPrdDe" value="${data4.yr_dt}${data4.mon_dt}" style="width:100%" >
                         <div id="rst4"></div>
                     </div>
                     <button type="button" class="btn btn-outline-secondary activator" onclick="api4();">실행</button>
@@ -360,10 +356,10 @@
                 <input type="hidden" id="newEstPrdCnt" name="newEstPrdCnt" value=""/>
             <div class="card">
                 <div class="card-header">
-                    5. 행정구역(시도)/성별 실업률
+                    5. 행정구역(시도)/성별 실업률(월)
                 </div>
                 <div class="card-body">
-                    년월입력 <input type="text" name="startPrdDe" id="startPrdDe" value="" style="width:100%" >
+                    년월입력 <input type="text" name="startPrdDe" id="startPrdDe" value="${data5.yr_dt}${data5.mon_dt}" style="width:100%" >
                     <div id="rst5"></div>
                 </div>
                 <button type="submit" class="btn btn-outline-secondary activator" >실행</button>
@@ -381,10 +377,10 @@
                 <input type="hidden" id="newEstPrdCnt" name="newEstPrdCnt" value=""/>
             <div class="card">
                 <div class="card-header">
-                    6. 전산업생산지수
+                    6. 전산업생산지수(월)
                 </div>
                 <div class="card-body">
-                    년월입력 <input type="text" name="startPrdDe" id="startPrdDe" value="" style="width:100%" >
+                    년월입력 <input type="text" name="startPrdDe" id="startPrdDe" value="${data6.yr_dt}${data6.mon_dt}" style="width:100%" >
                     <div id="rst6"></div>
                 </div>
                 <button type="submit" class="btn btn-outline-secondary activator">실행</button>
