@@ -39,11 +39,36 @@
         VALUES(#{yr_dt}, #{cty_nm}, #{unit}, #{val});
     </insert>
 
-    <insert id="insertExchangeRate" parameterType="hashMap">
-        INSERT INTO exchn_rate
-            (yr_dt, mon_dt, dy_dt, type, var)
-        VALUES(#{yr_dt},#{mon_dt},#{dy_dt},#{type},#{var});
+    <insert id="insertBaseRate" parameterType="hashMap">
+        INSERT INTO base_rate
+            (yr_dt, mon_dt, dy_dt, unit, val)
+        VALUES(#{yr_dt}, #{mon_dt}, #{dy_dt}, #{unit}, #{val})
     </insert>
 
+    <insert id="insertExchangeRate" parameterType="hashMap">
+        INSERT INTO exchn_rate
+            (yr_dt, mon_dt, dy_dt, type, unit, val)
+        VALUES(#{yr_dt}, #{mon_dt}, #{dy_dt}, #{type}, #{unit}, #{val});
+    </insert>
 
+    <insert id="insertConsumerPriceInflation" parameterType="hashMap">
+        INSERT INTO cnsmr_inrt
+            (yr_dt, mon_dt, unit, val)
+        VALUES(#{yr_dt}, #{mon_dt}, #{unit}, #{val});
+
+    </insert>
+
+    <insert id="insertCoreInflationRate" parameterType="hashMap">
+        INSERT INTO src_inrt
+            (yr_dt, mon_dt, unit, val)
+        VALUES(#{yr_dt}, #{mon_dt}, #{unit}, #{val});
+
+    </insert>
+
+    <insert id="insertLivingInflationRate" parameterType="hashMap">
+        INSERT INTO lvng_inrt
+            (yr_dt, mon_dt, unit, val)
+        VALUES(#{yr_dt}, #{mon_dt}, #{unit}, #{val});
+
+    </insert>
 </mapper>

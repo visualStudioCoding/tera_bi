@@ -208,14 +208,14 @@ public class CommonServiceImpl implements CommonService {
 		JSONParser jsonParser = new JSONParser();
 		return (JSONArray) jsonParser.parse(String.valueOf(stringBuilder));
 	}
-	public org.json.JSONObject ecosApiJsonParser(StringBuilder stringBuilder) throws ParseException {
+	public JSONArray ecosApiJsonParser(StringBuilder stringBuilder) throws ParseException {
 		JSONParser jsonParser = new JSONParser();
-		JSONObject jsonObject = (JSONObject) jsonParser.parse(String.valueOf(stringBuilder));
-		JSONObject root = jsonObject.getJSONObject("KeyStatisticList");
-		return root.getJSONObject("root");
+		org.json.simple.JSONObject jsonObject = (org.json.simple.JSONObject) jsonParser.parse(String.valueOf(stringBuilder));
+		org.json.simple.JSONObject root = (org.json.simple.JSONObject) jsonObject.get("KeyStatisticList");
+		return (JSONArray) root.get("row");
 	}
 
-	public org.json.JSONObject apiXmlParser(StringBuilder stringBuilder) throws ParserConfigurationException, IOException, SAXException {
+	public org.json.JSONObject apiXmlParser(StringBuilder stringBuilder) {
 		JSONObject jsonObject = XML.toJSONObject(String.valueOf(stringBuilder));
 		JSONObject root = jsonObject.getJSONObject("지표");
 		return root.getJSONObject("통계표");
