@@ -1,0 +1,189 @@
+package com.teraenergy.bisolution.StandardOfLiving;
+
+import com.teraenergy.global.service.CommonService;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@Component
+public class StandardOfLivingScheduler {
+
+    private static final String PROGRAM_ID = "StandardOfLiving";
+
+    @Resource(name = "commonService")
+    private CommonService commonService;
+
+//   1인당 개인소득
+    @Scheduled(cron="* * * 18 3 *")
+    @Transactional(rollbackFor = Exception.class)
+    public void capitaPersonalScheduler() throws Exception {
+
+        String url = "https://kosis.kr/openapi/Param/statisticsParameterData.do";
+        String parameter = "method=getList&apiKey=&itmId=T3+&objL1=ALL&objL2=&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&newEstPrdCnt=1&loadGubun=2&orgId=101&tblId=INH_1C86_04";
+        String format = "json";
+        String site = "kosis";
+
+        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+
+        Map<String, Object> dataMap = new HashMap<>();
+        Map<String, String> compareCapitalPersonal = (Map<String, String>) commonService.selectContents(PROGRAM_ID + ".compareCapitalPersonal");
+
+        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+
+        for(Object jsonObject : jsonList){
+            JSONObject jsonData = (JSONObject) jsonObject;
+
+            String yr_dt = (String) jsonData.get("PRD_DE");
+            String cty_nm = (String) jsonData.get("C1_NM");
+            String unit = (String) jsonData.get("UNIT_NM");
+            String val = (String) jsonData.get("DT");
+
+            if(compareCapitalPersonal.get("yr_dt").equals(yr_dt)){
+                break;
+            }
+
+            dataMap.put("yr_dt", yr_dt);
+            dataMap.put("cty_nm", cty_nm);
+            dataMap.put("unit", unit);
+            dataMap.put("val", val);
+
+            commonService.insertContents(dataMap, PROGRAM_ID + ".insertCapitaPersonal");
+        }
+    }
+
+    //   1인당 국민 총 소득
+//    @Scheduled(cron="* * * 31 3 *")
+    @Scheduled(cron="00 11 15 * * *")
+    @Transactional(rollbackFor = Exception.class)
+    public void grossNationalIncomeScheduler() throws Exception {
+
+        String url = "http://www.index.go.kr/openApi/xml_stts.do";
+        String parameter = "?userId=&statsCode=422101";
+        String format = "xml";
+        String site = "enara";
+
+        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+
+//      통계표
+        org.json.JSONObject table = commonService.apiXmlParser(stringBuilder);
+        String unit = table.getString("단위");
+        String[] gubun = unit.split(",");
+        org.json.JSONObject inner_table = table.getJSONObject("표");
+        org.json.JSONArray category = inner_table.getJSONArray("항목");
+
+
+        org.json.JSONObject info = category.getJSONObject(0);
+        org.json.JSONObject info_l = category.getJSONObject(2);
+
+        org.json.JSONArray columns = info.getJSONArray("열");
+        org.json.JSONArray columns_l = info_l.getJSONArray("열");
+
+        org.json.JSONArray jsonArray = new org.json.JSONArray();
+
+        for (int j = 0; j < columns.length(); j++) {
+            org.json.JSONObject jsonObject = new org.json.JSONObject();
+            org.json.JSONObject data = columns.getJSONObject(j);
+            org.json.JSONObject data_l = columns_l.getJSONObject(j);
+
+            if(data.get("주기").equals(data_l.get("주기"))) {
+                jsonObject.put("unit",gubun[0]);
+                jsonObject.put("date", data.get("주기"));
+                jsonObject.put("gdiVal", data.get("content"));
+                jsonObject.put("gniVal", data_l.get("content"));
+            }
+            jsonArray.put(jsonObject);
+        }
+        List<Map<String, Object>> data_list = new ArrayList<>();
+
+        Map<String ,String> compareIncomeDistributionIndex = (Map<String, String>) commonService.selectContents(PROGRAM_ID + ".compareGniCapita");
+        org.json.JSONObject compareData = (org.json.JSONObject) jsonArray.get(jsonArray.length()-1);
+
+            if(compareIncomeDistributionIndex.get("yr_dt").equals(compareData.get("date").toString())){
+                System.out.println("이미 최신화된 데이터 입니다.");
+            }else {
+
+                Map<String, Object> dataMap = new HashMap<>();
+
+                String yr_dt = Integer.toString((Integer) compareData.get("date"));
+                String gdiVal = Integer.toString((Integer) compareData.get("gdiVal"));
+                String gniVal = Integer.toString((Integer) compareData.get("gniVal"));
+                String getUnit = (String) compareData.get("unit");
+
+                dataMap.put("yr_dt", yr_dt);
+                dataMap.put("unit", getUnit);
+                dataMap.put("gdi_val", gdiVal);
+                dataMap.put("gni_val", gniVal);
+                System.out.println(dataMap);
+                data_list.add(dataMap);
+                commonService.insertContents(dataMap, PROGRAM_ID + ".insertGniCapita");
+            }
+
+//        for(Object jsonObject : jsonArray){
+//            if(compareIncomeDistributionIndex.get("yr_dt").equals(compareData.get("date").toString())){
+//                break;
+//            }
+//            Map<String, Object> dataMap = new HashMap<>();
+//
+//            org.json.JSONObject jsonData = (org.json.JSONObject) jsonObject;
+//
+//            String yr_dt =  Integer.toString((Integer) jsonData.get("date"));
+//            String gdiVal =  Integer.toString((Integer) jsonData.get("gdiVal"));
+//            String gniVal =  Integer.toString((Integer) jsonData.get("gniVal"));
+//            String getUnit = (String) jsonData.get("unit");
+//
+//            dataMap.put("yr_dt", yr_dt);
+//            dataMap.put("unit", getUnit);
+//            dataMap.put("gdi_val", gdiVal);
+//            dataMap.put("gni_val", gniVal);
+//            System.out.println(dataMap);
+//            data_list.add(dataMap);
+//            commonService.insertContents(dataMap, PROGRAM_ID + ".insertGniCapita");
+//        }
+    }
+
+    //   소득분배지표
+    @Scheduled(cron="* * * 16 12 *")
+    @Transactional(rollbackFor = Exception.class)
+
+    public void incomeDistributionIndexScheduler() throws Exception {
+
+        String url = "https://kosis.kr/openapi/Param/statisticsParameterData.do";
+        String parameter = "method=getList&apiKey=&itmId=T002+&objL1=&objL2=10+&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&newEstPrdCnt=1&loadGubun=2&orgId=101&tblId=DT_1HDLF05";
+        String format = "json";
+        String site = "kosis";
+
+        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+
+        Map<String, Object> dataMap = new HashMap<>();
+        Map<String, String> compareIncomeDistributionIndex = (Map<String, String>) commonService.selectContents(PROGRAM_ID + ".compareIncomeDistributionIndex");
+
+        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+
+        for(Object jsonObject : jsonList){
+            JSONObject jsonData = (JSONObject) jsonObject;
+
+            String yr_dt = (String) jsonData.get("PRD_DE");
+            String val = (String) jsonData.get("DT");
+
+            if(compareIncomeDistributionIndex.get("yr_dt").equals(yr_dt)){
+                break;
+            }
+
+            dataMap.put("yr_dt", yr_dt);
+            dataMap.put("val", val);
+            System.out.println(dataMap);
+            commonService.insertContents(dataMap, PROGRAM_ID + ".insertIncomeDistributionIndex");
+        }
+    }
+
+}
