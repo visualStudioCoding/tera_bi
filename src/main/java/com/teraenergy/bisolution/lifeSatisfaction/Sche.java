@@ -519,4 +519,101 @@ public class Sche {
         }
 
     }
+
+    //5.행정구역(시도)/성별 실업률
+    @Scheduled(cron = "* * 4 * * *")
+    public void unmplyrate_Schedule() throws Exception {
+        String url = "https://kosis.kr/openapi/Param/statisticsParameterData.do";
+        //String parameter = "?method=getList&apiKey=&itmId=T90+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=M&newEstPrdCnt=1&loadGubun=2&orgId=101&tblId=DT_1DA7014S";
+        String parameter = "?method=getList&apiKey=&itmId=T80+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=M&newEstPrdCnt=1&loadGubun=2&orgId=101&tblId=DT_1DA7104S";
+        //DT_1DA7104S
+        //https://kosis.kr/openapi/Param/statisticsParameterData.do?method=getList&apiKey=MDE5NGY4NzM1YzIxMDJmY2FlNTJkMTg0NThiZDJmMjQ=&itmId=T90+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=M&newEstPrdCnt=1&loadGubun=2&orgId=101&tblId=DT_1DA7014S
+
+        String format = "json";
+        String site = "kosis";
+        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        //
+        // {"err":"30","errMsg":"데이터가 존재하지 않습니다."}
+
+        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> dataMap = new HashMap<>();
+        int cnt=1;
+        for (Object jsonObject : jsonList) {
+            JSONObject jsonData = (JSONObject) jsonObject;
+
+            //아이템 - 실업률
+            String item = (String) jsonData.get("ITM_NM");
+            //시도
+            String ctyNm = (String) jsonData.get("C1_NM");
+            //남녀
+            String grp = (String) jsonData.get("C2_NM");
+            //고용률이고 계는 뺀다
+            if("실업률".equals(item) && !"계".equals(ctyNm) && !"계".equals(grp)) {
+                //년도
+                String prdde = (String) jsonData.get("PRD_DE");
+                String yrdt = prdde.substring(0, 4);
+                //월
+                String monDt = prdde.substring(4, 6);
+                //점수단위(%)
+                String unit = (String) jsonData.get("UNIT_NM");
+                //고용률
+                String val = (String) jsonData.get("DT");
+
+                dataMap.put("yrdt", yrdt);
+                dataMap.put("mondt", monDt);
+                dataMap.put("ctynm", ctyNm);
+                dataMap.put("grp", grp);
+                dataMap.put("unit", unit);
+                dataMap.put("val", val);
+
+                commonService.insertContents(dataMap, PROGRAM_ID + ".insertUmplrate");//LifeSatisfaction.insertMarriage
+                cnt++;
+            }
+        }
+    }
+
+    //6.전산업생산지수
+    @Scheduled(cron = "* * 4 * * *")
+    public void allprindex_Schedule() throws Exception {
+        String url = "https://kosis.kr/openapi/Param/statisticsParameterData.do";
+        //String parameter = "?method=getList&apiKey=&itmId=T90+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=M&newEstPrdCnt=1&loadGubun=2&orgId=101&tblId=DT_1DA7014S";
+          String parameter = "?method=getList&apiKey=&itmId=T1+&objL1=ALL&objL2=&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=M&newEstPrdCnt=1&loadGubun=2&orgId=101&tblId=DT_1JH20151";
+        //DT_1JH20151
+
+        String format = "json";
+        String site = "kosis";
+        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        //
+        // {"err":"30","errMsg":"데이터가 존재하지 않습니다."}
+
+        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> dataMap = new HashMap<>();
+        int cnt=1;
+        for (Object jsonObject : jsonList) {
+            JSONObject jsonData = (JSONObject) jsonObject;
+
+            //산업
+            String type = (String) jsonData.get("C1_NM");
+            //년도
+            String prdde = (String) jsonData.get("PRD_DE");
+            String yrdt = prdde.substring(0, 4);
+            //월
+            String monDt = prdde.substring(4, 6);
+            //점수단위(%)
+            String unit = (String) jsonData.get("UNIT_NM");
+            //지수
+            String val = (String) jsonData.get("DT");
+
+            dataMap.put("yrdt", yrdt);
+            dataMap.put("mondt", monDt);
+            dataMap.put("type", type);
+            dataMap.put("unit", unit);
+            dataMap.put("val", val);
+
+            commonService.insertContents(dataMap, PROGRAM_ID + ".insertAllprindex");//LifeSatisfaction.insertMarriage
+            cnt++;
+        }
+    }
 }
