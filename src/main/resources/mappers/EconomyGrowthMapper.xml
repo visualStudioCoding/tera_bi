@@ -8,35 +8,32 @@
     <insert id="insertStateDebt" parameterType="hashMap">
         INSERT INTO national_debt
             (yr_dt, unit, val)
-        VALUES(#{yr_dt}, #{unit}, #{val});
-
+        VALUES(#{yr_dt}, #{unit}, #{val})
     </insert>
 
     <insert id="insertGDP" parameterType="hashMap">
         INSERT INTO gdp
             (yr_dt, unit, val)
-        VALUES(#{yr_dt}, #{unit}, #{val});
-
+        VALUES(#{yr_dt}, #{unit}, #{val})
     </insert>
 
     <insert id="insertGDI" parameterType="hashMap">
         INSERT INTO gdi
             (yr_dt, unit, val)
-        VALUES(#{yr_dt}, #{unit}, #{val});
-
+        VALUES(#{yr_dt}, #{unit}, #{val})
     </insert>
 
     <insert id="insertGNI" parameterType="hashMap">
         INSERT INTO gni
             (yr_dt, unit, val)
-        VALUES(#{yr_dt}, #{unit}, #{val});
+        VALUES(#{yr_dt}, #{unit}, #{val})
 
     </insert>
 
     <insert id="insertGrowthRate" parameterType="hashMap">
         INSERT INTO enmc_grrt
             (yr_dt, cty_nm, unit, val)
-        VALUES(#{yr_dt}, #{cty_nm}, #{unit}, #{val});
+        VALUES(#{yr_dt}, #{cty_nm}, #{unit}, #{val})
     </insert>
 
     <insert id="insertBaseRate" parameterType="hashMap">
@@ -48,27 +45,74 @@
     <insert id="insertExchangeRate" parameterType="hashMap">
         INSERT INTO exchn_rate
             (yr_dt, mon_dt, dy_dt, type, unit, val)
-        VALUES(#{yr_dt}, #{mon_dt}, #{dy_dt}, #{type}, #{unit}, #{val});
+        VALUES(#{yr_dt}, #{mon_dt}, #{dy_dt}, #{type}, #{unit}, #{val})
     </insert>
 
     <insert id="insertConsumerPriceInflation" parameterType="hashMap">
         INSERT INTO cnsmr_inrt
             (yr_dt, mon_dt, unit, val)
-        VALUES(#{yr_dt}, #{mon_dt}, #{unit}, #{val});
+        VALUES(#{yr_dt}, #{mon_dt}, #{unit}, #{val})
 
     </insert>
 
     <insert id="insertCoreInflationRate" parameterType="hashMap">
         INSERT INTO src_inrt
             (yr_dt, mon_dt, unit, val)
-        VALUES(#{yr_dt}, #{mon_dt}, #{unit}, #{val});
+        VALUES(#{yr_dt}, #{mon_dt}, #{unit}, #{val})
 
     </insert>
 
     <insert id="insertLivingInflationRate" parameterType="hashMap">
         INSERT INTO lvng_inrt
             (yr_dt, mon_dt, unit, val)
-        VALUES(#{yr_dt}, #{mon_dt}, #{unit}, #{val});
+        VALUES(#{yr_dt}, #{mon_dt}, #{unit}, #{val})
 
     </insert>
+
+    <select id="compareExchangeRate" parameterType="hashMap" resultType="hashMap">
+        SELECT MAX(yr_dt) AS yr_dt, MAX(mon_dt) AS mon_dt, MAX(dy_dt) AS dy_dt FROM exchn_rate
+        WHERE yr_dt = (SELECT MAX(yr_dt) FROM exchn_rate)
+    </select>
+
+    <select id="compareBaseRate" parameterType="hashMap" resultType="hashMap">
+        SELECT MAX(yr_dt) AS yr_dt, MAX(mon_dt) AS mon_dt, MAX(dy_dt) AS dy_dt FROM base_rate
+        WHERE yr_dt = (SELECT MAX(yr_dt) FROM base_rate)
+    </select>
+
+    <select id="compareStateDebt" parameterType="hashMap" resultType="hashMap">
+        SELECT MAX(yr_dt) AS yr_dt FROM national_debt
+    </select>
+
+    <select id="compareGDP" parameterType="hashMap" resultType="hashMap">
+        SELECT MAX(yr_dt) AS yr_dt FROM gdp
+    </select>
+
+    <select id="compareGNI" parameterType="hashMap" resultType="hashMap">
+        SELECT MAX(yr_dt) AS yr_dt FROM gni
+    </select>
+
+    <select id="compareGDI" parameterType="hashMap" resultType="hashMap">
+        SELECT MAX(yr_dt) AS yr_dt FROM gdi
+    </select>
+
+    <select id="compareGrowthRate" parameterType="hashMap" resultType="hashMap">
+        SELECT MAX(yr_dt) AS yr_dt FROM enmc_grrt
+    </select>
+
+    <select id="comparePriceInflation" parameterType="hashMap" resultType="hashMap">
+        SELECT MAX(yr_dt) AS yr_dt, MAX(mon_dt) AS mon_dt FROM cnsmr_inrt
+        WHERE yr_dt = (SELECT MAX(yr_dt) FROM cnsmr_inrt)
+    </select>
+
+    <select id="compareLivingInflation" parameterType="hashMap" resultType="hashMap">
+        SELECT MAX(yr_dt) AS yr_dt, MAX(mon_dt) AS mon_dt FROM lvng_inrt
+        WHERE yr_dt = (SELECT MAX(yr_dt) FROM lvng_inrt)
+    </select>
+
+    <select id="compareCoreInflation" parameterType="hashMap" resultType="hashMap">
+        SELECT MAX(yr_dt) AS yr_dt, MAX(mon_dt) AS mon_dt AS dy_dt FROM src_inrt
+        WHERE yr_dt = (SELECT MAX(yr_dt) FROM src_inrt)
+    </select>
+
+
 </mapper>

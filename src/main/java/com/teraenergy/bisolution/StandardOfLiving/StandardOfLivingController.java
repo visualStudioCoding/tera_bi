@@ -33,7 +33,7 @@ public class StandardOfLivingController {
         log.info(DIRECTORY + PROGRAM_ID + "main");
         return DIRECTORY + PROGRAM_ID + "Main";
     }
-
+    // 1인당 개인소득
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
     @GetMapping("/api/getCapitaPersonal")
@@ -73,6 +73,7 @@ public class StandardOfLivingController {
         return result;
     }
 
+//   1인당 국민 총 소득
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
     @GetMapping("/api/getGrossNationalIncome")
@@ -140,6 +141,7 @@ public class StandardOfLivingController {
         return result;
     }
 
+//   소득분배지표
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
     @GetMapping("/api/getIncomeDistributionIndex")
