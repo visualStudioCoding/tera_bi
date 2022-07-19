@@ -17,7 +17,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+/**
+ *
+ * 부동산시장동향 api 호출 및 db 적재
+ *
+ * @author tera
+ * @version 1.0.0
+ * 작성일 2022-07-19
+**/
 @Slf4j
 @Controller
 @RequestMapping("/realEstate")
@@ -298,5 +305,32 @@ public class RealEstateController {
 
         temp.put("success", "성공");
         return temp;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @ResponseBody
+    @GetMapping("/api/grp")
+    public Object getGrossRegionalProduct(String url, String parameter) throws Exception {
+        Map<String, Object> result = new HashMap<>();
+        List<Map<String, Object>> dataList = new ArrayList<>();
+        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, FORMAT, SITE);
+        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+
+        for (Object jsonObject : jsonList) {
+            Map<String, Object> dataMap = new HashMap<>();
+            JSONObject jsonData = (JSONObject) jsonObject;
+
+            dataMap.put("yrDt", jsonData.get("PRD_DE"));
+            dataMap.put("ctyNm", jsonData.get("C1_NM"));
+            dataMap.put("unit", String.valueOf(jsonData.get("UNIT_NM")).substring(0, 3));
+            dataMap.put("val", jsonData.get("DT"));
+
+            dataList.add(dataMap);
+            commonService.insertContents(dataMap, PROGRAM_ID + ".insertGrp");
+        }
+
+        result.put("data", dataList);
+        result.put("success", "성공");
+        return result;
     }
 }

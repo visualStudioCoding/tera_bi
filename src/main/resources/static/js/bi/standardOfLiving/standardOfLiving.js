@@ -1,6 +1,6 @@
 let errorMsg = "api 호출 에러";
 
-function getenaraParam(form){
+function getEnaraParam(form){
 
     let enaraParam = {"statsCode": form.statsCode.value}
 
@@ -71,7 +71,7 @@ function getGrossNationalIncome(){
 
     let formData = document.forms["getGrossNationalIncome_opt"]
 
-    let params = getenaraParam(formData)
+    let params = getEnaraParam(formData)
 
     let callBackFn = function(data){
         alert(data.success);
@@ -115,4 +115,17 @@ function getLargeData(){
     }
 
 
+}
+
+function fnMinPay(){
+
+    let formData = document.forms["formMinPay"]
+
+    let params = getEnaraParam(formData)
+
+    let callBackFn = function(data){
+        alert(data.success);
+        console.log(data.data)
+    }
+    enaraApiAjax("/standardOfLiving/api/minPay", callBackFn, 'get', params, errorMsg)
 }

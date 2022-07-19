@@ -6,58 +6,33 @@
                 <div class="card-header">
                     주가지수-코스닥 종합지수
                 </div>
-                <div class="card-body">
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                            Default checkbox
-                        </label>
+                <form name="formCompositeIndex">
+                    <div class="card-body">
+                        <span>년도 선택</span>
+                        <select class="form-select" name="prdDe" aria-label="Default select example" disabled>
+                            <option selected>해당 API는 년도를 선택할 수 없습니다.</option>
+                        </select>
+                        <input type="hidden" name="statsCode" value="108001" />
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-                        <label class="form-check-label" for="flexCheckChecked">
-                            Checked checkbox
-                        </label>
-                    </div>
-                </div>
+                </form>
                 <button type="button" class="btn btn-outline-secondary activator" onclick="fnCompositeIndex()">실행</button>
             </div>
-            <form id="formCompositeIndex" name="formCompositeIndex">
-                <input type="hidden" id="statsCode" name="itmId" value="108001"/>
-            </form>
         </div>
         <div class="col">
             <div class="card">
                 <div class="card-header">
                     출생 사망 추이
                 </div>
-                <div class="card-body">
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                            Default checkbox
-                        </label>
+                <form name="formBirthDeath">
+                    <div class="card-body">
+                        <span>년도 선택</span>
+                        <select class="form-select" name="prdDe" aria-label="Default select example" disabled>
+                            <option selected>해당 API는 년도를 선택할 수 없습니다.</option>
+                        </select>
+                        <input type="hidden" name="statsCode" value="101101" />
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-                        <label class="form-check-label" for="flexCheckChecked">
-                            Checked checkbox
-                        </label>
-                    </div>
-                </div>
-                <button type="button" id="MonthlyExchangeRate" class="btn btn-outline-secondary activator" onclick="getMonthlyExchangeRate()">실행</button>
+                </form>
+                <button type="button" id="MonthlyExchangeRate" class="btn btn-outline-secondary activator" onclick="fnBirthDeath()">실행</button>
             </div>
         </div>
     </div>
