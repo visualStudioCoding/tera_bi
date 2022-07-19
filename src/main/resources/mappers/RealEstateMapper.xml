@@ -154,4 +154,11 @@
     <delete id="deletePopulationTmp" parameterType="hashMap">
         DELETE FROM population_tmp
     </delete>
+
+    <select id="populationMaxDate" resultType="hashMap">
+        SELECT MAX(yr_dt) AS yrDt
+             , MAX(mon_dt) AS monDt
+        FROM population
+        WHERE yr_dt = (SELECT MAX(yr_dt) FROM population)
+    </select>
 </mapper>

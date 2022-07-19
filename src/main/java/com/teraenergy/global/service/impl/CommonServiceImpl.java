@@ -46,40 +46,69 @@ public class CommonServiceImpl implements CommonService {
     public List<?> selectList(final Object paramDTO, final String queryId) throws Exception {
         return commonMapper.selectList(paramDTO, queryId);
     }
+
+    @Override
+    public List<?> selectList(final String queryId) throws Exception {
+        return commonMapper.selectList(queryId);
+    }
     
     @Override
 	public Map<?, ?> selectMap(final Object paramDTO, final String queryId, final String mapKey) throws Exception {
 		return commonMapper.selectMap(paramDTO, queryId, mapKey);
+	}
+	@Override
+	public Map<?, ?> selectMap(final String queryId, final String mapKey) throws Exception {
+		return commonMapper.selectMap(queryId, mapKey);
 	}
 
 	@Override
 	public int selectCount(final Object paramDTO, final String queryId) throws Exception {
 		return commonMapper.selectCount(paramDTO, queryId);
 	}
+	@Override
+	public int selectCount(final String queryId) throws Exception {
+		return commonMapper.selectCount(queryId);
+	}
 
 	@Override
 	public Object selectContents(final Object paramDTO, final String queryId) throws Exception {
 		return commonMapper.selectContents(paramDTO, queryId);
+	}
+	@Override
+	public Object selectContents(final String queryId) throws Exception {
+		return commonMapper.selectContents(queryId);
 	}
 
 	@Override
 	public int insertContents(final Object paramDTO, final String queryId) throws Exception {
 		return commonMapper.insertContents(paramDTO, queryId);
 	}
+	@Override
+	public int insertContents(final String queryId) throws Exception {
+		return commonMapper.insertContents(queryId);
+	}
 
 	@Override
-	public Object insertSelectKey(final Object pparamDTO, final String pQueryId) throws Exception {
-		return commonMapper.insertSelectKey(pparamDTO, pQueryId);
+	public Object insertSelectKey(final Object paramDTO, final String queryId) throws Exception {
+		return commonMapper.insertSelectKey(paramDTO, queryId);
 	}
 
 	@Override
 	public int updateContents(final Object paramDTO, final String queryId) throws Exception {
 		return commonMapper.updateContents(paramDTO, queryId);
 	}
+	@Override
+	public int updateContents(final String queryId) throws Exception {
+		return commonMapper.updateContents(queryId);
+	}
 
 	@Override
 	public int deleteContents(final Object paramDTO, final String queryId) throws Exception {
 		return commonMapper.deleteContents(paramDTO, queryId);
+	}
+	@Override
+	public int deleteContents(final String queryId) throws Exception {
+		return commonMapper.deleteContents(queryId);
 	}
 
 	@Override

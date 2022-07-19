@@ -65,10 +65,9 @@ public class RealEstateController {
             for (Object jsonObject : jsonList) {
                 JSONObject jsonData = (JSONObject) jsonObject;
 
-                String year = (String) jsonData.get("PRD_DE");
-                year = year.substring(0, 4);
-                String getMonth = (String) jsonData.get("PRD_DE");
-                getMonth = getMonth.substring(4, 6);
+                String date = (String) jsonData.get("PRD_DE");
+                String year = date.substring(0, 4);
+                String getMonth = date.substring(4, 6);
 
                 String gender = (String) jsonData.get("ITM_NM_ENG");
                 gender = gender.contains("Male") ? "남" : "여";
@@ -117,10 +116,9 @@ public class RealEstateController {
             for (Object jsonObject : jsonList) {
                 JSONObject jsonData = (JSONObject) jsonObject;
 
-                String year = (String) jsonData.get("PRD_DE");
-                year = year.substring(0, 4);
-                String getMonth = (String) jsonData.get("PRD_DE");
-                getMonth = getMonth.substring(4, 6);
+                String date = (String) jsonData.get("PRD_DE");
+                String year = date.substring(0, 4);
+                String getMonth = date.substring(4, 6);
 
                 String ctyName = AreaNameUtil.areaName((String) jsonData.get("C1"), "");
 
@@ -164,10 +162,9 @@ public class RealEstateController {
             for (Object jsonObject : jsonList) {
                 JSONObject jsonData = (JSONObject) jsonObject;
 
-                String year = (String) jsonData.get("PRD_DE");
-                year = year.substring(0, 4);
-                String getMonth = (String) jsonData.get("PRD_DE");
-                getMonth = getMonth.substring(4, 6);
+                String date = (String) jsonData.get("PRD_DE");
+                String year = date.substring(0, 4);
+                String getMonth = date.substring(4, 6);
 
                 String ctyName = AreaNameUtil.areaName((String) jsonData.get("C1"), "other");
 
@@ -207,10 +204,9 @@ public class RealEstateController {
             for (Object jsonObject : jsonList) {
                 JSONObject jsonData = (JSONObject) jsonObject;
 
-                String year = (String) jsonData.get("PRD_DE");
-                year = year.substring(0, 4);
-                String getMonth = (String) jsonData.get("PRD_DE");
-                getMonth = getMonth.substring(4, 6);
+                String date = (String) jsonData.get("PRD_DE");
+                String year = date.substring(0, 4);
+                String getMonth = date.substring(4, 6);
 
                 String ctyName = AreaNameUtil.areaName((String) jsonData.get("C1"), "");
 
@@ -245,7 +241,7 @@ public class RealEstateController {
         Map<String, String> splitParams = realEstateService.splitParameter(parameter);
 
         List<Map<String, Object>> dataList = new ArrayList<>();
-        for (int month = 7; month <= 12; month++) {
+        for (int month = 1; month <= 12; month++) {
             parameter = realEstateService.stringCombination(splitParams, month);
 
             StringBuilder stringBuilder = commonService.getApiResult(url, parameter, FORMAT, SITE);
@@ -255,10 +251,9 @@ public class RealEstateController {
                 Map<String, Object> dataMap = new HashMap<>();
                 JSONObject jsonData = (JSONObject) jsonObject;
 
-                String year = (String) jsonData.get("PRD_DE");
-                year = year.substring(0, 4);
-                String getMonth = (String) jsonData.get("PRD_DE");
-                getMonth = getMonth.substring(4, 6);
+                String date = (String) jsonData.get("PRD_DE");
+                String year = date.substring(0, 4);
+                String getMonth = date.substring(4, 6);
 
                 String ctyName = AreaNameUtil.areaName((String) jsonData.get("C1"), "");
                 String ageName = AgeUtil.getAgeName((String) jsonData.get("C2"));
