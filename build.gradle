@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.teraenergy'
-version = '0.1.1'
+version = '0.1.5'
 sourceCompatibility = '11'
 
 configurations {
@@ -63,6 +63,9 @@ dependencies {
 
 	// https://mvnrepository.com/artifact/commons-io/commons-io
 	implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
+
+	// https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
 
 
 

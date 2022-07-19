@@ -15,7 +15,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+/**
+ *
+ * 생활수준지표 api 호출 및 db 적재
+ *
+ * @author tera
+ * @version 1.0.0
+ * 작성일 2022-07-19
+**/
 @Slf4j
 @Controller
 @RequestMapping("/standardOfLiving")
@@ -33,7 +40,7 @@ public class StandardOfLivingController {
         log.info(DIRECTORY + PROGRAM_ID + "main");
         return DIRECTORY + PROGRAM_ID + "Main";
     }
-
+    // 1인당 개인소득
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
     @GetMapping("/api/getCapitaPersonal")
@@ -73,7 +80,8 @@ public class StandardOfLivingController {
         return result;
     }
 
-    @Transactional
+//   1인당 국민 총 소득
+    @Transactional(rollbackFor = Exception.class)
     @ResponseBody
     @GetMapping("/api/getGrossNationalIncome")
     public Object getGrossNationalIncome(String url, String parameter) throws Exception {
@@ -140,6 +148,8 @@ public class StandardOfLivingController {
         return result;
     }
 
+//   소득분배지표
+    @Transactional(rollbackFor = Exception.class)
     @ResponseBody
     @GetMapping("/api/getIncomeDistributionIndex")
     public Object getIncomeDistributionIndex(String url, String parameter) throws Exception {
@@ -173,5 +183,48 @@ public class StandardOfLivingController {
 
         return result;
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    @ResponseBody
+    @GetMapping("/api/minPay")
+    public Object getMinPay(String url, String parameter) throws Exception {
+        //kosis = json, enara = xml
+        String format = "xml";
+        String site = "enara";
+        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+
+        Map<String, Object> result = new HashMap<>();
+        try{
+//          통계표
+            org.json.JSONObject table = commonService.apiXmlParser(stringBuilder);
+            String unit = table.getString("단위");
+            String[] units = unit.split(",");
+            org.json.JSONObject innerTable = table.getJSONObject("표");
+            org.json.JSONArray category = innerTable.getJSONArray("항목");
+
+            List<Map<String, Object>> dataList = new ArrayList<>();
+            org.json.JSONObject jsonObject = category.getJSONObject(0);
+            org.json.JSONArray columns = jsonObject.getJSONArray("열");
+            for (Object data : columns) {
+                Map<String, Object> dataMap = new HashMap<>();
+                org.json.JSONObject jsonData = (org.json.JSONObject) data;
+                String date = Integer.toString((Integer) jsonData.get("주기"));
+
+                dataMap.put("yrDt", date);
+                dataMap.put("unit", units[0]);
+                dataMap.put("val", String.valueOf(jsonData.get("content")));
+
+                dataList.add(dataMap);
+                commonService.insertContents(dataMap, PROGRAM_ID + ".insertMinPay");
+            }
+            result.put("data", dataList);
+            result.put("success", "성공");
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+
 
 }

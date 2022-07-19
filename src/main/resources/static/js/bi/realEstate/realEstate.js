@@ -76,11 +76,32 @@ function fnPopulationAge(){
     // getIncome();
     //ajax가 정상 호출 되었을때 실행 되는 함수
     let callBackFn = function( data ) {
+        callBackDivision(data);
+        console.log(data.data)
+    }
+    let callBackDivision = function ( data ) {
+        commonAjax("/realEstate/populationAgeDivision", "", callBack, 'get', 'error');
+        console.log(data.data)
+    }
+
+    let callBack = function ( data ) {
+        console.log(data.data)
+        alert(data.success);
+    }
+    //공통모듈 ajax 함수 호출하기
+    kosisApiAjax("/realEstate/api/populationAge", callBackFn, 'get', param, errorMsg);
+}
+function fnGrp(){
+    const frm = document.forms['formGrp'];
+    let param = fnParam(frm);
+    // getIncome();
+    //ajax가 정상 호출 되었을때 실행 되는 함수
+    let callBackFn = function( data ) {
         alert(data.success);
         console.log(data.data)
     }
     //공통모듈 ajax 함수 호출하기
-    kosisApiAjax("/realEstate/api/populationAge", callBackFn, 'get', param, errorMsg);
+    kosisApiAjax("/realEstate/api/grp", callBackFn, 'get', param, errorMsg);
 }
 
 

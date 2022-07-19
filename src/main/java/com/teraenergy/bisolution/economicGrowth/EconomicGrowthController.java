@@ -29,17 +29,20 @@ public class EconomicGrowthController {
     @Resource(name = "commonService")
     private CommonService commonService;
 
+    @Resource(name = "economicGrowthService")
+    private EconomicGrowthService economicGrowthService;
+
     @GetMapping("/main")
     public String economicGrowthMain() throws Exception {
         log.info(DIRECTORY + PROGRAM_ID + "List");
         return DIRECTORY + PROGRAM_ID + "Main";
     }
 
-    //getInflationRate
+    //기준금리 및 환율
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
     @GetMapping("/api/getMonthlyExchangeRate")
-    public Object getInflationRate(String url, String parameter) throws Exception {
+    public Object getMonthlyExchangeRate(String url, String parameter) throws Exception {
 
         System.out.println(url);
         System.out.println(parameter);
@@ -49,10 +52,8 @@ public class EconomicGrowthController {
         String site = "ecos";
         StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
 
-        org.json.JSONObject jsonObj = commonService.ecosApiJsonParser(stringBuilder);
-
-        org.json.JSONArray jsonList = jsonObj.getJSONArray("row");
-
+        JSONArray jsonList = commonService.ecosApiJsonParser(stringBuilder);
+        System.out.println(jsonList);
         Map<String, Object> dataMap = new HashMap<>();
         Map<String, Object> result = new HashMap<>();
 
@@ -62,9 +63,9 @@ public class EconomicGrowthController {
                 String baseMoneyRate = (String) jsonData.get("DATA_VALUE");
                 String unit = (String) jsonData.get("UNIT_NAME");
                 String date = (String) jsonData.get("CYCLE");
-                String year = date.substring(0, 3);
-                String month = date.substring(4,5);
-                String day = date.substring(6,7);
+                String year = date.substring(0, 4);
+                String month = date.substring(4,6);
+                String day = date.substring(6,8);
                 dataMap.put("yr_dt", year);
                 dataMap.put("mon_dt", month);
                 dataMap.put("dy_dt", day);
@@ -72,15 +73,17 @@ public class EconomicGrowthController {
                 dataMap.put("val", baseMoneyRate);
                 System.out.println(dataMap);
 
+                commonService.insertContents(dataMap, PROGRAM_ID + ".insertBaseRate");
+
             }else if("환율".equals(jsonData.get("CLASS_NAME"))){
                 String[] type = jsonData.get("KEYSTAT_NAME").toString().split(" ");
                 String det_type = type[0];
                 String exMoneyRate = (String) jsonData.get("DATA_VALUE");
                 String unit = (String) jsonData.get("UNIT_NAME");
                 String date = (String) jsonData.get("CYCLE");
-                String year = date.substring(0, 3);
-                String month = date.substring(4,5);
-                String day = date.substring(6,7);
+                String year = date.substring(0, 4);
+                String month = date.substring(4,6);
+                String day = date.substring(6,8);
                 dataMap.put("yr_dt", year);
                 dataMap.put("mon_dt", month);
                 dataMap.put("dy_dt", day);
@@ -88,10 +91,15 @@ public class EconomicGrowthController {
                 dataMap.put("unit", unit);
                 dataMap.put("val", exMoneyRate);
                 System.out.println(dataMap);
+
+                commonService.insertContents(dataMap, PROGRAM_ID + ".insertExchangeRate");
             }
         }
 
-        return null;
+        result.put("data", dataMap);
+        result.put("success", "성공");
+
+        return result;
     }
 
     @ResponseBody
@@ -202,6 +210,8 @@ public class EconomicGrowthController {
 
         return result;
     }
+
+    // 경제성장률
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
     @GetMapping("/api/getGrowthRate")
@@ -234,6 +244,106 @@ public class EconomicGrowthController {
         }
 
         result.put("data", dataMap);
+        result.put("success", "성공");
+
+        return result;
+    }
+
+//    소비자/근원/생활 물가 상승률
+    @Transactional(rollbackFor = Exception.class)
+    @ResponseBody
+    @GetMapping("/api/getInflationRate")
+    public Object getInflationRate(String url, String parameter) throws Exception {
+        String format = "json";
+        String site = "kosis";
+        System.out.println(parameter);
+
+        Map<String, String> splitParams = economicGrowthService.splitParmas(parameter);
+
+        Map<String, Object> dataMap = new HashMap<>();
+        Map<String, Object> result = new HashMap<>();
+
+//        for(int year = 1966; year <= 2022; year++){
+//            for (int month = 1; month <= 12; month++) {
+//                String mon_dt = null;
+//                if(year == 2022 && month == 7){
+//                    break;
+//                }
+//                if(month < 10){
+//                    mon_dt = "0" + Integer.toString(month);
+//                }else{
+//                    mon_dt = Integer.toString(month);
+//                }
+//                parameter = economicGrowthService.combineParams(splitParams, Integer.toString(year), mon_dt);
+//                System.out.println(parameter);
+//                StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+//                JSONArray jsonArray = (JSONArray) commonService.apiJsonParser(stringBuilder);
+//
+//
+//                String years = null;
+//                String months = null;
+//                String val = null;
+//                String unit = null;
+//
+//                for(Object jsonObject : jsonArray){
+//                    JSONObject jsonData = (JSONObject) jsonObject;
+//
+//                    years = jsonData.get("PRD_DE").toString().substring(0, 4);
+//                    months = jsonData.get("PRD_DE").toString().substring(4,6);
+//                    val = (String) jsonData.get("DT");
+//                    unit = (String) jsonData.get("ITM_NM");
+//
+//                    dataMap.put("val",val);
+//                    dataMap.put("yr_dt",years);
+//                    dataMap.put("mon_dt",months);
+//                    dataMap.put("unit", unit);
+//
+//                    if("총지수".equals(jsonData.get("C1_NM"))){
+//                        commonService.insertContents(dataMap, PROGRAM_ID + ".insertConsumerPriceInflation");
+//                    }else if("생활물가지수".equals(jsonData.get("C1_NM"))){
+//                        commonService.insertContents(dataMap, PROGRAM_ID + ".insertLivingInflationRate");
+//                    }else if("농산물및석유류제외지수".equals(jsonData.get("C1_NM"))){
+//                        commonService.insertContents(dataMap, PROGRAM_ID + ".insertCoreInflationRate");
+//                    }
+//                }
+//
+//                result.put("data",dataMap);
+//                result.put("success", "성공");
+//
+//            }
+//        }
+
+        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+        JSONArray jsonArray = (JSONArray) commonService.apiJsonParser(stringBuilder);
+
+        String year = null;
+        String month = null;
+        String val = null;
+        String unit = null;
+
+        for(Object jsonObject : jsonArray){
+            JSONObject jsonData = (JSONObject) jsonObject;
+
+            year = jsonData.get("PRD_DE").toString().substring(0, 4);
+            month = jsonData.get("PRD_DE").toString().substring(4,6);
+            val = (String) jsonData.get("DT");
+            unit = (String) jsonData.get("ITM_NM");
+
+            dataMap.put("val",val);
+            dataMap.put("yr_dt",year);
+            dataMap.put("mon_dt",month);
+            dataMap.put("unit", unit);
+
+            if("총지수".equals(jsonData.get("C1_NM"))){
+                commonService.insertContents(dataMap, PROGRAM_ID + ".insertConsumerPriceInflation");
+            }else if("생활물가지수".equals(jsonData.get("C1_NM"))){
+                commonService.insertContents(dataMap, PROGRAM_ID + ".insertLivingInflationRate");
+            }else if("농산물및석유류제외지수".equals(jsonData.get("C1_NM"))){
+                commonService.insertContents(dataMap, PROGRAM_ID + ".insertCoreInflationRate");
+            }
+        }
+
+        result.put("data",dataMap);
         result.put("success", "성공");
 
         return result;

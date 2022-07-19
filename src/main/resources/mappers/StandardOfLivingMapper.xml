@@ -18,6 +18,23 @@
             (yr_dt, val)
         VALUES(#{yr_dt}, #{val});
     </insert>
+    <insert id="insertMinPay" parameterType="hashMap">
+        INSERT INTO min_pay
+            (yr_dt, unit, val)
+        VALUES(#{yrDt}, #{unit}, #{val});
+    </insert>
+
+    <select id="compareCapitalPersonal" parameterType="hashMap" resultType="hashMap">
+        SELECT MAX(yr_dt) AS yr_dt FROM capita_income
+    </select>
+
+    <select id="compareGniCapita" parameterType="hashMap" resultType="hashMap">
+        SELECT MAX(yr_dt) AS yr_dt FROM gni_capita
+    </select>
+
+    <select id="compareIncomeDistributionIndex" parameterType="hashMap" resultType="hashMap">
+        SELECT MAX(yr_dt) AS yr_dt FROM gini_cfcnt
+    </select>
 
 
 </mapper>

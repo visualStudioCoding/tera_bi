@@ -6,7 +6,7 @@
         <div class="col">
             <div class="card">
                 <div class="card-header">
-                    월별 환율
+                    한국은행 기준금리 및 환율
                 </div>
                 <form name="getMonthlyExchangeRate_opt">
                     <div class="card-body">
@@ -25,37 +25,38 @@
                 <div class="card-header">
                     소비자/근원/생활 물가상승률
                 </div>
-                <div class="card-body">
-                    <span>년도 선택</span>
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
-                </div>
-                <button type="button" class="btn btn-outline-secondary activator" onclick="fnGetInflationRate()">실행</button>
+                <form name="getInflationRate_opt">
+                    <div class="card-body">
+                        <span>년도 선택</span>
+                        <select class="form-select" name="prdDe_Y" aria-label="Default select example">
+                            <option selected>데이터를 호출할 년도를 선택하세요</option>
+                            <#list 1966..1999 as i>
+                                <option value=${i?replace(",","")}>${i?replace(",","")}년</option>
+                            </#list>
+                            <#list 2000..2022 as j>
+                                <option value=${j?replace(",","")}>${j?replace(",","")}년</option>
+                            </#list>
+                        </select>
+                        <br>
+                        <select class="form-select" name="prdDe_M" aria-label="Default select example">
+                            <option selected>데이터를 호출할 년도를 선택하세요</option>
+                            <#list 1..12 as i>
+                                <option value=${i}>${i}월</option>
+                            </#list>
+
+                        </select>
+                        <#assign name_list = ["itmId", "objL1", "prdSe", "loadGubun", "orgId", "tblId"]>
+                        <#assign val_list = ["T03+", "0+1+3+", "M", "2", "101", "DT_1J20042"]>
+                        <#list 0..5 as k>
+                            <input type="hidden" name=${name_list[k]} value=${val_list[k]}  />
+                        </#list>
+                    </div>
+                </form>
+                <button type="button" class="btn btn-outline-secondary activator" onclick="getInflationRate()">실행</button>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col">
-            <div class="card">
-                <div class="card-header">
-                    한국은행 기준금리
-                </div>
-                <div class="card-body">
-                    <span>년도 선택</span>
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
-                </div>
-                <button type="button" class="btn btn-outline-secondary activator">실행</button>
-            </div>
-        </div>
         <div class="col">
             <div class="card">
                 <div class="card-header">
@@ -83,8 +84,6 @@
                 <button type="button" id="GdpAndGni" class="btn btn-outline-secondary activator" onclick="getGdpAndGni()">실행</button>
             </div>
         </div>
-    </div>
-    <div class="row">
         <div class="col">
             <div class="card">
                 <div class="card-header">

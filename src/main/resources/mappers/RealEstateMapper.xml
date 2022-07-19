@@ -3,26 +3,26 @@
 
 <mapper namespace="bi.RealEstate">
     <select id="getTradeRealAptList" parameterType="realEstateDTO" resultType="realEstateDTO">
-            SELECT
-                  apt_nm
-                  , land_area
-                  , land_no
-                  , road_nm
-                  , dong
-                  , eupmyundong_cd
-                  , sigungu_cd
-                  , trade_month
-                  , trade_year
-                  , built_year
-                  , payment
-                  , idx
-                  , layer
-            FROM
-                  trade_real_apt
-            WHERE
-                  1=1
-            LIMIT
-                  0,10
+        SELECT
+              apt_nm
+              , land_area
+              , land_no
+              , road_nm
+              , dong
+              , eupmyundong_cd
+              , sigungu_cd
+              , trade_month
+              , trade_year
+              , built_year
+              , payment
+              , idx
+              , layer
+        FROM
+              trade_real_apt
+        WHERE
+              1=1
+        LIMIT
+              0,10
 	</select>
     <insert id="insertGenderPopulation" parameterType="hashMap">
         INSERT INTO gender_population
@@ -42,8 +42,7 @@
             , #{ctyNm}
             , #{dstNm}
             , #{unit}
-            , #{val}
-            )
+            , #{val})
     </insert>
     <insert id="insertAptSalesStatus" parameterType="hashMap">
         INSERT INTO apt_account
@@ -59,8 +58,7 @@
             , #{ctyNm}
             , #{dstNm}
             , #{unit}
-            , #{val}
-            )
+            , #{val})
     </insert>
     <insert id="insertUnsoldHouse" parameterType="hashMap">
         INSERT INTO unsold_house
@@ -76,8 +74,7 @@
             , #{ctyNm}
             , #{dstNm}
             , #{unit}
-            , #{val}
-            )
+            , #{val})
     </insert>
     <insert id="insertAgeAptSales" parameterType="hashMap">
         INSERT INTO age_apt
@@ -95,11 +92,10 @@
             , #{ctyNm}
             , #{dstNm}
             , #{unit}
-            , #{val}
-            )
+            , #{val})
     </insert>
-    <insert id="insertPopulation" parameterType="hashMap">
-        INSERT INTO age_apt
+    <insert id="insertPopulationAge" parameterType="hashMap">
+        INSERT INTO population_tmp
             (yr_dt
             , mon_dt
             , area_cd
@@ -107,15 +103,100 @@
             , cty_nm
             , dst_nm
             , unit
-            , val)
+            , itm_nm
+            , tmp_cnt)
         VALUES
             (#{yrDt}
             , #{monDt}
+            , #{areaCd}
             , #{age}
             , #{ctyNm}
             , #{dstNm}
             , #{unit}
-            , #{val}
-            )
+            , #{itmNm}
+            , #{tmpCnt})
     </insert>
+    <insert id="insertManPopulation" parameterType="hashMap">
+        INSERT INTO population
+        (yr_dt
+        , mon_dt
+        , area_cd
+        , age
+        , cty_nm
+        , dst_nm
+        , unit
+        , man_cnt)
+        SELECT yr_dt, mon_dt, area_cd, age, cty_nm, dst_nm, unit, SUM(tmp_cnt) as tmp_cnt
+        FROM view_population
+        WHERE itm_nm = '남자인구수'
+        GROUP BY yr_dt, mon_dt, area_cd, age, cty_nm , dst_nm, itm_nm
+        ORDER BY age DESC
+    </insert>
+    <update id="updateWomanPopulation" parameterType="hashMap">
+        UPDATE population a
+            , (SELECT tmp_cnt
+                    , yr_dt
+                    , mon_dt
+                    , area_cd
+                    , cty_nm
+                    , dst_nm
+                    , age
+                FROM view_population
+                WHERE itm_nm = '여자인구수') b
+        SET a.wmn_cnt = b.tmp_cnt
+        WHERE a.yr_dt = b.yr_dt
+        AND a.mon_dt = b.mon_dt
+        AND a.area_cd = b.area_cd
+        AND a.cty_nm = b.cty_nm
+        AND a.dst_nm = b.dst_nm
+        AND a.age = b.age
+    </update>
+    <delete id="deletePopulationTmp" parameterType="hashMap">
+        DELETE FROM population_tmp
+    </delete>
+
+    <insert id="insertGrp" parameterType="hashMap">
+        INSERT INTO grp
+        (yr_dt
+        , cty_nm
+        , unit
+        , val)
+        VALUES
+        (#{yrDt}
+        , #{ctyNm}
+        , #{unit}
+        , #{val})
+    </insert>
+    <insert id="insertKospi" parameterType="hashMap">
+        INSERT INTO kospi_index
+        (yr_dt
+        , mon_dt
+        , unit
+        , val)
+        VALUES
+        (#{yrDt}
+        , #{monDt}
+        , #{unit}
+        , #{val})
+    </insert>
+    <insert id="insertKosdaq" parameterType="hashMap">
+        INSERT INTO kosdaq_index
+        (yr_dt
+        , mon_dt
+        , unit
+        , val)
+        VALUES
+        (#{yrDt}
+        , #{monDt}
+        , #{unit}
+        , #{val})
+    </insert>
+
+
+    <select id="populationMaxDate" resultType="hashMap">
+        SELECT MAX(yr_dt) AS yrDt
+             , MAX(mon_dt) AS monDt
+        FROM population
+        WHERE yr_dt = (SELECT MAX(yr_dt) FROM population)
+    </select>
 </mapper>
