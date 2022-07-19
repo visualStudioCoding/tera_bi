@@ -155,6 +155,44 @@
         DELETE FROM population_tmp
     </delete>
 
+    <insert id="insertGrp" parameterType="hashMap">
+        INSERT INTO grp
+        (yr_dt
+        , cty_nm
+        , unit
+        , val)
+        VALUES
+        (#{yrDt}
+        , #{ctyNm}
+        , #{unit}
+        , #{val})
+    </insert>
+    <insert id="insertKospi" parameterType="hashMap">
+        INSERT INTO kospi_index
+        (yr_dt
+        , mon_dt
+        , unit
+        , val)
+        VALUES
+        (#{yrDt}
+        , #{monDt}
+        , #{unit}
+        , #{val})
+    </insert>
+    <insert id="insertKosdaq" parameterType="hashMap">
+        INSERT INTO kosdaq_index
+        (yr_dt
+        , mon_dt
+        , unit
+        , val)
+        VALUES
+        (#{yrDt}
+        , #{monDt}
+        , #{unit}
+        , #{val})
+    </insert>
+
+
     <select id="populationMaxDate" resultType="hashMap">
         SELECT MAX(yr_dt) AS yrDt
              , MAX(mon_dt) AS monDt

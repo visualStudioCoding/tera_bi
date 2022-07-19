@@ -75,16 +75,16 @@
                 <div class="card-header">
                     최저임금 일반현황
                 </div>
-                <div class="card-body">
-                    <span>년도 선택</span>
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
-                </div>
-                <button type="button" class="btn btn-outline-secondary activator">실행</button>
+                <form name="formMinPay">
+                    <div class="card-body">
+                        <span>년도 선택</span>
+                        <select class="form-select" name="prdDe" aria-label="Default select example" disabled>
+                            <option selected>해당 API는 년도를 선택할 수 없습니다.</option>
+                        </select>
+                        <input type="hidden" name="statsCode" value="149201" />
+                    </div>
+                </form>
+                <button type="button" class="btn btn-outline-secondary activator" onclick="fnMinPay()">실행</button>
             </div>
         </div>
     </div>
