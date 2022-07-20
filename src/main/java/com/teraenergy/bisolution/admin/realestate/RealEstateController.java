@@ -9,38 +9,37 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 /**
- *
  * 부동산시장동향 api 호출 및 db 적재
  *
  * @author tera
  * @version 1.0.0
  * 작성일 2022-07-19
-**/
+ **/
 @Slf4j
 @Controller
 @RequestMapping("/admin/realEstate")
 public class RealEstateController {
 
     private static final String PROGRAM_ID = ".RealEstate";
-    private static final String PAGE_ID = "admin.";
+    private static final String PAGE_ID = "admin";
     private static final String DIRECTORY = "/realEstate/RealEstate";
-
-    @Resource(name = "commonService")
-    private CommonService commonService;
-
-    @Resource(name = "realEstateService")
-    private RealEstateService realEstateService;
-
     private static final String FORMAT = "json";
     private static final String SITE = "kosis";
+    @Resource(name = "commonService")
+    private CommonService commonService;
+    @Resource(name = "realEstateService")
+    private RealEstateService realEstateService;
 
     @GetMapping("/main")
     public String realEstateMain() throws Exception {
