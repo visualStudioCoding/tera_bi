@@ -36,7 +36,7 @@
             console.log(data.data)
         }
         //공통모듈 ajax 함수 호출하기
-        kosisApiAjax("/lifeSatisfaction/LifeSatisfaction", callBackFn, 'get', param, errorMsg);
+        kosisApiAjax("/admin/lifeSatisfaction/LifeSatisfaction", callBackFn, 'get', param, errorMsg);
     }
 
     //2. 월별 혼인
@@ -64,7 +64,7 @@
             //frm.endPrdDe.value = yearmonth;
             let param = fnParam(frm);
             console.log(param);
-            kosisApiAjax("/lifeSatisfaction/Marriage", callBackFn, 'get', param, errorMsg);
+            kosisApiAjax("/admin/lifeSatisfaction/Marriage", callBackFn, 'get', param, errorMsg);
         }
 
         //공통모듈 ajax 함수 호출하기
@@ -95,7 +95,7 @@
             frm.startPrdDe.value = yearmonth;
             let param = fnParam(frm);
             console.log(param);
-            kosisApiAjax("/lifeSatisfaction/Divorce", callBackFn, 'get', param, errorMsg);
+            kosisApiAjax("/admin/lifeSatisfaction/Divorce", callBackFn, 'get', param, errorMsg);
         }
 
         //공통모듈 ajax 함수 호출하기
@@ -126,7 +126,7 @@
             frm.startPrdDe.value = yearmonth;
             let param = fnParam(frm);
             console.log(param);
-            kosisApiAjax("/lifeSatisfaction/emplyrate", callBackFn, 'get', param, errorMsg);
+            kosisApiAjax("/admin/lifeSatisfaction/emplyrate", callBackFn, 'get', param, errorMsg);
         }
 
         //공통모듈 ajax 함수 호출하기
@@ -157,7 +157,7 @@
             frm.startPrdDe.value = yearmonth;
             let param = fnParam(frm);
             console.log(param);
-            kosisApiAjax("/lifeSatisfaction/unmplrate", callBackFn, 'get', param, errorMsg);
+            kosisApiAjax("/admin/lifeSatisfaction/unmplrate", callBackFn, 'get', param, errorMsg);
         }
 
         //공통모듈 ajax 함수 호출하기
@@ -188,7 +188,7 @@
             frm.startPrdDe.value = yearmonth;
             let param = fnParam(frm);
             console.log(param);
-            kosisApiAjax("/lifeSatisfaction/allprindex", callBackFn, 'get', param, errorMsg);
+            kosisApiAjax("/admin/lifeSatisfaction/allprindex", callBackFn, 'get', param, errorMsg);
         }
 
         //공통모듈 ajax 함수 호출하기
@@ -210,14 +210,10 @@
                     <input type="hidden" id="newEstPrdCnt" name="newEstPrdCnt" value=""/>
 
                     <div class="card-header">
-                        1.삶의 만족도 (년)${data.yr_dt}
-
-
-
-
+                        1.삶의 만족도 (년)
                     </div>
                     <div class="card-body">
-                        년도입력 <input type="text" name="startPrdDe" id="startPrdDe" value="" style="width:100%" >
+                        년도입력 <input type="text" name="startPrdDe" id="startPrdDe" value="${data1.yr_dt}" style="width:100%" >
                         <div id="rst1"></div>
                     </div>
                     <button type="submit" class="btn btn-outline-secondary activator" >실행</button>
@@ -258,7 +254,7 @@
                             </label>
                         </div>-->
 
-                        년도 <input type="text" name="startPrdDe" id="startPrdDe" value="" style="width:100%" >
+                        년도 <input type="text" name="startPrdDe" id="startPrdDe" value="${data2.yr_dt}${data2.mon_dt}" style="width:100%" >
                         <div id="rst2"></div>
                     </div>
                     <button type="submit" class="btn btn-outline-secondary activator">실행</button>
@@ -299,7 +295,7 @@
                                 Checked checkbox
                             </label>
                         </div>-->
-                        년도입력 <input type="text" name="startPrdDe" id="startPrdDe" value="" style="width:100%" >
+                        년도입력 <input type="text" name="startPrdDe" id="startPrdDe" value="${data3.yr_dt}${data3.mon_dt}" style="width:100%" >
                         <div id="rst3"></div>
                     </div>
 
@@ -318,7 +314,7 @@
                 <input type="hidden" id="newEstPrdCnt" name="newEstPrdCnt" value=""/>
                 <div class="card">
                     <div class="card-header">
-                        4.고용률(시/군/구)
+                        4.고용률(시/군/구)(월)
                     </div>
                     <div class="card-body">
                         <#-- <select class="form-select" aria-label="Default select example">
@@ -339,7 +335,7 @@
                                  Checked checkbox
                              </label>
                          </div>-->
-                        년도입력 <input type="text" name="startPrdDe" id="startPrdDe" value="" style="width:100%" >
+                        년도입력 <input type="text" name="startPrdDe" id="startPrdDe" value="${data4.yr_dt}${data4.mon_dt}" style="width:100%" >
                         <div id="rst4"></div>
                     </div>
                     <button type="button" class="btn btn-outline-secondary activator" onclick="api4();">실행</button>
@@ -360,10 +356,10 @@
                 <input type="hidden" id="newEstPrdCnt" name="newEstPrdCnt" value=""/>
             <div class="card">
                 <div class="card-header">
-                    5. 행정구역(시도)/성별 실업률
+                    5. 행정구역(시도)/성별 실업률(월)
                 </div>
                 <div class="card-body">
-                    년월입력 <input type="text" name="startPrdDe" id="startPrdDe" value="" style="width:100%" >
+                    년월입력 <input type="text" name="startPrdDe" id="startPrdDe" value="${data5.yr_dt}${data5.mon_dt}" style="width:100%" >
                     <div id="rst5"></div>
                 </div>
                 <button type="submit" class="btn btn-outline-secondary activator" >실행</button>
@@ -381,10 +377,10 @@
                 <input type="hidden" id="newEstPrdCnt" name="newEstPrdCnt" value=""/>
             <div class="card">
                 <div class="card-header">
-                    6. 전산업생산지수
+                    6. 전산업생산지수(월)
                 </div>
                 <div class="card-body">
-                    년월입력 <input type="text" name="startPrdDe" id="startPrdDe" value="" style="width:100%" >
+                    년월입력 <input type="text" name="startPrdDe" id="startPrdDe" value="${data6.yr_dt}${data6.mon_dt}" style="width:100%" >
                     <div id="rst6"></div>
                 </div>
                 <button type="submit" class="btn btn-outline-secondary activator">실행</button>

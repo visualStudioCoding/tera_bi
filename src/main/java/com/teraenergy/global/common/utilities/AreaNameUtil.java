@@ -35,6 +35,7 @@ public final class AreaNameUtil {
         if ("other".equals(other) ? AreaCodeConstant.OTHER_GYEONGNAM.contains(areaCd) : AreaCodeConstant.GYEONGNAM.contains(areaCd)) name = "경상남도";
         if ("other".equals(other) ? AreaCodeConstant.OTHER_JEJU.contains(areaCd) : AreaCodeConstant.JEJU.contains(areaCd)) name = "제주특별자치도";
         if ("other".equals(other) ? AreaCodeConstant.OTHER_ALL.contains(areaCd) : AreaCodeConstant.ALL.contains(areaCd)) name = "전국";
+        if ("other".equals(other) && AreaCodeConstant.OTHER_EX.contains(areaCd)) name = "국외";
         return name;
     }
 
