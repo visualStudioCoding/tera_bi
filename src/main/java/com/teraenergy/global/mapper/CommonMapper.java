@@ -25,16 +25,6 @@ public class CommonMapper {
         }
         return template.selectList(PACKAGE_NAME + mQueryId, paramDTO);
     }
-    /* 목록 조회 */
-    public List<?> selectList(final String queryId) throws Exception {
-        String mQueryId = "";
-        if (queryId != null && (queryId.equals("") || !queryId.contains("."))) {
-            mQueryId = queryId + ".selectList";
-        } else {
-            mQueryId = queryId;
-        }
-        return template.selectList(PACKAGE_NAME + mQueryId);
-    }
     
     /* 맵 조회 */
 	public Map<?, ?> selectMap(final Object paramDTO, final String queryId, final String mapKey) throws Exception {
@@ -45,16 +35,6 @@ public class CommonMapper {
 			mQueryId = queryId;
 		}
 		return template.selectMap(PACKAGE_NAME + mQueryId, paramDTO, mapKey);
-	}
-	/* 맵 조회 */
-	public Map<?, ?> selectMap(final String queryId, final String mapKey) throws Exception {
-		String mQueryId = "";
-		if (queryId != null && (queryId.equals("") || !queryId.contains("."))) {
-			mQueryId = queryId + ".selectMap";
-		} else {
-			mQueryId = queryId;
-		}
-		return template.selectMap(PACKAGE_NAME + mQueryId, mapKey);
 	}
 
 	/* 레코드 카운트 조회 */
@@ -67,16 +47,6 @@ public class CommonMapper {
 		}
 		return (Integer) template.selectOne(PACKAGE_NAME + mQueryId, paramDTO);
 	}
-	/* 레코드 카운트 조회 */
-	public int selectCount(final String queryId) throws Exception {
-		String mQueryId = "";
-		if (queryId != null && (queryId.equals("") || !queryId.contains("."))) {
-			mQueryId = queryId + ".selectCount";
-		} else {
-			mQueryId = queryId;
-		}
-		return (Integer) template.selectOne(PACKAGE_NAME + mQueryId);
-	}
 
 	/* 상세 조회 */
 	public Object selectContents(final Object paramDTO, final String queryId) throws Exception {
@@ -87,16 +57,6 @@ public class CommonMapper {
 			mQueryId = queryId;
 		}
 		return template.selectOne(PACKAGE_NAME + mQueryId, paramDTO);
-	}
-	/* 상세 조회 */
-	public Object selectContents(final String queryId) throws Exception {
-		String mQueryId = "";
-		if (queryId != null && (queryId.equals("") || !queryId.contains("."))) {
-			mQueryId = queryId + ".selectContents";
-		} else {
-			mQueryId = queryId;
-		}
-		return template.selectOne(PACKAGE_NAME + mQueryId);
 	}
 
 	/* 등록 */
@@ -109,16 +69,6 @@ public class CommonMapper {
 		}
 		return template.insert(PACKAGE_NAME + mQueryId, paramDTO);
 	}
-	/* 등록 */
-	public int insertContents(final String queryId) throws Exception {
-		String mQueryId = "";
-		if (queryId != null && (queryId.equals("") || !queryId.contains("."))) {
-			mQueryId = queryId + ".insertContents";
-		} else {
-			mQueryId = queryId;
-		}
-		return template.insert(PACKAGE_NAME + mQueryId);
-	}
 
 	/* 수정 */
 	public int updateContents(final Object paramDTO, final String queryId) throws Exception {
@@ -130,16 +80,6 @@ public class CommonMapper {
 		}
 		return template.update(PACKAGE_NAME + mQueryId, paramDTO);
 	}
-	/* 수정 */
-	public int updateContents(final String queryId) throws Exception {
-		String mQueryId = "";
-		if (queryId != null && (queryId.equals("") || !queryId.contains("."))) {
-			mQueryId = queryId + ".updateContents";
-		} else {
-			mQueryId = queryId;
-		}
-		return template.update(PACKAGE_NAME + mQueryId);
-	}
 
 	/* 삭제 */
 	public int deleteContents(final Object paramDTO, final String queryId) throws Exception {
@@ -150,16 +90,6 @@ public class CommonMapper {
 			mQueryId = queryId;
 		}
 		return template.delete(PACKAGE_NAME + mQueryId, paramDTO);
-	}
-	/* 삭제 */
-	public int deleteContents(final String queryId) throws Exception {
-		String mQueryId = "";
-		if (queryId != null && (queryId.equals("") || !queryId.contains("."))) {
-			mQueryId = queryId + ".deleteContents";
-		} else {
-			mQueryId = queryId;
-		}
-		return template.delete(PACKAGE_NAME + mQueryId);
 	}
 
 	/* 정보를 입력하고 입력한 키 반환 */

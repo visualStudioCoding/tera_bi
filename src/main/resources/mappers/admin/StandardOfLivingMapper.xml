@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bi.admin.StandardOfLiving">
+    <insert id="insertCapitaPersonal" parameterType="hashMap">
+        INSERT INTO capita_income
+            (yr_dt, cty_nm, unit, val)
+        VALUES(#{yr_dt}, #{cty_nm}, #{unit}, #{val});
+    </insert>
+
+    <insert id="insertGniCapita" parameterType="hashMap">
+        INSERT INTO gni_capita
+            (yr_dt, unit, gdi_val, gni_val)
+        VALUES(#{yr_dt}, #{unit}, #{gdi_val}, #{gni_val});
+    </insert>
+
+    <insert id="insertIncomeDistributionIndex" parameterType="hashMap">
+        INSERT INTO gini_cfcnt
+            (yr_dt, val)
+        VALUES(#{yr_dt}, #{val});
+    </insert>
+    <insert id="insertMinPay" parameterType="hashMap">
+        INSERT INTO min_pay
+            (yr_dt, unit, val)
+        VALUES(#{yrDt}, #{unit}, #{val});
+    </insert>
+
+    <select id="compareCapitalPersonal" parameterType="hashMap" resultType="hashMap">
+        SELECT MAX(yr_dt) AS yr_dt FROM capita_income
+    </select>
+
+    <select id="compareGniCapita" parameterType="hashMap" resultType="hashMap">
+        SELECT MAX(yr_dt) AS yr_dt FROM gni_capita
+    </select>
+
+    <select id="compareIncomeDistributionIndex" parameterType="hashMap" resultType="hashMap">
+        SELECT MAX(yr_dt) AS yr_dt FROM gini_cfcnt
+    </select>
+
+
+</mapper>

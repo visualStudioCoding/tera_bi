@@ -1,0 +1,3 @@
+<footer>
+    COPYRIGHT © TERAENERGY INC. ALL RIGHTS RESERVED.
+</footer>

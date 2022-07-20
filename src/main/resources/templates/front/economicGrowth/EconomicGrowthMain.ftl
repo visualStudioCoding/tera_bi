@@ -1,9 +1,7 @@
-<!DOCTYPE html>
-<html lang="ko">
-<#include "common/front/header.ftl">
+<#include "*/common/front/header.ftl">
 
 <body>
-<#include "common/front/navigation.ftl">
+<#include "*/common/front/navigation.ftl">
 <!-- 본문 시작 -->
 <div class="contents">
     <div class="inner economic-growth">
@@ -246,7 +244,9 @@
 </div>
 <!-- /본문 끝 -->
 <!-- 푸터 시작 -->
-<#include "common/front/footer.ftl">
+<#include "*/common/front/footer.ftl">
 <!-- /푸터 끝 -->
 </body>
-</html>
+
+<script src="/js/front/economicGrowth/economicGrowth.js"></script>
+<script src="/js/front/economicGrowth/economicGrowthChart.js"></script>
