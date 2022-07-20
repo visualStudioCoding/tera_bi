@@ -28,6 +28,7 @@ public final class AreaCodeConstant {
     public static final List<String> JEJU = List.of("50", "0018", "0019");
 
     public static final List<String> OTHER_ALL = List.of("00", "0002");
+    public static final List<String> OTHER_EX = List.of("90");
     public static final List<String> OTHER_SEOUL = List.of("11", "0003");
     public static final List<String> OTHER_BUSAN = List.of("21", "0004");
     public static final List<String> OTHER_DAEGU = List.of("22", "0005");

@@ -14,6 +14,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
+import com.teraenergy.global.common.utilities.AreaNameUtil;
 import com.teraenergy.global.service.CommonService;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,36 +54,36 @@ public class LifeSatisfactionController {
 
         //1.삶의 만족도
         Map<String,Object> dataMap1 = new HashMap<>();
-        dataMap1 = (Map<String, Object>) commonService.selectContents(null, PROGRAM_ID + ".selectLifeSatisfaction");
+        dataMap1 = (Map<String, Object>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".selectLifeSatisfaction");
         model.addAttribute("data1", dataMap1);
 
         //2.결혼
         Map<String,Object> dataMap2 = new HashMap<>();
-        dataMap2 = (Map<String, Object>) commonService.selectContents(null, PROGRAM_ID + ".selectMarriage");
+        dataMap2 = (Map<String, Object>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".selectMarriage");
         model.addAttribute("data2", dataMap2);
 
         //3.이혼
         Map<String,Object> dataMap3 = new HashMap<>();
-        dataMap3 = (Map<String, Object>) commonService.selectContents(null, PROGRAM_ID + ".selectDivorce");
+        dataMap3 = (Map<String, Object>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".selectDivorce");
         model.addAttribute("data3", dataMap3);
 
         //4. 고용률
         Map<String,Object> dataMap4 = new HashMap<>();
-        dataMap4 = (Map<String, Object>) commonService.selectContents(null, PROGRAM_ID + ".selectEmplyrate");
+        dataMap4 = (Map<String, Object>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".selectEmplyrate");
         model.addAttribute("data4", dataMap4);
 
         //5.실업률
         Map<String,Object> dataMap5 = new HashMap<>();
-        dataMap5 = (Map<String, Object>) commonService.selectContents(null, PROGRAM_ID + ".selectUnmplrate");
+        dataMap5 = (Map<String, Object>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".selectUnmplrate");
         model.addAttribute("data5", dataMap5);
 
         //6.전산업생산지수
         Map<String,Object> dataMap6 = new HashMap<>();
-        dataMap6 = (Map<String, Object>) commonService.selectContents(null, PROGRAM_ID + ".selectAllprindex");
+        dataMap6 = (Map<String, Object>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".selectAllprindex");
         model.addAttribute("data6", dataMap6);
 
 
-        return DIRECTORY + PROGRAM_ID + "Main";
+        return PAGE_ID + DIRECTORY + "Main";
         //return DIRECTORY+ "index2";
     }
 
@@ -93,7 +94,7 @@ public class LifeSatisfactionController {
         log.info(PAGE_ID + DIRECTORY + PROGRAM_ID + "LifeSatisfaction");  //DT_417001_0002 // life_stsfc
         //return PAGE_ID + DIRECTORY + PROGRAM_ID + "Main";
         System.out.println("url : " + url);
-        System.out.println("parameter : " + parameter);
+         System.out.println("parameter : " + parameter);
 
         //kosis = json, enara = xml
         String format = "json";
@@ -201,8 +202,8 @@ public class LifeSatisfactionController {
     @ResponseBody
     @GetMapping("/admin/lifeSatisfaction/Marriage")
     public Object Marriage_Parse(String url, String parameter) throws Exception {
-        log.info(PAGE_ID + DIRECTORY + PROGRAM_ID + "Marriage");
-        //return PAGE_ID + DIRECTORY + PROGRAM_ID + "Main";
+        log.info(PAGE_ID + DIRECTORY + PAGE_ID + PROGRAM_ID + "Marriage");
+        //return PAGE_ID + DIRECTORY + PAGE_ID + PROGRAM_ID + "Main";
         System.out.println("url : " + url);
         System.out.println("parameter : " + parameter);
 
@@ -242,6 +243,8 @@ public class LifeSatisfactionController {
                 continue;
             }
 
+            ctyNm = AreaNameUtil.areaName((String) jsonData.get("C1"), "other");
+/*
             if(ctyCode.equals("00")) {
                 ctyNm = "전국";
             } else if("11".equals(ctyCode.substring(0,2))) {
@@ -281,7 +284,7 @@ public class LifeSatisfactionController {
             } else if("90".equals(ctyCode.substring(0,2))) {
                 ctyNm = "국외";
             }
-
+*/
             //시도 , 시군구
             String dstNm = (String) jsonData.get("C1_NM");
 
@@ -357,6 +360,9 @@ public class LifeSatisfactionController {
                 continue;
             }
 
+            ctyNm = AreaNameUtil.areaName((String) jsonData.get("C1"), "other");
+
+            /*
             if(ctyCode.equals("00")) {
                 ctyNm = "전국";
             } else if("11".equals(ctyCode.substring(0,2))) {
@@ -396,6 +402,7 @@ public class LifeSatisfactionController {
             } else if("90".equals(ctyCode.substring(0,2))) {
                 ctyNm = "국외";
             }
+*/
 
             //시도 , 시군구
             String dstNm = (String) jsonData.get("C1_NM");
