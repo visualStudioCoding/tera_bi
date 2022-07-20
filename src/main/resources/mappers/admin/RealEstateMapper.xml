@@ -193,10 +193,40 @@
     </insert>
 
 
+    <select id="genderMaxDate" resultType="hashMap">
+        SELECT MAX(yr_dt) AS yrDt
+             , MAX(mon_dt) AS monDt
+        FROM gender_population
+        WHERE yr_dt = (SELECT MAX(yr_dt) FROM gender_population)
+    </select>
+    <select id="aptSalesMaxDate" resultType="hashMap">
+        SELECT MAX(yr_dt) AS yrDt
+             , MAX(mon_dt) AS monDt
+        FROM apt_account
+        WHERE yr_dt = (SELECT MAX(yr_dt) FROM apt_account)
+    </select>
+    <select id="unsoldMaxDate" resultType="hashMap">
+        SELECT MAX(yr_dt) AS yrDt
+             , MAX(mon_dt) AS monDt
+        FROM unsold_house
+        WHERE yr_dt = (SELECT MAX(yr_dt) FROM unsold_house)
+    </select>
+    <select id="ageAptSalesMaxDate" resultType="hashMap">
+        SELECT MAX(yr_dt) AS yrDt
+             , MAX(mon_dt) AS monDt
+        FROM age_apt
+        WHERE yr_dt = (SELECT MAX(yr_dt) FROM age_apt)
+    </select>
     <select id="populationMaxDate" resultType="hashMap">
         SELECT MAX(yr_dt) AS yrDt
              , MAX(mon_dt) AS monDt
         FROM population
         WHERE yr_dt = (SELECT MAX(yr_dt) FROM population)
     </select>
+    <select id="grpMaxDate" resultType="hashMap">
+        SELECT MAX(yr_dt) AS yrDt
+        FROM grp
+    </select>
+
+
 </mapper>

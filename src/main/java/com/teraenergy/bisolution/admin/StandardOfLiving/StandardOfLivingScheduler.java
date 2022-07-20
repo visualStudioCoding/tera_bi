@@ -1,6 +1,7 @@
 package com.teraenergy.bisolution.admin.StandardOfLiving;
 
 import com.teraenergy.global.service.CommonService;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Component
 public class StandardOfLivingScheduler {
 
@@ -22,8 +24,8 @@ public class StandardOfLivingScheduler {
     @Resource(name = "commonService")
     private CommonService commonService;
 
-//   1인당 개인소득
-    @Scheduled(cron="* * * 18 3 *")
+    //   1인당 개인소득
+    @Scheduled(cron = "* * * 18 3 *")
     @Transactional(rollbackFor = Exception.class)
     public void capitaPersonalScheduler() throws Exception {
 
@@ -35,11 +37,11 @@ public class StandardOfLivingScheduler {
         StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
 
         Map<String, Object> dataMap = new HashMap<>();
-        Map<String, String> compareCapitalPersonal = (Map<String, String>) commonService.selectContents(null,PAGE_ID + PROGRAM_ID + ".compareCapitalPersonal");
+        Map<String, String> compareCapitalPersonal = (Map<String, String>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".compareCapitalPersonal");
 
         JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
 
-        for(Object jsonObject : jsonList){
+        for (Object jsonObject : jsonList) {
             JSONObject jsonData = (JSONObject) jsonObject;
 
             String yr_dt = (String) jsonData.get("PRD_DE");
@@ -47,7 +49,7 @@ public class StandardOfLivingScheduler {
             String unit = (String) jsonData.get("UNIT_NM");
             String val = (String) jsonData.get("DT");
 
-            if(compareCapitalPersonal.get("yr_dt").equals(yr_dt)){
+            if (compareCapitalPersonal.get("yr_dt").equals(yr_dt)) {
                 break;
             }
 
@@ -62,7 +64,7 @@ public class StandardOfLivingScheduler {
 
     //   1인당 국민 총 소득
 //    @Scheduled(cron="* * * 31 3 *")
-    @Scheduled(cron="00 11 15 * * *")
+    @Scheduled(cron = "00 11 15 * * *")
     @Transactional(rollbackFor = Exception.class)
     public void grossNationalIncomeScheduler() throws Exception {
 
@@ -94,8 +96,8 @@ public class StandardOfLivingScheduler {
             org.json.JSONObject data = columns.getJSONObject(j);
             org.json.JSONObject data_l = columns_l.getJSONObject(j);
 
-            if(data.get("주기").equals(data_l.get("주기"))) {
-                jsonObject.put("unit",gubun[0]);
+            if (data.get("주기").equals(data_l.get("주기"))) {
+                jsonObject.put("unit", gubun[0]);
                 jsonObject.put("date", data.get("주기"));
                 jsonObject.put("gdiVal", data.get("content"));
                 jsonObject.put("gniVal", data_l.get("content"));
@@ -104,28 +106,28 @@ public class StandardOfLivingScheduler {
         }
         List<Map<String, Object>> data_list = new ArrayList<>();
 
-        Map<String ,String> compareIncomeDistributionIndex = (Map<String, String>) commonService.selectContents(null,PAGE_ID + PROGRAM_ID + ".compareGniCapita");
-        org.json.JSONObject compareData = (org.json.JSONObject) jsonArray.get(jsonArray.length()-1);
+        Map<String, String> compareIncomeDistributionIndex = (Map<String, String>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".compareGniCapita");
+        org.json.JSONObject compareData = (org.json.JSONObject) jsonArray.get(jsonArray.length() - 1);
 
-            if(compareIncomeDistributionIndex.get("yr_dt").equals(compareData.get("date").toString())){
-                System.out.println("이미 최신화된 데이터 입니다.");
-            }else {
+        if (compareIncomeDistributionIndex.get("yr_dt").equals(compareData.get("date").toString())) {
+            System.out.println("이미 최신화된 데이터 입니다.");
+        } else {
 
-                Map<String, Object> dataMap = new HashMap<>();
+            Map<String, Object> dataMap = new HashMap<>();
 
-                String yr_dt = Integer.toString((Integer) compareData.get("date"));
-                String gdiVal = Integer.toString((Integer) compareData.get("gdiVal"));
-                String gniVal = Integer.toString((Integer) compareData.get("gniVal"));
-                String getUnit = (String) compareData.get("unit");
+            String yr_dt = Integer.toString((Integer) compareData.get("date"));
+            String gdiVal = Integer.toString((Integer) compareData.get("gdiVal"));
+            String gniVal = Integer.toString((Integer) compareData.get("gniVal"));
+            String getUnit = (String) compareData.get("unit");
 
-                dataMap.put("yr_dt", yr_dt);
-                dataMap.put("unit", getUnit);
-                dataMap.put("gdi_val", gdiVal);
-                dataMap.put("gni_val", gniVal);
-                System.out.println(dataMap);
-                data_list.add(dataMap);
-                commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertGniCapita");
-            }
+            dataMap.put("yr_dt", yr_dt);
+            dataMap.put("unit", getUnit);
+            dataMap.put("gdi_val", gdiVal);
+            dataMap.put("gni_val", gniVal);
+            System.out.println(dataMap);
+            data_list.add(dataMap);
+            commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertGniCapita");
+        }
 
 //        for(Object jsonObject : jsonArray){
 //            if(compareIncomeDistributionIndex.get("yr_dt").equals(compareData.get("date").toString())){
@@ -151,7 +153,7 @@ public class StandardOfLivingScheduler {
     }
 
     //   소득분배지표
-    @Scheduled(cron="* * * 16 12 *")
+    @Scheduled(cron = "* * * 16 12 *")
     @Transactional(rollbackFor = Exception.class)
 
     public void incomeDistributionIndexScheduler() throws Exception {
@@ -164,17 +166,17 @@ public class StandardOfLivingScheduler {
         StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
 
         Map<String, Object> dataMap = new HashMap<>();
-        Map<String, String> compareIncomeDistributionIndex = (Map<String, String>) commonService.selectContents(null,PAGE_ID + PROGRAM_ID + ".compareIncomeDistributionIndex");
+        Map<String, String> compareIncomeDistributionIndex = (Map<String, String>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".compareIncomeDistributionIndex");
 
         JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
 
-        for(Object jsonObject : jsonList){
+        for (Object jsonObject : jsonList) {
             JSONObject jsonData = (JSONObject) jsonObject;
 
             String yr_dt = (String) jsonData.get("PRD_DE");
             String val = (String) jsonData.get("DT");
 
-            if(compareIncomeDistributionIndex.get("yr_dt").equals(yr_dt)){
+            if (compareIncomeDistributionIndex.get("yr_dt").equals(yr_dt)) {
                 break;
             }
 
@@ -185,4 +187,44 @@ public class StandardOfLivingScheduler {
         }
     }
 
+    @Scheduled(cron = "* * 4 * * *")
+    @Transactional(rollbackFor = Exception.class)
+    public void minPayScheduler() throws Exception {
+        String url = "http://www.index.go.kr/openApi/xml_stts.do";
+        String parameter = "?userId=&statsCode=149201";
+        //kosis = json, enara = xml
+        String format = "xml";
+        String site = "enara";
+        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+
+//      통계표
+        org.json.JSONObject table = commonService.apiXmlParser(stringBuilder);
+        String unit = table.getString("단위");
+        String[] units = unit.split(",");
+        org.json.JSONObject innerTable = table.getJSONObject("표");
+        org.json.JSONArray category = innerTable.getJSONArray("항목");
+
+        org.json.JSONObject jsonObject = category.getJSONObject(0);
+        org.json.JSONArray columns = jsonObject.getJSONArray("열");
+
+        Map<String, Object> dataMap = new HashMap<>();
+        org.json.JSONObject jsonData = (org.json.JSONObject) columns.get(columns.length() - 1);
+        String date = Integer.toString((Integer) jsonData.get("주기"));
+
+        @SuppressWarnings("unchecked")
+        Map<String, String> maxDate = (Map<String, String>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".minPayMaxDate");
+        String maxYear = maxDate.get("yrDt");
+
+        boolean dupleCheck = date.equals(maxYear);
+
+        if (dupleCheck) {
+            log.info("이미 등록된 최저임금 자료입니다.");
+        } else {
+            dataMap.put("yrDt", date);
+            dataMap.put("unit", units[0]);
+            dataMap.put("val", String.valueOf(jsonData.get("content")));
+
+            commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertMinPay");
+        }
+    }
 }

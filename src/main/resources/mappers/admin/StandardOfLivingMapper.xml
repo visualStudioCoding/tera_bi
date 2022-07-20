@@ -35,6 +35,9 @@
     <select id="compareIncomeDistributionIndex" parameterType="hashMap" resultType="hashMap">
         SELECT MAX(yr_dt) AS yr_dt FROM gini_cfcnt
     </select>
+    <select id="minPayMaxDate" resultType="hashMap">
+        SELECT MAX(yr_dt) AS yrDt FROM min_pay
+    </select>
 
 
 </mapper>
