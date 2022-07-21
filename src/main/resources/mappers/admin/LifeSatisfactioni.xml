@@ -190,6 +190,33 @@
                  ,type = #{type}
     </insert>
 
+    <!--해외여행-->
+    <insert id="insertOvrsstrip" parameterType="hashMap">
+        INSERT INTO ovrss_trip
+        (yr_dt
+        , cty_nm
+        , top_grp
+        , mid_grp
+        , unit
+        ,val
+        , reg_dt
+        )
+        VALUES
+            (#{yrdt}
+            , #{ctynm}
+            , #{topgrp}
+            , #{midgrp}
+            , #{unit}
+            , #{val}
+            , now()
+            )
+            ON DUPLICATE KEY UPDATE
+                                 yr_dt   = #{yrdt}
+                                 ,cty_nm = #{ctynm}
+                                 ,top_grp = #{topgrp}
+                                 ,mid_grp = #{midgrp}
+    </insert>
+
     <!--스케쥴러 테스트 -->
     <insert id="insertTest1" parameterType="hashMap">
         INSERT INTO test1
@@ -279,6 +306,18 @@
             *
         FROM
             allpr_index
+        WHERE
+            1=1
+        order by yr_dt desc
+            LIMIT
+                  1
+    </select>
+
+    <select id="selectOvrsstrip" parameterType="HashMap" resultType="HashMap">
+        SELECT
+            *
+        FROM
+            ovrss_trip
         WHERE
             1=1
         order by yr_dt desc
