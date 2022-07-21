@@ -619,4 +619,116 @@ public class Sche {
             cnt++;
         }
     }
+
+    //7.해외여행
+    //@Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "* * 4 * * *")
+    public void ovrsstrip_Schedule() throws Exception {
+        String url = "https://kosis.kr/openapi/Param/statisticsParameterData.do";
+        //String parameter = "?method=getList&apiKey=&itmId=T90+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=M&newEstPrdCnt=1&loadGubun=2&orgId=101&tblId=DT_1DA7014S";
+        //https://kosis.kr/openapi/Param/statisticsParameterData.do
+        // ?method=getList&apiKey=MDE5NGY4NzM1YzIxMDJmY2FlNTJkMTg0NThiZDJmMjQ=
+        // &itmId=T00+T10+T11+T12+T13+T14+T15+T16+T17+T18+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&newEstPrdCnt=1&loadGubun=2&orgId=101&tblId=DT_1SSCL060R
+          String parameter = "?method=getList&apiKey=&itmId=T00+T10+T11+T12+T13+T14+T15+T16+T17+T18+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&newEstPrdCnt=1&loadGubun=2&orgId=101&tblId=DT_1SSCL060R";
+        //DT_1JH20151
+
+        String format = "json";
+        String site = "kosis";
+        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        //
+        // {"err":"30","errMsg":"데이터가 존재하지 않습니다."}
+
+        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> dataMap = new HashMap<>();
+        int cnt=1;
+        for (Object jsonObject : jsonList) {
+            JSONObject jsonData = (JSONObject) jsonObject;
+
+            //년도
+            String prdde = (String) jsonData.get("PRD_DE");
+            String yrdt = prdde.substring(0, 4);
+
+            //시도
+            String ctynm = (String) jsonData.get("C1_NM");
+
+            //대분류
+            String topgrp = (String) jsonData.get("C2_NM");
+
+            //소분류
+            String midgrp = (String) jsonData.get("ITM_NM");
+
+            //계는 통과
+            if("계".equals(midgrp)) {
+                continue;
+            }
+
+            //점수단위(%,회)
+            String unit = (String) jsonData.get("UNIT_NM");
+
+            //횟수
+            String val = (String) jsonData.get("DT");
+
+            dataMap.put("yrdt", yrdt);
+            dataMap.put("ctynm", ctynm);
+            dataMap.put("topgrp", topgrp);
+            dataMap.put("midgrp", midgrp);
+            dataMap.put("unit", unit);
+            dataMap.put("val", val);
+
+            commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertOvrsstrip");//LifeSatisfaction.insertMarriage
+            cnt++;
+        }
+
+    }
+
+    //8.기업규모별 개인소득 점유율
+    //@Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "* * 4 * * *")
+    public void prsnlinshr_Schedule() throws Exception {
+        String url = "https://kosis.kr/openapi/Param/statisticsParameterData.do";
+//        https://kosis.kr/openapi/Param/statisticsParameterData.do?method=getList&apiKey=MDE5NGY4NzM1YzIxMDJmY2FlNTJkMTg0NThiZDJmMjQ=
+//        &itmId=T001+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&startPrdDe=2020&endPrdDe=2020&loadGubun=2&orgId=101&tblId=DT_1EP_2001
+          String parameter = "?method=getList&apiKey=&itmId=T001+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&newEstPrdCnt=1&loadGubun=2&orgId=101&tblId=DT_1EP_2001";
+        //DT_1JH20151
+
+        String format = "json";
+        String site = "kosis";
+        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        //
+        // {"err":"30","errMsg":"데이터가 존재하지 않습니다."}
+
+        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> dataMap = new HashMap<>();
+        int cnt=1;
+        for (Object jsonObject : jsonList) {
+            JSONObject jsonData = (JSONObject) jsonObject;
+
+            //년도
+            String prdde = (String) jsonData.get("PRD_DE");
+            String yrdt = prdde.substring(0, 4);
+
+            //기업규모
+            String topgrp = (String) jsonData.get("C2_NM");
+
+            //소득구간
+            String midgrp = (String) jsonData.get("C1_NM");
+
+            //단위
+            String unit = (String) jsonData.get("UNIT_NM");
+
+            //점유율
+            String val = (String) jsonData.get("DT");
+
+            dataMap.put("yrdt", yrdt);
+            dataMap.put("topgrp", topgrp);
+            dataMap.put("midgrp", midgrp);
+            dataMap.put("unit", unit);
+            dataMap.put("val", val);
+
+            commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertPrsnlinshr");//LifeSatisfaction.insertMarriage
+            cnt++;
+        }
+    }
 }

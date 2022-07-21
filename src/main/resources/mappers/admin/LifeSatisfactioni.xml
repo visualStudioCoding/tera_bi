@@ -217,6 +217,30 @@
                                  ,mid_grp = #{midgrp}
     </insert>
 
+ <!--기업규모별 개인소득 점유율-->
+    <insert id="insertPrsnlinshr" parameterType="hashMap">
+        INSERT INTO prsnl_inshr
+        (yr_dt
+        , top_grp
+        , mid_grp
+        , unit
+        ,val
+        , reg_dt
+        )
+        VALUES
+            (#{yrdt}
+            , #{topgrp}
+            , #{midgrp}
+            , #{unit}
+            , #{val}
+            , now()
+            )
+            ON DUPLICATE KEY UPDATE
+                                 yr_dt   = #{yrdt}
+                                 ,top_grp = #{topgrp}
+                                 ,mid_grp = #{midgrp}
+    </insert>
+
     <!--스케쥴러 테스트 -->
     <insert id="insertTest1" parameterType="hashMap">
         INSERT INTO test1
@@ -318,6 +342,18 @@
             *
         FROM
             ovrss_trip
+        WHERE
+            1=1
+        order by yr_dt desc
+            LIMIT
+                  1
+    </select>
+
+    <select id="selectPrsnlinshr" parameterType="HashMap" resultType="HashMap">
+        SELECT
+            *
+        FROM
+            prsnl_inshr
         WHERE
             1=1
         order by yr_dt desc
