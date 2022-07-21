@@ -87,6 +87,11 @@ public class LifeSatisfactionController {
         dataMap7 = (Map<String, Object>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".selectOvrsstrip");
         model.addAttribute("data7", dataMap7);
 
+        //8.기업규모별 개인소득 점유율
+        Map<String,Object> dataMap8 = new HashMap<>();
+        dataMap8 = (Map<String, Object>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".selectPrsnlinshr");
+        model.addAttribute("data8", dataMap8);
+
         return PAGE_ID + DIRECTORY + "Main";
         //return DIRECTORY+ "index2";
     }
@@ -669,6 +674,63 @@ public class LifeSatisfactionController {
             dataMap.put("val", val);
 
             commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertOvrsstrip");//LifeSatisfaction.insertMarriage
+            cnt++;
+        }
+
+        result.put("data", dataMap);
+        result.put("size", cnt);
+        result.put("success", "성공");
+
+        return result;
+    }
+
+ //8. 기업규모별 개인소득 점유율
+    @Transactional(rollbackFor = Exception.class)
+    @ResponseBody
+    @GetMapping("/admin/lifeSatisfaction/prsnlnshr")
+    public Object Prsnlnshr_Parse(String url, String parameter) throws Exception {
+        log.info(PAGE_ID + DIRECTORY + PROGRAM_ID + "prsnlnshr");
+        System.out.println("url : " + url);
+        System.out.println("parameter : " + parameter);
+
+        //DT_1EP_2001
+        //kosis = json, enara = xml
+        String format = "json";
+        String site = "kosis";
+        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        //
+        // {"err":"30","errMsg":"데이터가 존재하지 않습니다."}
+
+        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> dataMap = new HashMap<>();
+        int cnt=1;
+        for (Object jsonObject : jsonList) {
+            JSONObject jsonData = (JSONObject) jsonObject;
+
+            //년도
+            String prdde = (String) jsonData.get("PRD_DE");
+            String yrdt = prdde.substring(0, 4);
+
+            //기업규모
+            String topgrp = (String) jsonData.get("C2_NM");
+
+            //소득구간
+            String midgrp = (String) jsonData.get("C1_NM");
+
+            //단위
+            String unit = (String) jsonData.get("UNIT_NM");
+
+            //점유율
+            String val = (String) jsonData.get("DT");
+
+            dataMap.put("yrdt", yrdt);
+            dataMap.put("topgrp", topgrp);
+            dataMap.put("midgrp", midgrp);
+            dataMap.put("unit", unit);
+            dataMap.put("val", val);
+
+            commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertPrsnlinshr");//LifeSatisfaction.insertMarriage
             cnt++;
         }
 

@@ -221,7 +221,34 @@
         //공통모듈 ajax 함수 호출하기
         //kosisApiAjax("/lifeSatisfaction/Divorce", callBackFn, 'get', param, errorMsg);
     }
+
+    //8. 기업규모별 개인소득 점유율
+    function api8(){
+        const frm = document.forms['frm8'];
+        let errorMsg = "error";
+        let result="";
+
+        //ajax가 정상 호출 되었을때 실행 되는 함수
+        $("#rst8").html("");
+        let callBackFn = function( data ) {
+            //alert(data.data.yrdt + " " + data.data.mondt + " " + data.success + " ,  " +data.size);
+            result += data.data.yrdt + data.success + " ,  " +data.size + "건<br>";
+            $("#rst8").html(result);
+            console.log(data.data)
+        }
+        let syear = frm.startPrdDe.value;
+        syear = syear.substr(0,4);
+
+            frm.startPrdDe.value = syear;
+            let param = fnParam(frm);
+            console.log(param);
+            kosisApiAjax("/admin/lifeSatisfaction/prsnlnshr", callBackFn, 'get', param, errorMsg);
+
+        //공통모듈 ajax 함수 호출하기
+        //kosisApiAjax("/lifeSatisfaction/Divorce", callBackFn, 'get', param, errorMsg);
+    }
 </script>
+<!-- 로딩중이미지 -->
 <style type="text/css" >
     .wrap-loading{ /*화면 전체를 어둡게 합니다.*/
         position: fixed;
@@ -247,6 +274,7 @@
 <div class="wrap-loading display-none">
     <div><img src="/img/loading.gif" /></div>
 </div>
+<!-- 로딩중이미지 여기까지 -->
 <div class="container">
     <div class="row">
         <div class="col">
@@ -471,32 +499,30 @@
             </div></form>
         </div>
         <div class="col">
+            <!--
+            https://kosis.kr/openapi/Param/statisticsParameterData.do
+            ?method=getList&apiKey=MDE5NGY4NzM1YzIxMDJmY2FlNTJkMTg0NThiZDJmMjQ=&itmId=T001+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=
+            &objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&startPrdDe=2020&endPrdDe=2020&loadGubun=2&orgId=101&tblId=DT_1EP_2001
+            -->
+            <form id="frm8" name="frm8" onsubmit="api8();return false">
+                <input type="hidden" id="itmId" name="itmId" value="T001+"/>
+                <input type="hidden" id="objL1" name="objL1" value="ALL"/>
+                <input type="hidden" id="objL2" name="objL2" value="ALL"/>
+                <input type="hidden" id="prdSe" name="prdSe" value="Y"/>
+                <input type="hidden" id="loadGubun" name="loadGubun" value="2"/>
+                <input type="hidden" id="orgId" name="orgId" value="101"/>
+                <input type="hidden" id="tblId" name="tblId" value="DT_1EP_2001"/>
+                <input type="hidden" id="newEstPrdCnt" name="newEstPrdCnt" value=""/>
             <div class="card">
                 <div class="card-header">
-                    전 산업 생산지수
+                    8. 기업규모별 개인소득 점유율(년)
                 </div>
                 <div class="card-body">
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                            Default checkbox
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-                        <label class="form-check-label" for="flexCheckChecked">
-                            Checked checkbox
-                        </label>
-                    </div>
+                    년도입력 <input type="text" name="startPrdDe" id="startPrdDe" value="<#if data8??>${data8.yr_dt}</#if>" style="width:100%" >
+                    <div id="rst8"></div>
                 </div>
-                <button type="button" class="btn btn-outline-secondary activator">실행</button>
-            </div>
+                <button type="submit" class="btn btn-outline-secondary activator">실행</button>
+            </div></form>
         </div>
     </div>
     <div class="row">
