@@ -68,6 +68,13 @@ let kosisApiAjax = function(url, fn, methodType, param, errorMsg){
         method: methodType,
         data: data,
         dataType: "json"
+
+        ,beforeSend:function(){
+        $('.wrap-loading').removeClass('display-none');
+        }
+        ,complete:function(){
+        $('.wrap-loading').addClass('display-none');
+        }
     });
 
     //콜백함수
