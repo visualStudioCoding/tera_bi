@@ -83,14 +83,26 @@ function getKosisParams(form, years, months) {
 }
 
 function getEcosParam(form){
-    let ecosParam = form.apiType.value
+    // const startDtBf = document.querySelector("body > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div > form > div > div:nth-child(1) > input[type=date]").value;
+    const startDtBf = form.startDt.value
+    const endDtBf = form.endDt.value
+    // const endDtBf = document.querySelector("body > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div > form > div > div:nth-child(2) > input[type=date]").value;
+
+    let startDt = startDtBf.replace(/\-/g,"")
+    let endDt = endDtBf.replace(/\-/g,"")
+
+    let ecosParam = form.serviceNm.value
+                + "/apiKey/" + form.resultType.value
+                + "/kr/1/10000/" + form.tableCode.value
+                + "/D/" + startDt + "/" + endDt + "/"
+                + form.itmCode.value + "/?/?/?"
 
     return ecosParam;
 }
 
-function getMonthlyExchangeRate() {
+function getMonthlyBaseRate() {
 
-    let formData = document.forms["getMonthlyExchangeRate_opt"];
+    let formData = document.forms["getMonthlyBaseRate_opt"];
 
     let params = getEcosParam(formData);
 
@@ -101,7 +113,7 @@ function getMonthlyExchangeRate() {
     }
     //공통모듈 ajax 함수 호출하기
     // kosisApiAjax("/getIncome", callBackFn, 'get', kosisParam, errorMsg);
-    ecosApiAjax("/economicGrowth/api/getMonthlyExchangeRate", callBackFn, 'get', params, errorMsg);
+    ecosApiAjax("/admin/economicGrowth/api/getMonthlyBaseRate", callBackFn, 'get', params, errorMsg);
 }
 
 function getStateDebt() {
@@ -116,7 +128,7 @@ function getStateDebt() {
     }
     //공통모듈 ajax 함수 호출하기
     // kosisApiAjax("/getIncome", callBackFn, 'get', kosisParam, errorMsg);
-    kosisApiAjax("/economicGrowth/api/getStateDebt", callBackFn, 'get', params, errorMsg);
+    kosisApiAjax("/admin/economicGrowth/api/getStateDebt", callBackFn, 'get', params, errorMsg);
 }
 
 function getGdpAndGni() {
@@ -131,7 +143,7 @@ function getGdpAndGni() {
     }
     //공통모듈 ajax 함수 호출하기
     // kosisApiAjax("/getIncome", callBackFn, 'get', kosisParam, errorMsg);
-    kosisApiAjax("/economicGrowth/api/getGdpAndGni", callBackFn, 'get', params, errorMsg);
+    kosisApiAjax("/admin/economicGrowth/api/getGdpAndGni", callBackFn, 'get', params, errorMsg);
 }
 
 function getGrowthRate(){
@@ -145,7 +157,7 @@ function getGrowthRate(){
     }
     //공통모듈 ajax 함수 호출하기
     // kosisApiAjax("/getIncome", callBackFn, 'get', kosisParam, errorMsg);
-    kosisApiAjax("/economicGrowth/api/getGrowthRate", callBackFn, 'get', params, errorMsg);
+    kosisApiAjax("/admin/economicGrowth/api/getGrowthRate", callBackFn, 'get', params, errorMsg);
 }
 
 
@@ -161,7 +173,7 @@ function getInflationRate(){
     }
     //공통모듈 ajax 함수 호출하기
     // kosisApiAjax("/getIncome", callBackFn, 'get', kosisParam, errorMsg);
-    kosisApiAjax("/economicGrowth/api/getInflationRate", callBackFn, 'get', params, errorMsg);
+    kosisApiAjax("/admin/economicGrowth/api/getInflationRate", callBackFn, 'get', params, errorMsg);
 }
 
 
