@@ -124,8 +124,7 @@ let enaraApiAjax = function(url, fn, methodType, param, errorMsg){
 
 let ecosApiAjax = function(url, fn, methodType, param, errorMsg){
     let apiUrl = "https://ecos.bok.or.kr/api/";
-    let parameter = param + "/apiKey/json/kr/1/100/";
-    let data = {url:apiUrl, parameter:parameter};
+    let data = {url:apiUrl, parameter:param};
 
     // 데이터 값이 잘 넘어왔는지 확인
     console.log("url: ", url);

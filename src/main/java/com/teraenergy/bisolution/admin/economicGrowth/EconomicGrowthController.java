@@ -38,11 +38,11 @@ public class EconomicGrowthController {
         return PAGE_ID + DIRECTORY + "Main";
     }
 
-    //기준금리 및 환율
+    //기준금리
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
-    @GetMapping("/api/getMonthlyExchangeRate")
-    public Object getMonthlyExchangeRate(String url, String parameter) throws Exception {
+    @GetMapping("/api/getBaseRate")
+    public Object getBaseRate(String url, String parameter) throws Exception {
 
         System.out.println(url);
         System.out.println(parameter);
@@ -59,46 +59,93 @@ public class EconomicGrowthController {
 
         for(Object jsonObject : jsonList){
             JSONObject jsonData = (JSONObject) jsonObject;
-            if("시장금리".equals(jsonData.get("CLASS_NAME")) && jsonData.get("KEYSTAT_NAME").toString().contains("기준금리")){
-                String baseMoneyRate = (String) jsonData.get("DATA_VALUE");
-                String unit = (String) jsonData.get("UNIT_NAME");
-                String date = (String) jsonData.get("CYCLE");
-                String year = date.substring(0, 4);
-                String month = date.substring(4,6);
-                String day = date.substring(6,8);
-                dataMap.put("yr_dt", year);
-                dataMap.put("mon_dt", month);
-                dataMap.put("dy_dt", day);
-                dataMap.put("unit", unit);
-                dataMap.put("val", baseMoneyRate);
-                System.out.println(dataMap);
 
-                commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertBaseRate");
+            String baseMoneyRate = (String) jsonData.get("DATA_VALUE");
+            String unit = (String) jsonData.get("UNIT_NAME");
+            String date = (String) jsonData.get("TIME");
+            String year = date.substring(0, 4);
+            String month = date.substring(4,6);
+            String day = date.substring(6,8);
 
-            }else if("환율".equals(jsonData.get("CLASS_NAME"))){
-                String[] type = jsonData.get("KEYSTAT_NAME").toString().split(" ");
-                String det_type = type[0];
-                String exMoneyRate = (String) jsonData.get("DATA_VALUE");
-                String unit = (String) jsonData.get("UNIT_NAME");
-                String date = (String) jsonData.get("CYCLE");
-                String year = date.substring(0, 4);
-                String month = date.substring(4,6);
-                String day = date.substring(6,8);
-                dataMap.put("yr_dt", year);
-                dataMap.put("mon_dt", month);
-                dataMap.put("dy_dt", day);
-                dataMap.put("type", det_type);
-                dataMap.put("unit", unit);
-                dataMap.put("val", exMoneyRate);
-                System.out.println(dataMap);
+            dataMap.put("yr_dt", year);
+            dataMap.put("mon_dt", month);
+            dataMap.put("dy_dt", day);
+            dataMap.put("unit", unit);
+            dataMap.put("val", baseMoneyRate);
+            System.out.println(dataMap);
 
-                commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertExchangeRate");
-            }
+            commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertBaseRate");
+
         }
 
         result.put("data", dataMap);
         result.put("success", "성공");
 
+        return result;
+    }
+
+    //환율
+    @Transactional(rollbackFor = Exception.class)
+    @ResponseBody
+    @GetMapping("/api/getExchangeRate")
+    public Object getExchangeRate(String url, String parameter) throws Exception {
+
+        System.out.println(url);
+        System.out.println(parameter);
+
+        String[] typeList = {"0000001", "0000053", "0000002", "0000003"};
+
+        Map<String, Object> result = new HashMap<>();
+
+        for (int i = 0; i < typeList.length; i++) {
+            System.out.println(typeList[i]);
+            if(i >= 1){
+                parameter = parameter.replace(typeList[i-1], typeList[i]);
+            }
+            System.out.println(parameter);
+
+            //kosis = json, enara = xml
+            String format = "json";
+            String site = "ecos";
+            StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+
+            JSONArray jsonList = commonService.ecosApiJsonParser(stringBuilder);
+            System.out.println(jsonList);
+            Map<String, Object> dataMap = new HashMap<>();
+
+            for (Object jsonObject : jsonList) {
+                JSONObject jsonData = (JSONObject) jsonObject;
+
+                String typeBf = jsonData.get("ITEM_NAME1").toString();
+                String type = null;
+
+                if (typeBf.contains("매매기준율")) {
+                    type = typeBf.replace("(매매기준율)", "");
+                }else{
+                    type = typeBf;
+                }
+                String exMoneyRate = (String) jsonData.get("DATA_VALUE");
+                String unit = (String) jsonData.get("UNIT_NAME");
+                String date = (String) jsonData.get("TIME");
+                String year = date.substring(0, 4);
+                String month = date.substring(4, 6);
+                String day = date.substring(6, 8);
+                dataMap.put("yr_dt", year);
+                dataMap.put("mon_dt", month);
+                dataMap.put("dy_dt", day);
+                dataMap.put("type", type);
+                dataMap.put("unit", unit);
+                dataMap.put("val", exMoneyRate);
+                System.out.println(dataMap);
+
+                commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertExchangeRate");
+
+            }
+
+
+            result.put("data", dataMap);
+            result.put("success", "성공");
+        }
         return result;
     }
 

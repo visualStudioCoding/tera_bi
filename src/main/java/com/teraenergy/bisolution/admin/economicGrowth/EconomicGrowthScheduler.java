@@ -25,7 +25,7 @@ public class EconomicGrowthScheduler {
 // 초    분     시    일    월    요일
 
     //기준금리 및 환율
-    @Scheduled(cron = "* * 6 * * *")
+    @Scheduled(cron = "* 30 8 * * *")
     @Transactional(rollbackFor = Exception.class)
     public void monthlyExchangeRateScheduler() throws Exception {
         String url = "https://ecos.bok.or.kr/api/";

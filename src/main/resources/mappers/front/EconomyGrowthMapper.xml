@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bi.front.EconomicGrowth">
+    <select id="selectEconomicGrowth" parameterType="hashMap" resultType="hashMap">
+        SELECT cty_nm, val FROM enmc_grrt WHERE yr_dt = #{yr_dt}
+    </select>
+
+    <select id="selectExchangeRate" parameterType="hashMap" resultType="hashMap">
+        SELECT val FROM exchn_rate WHERE type = '원/달러' AND DATE_FORMAT(reg_dt, '%Y-%M-%D') = DATE_FORMAT(NOW(), '%Y-%M-%D')
+    </select>
+
+    <select id="selectExchangeRateCompare" parameterType="hashMap" resultType="hashMap">
+        SELECT val FROM exchn_rate WHERE type = '원/달러' AND DATE_FORMAT(reg_dt, '%Y-%M-%D') = DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -1 DAY), '%Y-%M-%D')
+    </select>
+
+    <select id="selectBaseRate" parameterType="hashMap" resultType="hashMap">
+        SELECT val FROM base_rate WHERE yr_dt = MAX(yr_dt) AND mon_dt = MAX(mon_dt) AND dy_dt = MAX(dy_dt)
+    </select>
+
+    <select id="selectBaseRateCompare" parameterType="hashMap" resultType="hashMap">
+        SELECT val FROM base_rate WHERE
+                                      yr_dt = (SELECT MAX(yr_dt) FROM base_rate) AND
+                                      mon_dt = (SELECT MAX(mon_dt) FROM base_rate WHERE yr_dt = (SELECT MAX(yr_dt) FROM base_rate)) AND
+                                      dy_dt = (SELECT MAX(dy_dt) FROM base_rate WHERE mon_dt = (SELECT MAX(mon_dt) FROM base_rate WHERE yr_dt = (SELECT MAX(yr_dt) FROM base_rate)) AND
+                                                                                      dy_dt = (SELECT dy_dt FROM base_rate WHERE mon_dt = (SELECT MAX(mon_dt) FROM base_rate WHERE yr_dt = (SELECT MAX(yr_dt) FROM base_rate)) LIMIT 1 OFFSET 1)
+    </select>
+
+    <select id="selectGDP" parameterType="hashMap" resultType="hashMap">
+        SELECT val FROM gdp ORDER BY yr_dt DESC LIMIT 1
+    </select>
+
+    <select id="selectGNI" parameterType="hashMap" resultType="hashMap">
+        SELECT val FROM gni ORDER BY yr_dt DESC LIMIT 1
+    </select>
+</mapper>

@@ -6,18 +6,51 @@
         <div class="col">
             <div class="card">
                 <div class="card-header">
-                    한국은행 기준금리 및 환율
+                    한국은행 기준금리
                 </div>
-                <form name="getMonthlyExchangeRate_opt">
+                <form name="getBaseRate_opt">
                     <div class="card-body">
-                        <span>년도 선택</span>
-                        <select class="form-select" aria-label="Default select example" disabled>
-                            <option selected>해당 API는 당일 데이터 호출만 가능합니다. </option>
-                        </select>
-                        <input type="hidden" name="apiType" value="KeyStatisticList">
+                        <div class="row" style="margin-top:15px; margin-bottom:0px; padding:5px">
+                            <span>시작 년도 선택</span>
+                        <input type="date" name="startDt">
+                        </div>
+                        <div class="row" style="margin-top:5px; margin-bottom:5px; padding:5px">
+                            <span>끝 년도 선택</span>
+                        <input type="date" name="endDt">
+                        </div>
+                        <#assign name_list = ["serviceNm", "resultType", "tableCode", "itmCode"]>
+                        <#assign val_list = ["StatisticSearch", "json", "722Y001", "0101000"]>
+                        <#list 0..3 as k>
+                            <input type="hidden" name=${name_list[k]} value=${val_list[k]}  />
+                        </#list>
                     </div>
                 </form>
-                <button type="button" id="MonthlyExchangeRate" class="btn btn-outline-secondary activator" onclick="getMonthlyExchangeRate()">실행</button>
+                <button type="button" id="MonthlyExchangeRate" class="btn btn-outline-secondary activator" onclick="getBaseRate()">실행</button>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    한국은행 환율
+                </div>
+                <form name="getExchangeRate_opt">
+                    <div class="card-body">
+                        <div class="row" style="margin-top:15px; margin-bottom:0px; padding:5px">
+                            <span>시작 년도 선택</span>
+                            <input type="date" name="startDt">
+                        </div>
+                        <div class="row" style="margin-top:5px; margin-bottom:5px; padding:5px">
+                            <span>끝 년도 선택</span>
+                            <input type="date" name="endDt">
+                        </div>
+                        <#assign name_list = ["serviceNm", "resultType", "tableCode", "itmCode"]>
+                        <#assign val_list = ["StatisticSearch", "json", "731Y001", "0000001"]>
+                        <#list 0..3 as k>
+                            <input type="hidden" name=${name_list[k]} value=${val_list[k]}  />
+                        </#list>
+                    </div>
+                </form>
+                <button type="button" id="MonthlyExchangeRate" class="btn btn-outline-secondary activator" onclick="getExchangeRate()">실행</button>
             </div>
         </div>
         <div class="col">
