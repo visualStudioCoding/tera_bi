@@ -3,11 +3,14 @@ package com.teraenergy.bisolution.admin.stockprices;
 
 import com.teraenergy.global.service.CommonService;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,13 +18,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
  * 종합주가지수 api 호출 및 db 적재
  *
  * @author tera
  * @version 1.0.0
  * 작성일 2022-07-19
-**/
+ **/
 @Slf4j
 @Controller
 @RequestMapping("/admin/stockPrices")
@@ -41,6 +43,54 @@ public class StockPricesController {
     }
 
     @Transactional(rollbackFor = Exception.class)
+    @ResponseBody
+    @GetMapping("/api/compositeIndex")
+    public Object getCompositeIndex(String url, String parameter) throws Exception {
+        String[] categoryList = {"0001000", "0089000"}; // 0001000 : 코스피, 0089000 : 코스닥
+
+        Map<String, Object> result = new HashMap<>();
+        String format = "json";
+        String site = "ecos";
+        for (int i = 0; i < categoryList.length; i++) {
+            if (i > 0) {
+                parameter = parameter.replace(categoryList[i - 1], categoryList[i]);
+            }
+            StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+
+            JSONArray jsonList = commonService.ecosApiJsonParser(stringBuilder);
+
+            Map<String, Object> dataMap = new HashMap<>();
+
+            List<Map<String, Object>> dataList = new ArrayList<>();
+            for (Object jsonObject : jsonList) {
+                JSONObject jsonData = (JSONObject) jsonObject;
+
+                String dataValue = (String) jsonData.get("DATA_VALUE");
+                String date = (String) jsonData.get("TIME");
+                String year = date.substring(0, 4);
+                String month = date.substring(4, 6);
+                String day = date.substring(6, 8);
+
+                dataMap.put("yrDt", year);
+                dataMap.put("monDt", month);
+                dataMap.put("dyDt", day);
+                dataMap.put("unit", "P");
+                dataMap.put("val", dataValue);
+                dataList.add(dataMap);
+
+                if (i == 0) {
+                    commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertKospi");
+                } else {
+                    commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertKosdaq");
+                }
+            }
+            result.put("data", dataList);
+            result.put("success", "성공");
+        }
+        return result;
+    }
+
+    /*@Transactional(rollbackFor = Exception.class)
     @ResponseBody
     @GetMapping("/api/compositeIndex")
     public Object getCompositeIndex(String url, String parameter) throws Exception {
@@ -65,7 +115,6 @@ public class StockPricesController {
             for (Object data : columns) {
                 Map<String, Object> dataMap = new HashMap<>();
                 org.json.JSONObject jsonData = (org.json.JSONObject) data;
-                System.out.println(jsonData);
                 String date = Integer.toString((Integer) jsonData.get("주기"));
                 String year = date.substring(0, 4);
                 String month = date.substring(4, 6);
@@ -77,7 +126,7 @@ public class StockPricesController {
                 String index = (String) jsonObject.get("이름");
 
                 dataList.add(dataMap);
-                if("코스피지수".equals(index)){
+                if ("코스피지수".equals(index)) {
                     commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertKospi");
                 } else {
                     commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertKosdaq");
@@ -88,7 +137,7 @@ public class StockPricesController {
         result.put("success", "성공");
 
         return result;
-    }
+    }*/
 
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
@@ -116,7 +165,7 @@ public class StockPricesController {
 
                 String name = (String) jsonObject.get("이름");
 
-                if("출생아수".equals(name) || "사망자수".equals(name)) {
+                if ("출생아수".equals(name) || "사망자수".equals(name)) {
                     org.json.JSONArray columns = jsonObject.getJSONArray("열");
                     for (Object data : columns) {
                         Map<String, Object> dataMap = new HashMap<>();
@@ -128,7 +177,7 @@ public class StockPricesController {
                         dataMap.put("val", String.valueOf(jsonData.get("content")));
 
                         dataList.add(dataMap);
-                        if("출생아수".equals(name)){
+                        if ("출생아수".equals(name)) {
                             commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertBirth");
                         } else {
                             commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertDeath");
@@ -136,7 +185,7 @@ public class StockPricesController {
                     }
                 }
             }
-            if("기대수명".equals(innerCategoryGroup.get("이름"))){
+            if ("기대수명".equals(innerCategoryGroup.get("이름"))) {
                 org.json.JSONArray jsonArray = new org.json.JSONArray();
                 org.json.JSONObject manObject = category.getJSONObject(1);
                 org.json.JSONObject womanObject = category.getJSONObject(2);
@@ -146,7 +195,7 @@ public class StockPricesController {
                     org.json.JSONObject tmpObject = new org.json.JSONObject();
                     org.json.JSONObject manData = manColumns.getJSONObject(j);
                     org.json.JSONObject womanData = womanColumns.getJSONObject(j);
-                    if(manData.get("주기").equals(womanData.get("주기"))){
+                    if (manData.get("주기").equals(womanData.get("주기"))) {
                         String date = Integer.toString((Integer) manData.get("주기"));
                         tmpObject.put("yrDt", date);
                         tmpObject.put("unit", units[2].trim()); //년

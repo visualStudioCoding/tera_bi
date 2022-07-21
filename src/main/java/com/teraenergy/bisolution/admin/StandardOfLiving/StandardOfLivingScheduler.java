@@ -187,8 +187,11 @@ public class StandardOfLivingScheduler {
         }
     }
 
-    @Scheduled(cron = "* * 4 * * *")
+    //      초   |  분  |  시  |  일  |  월   | 요일 | 연도
+//     0~59 | 0~59 | 0~23 | 1~31 | 1~12 | 0~6 | 생략가능
+
     @Transactional(rollbackFor = Exception.class)
+    @Scheduled(cron = "00 00 4 * * *")
     public void minPayScheduler() throws Exception {
         String url = "http://www.index.go.kr/openApi/xml_stts.do";
         String parameter = "?userId=&statsCode=149201";

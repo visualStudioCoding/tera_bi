@@ -6,11 +6,13 @@
         INSERT INTO kospi_index
         (yr_dt
         , mon_dt
+        , dy_dt
         , unit
         , val)
         VALUES
         (#{yrDt}
         , #{monDt}
+        , #{dyDt}
         , #{unit}
         , #{val})
     </insert>
@@ -18,11 +20,13 @@
         INSERT INTO kosdaq_index
         (yr_dt
         , mon_dt
+        , dy_dt
         , unit
         , val)
         VALUES
         (#{yrDt}
         , #{monDt}
+        , #{dyDt}
         , #{unit}
         , #{val})
     </insert>
