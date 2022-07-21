@@ -12,7 +12,7 @@ function fnCompositeIndex(){
         console.log(data.data)
     }
     //공통모듈 ajax 함수 호출하기
-    enaraApiAjax("/stockPrices/api/compositeIndex", callBackFn, 'get', param, errorMsg);
+    enaraApiAjax("/admin/stockPrices/api/compositeIndex", callBackFn, 'get', param, errorMsg);
 }
 
 
@@ -25,5 +25,5 @@ function fnBirthDeath() {
         console.log(data.data)
     }
     //공통모듈 ajax 함수 호출하기
-    enaraApiAjax("/stockPrices/api/birthDeath", callBackFn, 'get', enaraParam, errorMsg);
+    enaraApiAjax("/admin/stockPrices/api/birthDeath", callBackFn, 'get', enaraParam, errorMsg);
 }

@@ -63,7 +63,7 @@ function getCapitaPersonal(){
         console.log(data.data)
 
     }
-    kosisApiAjax("/standardOfLiving/api/getCapitaPersonal", callBackFn, 'get', params, errorMsg)
+    kosisApiAjax("/admin/standardOfLiving/api/getCapitaPersonal", callBackFn, 'get', params, errorMsg)
 
 }
 
@@ -77,7 +77,7 @@ function getGrossNationalIncome(){
         alert(data.success);
         console.log(data.data)
     }
-    enaraApiAjax("/standardOfLiving/api/getGrossNationalIncome", callBackFn, 'get', params, errorMsg)
+    enaraApiAjax("/admin/standardOfLiving/api/getGrossNationalIncome", callBackFn, 'get', params, errorMsg)
 }
 
 function getIncomeDistributionIndex(){
@@ -90,7 +90,7 @@ function getIncomeDistributionIndex(){
         alert(data.success);
         console.log(data.data)
     }
-    kosisApiAjax("/standardOfLiving/api/getIncomeDistributionIndex", callBackFn, 'get', params, errorMsg)
+    kosisApiAjax("/admin/standardOfLiving/api/getIncomeDistributionIndex", callBackFn, 'get', params, errorMsg)
 }
 
 function getLargeData(){
@@ -111,7 +111,7 @@ function getLargeData(){
         console.log(params)
         //공통모듈 ajax 함수 호출하기
         // kosisApiAjax("/getIncome", callBackFn, 'get', kosisParam, errorMsg);
-        kosisApiAjax("/standardOfLiving/api/getCapitaPersonal", callBackFn, 'get', params, errorMsg)
+        kosisApiAjax("/admin/standardOfLiving/api/getCapitaPersonal", callBackFn, 'get', params, errorMsg)
     }
 
 
@@ -127,5 +127,5 @@ function fnMinPay(){
         alert(data.success);
         console.log(data.data)
     }
-    enaraApiAjax("/standardOfLiving/api/minPay", callBackFn, 'get', params, errorMsg)
+    enaraApiAjax("/admin/standardOfLiving/api/minPay", callBackFn, 'get', params, errorMsg)
 }
