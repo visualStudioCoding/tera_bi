@@ -1,7 +1,10 @@
 package com.teraenergy.bisolution.admin.stockprices;
 
+import com.teraenergy.global.common.utilities.DateUtil;
 import com.teraenergy.global.service.CommonService;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +23,53 @@ public class StockPricesScheduler {
     private static final String ENARA_URL = "http://www.index.go.kr/openApi/xml_stts.do";
     @Resource(name = "commonService")
     private CommonService commonService;
+
+    //      초   |  분  |  시  |  일  |  월   | 요일 | 연도
+//     0~59 | 0~59 | 0~23 | 1~31 | 1~12 | 0~6 | 생략가능
+
+    @Transactional(rollbackFor = Exception.class)
+    @Scheduled(cron = "00 00 4 * * *")
+    public void getCompositeIndex() throws Exception {
+        String[] categoryList = {"0001000", "0089000"}; // 0001000 : 코스피, 0089000 : 코스닥
+
+        String now = DateUtil.getCurrentDay("yyyyMMdd");
+        String url = "https://ecos.bok.or.kr/api/";
+        String parameter = "StatisticSearch/apiKey/json/kr/1/10000/802Y001/D/"+now+"/"+now+"/0001000/?/?/?";
+        String format = "json";
+        String site = "ecos";
+        for (int i = 0; i < categoryList.length; i++) {
+            if (i > 0) {
+                parameter = parameter.replace(categoryList[i - 1], categoryList[i]);
+            }
+            StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+
+            JSONArray jsonList = commonService.ecosApiJsonParser(stringBuilder);
+
+            Map<String, Object> dataMap = new HashMap<>();
+
+            for (Object jsonObject : jsonList) {
+                JSONObject jsonData = (JSONObject) jsonObject;
+
+                String dataValue = (String) jsonData.get("DATA_VALUE");
+                String date = (String) jsonData.get("TIME");
+                String year = date.substring(0, 4);
+                String month = date.substring(4, 6);
+                String day = date.substring(6, 8);
+
+                dataMap.put("yrDt", year);
+                dataMap.put("monDt", month);
+                dataMap.put("dyDt", day);
+                dataMap.put("unit", "P");
+                dataMap.put("val", dataValue);
+
+                if (i == 0) {
+                    commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertKospi");
+                } else {
+                    commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertKosdaq");
+                }
+            }
+        }
+    }
 
     //      초   |  분  |  시  |  일  |  월   | 요일 | 연도
 //     0~59 | 0~59 | 0~23 | 1~31 | 1~12 | 0~6 | 생략가능
