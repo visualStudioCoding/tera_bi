@@ -34,13 +34,12 @@ import org.xml.sax.SAXException;
 public class CommonServiceImpl implements CommonService {
 
 	private final ApiKeyConfiguration apiKeyConfiguration;
+    @Resource(name="commonMapper")
+	private CommonMapper commonMapper;
 
 	public CommonServiceImpl(ApiKeyConfiguration apiKeyConfiguration) {
 		this.apiKeyConfiguration = apiKeyConfiguration;
 	}
-
-    @Resource(name="commonMapper")
-	private CommonMapper commonMapper;
 
 	@Override
     public List<?> selectList(final Object paramDTO, final String queryId) throws Exception {
@@ -182,7 +181,7 @@ public class CommonServiceImpl implements CommonService {
 	public JSONArray ecosApiJsonParser(StringBuilder stringBuilder) throws ParseException {
 		JSONParser jsonParser = new JSONParser();
 		org.json.simple.JSONObject jsonObject = (org.json.simple.JSONObject) jsonParser.parse(String.valueOf(stringBuilder));
-		org.json.simple.JSONObject root = (org.json.simple.JSONObject) jsonObject.get("KeyStatisticList");
+		org.json.simple.JSONObject root = (org.json.simple.JSONObject) jsonObject.get("StatisticSearch");
 		return (JSONArray) root.get("row");
 	}
 
