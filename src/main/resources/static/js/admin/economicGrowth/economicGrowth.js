@@ -100,9 +100,9 @@ function getEcosParam(form){
     return ecosParam;
 }
 
-function getMonthlyBaseRate() {
+function getBaseRate() {
 
-    let formData = document.forms["getMonthlyBaseRate_opt"];
+    let formData = document.forms["getBaseRate_opt"];
 
     let params = getEcosParam(formData);
 
@@ -113,7 +113,23 @@ function getMonthlyBaseRate() {
     }
     //공통모듈 ajax 함수 호출하기
     // kosisApiAjax("/getIncome", callBackFn, 'get', kosisParam, errorMsg);
-    ecosApiAjax("/admin/economicGrowth/api/getMonthlyBaseRate", callBackFn, 'get', params, errorMsg);
+    ecosApiAjax("/admin/economicGrowth/api/getBaseRate", callBackFn, 'get', params, errorMsg);
+}
+
+function getExchangeRate() {
+
+    let formData = document.forms["getExchangeRate_opt"];
+
+    let params = getEcosParam(formData);
+
+    //ajax가 정상 호출 되었을때 실행 되는 함수
+    let callBackFn = function( data ) {
+        alert(data.success);
+        console.log(data.data)
+    }
+    //공통모듈 ajax 함수 호출하기
+    // kosisApiAjax("/getIncome", callBackFn, 'get', kosisParam, errorMsg);
+    ecosApiAjax("/admin/economicGrowth/api/getExchangeRate", callBackFn, 'get', params, errorMsg);
 }
 
 function getStateDebt() {

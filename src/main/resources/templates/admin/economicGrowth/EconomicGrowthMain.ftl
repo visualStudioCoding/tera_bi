@@ -8,7 +8,7 @@
                 <div class="card-header">
                     한국은행 기준금리
                 </div>
-                <form name="getMonthlyBaseRate_opt">
+                <form name="getBaseRate_opt">
                     <div class="card-body">
                         <div class="row" style="margin-top:15px; margin-bottom:0px; padding:5px">
                             <span>시작 년도 선택</span>
@@ -25,7 +25,7 @@
                         </#list>
                     </div>
                 </form>
-                <button type="button" id="MonthlyExchangeRate" class="btn btn-outline-secondary activator" onclick="getMonthlyBaseRate()">실행</button>
+                <button type="button" id="MonthlyExchangeRate" class="btn btn-outline-secondary activator" onclick="getBaseRate()">실행</button>
             </div>
         </div>
         <div class="col">
@@ -33,7 +33,7 @@
                 <div class="card-header">
                     한국은행 환율
                 </div>
-                <form name="getMonthlyExchangeRate_opt">
+                <form name="getExchangeRate_opt">
                     <div class="card-body">
                         <div class="row" style="margin-top:15px; margin-bottom:0px; padding:5px">
                             <span>시작 년도 선택</span>
@@ -45,12 +45,12 @@
                         </div>
                         <#assign name_list = ["serviceNm", "resultType", "tableCode", "itmCode"]>
                         <#assign val_list = ["StatisticSearch", "json", "731Y001", "0000001"]>
-                        <#list 0..2 as k>
+                        <#list 0..3 as k>
                             <input type="hidden" name=${name_list[k]} value=${val_list[k]}  />
                         </#list>
                     </div>
                 </form>
-                <button type="button" id="MonthlyExchangeRate" class="btn btn-outline-secondary activator" onclick="getMonthlyExchangeRate()">실행</button>
+                <button type="button" id="MonthlyExchangeRate" class="btn btn-outline-secondary activator" onclick="getExchangeRate()">실행</button>
             </div>
         </div>
         <div class="col">
