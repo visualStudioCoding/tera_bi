@@ -149,11 +149,12 @@ public class Sche {
 
 
 //1.삶의  만족도
+    //@Scheduled(cron = "0 * * * * *")
     @Scheduled(cron = "* * 4 * * *")
     public void LifeSatisfaction_Schedule() throws Exception {
         String url = "https://kosis.kr/openapi/Param/statisticsParameterData.do";
         String parameter = "?method=getList&apiKey=&itmId=T1+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&newEstPrdCnt=1&loadGubun=2&orgId=417&tblId=DT_417001_0002";
-        //https://kosis.kr/openapi/Param/statisticsParameterData.do?method=getList&apiKey=MDE5NGY4NzM1YzIxMDJmY2FlNTJkMTg0NThiZDJmMjQ=&itmId=T1+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&newEstPrdCnt=1&loadGubun=2&orgId=417&tblId=DT_417001_0002
+        //https://kosis.kr/openapi/Param/statisticsParameterData.do?method=getList&apiKey=&itmId=T1+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&newEstPrdCnt=1&loadGubun=2&orgId=417&tblId=DT_417001_0002
         //DT_417001_0002
 
         String format = "json";
@@ -235,7 +236,7 @@ public class Sche {
             //점수
             String val = (String)jsonData.get("DT");
 
-            dataMap.put("yrDt", yrdt);
+            dataMap.put("yrdt", yrdt);
             dataMap.put("topgrp", topgrp);
             dataMap.put("midgrp", midgrp);
             dataMap.put("smlgrp", smlgrp);
@@ -253,7 +254,8 @@ public class Sche {
     }
 
     //2.월별혼인
-    @Scheduled(cron = "* * 4 * * *")
+//    @Scheduled(cron = "0 * * * * *")
+      @Scheduled(cron = "* * 4 * * *")
     public void Marriage_Schedule() throws Exception {
         String url = "https://kosis.kr/openapi/Param/statisticsParameterData.do";
         String parameter = "?method=getList&apiKey=&itmId=T3+&objL1=ALL&objL2=&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=M&newEstPrdCnt=1&loadGubun=2&orgId=101&tblId=DT_1B83A35";
@@ -359,6 +361,7 @@ public class Sche {
     }
 
     //3.월별이혼
+    //@Scheduled(cron = "0 * * * * *")
     @Scheduled(cron = "* * 4 * * *")
     public void  Divorce_Schedule() throws Exception {
         String url = "https://kosis.kr/openapi/Param/statisticsParameterData.do";
