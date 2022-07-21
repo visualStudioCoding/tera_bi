@@ -82,6 +82,10 @@ public class LifeSatisfactionController {
         dataMap6 = (Map<String, Object>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".selectAllprindex");
         model.addAttribute("data6", dataMap6);
 
+        //7.해외여행
+        Map<String,Object> dataMap7 = new HashMap<>();
+        dataMap7 = (Map<String, Object>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".selectOvrsstrip");
+        model.addAttribute("data7", dataMap7);
 
         return PAGE_ID + DIRECTORY + "Main";
         //return DIRECTORY+ "index2";
@@ -599,6 +603,72 @@ public class LifeSatisfactionController {
             dataMap.put("val", val);
 
             commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertAllprindex");//LifeSatisfaction.insertMarriage
+            cnt++;
+        }
+
+        result.put("data", dataMap);
+        result.put("size", cnt);
+        result.put("success", "성공");
+
+        return result;
+    }
+
+    //7. 해외여행 경험 및 횟수
+    @Transactional(rollbackFor = Exception.class)
+    @ResponseBody
+    @GetMapping("/admin/lifeSatisfaction/ovrsstrip")
+    public Object Ovrsstrip_Parse(String url, String parameter) throws Exception {
+        log.info(PAGE_ID + DIRECTORY + PROGRAM_ID + "ovrsstrip");
+        System.out.println("url : " + url);
+        System.out.println("parameter : " + parameter);
+
+        //DT_1SSCL060R
+        //kosis = json, enara = xml
+        String format = "json";
+        String site = "kosis";
+        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        //
+        // {"err":"30","errMsg":"데이터가 존재하지 않습니다."}
+
+        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> dataMap = new HashMap<>();
+        int cnt=1;
+        for (Object jsonObject : jsonList) {
+            JSONObject jsonData = (JSONObject) jsonObject;
+
+            //년도
+            String prdde = (String) jsonData.get("PRD_DE");
+            String yrdt = prdde.substring(0, 4);
+
+            //시도
+            String ctynm = (String) jsonData.get("C1_NM");
+
+            //대분류
+            String topgrp = (String) jsonData.get("C2_NM");
+
+            //소분류
+            String midgrp = (String) jsonData.get("ITM_NM");
+
+            //계는 통과
+            if("계".equals(midgrp)) {
+                continue;
+            }
+
+            //점수단위(%,회)
+            String unit = (String) jsonData.get("UNIT_NM");
+
+            //횟수
+            String val = (String) jsonData.get("DT");
+
+            dataMap.put("yrdt", yrdt);
+            dataMap.put("ctynm", ctynm);
+            dataMap.put("topgrp", topgrp);
+            dataMap.put("midgrp", midgrp);
+            dataMap.put("unit", unit);
+            dataMap.put("val", val);
+
+            commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertOvrsstrip");//LifeSatisfaction.insertMarriage
             cnt++;
         }
 

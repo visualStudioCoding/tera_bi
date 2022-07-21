@@ -194,7 +194,59 @@
         //공통모듈 ajax 함수 호출하기
         //kosisApiAjax("/lifeSatisfaction/Divorce", callBackFn, 'get', param, errorMsg);
     }
+
+    //7. 해외여행
+    function api7(){
+        const frm = document.forms['frm7'];
+        //let param = fnParam(frm);
+        let errorMsg = "error";
+        let result="";
+
+        //ajax가 정상 호출 되었을때 실행 되는 함수
+        $("#rst7").html("");
+        let callBackFn = function( data ) {
+            //alert(data.data.yrdt + " " + data.data.mondt + " " + data.success + " ,  " +data.size);
+            result += data.data.yrdt + data.success + " ,  " +data.size + "건<br>";
+            $("#rst7").html(result);
+            console.log(data.data)
+        }
+        let syear = frm.startPrdDe.value;
+        syear = syear.substr(0,4);
+
+            frm.startPrdDe.value = syear;
+            let param = fnParam(frm);
+            console.log(param);
+            kosisApiAjax("/admin/lifeSatisfaction/ovrsstrip", callBackFn, 'get', param, errorMsg);
+
+        //공통모듈 ajax 함수 호출하기
+        //kosisApiAjax("/lifeSatisfaction/Divorce", callBackFn, 'get', param, errorMsg);
+    }
 </script>
+<style type="text/css" >
+    .wrap-loading{ /*화면 전체를 어둡게 합니다.*/
+        position: fixed;
+        left:0;
+        right:0;
+        top:0;
+        bottom:0;
+        background: rgba(0,0,0,0.2); /*not in ie */
+        filter: progid:DXImageTransform.Microsoft.Gradient(startColorstr='#20000000', endColorstr='#20000000');/* ie */
+        z-index: +100 !important;
+    }
+    .wrap-loading div{ /*로딩 이미지*/
+        position: fixed;
+        top:50%;
+        left:50%;
+        margin-left: -100px;
+        margin-top: -200px;
+        }
+    .display-none{ /*감추기*/
+        display:none;
+        }
+</style>
+<div class="wrap-loading display-none">
+    <div><img src="/img/loading.gif" /></div>
+</div>
 <div class="container">
     <div class="row">
         <div class="col">
@@ -389,32 +441,34 @@
     </div>
     <div class="row">
         <div class="col">
+            <!--
+            https://kosis.kr/openapi/Param/statisticsParameterData.do
+            ?method=getList&apiKey=MDE5NGY4NzM1YzIxMDJmY2FlNTJkMTg0NThiZDJmMjQ=
+            &itmId=T00+T10+T11+T12+T13+T14+T15+T16+T17+T18+
+            &objL1=ALL
+            &objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=
+            &format=json&jsonVD=Y
+            &prdSe=Y&startPrdDe=2021&endPrdDe=2021&loadGubun=2&orgId=101&tblId=DT_1SSCL060R
+            -->
+            <form id="frm7" name="frm7" onsubmit="api7();return false">
+                <input type="hidden" id="itmId" name="itmId" value="T00+T10+T11+T12+T13+T14+T15+T16+T17+T18+"/>
+                <input type="hidden" id="objL1" name="objL1" value="ALL"/>
+                <input type="hidden" id="objL2" name="objL2" value="ALL"/>
+                <input type="hidden" id="prdSe" name="prdSe" value="Y"/>
+                <input type="hidden" id="loadGubun" name="loadGubun" value="2"/>
+                <input type="hidden" id="orgId" name="orgId" value="101"/>
+                <input type="hidden" id="tblId" name="tblId" value="DT_1SSCL060R"/>
+                <input type="hidden" id="newEstPrdCnt" name="newEstPrdCnt" value=""/>
             <div class="card">
                 <div class="card-header">
-                    행정구역별, 성별 실업률
+                    7. 해외여행 경험 및 횟수(2년)
                 </div>
                 <div class="card-body">
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                            Default checkbox
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-                        <label class="form-check-label" for="flexCheckChecked">
-                            Checked checkbox
-                        </label>
-                    </div>
+                    년도입력 <input type="text" name="startPrdDe" id="startPrdDe" value="<#if data7??>${data7.yr_dt}</#if>" style="width:100%" >
+                    <div id="rst7"></div>
                 </div>
-                <button type="button" class="btn btn-outline-secondary activator">실행</button>
-            </div>
+                <button type="submit" class="btn btn-outline-secondary activator">실행</button>
+            </div></form>
         </div>
         <div class="col">
             <div class="card">
