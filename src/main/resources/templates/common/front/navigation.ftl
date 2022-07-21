@@ -36,6 +36,11 @@
                     ><span><i class="ri-flashlight-fill"></i>전력수급현황</span>
                     </a>
                 </li>
+                <li>
+                    <a href="/admin" class="nav-link"
+                    ><span><i class="ri-dashboard-2-fill"></i>API 호출</span>
+                    </a>
+                </li>
             </ul>
             <span class="indicator"></span>
         </div>
@@ -46,7 +51,6 @@
                 <i class="ri-sun-fill light-btn"></i>
                 <span class="ball"></span>
             </label>
-            <a href="/admin"><span><i></i>api</span></a>
         </div>
     </div>
 </header>

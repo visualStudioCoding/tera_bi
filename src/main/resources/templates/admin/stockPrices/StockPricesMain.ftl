@@ -12,10 +12,12 @@
                         <select class="form-select" name="prdDe" aria-label="Default select example" disabled>
                             <option selected>해당 API는 년도를 선택할 수 없습니다.</option>
                         </select>
-                        <input type="hidden" name="statsCode" value="108001" />
+                        <input type="hidden" name="tableCode" value="802Y001"/>
+                        <input type="hidden" name="categoryCode" value="0001000"/>
                     </div>
                 </form>
-                <button type="button" class="btn btn-outline-secondary activator" onclick="fnCompositeIndex()">실행</button>
+                <button type="button" class="btn btn-outline-secondary activator" onclick="fnCompositeIndex()">실행
+                </button>
             </div>
         </div>
         <div class="col">
@@ -29,10 +31,12 @@
                         <select class="form-select" name="prdDe" aria-label="Default select example" disabled>
                             <option selected>해당 API는 년도를 선택할 수 없습니다.</option>
                         </select>
-                        <input type="hidden" name="statsCode" value="101101" />
+                        <input type="hidden" name="statsCode" value="101101"/>
                     </div>
                 </form>
-                <button type="button" id="MonthlyExchangeRate" class="btn btn-outline-secondary activator" onclick="fnBirthDeath()">실행</button>
+                <button type="button" id="MonthlyExchangeRate" class="btn btn-outline-secondary activator"
+                        onclick="fnBirthDeath()">실행
+                </button>
             </div>
         </div>
     </div>

@@ -18,6 +18,7 @@
                 <li><a href="/admin/stockPrices/main" class="nav-link px-2 text-white">종합주가지수</a></li>
                 <li><a href="/admin/realEstate/main" class="nav-link px-2 text-white">부동산시장동향</a></li>
                 <li><a href="/admin/lifeSatisfaction/main" class="nav-link px-2 text-white">삶의 만족도</a></li>
+                <li><a href="/" class="nav-link px-2 text-white">메인</a></li>
             </ul>
 
         </div>

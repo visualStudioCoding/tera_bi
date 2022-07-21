@@ -143,6 +143,6 @@ let ecosApiAjax = function(url, fn, methodType, param, errorMsg){
     console.log(fn);
 
     request.fail(function( jqXHR, textStatus ) {
-        alert( errorMsg + textStatus );
+        alert( textStatus + " : " + errorMsg );
     });
 }

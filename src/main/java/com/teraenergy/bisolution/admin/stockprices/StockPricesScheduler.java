@@ -2,10 +2,9 @@ package com.teraenergy.bisolution.admin.stockprices;
 
 import com.teraenergy.global.service.CommonService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -22,7 +21,11 @@ public class StockPricesScheduler {
     @Resource(name = "commonService")
     private CommonService commonService;
 
-    @Transactional(rollbackFor = Exception.class)
+    //      초   |  분  |  시  |  일  |  월   | 요일 | 연도
+//     0~59 | 0~59 | 0~23 | 1~31 | 1~12 | 0~6 | 생략가능
+
+    /*@Transactional(rollbackFor = Exception.class)
+    @Scheduled(cron = "00 00 4 * * *")
     public void getCompositeIndex() throws Exception {
         String parameter = "?userId=&statsCode=100803";
 
@@ -75,11 +78,13 @@ public class StockPricesScheduler {
                 }
             }
         }
-    }
+    }*/
+
+    //      초   |  분  |  시  |  일  |  월   | 요일 | 연도
+//     0~59 | 0~59 | 0~23 | 1~31 | 1~12 | 0~6 | 생략가능
 
     @Transactional(rollbackFor = Exception.class)
-    @ResponseBody
-    @GetMapping("/api/birthDeath")
+    @Scheduled(cron = "00 00 4 * * *")
     public void getBirthDeath() throws Exception {
         String parameter = "?userId=&statsCode=101101";
         StringBuilder stringBuilder = commonService.getApiResult(ENARA_URL, parameter, FORMAT, SITE);
