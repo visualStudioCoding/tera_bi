@@ -6,23 +6,25 @@
     </select>
 
     <select id="selectExchangeRate" parameterType="hashMap" resultType="hashMap">
-        SELECT val FROM exchn_rate WHERE type = '원/달러' AND DATE_FORMAT(reg_dt, '%Y-%M-%D') = DATE_FORMAT(NOW(), '%Y-%M-%D')
+        SELECT val FROM exchn_rate WHERE type = '원/미국달러' AND DATE_FORMAT(CONCAT(yr_dt, mon_dt, dy_dt), '%Y%m%d') = DATE_FORMAT(NOW(), '%Y%m%d')
     </select>
 
     <select id="selectExchangeRateCompare" parameterType="hashMap" resultType="hashMap">
-        SELECT val FROM exchn_rate WHERE type = '원/달러' AND DATE_FORMAT(reg_dt, '%Y-%M-%D') = DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -1 DAY), '%Y-%M-%D')
+        SELECT val FROM exchn_rate WHERE type = '원/미국달러' AND DATE_FORMAT(CONCAT(yr_dt, mon_dt, dy_dt), '%Y%m%d') = DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -1 DAY), '%Y%m%d')
     </select>
 
     <select id="selectBaseRate" parameterType="hashMap" resultType="hashMap">
-        SELECT val FROM base_rate WHERE yr_dt = MAX(yr_dt) AND mon_dt = MAX(mon_dt) AND dy_dt = MAX(dy_dt)
+        SELECT val FROM base_rate WHERE
+            yr_dt = (SELECT MAX(yr_dt) FROM base_rate) AND
+            mon_dt = (SELECT MAX(mon_dt) FROM base_rate WHERE yr_dt = (SELECT MAX(yr_dt) FROM base_rate))
+                ORDER BY dy_dt DESC LIMIT 1
     </select>
 
     <select id="selectBaseRateCompare" parameterType="hashMap" resultType="hashMap">
         SELECT val FROM base_rate WHERE
-                                      yr_dt = (SELECT MAX(yr_dt) FROM base_rate) AND
-                                      mon_dt = (SELECT MAX(mon_dt) FROM base_rate WHERE yr_dt = (SELECT MAX(yr_dt) FROM base_rate)) AND
-                                      dy_dt = (SELECT MAX(dy_dt) FROM base_rate WHERE mon_dt = (SELECT MAX(mon_dt) FROM base_rate WHERE yr_dt = (SELECT MAX(yr_dt) FROM base_rate)) AND
-                                                                                      dy_dt = (SELECT dy_dt FROM base_rate WHERE mon_dt = (SELECT MAX(mon_dt) FROM base_rate WHERE yr_dt = (SELECT MAX(yr_dt) FROM base_rate)) LIMIT 1 OFFSET 1)
+            yr_dt = (SELECT MAX(yr_dt) FROM base_rate) AND
+            mon_dt = (SELECT MAX(mon_dt) FROM base_rate WHERE yr_dt = (SELECT MAX(yr_dt) FROM base_rate))
+                ORDER BY dy_dt DESC LIMIT 1 OFFSET 1
     </select>
 
     <select id="selectGDP" parameterType="hashMap" resultType="hashMap">

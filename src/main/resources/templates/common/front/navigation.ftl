@@ -7,7 +7,7 @@
         <div class="nav-wrap">
             <ul class="nav">
                 <li>
-                    <a href="/" class="nav-link on" aria-current="page">
+                    <a href="/front/economicGrowth/main" class="nav-link on" aria-current="page">
                         <span><i class="ri-funds-box-fill"></i>경제성장지표</span>
                     </a>
                 </li>
