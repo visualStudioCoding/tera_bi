@@ -15,7 +15,7 @@ import java.util.Map;
 @Slf4j
 @Component
 public class StockPricesScheduler {
-    private static final String PROGRAM_ID = ".RealEstate";
+    private static final String PROGRAM_ID = ".StockPrices";
     private static final String PAGE_ID = "admin";
     private static final String FORMAT = "xml";
     private static final String SITE = "enara";
@@ -27,7 +27,7 @@ public class StockPricesScheduler {
 //     0~59 | 0~59 | 0~23 | 1~31 | 1~12 | 0~6 | 생략가능
 
     @Transactional(rollbackFor = Exception.class)
-    @Scheduled(cron = "00 08 10 * * *")
+    @Scheduled(cron = "00 40 15 * * *")
     public void getCompositeIndex() throws Exception {
         String url = "https://ecos.bok.or.kr/api/";
         String parameter = "KeyStatisticList/apiKey/json/kr/66/67/";
@@ -47,7 +47,7 @@ public class StockPricesScheduler {
             JSONObject jsonData = (JSONObject) jsonObject;
 
             String dataValue = (String) jsonData.get("DATA_VALUE");
-            String date = (String) jsonData.get("TIME");
+            String date = (String) jsonData.get("CYCLE");
             String year = date.substring(0, 4);
             String month = date.substring(4, 6);
             String day = date.substring(6, 8);
@@ -71,15 +71,18 @@ public class StockPricesScheduler {
 
             String division = (String) jsonData.get("KEYSTAT_NAME");
 
-            if ("코스피지수".equals(division) && kospiDupleCheck) {
-                log.info("이미 등록된 코스피지수 자료입니다.");
-            } else {
-                commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertKospi");
-            }
-            if ("코스닥지수".equals(division) && kosdaqDupleCheck) {
-                log.info("이미 등록된 코스닥지수 자료입니다.");
-            } else {
-                commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertKosdaq");
+            if ("코스피지수".equals(division)) {
+                if (kospiDupleCheck) {
+                    log.info("이미 등록된 코스피지수 자료입니다.");
+                } else {
+                    commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertKospi");
+                }
+            } else if ("코스닥지수".equals(division)) {
+                if (kosdaqDupleCheck) {
+                    log.info("이미 등록된 코스닥지수 자료입니다.");
+                } else {
+                    commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertKosdaq");
+                }
             }
         }
     }
