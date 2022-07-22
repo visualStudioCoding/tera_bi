@@ -35,7 +35,7 @@ public class EconomicGrowthScheduler {
         String site = "ecos";
         StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
 
-        JSONArray jsonList = commonService.ecosApiJsonParser(stringBuilder);
+        JSONArray jsonList = commonService.ecosApiJsonParser(stringBuilder, "KeyStatisticList");
         Map<String, Object> dataMap = new HashMap<>();
         
          Map<String, String> compareBase = (Map<String, String>) commonService.selectContents(null,PAGE_ID + PROGRAM_ID + ".compareBaseRate");
