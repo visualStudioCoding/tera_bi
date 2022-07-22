@@ -1,5 +1,6 @@
 package com.teraenergy.bisolution.admin.economicGrowth;
 
+import com.teraenergy.global.common.utilities.DateUtil;
 import com.teraenergy.global.service.CommonService;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -8,6 +9,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +29,8 @@ public class EconomicGrowthScheduler {
 // *  |  *  |  *  |  *  |  *  |  *
 // 초    분     시    일    월    요일
 
-    //기준금리 및 환율
+    //기준금리
+//기준금리 및 환율
     @Scheduled(cron = "* 30 8 * * *")
     @Transactional(rollbackFor = Exception.class)
     public void monthlyExchangeRateScheduler() throws Exception {
@@ -37,9 +43,9 @@ public class EconomicGrowthScheduler {
 
         JSONArray jsonList = commonService.ecosApiJsonParser(stringBuilder, "KeyStatisticList");
         Map<String, Object> dataMap = new HashMap<>();
-        
-         Map<String, String> compareBase = (Map<String, String>) commonService.selectContents(null,PAGE_ID + PROGRAM_ID + ".compareBaseRate");
-         Map<String, String> compareExchange = (Map<String, String>) commonService.selectContents(null,PAGE_ID + PROGRAM_ID + ".compareExchangeRate");
+
+        Map<String, String> compareBase = (Map<String, String>) commonService.selectContents(null,PAGE_ID + PROGRAM_ID + ".compareBaseRate");
+        Map<String, String> compareExchange = (Map<String, String>) commonService.selectContents(null,PAGE_ID + PROGRAM_ID + ".compareExchangeRate");
 
         for(Object jsonObject : jsonList){
             JSONObject jsonData = (JSONObject) jsonObject;
@@ -66,36 +72,36 @@ public class EconomicGrowthScheduler {
 
 
             if("시장금리".equals(jsonData.get("CLASS_NAME")) && jsonData.get("KEYSTAT_NAME").toString().contains("기준금리") && !baseDupleCheck) {
-                    String baseMoneyRate = (String) jsonData.get("DATA_VALUE");
-                    String unit = (String) jsonData.get("UNIT_NAME");
-                    dataMap.put("yr_dt", year);
-                    dataMap.put("mon_dt", month);
-                    dataMap.put("dy_dt", day);
-                    dataMap.put("unit", unit);
-                    dataMap.put("val", baseMoneyRate);
-                    System.out.println(dataMap);
+                String baseMoneyRate = (String) jsonData.get("DATA_VALUE");
+                String unit = (String) jsonData.get("UNIT_NAME");
+                dataMap.put("yr_dt", year);
+                dataMap.put("mon_dt", month);
+                dataMap.put("dy_dt", day);
+                dataMap.put("unit", unit);
+                dataMap.put("val", baseMoneyRate);
+                System.out.println(dataMap);
 
-                    commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertBaseRate");
+                commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertBaseRate");
             } else if("환율".equals(jsonData.get("CLASS_NAME")) && !exDupleCheck) {
-                    String[] type = jsonData.get("KEYSTAT_NAME").toString().split(" ");
-                    String det_type = type[0];
-                    String exMoneyRate = (String) jsonData.get("DATA_VALUE");
-                    String unit = (String) jsonData.get("UNIT_NAME");
-                    dataMap.put("yr_dt", year);
-                    dataMap.put("mon_dt", month);
-                    dataMap.put("dy_dt", day);
-                    dataMap.put("type", det_type);
-                    dataMap.put("unit", unit);
-                    dataMap.put("val", exMoneyRate);
-                    System.out.println(dataMap);
+                String[] type = jsonData.get("KEYSTAT_NAME").toString().split(" ");
+                String det_type = type[0];
+                String exMoneyRate = (String) jsonData.get("DATA_VALUE");
+                String unit = (String) jsonData.get("UNIT_NAME");
+                dataMap.put("yr_dt", year);
+                dataMap.put("mon_dt", month);
+                dataMap.put("dy_dt", day);
+                dataMap.put("type", det_type);
+                dataMap.put("unit", unit);
+                dataMap.put("val", exMoneyRate);
+                System.out.println(dataMap);
 
-                    commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertExchangeRate");
+                commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertExchangeRate");
             }
         }
     }
 
 //    국가채무현황
-    @Scheduled(cron="* * * 23 9 *")
+    @Scheduled(cron="0 0 0 23 9 *")
     @Transactional(rollbackFor = Exception.class)
     public void stateDebtScheduler() throws Exception {
 
@@ -135,7 +141,7 @@ public class EconomicGrowthScheduler {
     }
 
     // 경제활동별 GDP 및 GNI
-    @Scheduled(cron="* * * 30 6 *")
+    @Scheduled(cron="0 0 0 30 6 *")
     @Transactional(rollbackFor = Exception.class)
     public void gdpAndGniScheduler() throws Exception {
         String url = "https://kosis.kr/openapi/Param/statisticsParameterData.do";
@@ -203,7 +209,7 @@ public class EconomicGrowthScheduler {
     }
 
     // 경제성장률
-    @Scheduled(cron="* * * 28 12 *")
+    @Scheduled(cron="0 0 0 28 12 *")
     @Transactional(rollbackFor = Exception.class)
     public void growthRateScheduler() throws Exception {
         String url = "https://kosis.kr/openapi/Param/statisticsParameterData.do";
@@ -240,7 +246,7 @@ public class EconomicGrowthScheduler {
     }
 
     // 소비자/근원/생활 물가 상승률
-    @Scheduled(cron="* * * 5 * *")
+    @Scheduled(cron="0 0 0 5 * *")
     @Transactional(rollbackFor = Exception.class)
     public void inflationRateScheduler() throws Exception {
         String url = "https://kosis.kr/openapi/Param/statisticsParameterData.do";

@@ -25,7 +25,7 @@ public class StandardOfLivingScheduler {
     private CommonService commonService;
 
     //   1인당 개인소득
-    @Scheduled(cron = "* * * 18 3 *")
+    @Scheduled(cron = "0 0 0 18 3 *")
     @Transactional(rollbackFor = Exception.class)
     public void capitaPersonalScheduler() throws Exception {
 
@@ -63,8 +63,7 @@ public class StandardOfLivingScheduler {
     }
 
     //   1인당 국민 총 소득
-//    @Scheduled(cron="* * * 31 3 *")
-    @Scheduled(cron = "00 11 15 * * *")
+    @Scheduled(cron="0 0 16 31 3 *")
     @Transactional(rollbackFor = Exception.class)
     public void grossNationalIncomeScheduler() throws Exception {
 
@@ -153,7 +152,7 @@ public class StandardOfLivingScheduler {
     }
 
     //   소득분배지표
-    @Scheduled(cron = "* * * 16 12 *")
+    @Scheduled(cron = "0 0 0 16 12 *")
     @Transactional(rollbackFor = Exception.class)
 
     public void incomeDistributionIndexScheduler() throws Exception {
@@ -187,11 +186,8 @@ public class StandardOfLivingScheduler {
         }
     }
 
-    //      초   |  분  |  시  |  일  |  월   | 요일 | 연도
-//     0~59 | 0~59 | 0~23 | 1~31 | 1~12 | 0~6 | 생략가능
-
+    @Scheduled(cron = "0 0 4 * * *")
     @Transactional(rollbackFor = Exception.class)
-    @Scheduled(cron = "00 00 4 * * *")
     public void minPayScheduler() throws Exception {
         String url = "http://www.index.go.kr/openApi/xml_stts.do";
         String parameter = "?userId=&statsCode=149201";
