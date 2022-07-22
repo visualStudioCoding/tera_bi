@@ -1,6 +1,5 @@
 package com.teraenergy.bisolution.admin.stockprices;
 
-import com.teraenergy.global.common.utilities.DateUtil;
 import com.teraenergy.global.service.CommonService;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
@@ -28,45 +27,59 @@ public class StockPricesScheduler {
 //     0~59 | 0~59 | 0~23 | 1~31 | 1~12 | 0~6 | 생략가능
 
     @Transactional(rollbackFor = Exception.class)
-    @Scheduled(cron = "00 00 4 * * *")
+    @Scheduled(cron = "00 02 10 * * *")
     public void getCompositeIndex() throws Exception {
-        String[] categoryList = {"0001000", "0089000"}; // 0001000 : 코스피, 0089000 : 코스닥
-
-        String now = DateUtil.getCurrentDay("yyyyMMdd");
         String url = "https://ecos.bok.or.kr/api/";
-        String parameter = "StatisticSearch/apiKey/json/kr/1/10000/802Y001/D/"+now+"/"+now+"/0001000/?/?/?";
+        String parameter = "KeyStatisticList/apiKey/json/kr/66/67/";
         String format = "json";
         String site = "ecos";
-        for (int i = 0; i < categoryList.length; i++) {
-            if (i > 0) {
-                parameter = parameter.replace(categoryList[i - 1], categoryList[i]);
+        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+        JSONArray jsonList = commonService.ecosApiJsonParser(stringBuilder, "KeyStatisticList");
+
+        Map<String, Object> dataMap = new HashMap<>();
+
+        @SuppressWarnings("unchecked")
+        Map<String, String> kospiMaxDate = (Map<String, String>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".kospiMaxDate");
+        @SuppressWarnings("unchecked")
+        Map<String, String> kosdaqMaxDate = (Map<String, String>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".kosdaqMaxDate");
+
+        for (Object jsonObject : jsonList) {
+            JSONObject jsonData = (JSONObject) jsonObject;
+
+            String dataValue = (String) jsonData.get("DATA_VALUE");
+            String date = (String) jsonData.get("TIME");
+            String year = date.substring(0, 4);
+            String month = date.substring(4, 6);
+            String day = date.substring(6, 8);
+
+            String kospiMaxYear = kospiMaxDate.get("yrDt");
+            String kospiMaxMonth = kospiMaxDate.get("monDt");
+            String kospiMaxDay = kospiMaxDate.get("dyDt");
+
+            boolean kospiDupleCheck = (year + month + day).equals(kospiMaxYear + kospiMaxMonth + kospiMaxDay);
+
+            String kosdaqMaxYear = kosdaqMaxDate.get("yrDt");
+            String kosdaqMaxMonth = kosdaqMaxDate.get("monDt");
+            String kosdaqMaxDay = kosdaqMaxDate.get("dyDt");
+            boolean kosdaqDupleCheck = (year + month + day).equals(kosdaqMaxYear + kosdaqMaxMonth + kosdaqMaxDay);
+
+            dataMap.put("yrDt", year);
+            dataMap.put("monDt", month);
+            dataMap.put("dyDt", day);
+            dataMap.put("unit", "P");
+            dataMap.put("val", dataValue);
+
+            String division = (String) jsonData.get("KEYSTAT_NAME");
+
+            if ("코스피지수".equals(division) && kospiDupleCheck) {
+                log.info("이미 등록된 코스피지수 자료입니다.");
+            } else {
+                commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertKospi");
             }
-            StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
-
-            JSONArray jsonList = commonService.ecosApiJsonParser(stringBuilder);
-
-            Map<String, Object> dataMap = new HashMap<>();
-
-            for (Object jsonObject : jsonList) {
-                JSONObject jsonData = (JSONObject) jsonObject;
-
-                String dataValue = (String) jsonData.get("DATA_VALUE");
-                String date = (String) jsonData.get("TIME");
-                String year = date.substring(0, 4);
-                String month = date.substring(4, 6);
-                String day = date.substring(6, 8);
-
-                dataMap.put("yrDt", year);
-                dataMap.put("monDt", month);
-                dataMap.put("dyDt", day);
-                dataMap.put("unit", "P");
-                dataMap.put("val", dataValue);
-
-                if (i == 0) {
-                    commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertKospi");
-                } else {
-                    commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertKosdaq");
-                }
+            if ("코스닥지수".equals(division) && kosdaqDupleCheck) {
+                log.info("이미 등록된 코스닥지수 자료입니다.");
+            } else {
+                commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertKosdaq");
             }
         }
     }

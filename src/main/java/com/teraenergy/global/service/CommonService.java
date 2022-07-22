@@ -1,11 +1,11 @@
 package com.teraenergy.global.service;
 
-import java.util.List;
-import java.util.Map;
-
 import org.json.JSONObject;
 import org.json.simple.JSONArray;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Map;
 
 @Component
 public interface CommonService {
@@ -38,7 +38,7 @@ public interface CommonService {
 
 	List<?> apiJsonParser(StringBuilder stringBuilder) throws Exception;
 
-	JSONArray ecosApiJsonParser(StringBuilder stringBuilder) throws Exception;
+	JSONArray ecosApiJsonParser(StringBuilder stringBuilder, String statistic) throws Exception;
 
 	JSONObject apiXmlParser(StringBuilder stringBuilder) throws Exception;
 }
