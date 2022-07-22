@@ -169,10 +169,10 @@ public class CommonServiceImpl implements CommonService {
 		JSONParser jsonParser = new JSONParser();
 		return (JSONArray) jsonParser.parse(String.valueOf(stringBuilder));
 	}
-	public JSONArray ecosApiJsonParser(StringBuilder stringBuilder) throws ParseException {
+	public JSONArray ecosApiJsonParser(StringBuilder stringBuilder, String statistic) throws ParseException {
 		JSONParser jsonParser = new JSONParser();
 		org.json.simple.JSONObject jsonObject = (org.json.simple.JSONObject) jsonParser.parse(String.valueOf(stringBuilder));
-		org.json.simple.JSONObject root = (org.json.simple.JSONObject) jsonObject.get("StatisticSearch");
+		org.json.simple.JSONObject root = (org.json.simple.JSONObject) jsonObject.get(statistic);
 		return (JSONArray) root.get("row");
 	}
 

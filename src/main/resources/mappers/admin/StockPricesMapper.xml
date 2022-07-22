@@ -4,75 +4,88 @@
 <mapper namespace="bi.admin.StockPrices">
     <insert id="insertKospi" parameterType="hashMap">
         INSERT INTO kospi_index
-        (yr_dt
+        ( yr_dt
         , mon_dt
         , dy_dt
         , unit
         , val)
-        VALUES
-        (#{yrDt}
-        , #{monDt}
-        , #{dyDt}
-        , #{unit}
-        , #{val})
+        VALUES ( #{yrDt}
+               , #{monDt}
+               , #{dyDt}
+               , #{unit}
+               , #{val})
     </insert>
     <insert id="insertKosdaq" parameterType="hashMap">
         INSERT INTO kosdaq_index
-        (yr_dt
+        ( yr_dt
         , mon_dt
         , dy_dt
         , unit
         , val)
-        VALUES
-        (#{yrDt}
-        , #{monDt}
-        , #{dyDt}
-        , #{unit}
-        , #{val})
+        VALUES ( #{yrDt}
+               , #{monDt}
+               , #{dyDt}
+               , #{unit}
+               , #{val})
     </insert>
     <insert id="insertBirth" parameterType="hashMap">
         INSERT INTO birth_progress
-        (yr_dt
+        ( yr_dt
         , unit
         , val)
-        VALUES
-        (#{yrDt}
-        , #{unit}
-        , #{val})
+        VALUES ( #{yrDt}
+               , #{unit}
+               , #{val})
     </insert>
     <insert id="insertDeath" parameterType="hashMap">
         INSERT INTO death_progress
-        (yr_dt
+        ( yr_dt
         , unit
         , val)
-        VALUES
-        (#{yrDt}
-        , #{unit}
-        , #{val})
+        VALUES ( #{yrDt}
+               , #{unit}
+               , #{val})
     </insert>
     <insert id="insertLifeExpectancy" parameterType="hashMap">
         INSERT INTO life_expectancy
-        (yr_dt
+        ( yr_dt
         , unit
         , man_val
         , wmn_val)
-        VALUES
-        (#{yrDt}
-        , #{unit}
-        , #{manVal}
-        , #{womanVal})
+        VALUES ( #{yrDt}
+               , #{unit}
+               , #{manVal}
+               , #{womanVal})
     </insert>
 
     <select id="stockPricesMaxDate" resultType="hashMap">
-        SELECT
-            (SELECT MAX(yr_dt) FROM kospi_index WHERE yr_dt = (SELECT MAX(yr_dt) FROM kospi_index)) as kospiMaxYear
-             , (SELECT MAX(mon_dt) FROM kospi_index WHERE yr_dt = (SELECT MAX(yr_dt) FROM kospi_index)) as kospiMaxMonth
-             , (SELECT MAX(yr_dt) FROM kosdaq_index WHERE yr_dt = (SELECT MAX(yr_dt) FROM kosdaq_index)) as kosdaqMaxYear
-             , (SELECT MAX(mon_dt) FROM kosdaq_index WHERE yr_dt = (SELECT MAX(yr_dt) FROM kosdaq_index)) as kosdaqMaxMonth
-             , (SELECT MAX(yr_dt) FROM birth_progress WHERE yr_dt = (SELECT MAX(yr_dt) FROM birth_progress)) as birthMaxYear
-             , (SELECT MAX(yr_dt) FROM death_progress WHERE yr_dt = (SELECT MAX(yr_dt) FROM death_progress)) as deathMaxYear
-             , (SELECT MAX(yr_dt) FROM life_expectancy WHERE yr_dt = (SELECT MAX(yr_dt) FROM life_expectancy)) as lifeExMaxYear
+        SELECT (SELECT MAX(yr_dt)
+                FROM birth_progress
+                WHERE yr_dt = (SELECT MAX(yr_dt) FROM birth_progress))  AS birthMaxYear
+             , (SELECT MAX(yr_dt)
+                FROM death_progress
+                WHERE yr_dt = (SELECT MAX(yr_dt) FROM death_progress))  AS deathMaxYear
+             , (SELECT MAX(yr_dt)
+                FROM life_expectancy
+                WHERE yr_dt = (SELECT MAX(yr_dt) FROM life_expectancy)) AS lifeExMaxYear
         FROM DUAL;
     </select>
 
+    <select id="kospiMaxDate" resultType="hashMap">
+        SELECT MAX(yr_dt) AS yrDt, MAX(mon_dt) AS monDt, MAX(dy_dt) AS dyDt
+        FROM kospi_index
+        WHERE yr_dt = (SELECT MAX(yr_dt) FROM kospi_index)
+          AND mon_dt =
+              (SELECT MAX(mon_dt) FROM kospi_index WHERE yr_dt = (SELECT MAX(yr_dt) FROM kospi_index))
+    </select>
+
+    <select id="kosdaqMaxDate" resultType="hashMap">
+        SELECT MAX(yr_dt) AS yrDt, MAX(mon_dt) AS monDt, MAX(dy_dt) AS dyDt
+        FROM kosdaq_index
+        WHERE yr_dt = (SELECT MAX(yr_dt) FROM kosdaq_index)
+          AND mon_dt =
+              (SELECT MAX(mon_dt)
+               FROM kosdaq_index
+               WHERE yr_dt = (SELECT MAX(yr_dt) FROM kosdaq_index))
+    </select>
 </mapper>

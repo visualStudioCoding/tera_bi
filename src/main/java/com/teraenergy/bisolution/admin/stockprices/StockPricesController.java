@@ -57,7 +57,7 @@ public class StockPricesController {
             }
             StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
 
-            JSONArray jsonList = commonService.ecosApiJsonParser(stringBuilder);
+            JSONArray jsonList = commonService.ecosApiJsonParser(stringBuilder, "StatisticSearch");
 
             Map<String, Object> dataMap = new HashMap<>();
 

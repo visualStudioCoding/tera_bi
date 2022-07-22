@@ -52,7 +52,7 @@ public class EconomicGrowthController {
         String site = "ecos";
         StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
 
-        JSONArray jsonList = commonService.ecosApiJsonParser(stringBuilder);
+        JSONArray jsonList = commonService.ecosApiJsonParser(stringBuilder, "StatisticSearch");
         System.out.println(jsonList);
         Map<String, Object> dataMap = new HashMap<>();
         Map<String, Object> result = new HashMap<>();
@@ -109,7 +109,7 @@ public class EconomicGrowthController {
             String site = "ecos";
             StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
 
-            JSONArray jsonList = commonService.ecosApiJsonParser(stringBuilder);
+            JSONArray jsonList = commonService.ecosApiJsonParser(stringBuilder, "StatisticSearch");
             System.out.println(jsonList);
             Map<String, Object> dataMap = new HashMap<>();
 
