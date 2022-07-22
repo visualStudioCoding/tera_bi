@@ -16,6 +16,6 @@ public class IndexController {
 
     @GetMapping(value = {"/", "/index"})
     public String frontPage(Model model) {
-        return "front/economicGrowth/EconomicGrowthMain";
+        return "index";
     }
 }

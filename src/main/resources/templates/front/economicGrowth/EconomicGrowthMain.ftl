@@ -106,8 +106,18 @@
                         </figure>
                         <div class="txt-wrap">
                             <h6 class="tit">환율</h6>
-                            <b class="center-txt down">1314.50</b>
-                            <span class="sub-txt down">▼ 10.50 (-0.79%)</span>
+                            <b class="center-txt down" id="currentExChange">${exchangeRate.current} 원 / 달러</b>
+                                <#if exchangeRate.current?number lt exchangeRate.past?number>
+                                    <span class="sub-txt up" id="diffExchange">
+                                        ▲ #{exchangeRate.differ?number}
+                                    </span>
+                                <#else>
+                                    <span class="sub-txt down" id="diffExchange">
+                                        ▼ #{exchangeRate.differ?number}
+                                    </span>
+                                </#if>
+<#--                            <b class="center-txt down" id="currentExChange">1314.50</b>-->
+<#--                            <span class="sub-txt down" id="diffExchange">▼ 10.50 (-0.79%)</span>-->
                         </div>
                     </div>
                 </div>
@@ -118,8 +128,23 @@
                         </figure>
                         <div class="txt-wrap">
                             <h6 class="tit">기준금리</h6>
-                            <b class="center-txt up">1.75%</b>
-                            <span class="sub-txt up">▲ 0.25</span>
+                            <b class="center-txt up">${baseRate.current} %</b>
+                            <#assign current = baseRate.current?number>
+                            <#assign past = baseRate.past?number>
+                            <#if current lt past>
+                                <span class="sub-txt up">
+                                    ▼ #{baseRate.differ?number}
+                                </span>
+                            <#elseif current == past>
+                                <span class="sub-txt">
+                                    변동없음
+                                </span>
+                            <#else>
+                                <span class="sub-txt down">
+                                    ▲ #{baseRate.differ?number}
+                                </span>
+                            </#if>
+<#--                            <span class="sub-txt up">▲ 0.25▲ 0.25</span>-->
                         </div>
                     </div>
                 </div>
@@ -130,8 +155,8 @@
                         </figure>
                         <div class="txt-wrap">
                             <h6 class="tit">GDP</h6>
-                            <b class="center-txt">1,915,777.5</b>
-                            <span class="sub-txt">단위: 백만</span>
+                            <b class="center-txt">${gdpGni.GDP}</b>
+                            <span class="sub-txt">단위: 십억원</span>
                         </div>
                     </div>
                 </div>
@@ -142,8 +167,8 @@
                         </figure>
                         <div class="txt-wrap">
                             <h6 class="tit">GNI</h6>
-                            <b class="center-txt">2,094,721.3</b>
-                            <span class="sub-txt">단위: 백만</span>
+                            <b class="center-txt">${gdpGni.GNI}</b>
+                            <span class="sub-txt">단위: 십억원</span>
                         </div>
                     </div>
                 </div>

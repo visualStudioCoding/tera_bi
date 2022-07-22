@@ -146,3 +146,27 @@ let ecosApiAjax = function(url, fn, methodType, param, errorMsg){
         alert( textStatus + " : " + errorMsg );
     });
 }
+
+let getApiResult = function(url, fn, methodType, param, errorMsg){
+    let data = {sparameter:param};
+
+    // 데이터 값이 잘 넘어왔는지 확인
+    console.log("url: ", url);
+    console.log(data);
+    console.log(methodType);
+    console.log(errorMsg);
+
+    let request = $.ajax({
+        url:url,
+        method:methodType,
+        data: data,
+        dataType: "json"
+    });
+
+    request.done(fn);
+    console.log(fn);
+
+    request.fail(function( jqXHR, textStatus ) {
+        alert( textStatus + " : " + errorMsg );
+    });
+}
