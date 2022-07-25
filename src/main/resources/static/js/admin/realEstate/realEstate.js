@@ -76,15 +76,6 @@ function fnPopulationAge(){
     // getIncome();
     //ajax가 정상 호출 되었을때 실행 되는 함수
     let callBackFn = function( data ) {
-        callBackDivision(data);
-        console.log(data.data)
-    }
-    let callBackDivision = function ( data ) {
-        commonAjax("/admin/realEstate/populationAgeDivision", "", callBack, 'get', 'error');
-        console.log(data.data)
-    }
-
-    let callBack = function ( data ) {
         console.log(data.data)
         alert(data.success);
     }

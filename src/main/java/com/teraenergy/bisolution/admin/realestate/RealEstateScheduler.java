@@ -247,29 +247,23 @@ public class RealEstateScheduler {
                 dataMap.put("yrDt", getYear);
                 dataMap.put("monDt", getMonth);
                 dataMap.put("age", jsonData.get("C2"));
-                dataMap.put("itmNm", jsonData.get("ITM_NM"));
                 dataMap.put("ctyNm", ctyName);
                 dataMap.put("dstNm", jsonData.get("C1_NM"));
                 dataMap.put("unit", jsonData.get("UNIT_NM"));
-                dataMap.put("tmpCnt", jsonData.get("DT"));
+                dataMap.put("cnt", jsonData.get("DT"));
 
                 String areaCd = (String) jsonData.get("C1");
                 dataMap.put("areaCd", areaCd);
                 //                세종특별자치시 중복 제거
                 if (!"36110".equals(areaCd)) {
-                    commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertPopulationAge");
+                    if("T3".equals(jsonData.get("ITM_ID"))){ //남자인구수
+                        commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertPopulationAge");
+                    } else if ("T4".equals(jsonData.get("ITM_ID"))){ //여자인구수
+                        commonService.updateContents(dataMap, PAGE_ID + PROGRAM_ID + ".updateWomanPopulation");
+                    }
                 }
             }
         }
-        if (!dupleCheck) populationAgeDivision();
-
-    }
-
-    public void populationAgeDivision() throws Exception {
-        commonService.insertContents(null, PAGE_ID + PROGRAM_ID + ".insertManPopulation");
-        commonService.updateContents(null, PAGE_ID + PROGRAM_ID + ".updateWomanPopulation");
-        commonService.deleteContents(null, PAGE_ID + PROGRAM_ID + ".deletePopulationTmp");
-        log.info("세대별 인구수 자료등록완료.");
     }
 
     @Transactional(rollbackFor = Exception.class)
