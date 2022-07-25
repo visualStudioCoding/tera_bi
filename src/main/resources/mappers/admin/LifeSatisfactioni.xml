@@ -3,39 +3,39 @@
 
 <mapper namespace="bi.admin.LifeSatisfaction">
     <select id="getLifeSatisfaction" parameterType="com.teraenergy.bisolution.admin.realestate.RealEstateDTO" resultType="com.teraenergy.bisolution.admin.realestate.RealEstateDTO">
-            SELECT
-                  apt_nm
-                  , land_area
-                  , land_no
-                  , road_nm
-                  , dong
-                  , eupmyundong_cd
-                  , sigungu_cd
-                  , trade_month
-                  , trade_year
-                  , built_year
-                  , payment
-                  , idx
-                  , layer
-            FROM 
-                  trade_real_apt
-            WHERE 
-                  1=1
+        SELECT
+            apt_nm
+             , land_area
+             , land_no
+             , road_nm
+             , dong
+             , eupmyundong_cd
+             , sigungu_cd
+             , trade_month
+             , trade_year
+             , built_year
+             , payment
+             , idx
+             , layer
+        FROM
+            trade_real_apt
+        WHERE
+            1=1
             LIMIT
                   0,10
-	</select>
+    </select>
 
-    <!--삶의만족도-->
+    <!--삶에 대한 만족도-->
     <insert id="insertLifeSatisfaction" parameterType="hashMap">
         INSERT INTO life_stsfc
-            (yr_dt
-            , top_grp
-            , mid_grp
-            , sml_grp
-            , unit
-            , val
-            , reg_dt
-            )
+        (yr_dt
+        , top_grp
+        , mid_grp
+        , sml_grp
+        , unit
+        , val
+        , reg_dt
+        )
         VALUES
             (#{yrdt}
             , #{topgrp}
@@ -46,24 +46,24 @@
             , now()
             )
             ON DUPLICATE KEY UPDATE
-             yr_dt   = #{yrdt}
-             ,mid_grp = #{midgrp}
-             ,sml_grp = #{smlgrp}
-             ,top_grp = #{topgrp}
+                                 yr_dt   = #{yrdt}
+                                 ,mid_grp = #{midgrp}
+                                 ,sml_grp = #{smlgrp}
+                                 ,top_grp = #{topgrp}
     </insert>
 
     <!--월별 결혼-->
     <insert id="insertMarriage" parameterType="hashMap">
         INSERT INTO marriage
-            (yr_dt
-            , mon_dt
-            , area_cd
-            , cty_nm
-            , dst_nm
-            , unit
-            , val
-            , reg_dt
-            )
+        (yr_dt
+        , mon_dt
+        , area_cd
+        , cty_nm
+        , dst_nm
+        , unit
+        , val
+        , reg_dt
+        )
         VALUES
             (#{yrdt}
             , #{mondt}
@@ -75,25 +75,25 @@
             , now()
             )
             ON DUPLICATE KEY UPDATE
-                 yr_dt   = #{yrdt}
-                 ,mon_dt = #{mondt}
-                 ,area_cd = #{areacd}
-                 ,cty_nm = #{ctynm}
-                 ,dst_nm = #{dstnm}
+                                 yr_dt   = #{yrdt}
+                                 ,mon_dt = #{mondt}
+                                 ,area_cd = #{areacd}
+                                 ,cty_nm = #{ctynm}
+                                 ,dst_nm = #{dstnm}
     </insert>
 
     <!--월별 이혼-->
     <insert id="insertDivorce" parameterType="hashMap">
         INSERT INTO divorce
-            (yr_dt
-            , mon_dt
-            , area_cd
-            , cty_nm
-            , dst_nm
-            , unit
-            , val
-            , reg_dt
-            )
+        (yr_dt
+        , mon_dt
+        , area_cd
+        , cty_nm
+        , dst_nm
+        , unit
+        , val
+        , reg_dt
+        )
         VALUES
             (#{yrdt}
             , #{mondt}
@@ -105,24 +105,24 @@
             , now()
             )
             ON DUPLICATE KEY UPDATE
-                 yr_dt   = #{yrdt}
-                 ,mon_dt = #{mondt}
-                 ,area_cd = #{areacd}
-                 ,cty_nm = #{ctynm}
-                 ,dst_nm = #{dstnm}
+                                 yr_dt   = #{yrdt}
+                                 ,mon_dt = #{mondt}
+                                 ,area_cd = #{areacd}
+                                 ,cty_nm = #{ctynm}
+                                 ,dst_nm = #{dstnm}
     </insert>
 
     <!--고용률-->
     <insert id="insertEmplyrate" parameterType="hashMap">
         INSERT INTO emply_rate
-            (yr_dt
-            , mon_dt
-            , cty_nm
-            , grp
-            , unit
-            , val
-            , reg_dt
-            )
+        (yr_dt
+        , mon_dt
+        , cty_nm
+        , grp
+        , unit
+        , val
+        , reg_dt
+        )
         VALUES
             (#{yrdt}
             , #{mondt}
@@ -133,23 +133,23 @@
             , now()
             )
             ON DUPLICATE KEY UPDATE
-                 yr_dt   = #{yrdt}
-                 ,mon_dt = #{mondt}
-                 ,cty_nm = #{ctynm}
-                 ,grp = #{grp}
+                                 yr_dt   = #{yrdt}
+                                 ,mon_dt = #{mondt}
+                                 ,cty_nm = #{ctynm}
+                                 ,grp = #{grp}
     </insert>
 
     <!--실업률-->
     <insert id="insertUmplrate" parameterType="hashMap">
         INSERT INTO unmpl_rate
-            (yr_dt
-            , mon_dt
-            , cty_nm
-            , type
-            , unit
-            , val
-            , reg_dt
-            )
+        (yr_dt
+        , mon_dt
+        , cty_nm
+        , type
+        , unit
+        , val
+        , reg_dt
+        )
         VALUES
             (#{yrdt}
             , #{mondt}
@@ -160,22 +160,22 @@
             , now()
             )
             ON DUPLICATE KEY UPDATE
-                 yr_dt   = #{yrdt}
-                 ,mon_dt = #{mondt}
-                 ,cty_nm = #{ctynm}
-                 ,type = #{grp}
+                                 yr_dt   = #{yrdt}
+                                 ,mon_dt = #{mondt}
+                                 ,cty_nm = #{ctynm}
+                                 ,type = #{grp}
     </insert>
 
     <!--전산업생산지수-->
     <insert id="insertAllprindex" parameterType="hashMap">
         INSERT INTO allpr_index
-            (yr_dt
-            , mon_dt
-            , type
-            , unit
-            , val
-            , reg_dt
-            )
+        (yr_dt
+        , mon_dt
+        , type
+        , unit
+        , val
+        , reg_dt
+        )
         VALUES
             (#{yrdt}
             , #{mondt}
@@ -185,9 +185,9 @@
             , now()
             )
             ON DUPLICATE KEY UPDATE
-                 yr_dt   = #{yrdt}
-                 ,mon_dt = #{mondt}
-                 ,type = #{type}
+                                 yr_dt   = #{yrdt}
+                                 ,mon_dt = #{mondt}
+                                 ,type = #{type}
     </insert>
 
     <!--해외여행-->
@@ -217,7 +217,7 @@
                                  ,mid_grp = #{midgrp}
     </insert>
 
- <!--기업규모별 개인소득 점유율-->
+    <!--기업규모별 개인소득 점유율-->
     <insert id="insertPrsnlinshr" parameterType="hashMap">
         INSERT INTO prsnl_inshr
         (yr_dt
@@ -244,15 +244,15 @@
     <!--스케쥴러 테스트 -->
     <insert id="insertTest1" parameterType="hashMap">
         INSERT INTO test1
-            (yr_dt
-            , mon_dt
-            , area_cd
-            , cty_nm
-            , dst_nm
-            , unit
-            , val
-            , reg_dt
-            )
+        (yr_dt
+        , mon_dt
+        , area_cd
+        , cty_nm
+        , dst_nm
+        , unit
+        , val
+        , reg_dt
+        )
         VALUES
             (#{yrdt}
             , #{mondt}
@@ -267,24 +267,24 @@
 
     <select id="selectLifeSatisfaction" parameterType="HashMap" resultType="HashMap">
         SELECT
-         *
+            *
         FROM
             life_stsfc
         WHERE
             1=1
-            order by yr_dt desc
+        order by yr_dt desc
             LIMIT
                   1
     </select>
 
     <select id="selectMarriage" parameterType="HashMap" resultType="HashMap">
         SELECT
-         *
+            *
         FROM
             marriage
         WHERE
             1=1
-            order by yr_dt desc
+        order by yr_dt desc, mon_dt desc
             LIMIT
                   1
     </select>
@@ -296,7 +296,7 @@
             divorce
         WHERE
             1=1
-        order by yr_dt desc
+        order by yr_dt desc, mon_dt desc
             LIMIT
                   1
     </select>
@@ -308,7 +308,7 @@
             emply_rate
         WHERE
             1=1
-        order by yr_dt desc
+        order by yr_dt desc, mon_dt desc
             LIMIT
                   1
     </select>
@@ -320,7 +320,7 @@
             unmpl_rate
         WHERE
             1=1
-        order by yr_dt desc
+        order by yr_dt desc, mon_dt desc
             LIMIT
                   1
     </select>
@@ -332,7 +332,7 @@
             allpr_index
         WHERE
             1=1
-        order by yr_dt desc
+        order by yr_dt desc, mon_dt desc
             LIMIT
                   1
     </select>
@@ -361,4 +361,42 @@
                   1
     </select>
 
+    <select id="selectLifeSatisfaction2" parameterType="HashMap" resultType="HashMap">
+        SELECT
+            *
+        FROM
+            life_stsfc
+        WHERE
+            1=1
+        order by yr_dt desc
+            LIMIT
+                  1
+    </select>
+
+    <!--삶의만족도-->
+    <insert id="insertLifeSatisfaction2" parameterType="hashMap">
+        INSERT INTO life_stsfc
+        (yr_dt
+        , top_grp
+        , mid_grp
+        , sml_grp
+        , unit
+        , val
+        , reg_dt
+        )
+        VALUES
+            (#{yrdt}
+            , #{topgrp}
+            , #{midgrp}
+            , #{smlgrp}
+            , #{unit}
+            , #{val}
+            , now()
+            )
+            ON DUPLICATE KEY UPDATE
+                                 yr_dt   = #{yrdt}
+                                 ,mid_grp = #{midgrp}
+                                 ,sml_grp = #{smlgrp}
+                                 ,top_grp = #{topgrp}
+    </insert>
 </mapper>
