@@ -148,7 +148,7 @@ public class Sche {
     }
 
 
-//1.삶의  만족도
+    //1.삶에 대한 만족도
     //@Scheduled(cron = "0 * * * * *")
     @Scheduled(cron = "* * 4 * * *")
     public void LifeSatisfaction_Schedule() throws Exception {
@@ -255,7 +255,7 @@ public class Sche {
 
     //2.월별혼인
 //    @Scheduled(cron = "0 * * * * *")
-      @Scheduled(cron = "* * 4 * * *")
+    @Scheduled(cron = "* * 4 * * *")
     public void Marriage_Schedule() throws Exception {
         String url = "https://kosis.kr/openapi/Param/statisticsParameterData.do";
         String parameter = "?method=getList&apiKey=&itmId=T3+&objL1=ALL&objL2=&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=M&newEstPrdCnt=1&loadGubun=2&orgId=101&tblId=DT_1B83A35";
@@ -581,7 +581,7 @@ public class Sche {
     public void allprindex_Schedule() throws Exception {
         String url = "https://kosis.kr/openapi/Param/statisticsParameterData.do";
         //String parameter = "?method=getList&apiKey=&itmId=T90+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=M&newEstPrdCnt=1&loadGubun=2&orgId=101&tblId=DT_1DA7014S";
-          String parameter = "?method=getList&apiKey=&itmId=T1+&objL1=ALL&objL2=&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=M&newEstPrdCnt=1&loadGubun=2&orgId=101&tblId=DT_1JH20151";
+        String parameter = "?method=getList&apiKey=&itmId=T1+&objL1=ALL&objL2=&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=M&newEstPrdCnt=1&loadGubun=2&orgId=101&tblId=DT_1JH20151";
         //DT_1JH20151
 
         String format = "json";
@@ -629,7 +629,7 @@ public class Sche {
         //https://kosis.kr/openapi/Param/statisticsParameterData.do
         // ?method=getList&apiKey=MDE5NGY4NzM1YzIxMDJmY2FlNTJkMTg0NThiZDJmMjQ=
         // &itmId=T00+T10+T11+T12+T13+T14+T15+T16+T17+T18+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&newEstPrdCnt=1&loadGubun=2&orgId=101&tblId=DT_1SSCL060R
-          String parameter = "?method=getList&apiKey=&itmId=T00+T10+T11+T12+T13+T14+T15+T16+T17+T18+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&newEstPrdCnt=1&loadGubun=2&orgId=101&tblId=DT_1SSCL060R";
+        String parameter = "?method=getList&apiKey=&itmId=T00+T10+T11+T12+T13+T14+T15+T16+T17+T18+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&newEstPrdCnt=1&loadGubun=2&orgId=101&tblId=DT_1SSCL060R";
         //DT_1JH20151
 
         String format = "json";
@@ -689,7 +689,7 @@ public class Sche {
         String url = "https://kosis.kr/openapi/Param/statisticsParameterData.do";
 //        https://kosis.kr/openapi/Param/statisticsParameterData.do?method=getList&apiKey=MDE5NGY4NzM1YzIxMDJmY2FlNTJkMTg0NThiZDJmMjQ=
 //        &itmId=T001+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&startPrdDe=2020&endPrdDe=2020&loadGubun=2&orgId=101&tblId=DT_1EP_2001
-          String parameter = "?method=getList&apiKey=&itmId=T001+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&newEstPrdCnt=1&loadGubun=2&orgId=101&tblId=DT_1EP_2001";
+        String parameter = "?method=getList&apiKey=&itmId=T001+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&newEstPrdCnt=1&loadGubun=2&orgId=101&tblId=DT_1EP_2001";
         //DT_1JH20151
 
         String format = "json";
@@ -731,4 +731,106 @@ public class Sche {
             cnt++;
         }
     }
+
+
+    //9.삶의  만족도
+    //@Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "* * 4 * * *")
+    public void LifeSatisfaction2_Schedule() throws Exception {
+        String url = "https://kosis.kr/openapi/Param/statisticsParameterData.do";
+        String parameter = "?method=getList&apiKey=&itmId=QQQ+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&newEstPrdCnt=1&loadGubun=2&orgId=402&tblId=DT_ES2017_037";
+
+        //https://kosis.kr/openapi/Param/statisticsParameterData.do?method=getList&apiKey=MDE5NGY4NzM1YzIxMDJmY2FlNTJkMTg0NThiZDJmMjQ=
+        //&itmId=QQQ+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&startPrdDe=2021&endPrdDe=2021&loadGubun=2&orgId=402&tblId=DT_ES2017_037
+        //DT_ES2017_037
+
+        String format = "json";
+        String site = "kosis";
+        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        //
+        // {"err":"30","errMsg":"데이터가 존재하지 않습니다."}
+
+        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> dataMap = new HashMap<>();
+        int cnt=1;
+        for (Object jsonObject : jsonList) {
+            JSONObject jsonData = (JSONObject) jsonObject;
+
+            //년도
+            String yrdt = (String) jsonData.get("PRD_DE");
+            //yr_dt = yr_dt.substring(0, 4);
+            //중분류
+            String midgrp = (String) jsonData.get("C1_NM");
+
+            //소분류 - 점수종류 (0~10)
+            String smlgrp = (String) jsonData.get("C2_NM");
+            if(smlgrp.equals("ⓞ 삶의 만족도 낮음")) {
+                smlgrp = "0";
+            } else if(smlgrp.equals("①")) {
+                smlgrp = "1";
+            } else if(smlgrp.equals("②")) {
+                smlgrp = "2";
+            } else if(smlgrp.equals("③")) {
+                smlgrp = "3";
+            } else if(smlgrp.equals("④")) {
+                smlgrp = "4";
+            } else if(smlgrp.equals("⑤ 중간")) {
+                smlgrp = "5";
+            } else if(smlgrp.equals("⑥")) {
+                smlgrp = "6";
+            } else if(smlgrp.equals("⑦")) {
+                smlgrp = "7";
+            } else if(smlgrp.equals("⑧")) {
+                smlgrp = "8";
+            } else if(smlgrp.equals("⑨")) {
+                smlgrp = "9";
+            } else if(smlgrp.equals("⑩ 삶의 만족도 높음")) {
+                smlgrp = "10";
+            }
+
+            //대분류
+            String topgrp="";
+
+            //소계는 통과
+            if("소계".equals(midgrp) || "전체".equals(midgrp) || "남자".equals(midgrp) || "여자".equals(midgrp) || "상".equals(midgrp) || "중".equals(midgrp) || "하".equals(midgrp)) {
+                continue;
+            }
+
+            //대분류 - 중분류보고 만든다
+            if(midgrp != null) {
+                if (midgrp.equals("초등학교") || midgrp.equals("중학교") || midgrp.equals("고등학교")) {
+                    topgrp = "학교급";
+                } else if (midgrp.equals("일반계고") || midgrp.equals("특성화계고")) {
+                    topgrp = "고교유형";
+                } else if (midgrp.equals("대도시") || midgrp.equals("중소도시") || midgrp.equals("읍면지역")) {
+                    topgrp = "지역규모";
+                } else if (midgrp.equals("양부모가정") || midgrp.equals("한부모가정") || midgrp.equals("조손가정") || midgrp.equals("기타")) {
+                    topgrp = "가족유형";
+                }
+            }
+
+            //점수단위(%)
+            String unit = (String) jsonData.get("UNIT_NM");
+
+            //점수
+            String val = (String)jsonData.get("DT");
+
+            dataMap.put("yrdt", yrdt);
+            dataMap.put("topgrp", topgrp);
+            dataMap.put("midgrp", midgrp);
+            dataMap.put("smlgrp", smlgrp);
+            dataMap.put("unit", unit);
+            dataMap.put("val", val);
+/*
+            if(smlgrp.equals("평균")) {
+                continue;
+            }
+*/
+            commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertLifeSatisfaction2");//LifeSatisfaction.insertLifeSatisfaction
+            cnt++;
+        }
+
+    }
+
 }
