@@ -7,25 +7,37 @@ let colors = ["#393939", "#f5b031", "#fad797", "#59ccf7", "#c3b4df"];
 // 데이터 호출 함수
 window.onload = function () {
     getEnmcGrrt();
+    getCovidEconomicGrowth();
 
 }
+
+// 데이터 배열
 let ctyNm = [];
 let unit = [];
 let rate = [];
 
+let covidGrowth = [];
+let covidYear = [];
 
+// 경제성장률 AJAX
 function getEnmcGrrt() {
 
     let callBackFn = function (data) {
         fnRegionChartOp(data);
-
     }
-
     getApiResult("/front/economicGrowth/api/getEconomicGrowth", callBackFn, "get", null, errorMsg);
-
 }
 
-// 경제성장률 데이터 배열 추가 및 차트 선언
+// 코로나 시기 경제성장률 AJAX
+function getCovidEconomicGrowth() {
+
+    let callBackFn = function (data) {
+        fnCovidChartOp(data);
+    }
+    getApiResult("/front/economicGrowth/api/getCovidEconomicGrowth", callBackFn, "get", null, errorMsg);
+}
+
+// 경제성장률 배열 데이터 추가 및 차트 선언
 function fnRegionChartOp(data) {
 
     for (var i = 0; i < data.emncGrrt.length; i++) {
@@ -101,38 +113,53 @@ const covidChartDom = document.getElementById("covidGrowthGraph");
 const covidChart = echarts.init(covidChartDom);
 let covidChartOp;
 
-covidChartOp = {
-    grid: {
-        containLabel: true,
-        left: 0,
-        top: 10,
-        right: 0,
-        bottom: 0,
-    },
-    label: {
-        show: true,
-    },
-    xAxis: {
-        type: "category",
-        data: ["2019", "2020", "2021", "2022"],
-    },
-    yAxis: {
-        type: "value",
-        axisLabel: {
-            formatter: "{value}%",
+function fnCovidChartOp(data){
+
+    for (var i = 0; i < data.covidGrowth.length; i++) {
+        covidGrowth.push(data.covidGrowth[i].val);
+        covidYear.push(data.covidGrowth[i].yr_dt);
+    }
+
+    console.log(covidYear)
+    console.log(covidGrowth)
+
+    covidChartOp = {
+        grid: {
+            containLabel: true,
+            left: 0,
+            top: 10,
+            right: 0,
+            bottom: 0,
         },
-    },
-    series: [
-        {
-            data: [-1.3, -2.2, -0.7, 1.4],
-            type: "line",
+        label: {
+            show: true,
         },
-    ],
-    textStyle: {
-        fontFamily: "NanumSquare",
-    },
-};
-covidChart.setOption(covidChartOp);
+        xAxis: {
+            type: "category",
+            data: [],
+        },
+        yAxis: {
+            type: "value",
+            axisLabel: {
+                formatter: "{value}%",
+            },
+        },
+        series: [
+            {
+                data: [],
+                type: "line",
+            },
+        ],
+        textStyle: {
+            fontFamily: "NanumSquare",
+        },
+    };
+
+    covidChartOp.xAxis.data = covidYear;
+    covidChartOp.series[0].data = covidGrowth
+
+    covidChart.setOption(covidChartOp);
+}
 
 /* 차트 - 물가 상승 추이 */
 const inflChartDom = document.getElementById("inflationGraph");

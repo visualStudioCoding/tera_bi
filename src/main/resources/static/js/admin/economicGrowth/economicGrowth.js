@@ -176,8 +176,6 @@ function getGrowthRate(){
     kosisApiAjax("/admin/economicGrowth/api/getGrowthRate", callBackFn, 'get', params, errorMsg);
 }
 
-
-
 function getInflationRate(){
     let formData = document.forms["getInflationRate_opt"]
 

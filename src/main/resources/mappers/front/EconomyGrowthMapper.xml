@@ -92,4 +92,11 @@
         ORDER BY CONCAT(yr_dt, Mon_dt) DESC LIMIT 1
     </select>
 
+    <!--  코로나 시기 경제 성장률  -->
+    <select id="selectCovidGrowth" parameterType="hashMap" resultType="hashMap">
+        SELECT yr_dt, val
+        FROM enmc_grrt
+        WHERE yr_dt BETWEEN 2019 AND (SELECT yr_dt FROM enmc_grrt ORDER BY yr_dt DESC LIMIT 1) AND cty_nm = '전국'
+    </select>
+
 </mapper>
