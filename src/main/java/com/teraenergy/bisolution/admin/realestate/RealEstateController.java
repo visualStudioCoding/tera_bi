@@ -306,7 +306,7 @@ public class RealEstateController {
         Map<String, String> splitParams = realEstateService.splitParameter(parameter);
 
 
-        for (int month = 1; month <= 6; month++) {
+        for (int month = 1; month <= 12; month++) {
             parameter = realEstateService.stringCombination(splitParams, month);
 
             StringBuilder stringBuilder = commonService.getApiResult(url, parameter, FORMAT, SITE);
