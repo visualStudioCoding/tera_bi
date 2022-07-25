@@ -147,4 +147,24 @@ public class EconomicGrowthController {
         return result;
     }
 
+    //      코로나 시기 경제 성장률
+    @ResponseBody
+    @GetMapping("/api/getCovidEconomicGrowth")
+    public Map<String, List<Map<String, Object>>> getCovidEconomicGrowth() throws Exception {
+
+        List<Map<String, Object>> covidGrowth = (List<Map<String, Object>>) commonService.selectList(null, PAGE_ID + PROGRAM_ID + ".selectCovidGrowth");
+
+        Map<String, Object> tmpData = new HashMap<>();
+        tmpData.put("val", 4);
+        tmpData.put("yr_dt", 2021);
+
+        covidGrowth.add(tmpData);
+
+        Map<String, List<Map<String, Object>>> result = new HashMap<>();
+
+        result.put("covidGrowth", covidGrowth);
+
+        System.out.println(result);
+        return result;
+    }
 }
