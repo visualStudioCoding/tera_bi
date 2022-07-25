@@ -1,7 +1,6 @@
 package com.teraenergy.bisolution.admin.realestate;
 
 
-import com.teraenergy.global.common.utilities.AgeUtil;
 import com.teraenergy.global.common.utilities.AreaNameUtil;
 import com.teraenergy.global.service.CommonService;
 import lombok.extern.slf4j.Slf4j;
@@ -236,7 +235,7 @@ public class RealEstateController {
         return result;
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    /*@Transactional(rollbackFor = Exception.class)
     @ResponseBody
     @GetMapping("/api/populationAge")
     public Object getPopulationAge(String url, String parameter) throws Exception {
@@ -289,20 +288,61 @@ public class RealEstateController {
         result.put("data", dataList);
         result.put("success", "성공");
         return result;
-    }
+    }*/
 
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
-    @GetMapping("/populationAgeDivision")
-    public Object populationAgeDivision() throws Exception {
+    @GetMapping("/api/populationAge")
+    public Object getPopulationAge(String url, String parameter) throws Exception {
+//        url = "https://kosis.kr/openapi/Param/statisticsParameterData.do";
+//        parameter = "?method=getList&apiKey=&itmId=T3+T4+&objL1=00+50+50110+50130+&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=M&startPrdDe=2022&endPrdDe=2022&loadGubun=2&orgId=101&tblId=DT_1B04005N";
+        Map<String, Object> result = new HashMap<>();
+        Map<String, String> splitParams = realEstateService.splitParameter(parameter);
 
-        Map<String, Object> temp = new HashMap<>();
-        commonService.insertContents(temp, PAGE_ID + PROGRAM_ID + ".insertManPopulation");
-        commonService.updateContents(temp, PAGE_ID + PROGRAM_ID + ".updateWomanPopulation");
-        commonService.deleteContents(temp, PAGE_ID + PROGRAM_ID + ".deletePopulationTmp");
+        List<Map<String, Object>> dataList = new ArrayList<>();
+        for (int month = 1; month <= 12; month++) {
+            parameter = realEstateService.stringCombination(splitParams, month);
 
-        temp.put("success", "성공");
-        return temp;
+            StringBuilder stringBuilder = commonService.getApiResult(url, parameter, FORMAT, SITE);
+            JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+
+            for (Object jsonObject : jsonList) {
+                Map<String, Object> dataMap = new HashMap<>();
+                JSONObject jsonData = (JSONObject) jsonObject;
+
+                String date = (String) jsonData.get("PRD_DE");
+                String year = date.substring(0, 4);
+                String getMonth = date.substring(4, 6);
+
+                String ctyName = AreaNameUtil.areaName((String) jsonData.get("C1"), "");
+//                String ageName = AgeUtil.getAgeName((String) jsonData.get("C2"));
+
+                dataMap.put("yrDt", year);
+                dataMap.put("monDt", getMonth);
+//                dataMap.put("age", ageName);
+                dataMap.put("age", jsonData.get("C2"));
+                dataMap.put("ctyNm", ctyName);
+                dataMap.put("dstNm", jsonData.get("C1_NM"));
+                dataMap.put("unit", jsonData.get("UNIT_NM"));
+                dataMap.put("cnt", jsonData.get("DT"));
+
+                String areaCd = (String) jsonData.get("C1");
+                dataMap.put("areaCd", areaCd);
+//                세종특별자치시 중복 제거
+                if (!"36110".equals(areaCd)) {
+                    dataList.add(dataMap);
+                    if("T3".equals(jsonData.get("ITM_ID"))){ //남자인구수
+                        commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertPopulationAge");
+                    } else if ("T4".equals(jsonData.get("ITM_ID"))){ //여자인구수
+                        commonService.updateContents(dataMap, PAGE_ID + PROGRAM_ID + ".updateWomanPopulation");
+                    }
+                }
+            }
+        }
+
+        result.put("data", dataList);
+        result.put("success", "성공");
+        return result;
     }
 
     @Transactional(rollbackFor = Exception.class)

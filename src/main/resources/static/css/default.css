@@ -52,7 +52,7 @@ body {
   margin: 0;
   padding: 0;
   word-break: keep-all;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 body {

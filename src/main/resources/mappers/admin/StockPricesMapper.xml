@@ -14,6 +14,9 @@
                , #{dyDt}
                , #{unit}
                , #{val})
+        ON DUPLICATE KEY UPDATE yr_dt  = #{yrDt}
+                              , mon_dt = #{monDt}
+                              , dy_dt  = #{dyDt}
     </insert>
     <insert id="insertKosdaq" parameterType="hashMap">
         INSERT INTO kosdaq_index
@@ -27,6 +30,9 @@
                , #{dyDt}
                , #{unit}
                , #{val})
+        ON DUPLICATE KEY UPDATE yr_dt  = #{yrDt}
+                              , mon_dt = #{monDt}
+                              , dy_dt  = #{dyDt}
     </insert>
     <insert id="insertBirth" parameterType="hashMap">
         INSERT INTO birth_progress
@@ -36,6 +42,7 @@
         VALUES ( #{yrDt}
                , #{unit}
                , #{val})
+        ON DUPLICATE KEY UPDATE yr_dt  = #{yrDt}
     </insert>
     <insert id="insertDeath" parameterType="hashMap">
         INSERT INTO death_progress
@@ -45,6 +52,7 @@
         VALUES ( #{yrDt}
                , #{unit}
                , #{val})
+        ON DUPLICATE KEY UPDATE yr_dt  = #{yrDt}
     </insert>
     <insert id="insertLifeExpectancy" parameterType="hashMap">
         INSERT INTO life_expectancy
@@ -56,6 +64,7 @@
                , #{unit}
                , #{manVal}
                , #{womanVal})
+        ON DUPLICATE KEY UPDATE yr_dt  = #{yrDt}
     </insert>
 
     <select id="stockPricesMaxDate" resultType="hashMap">

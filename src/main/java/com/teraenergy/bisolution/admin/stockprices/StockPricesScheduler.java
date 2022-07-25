@@ -27,7 +27,7 @@ public class StockPricesScheduler {
 //     0~59 | 0~59 | 0~23 | 1~31 | 1~12 | 0~6 | 생략가능
 
     @Transactional(rollbackFor = Exception.class)
-    @Scheduled(cron = "00 40 15 * * *")
+    @Scheduled(cron = "00 00 18 * 1-5 *")
     public void getCompositeIndex() throws Exception {
         String url = "https://ecos.bok.or.kr/api/";
         String parameter = "KeyStatisticList/apiKey/json/kr/66/67/";
