@@ -92,6 +92,11 @@ public class LifeSatisfactionController {
         dataMap8 = (Map<String, Object>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".selectPrsnlinshr");
         model.addAttribute("data8", dataMap8);
 
+        //9.삶의 만족도
+        Map<String,Object> dataMap9 = new HashMap<>();
+        dataMap9 = (Map<String, Object>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".selectLifeSatisfaction2");
+        model.addAttribute("data9", dataMap9);
+
         return PAGE_ID + DIRECTORY + "Main";
         //return DIRECTORY+ "index2";
     }
@@ -103,7 +108,7 @@ public class LifeSatisfactionController {
         log.info(PAGE_ID + DIRECTORY + PROGRAM_ID + "LifeSatisfaction");  //DT_417001_0002 // life_stsfc
         //return PAGE_ID + DIRECTORY + PROGRAM_ID + "Main";
         System.out.println("url : " + url);
-         System.out.println("parameter : " + parameter);
+        System.out.println("parameter : " + parameter);
 
         //kosis = json, enara = xml
         String format = "json";
@@ -196,7 +201,7 @@ public class LifeSatisfactionController {
                 continue;
             }
 
-           commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertLifeSatisfaction");//LifeSatisfaction.insertLifeSatisfaction
+            commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertLifeSatisfaction");//LifeSatisfaction.insertLifeSatisfaction
             cnt++;
         }
 
@@ -684,7 +689,7 @@ public class LifeSatisfactionController {
         return result;
     }
 
- //8. 기업규모별 개인소득 점유율
+    //8. 기업규모별 개인소득 점유율
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
     @GetMapping("/admin/lifeSatisfaction/prsnlnshr")
@@ -741,7 +746,110 @@ public class LifeSatisfactionController {
         return result;
     }
 
+    //9.삶의 만족도
+    @Transactional(rollbackFor = Exception.class)
+    @ResponseBody
+    @GetMapping("/admin/lifeSatisfaction/LifeSatisfaction2")
+    public Object LifeSatisfaction2_Parse(String url, String parameter) throws Exception {
+        log.info(PAGE_ID + DIRECTORY + PROGRAM_ID + "LifeSatisfaction");  //DT_417001_0002 // life_stsfc
+        //return PAGE_ID + DIRECTORY + PROGRAM_ID + "Main";
+        System.out.println("url : " + url);
+        System.out.println("parameter : " + parameter);
+        //DT_ES2017_037
+//https://kosis.kr/statHtml/statHtml.do?orgId=402&tblId=DT_ES2017_037&vw_cd=MT_ZTITLE&list_id=402_siew6548_2017_50_20&seqNo=&lang_mode=ko&language=kor&obj_var_id=&itm_id=&conn_path=MT_ZTITLE
 
+        //kosis = json, enara = xml
+        String format = "json";
+        String site = "kosis";
+        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        //
+        // {"err":"30","errMsg":"데이터가 존재하지 않습니다."}
 
+        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> dataMap = new HashMap<>();
+        int cnt=1;
+        for (Object jsonObject : jsonList) {
+            JSONObject jsonData = (JSONObject) jsonObject;
 
+            //년도
+            String yrdt = (String) jsonData.get("PRD_DE");
+            //yr_dt = yr_dt.substring(0, 4);
+            //중분류
+            String midgrp = (String) jsonData.get("C1_NM");
+
+            //소분류 - 점수종류 (0~10)
+            String smlgrp = (String) jsonData.get("C2_NM");
+            if(smlgrp.equals("ⓞ 삶의 만족도 낮음")) {
+                smlgrp = "0";
+            } else if(smlgrp.equals("①")) {
+                smlgrp = "1";
+            } else if(smlgrp.equals("②")) {
+                smlgrp = "2";
+            } else if(smlgrp.equals("③")) {
+                smlgrp = "3";
+            } else if(smlgrp.equals("④")) {
+                smlgrp = "4";
+            } else if(smlgrp.equals("⑤ 중간")) {
+                smlgrp = "5";
+            } else if(smlgrp.equals("⑥")) {
+                smlgrp = "6";
+            } else if(smlgrp.equals("⑦")) {
+                smlgrp = "7";
+            } else if(smlgrp.equals("⑧")) {
+                smlgrp = "8";
+            } else if(smlgrp.equals("⑨")) {
+                smlgrp = "9";
+            } else if(smlgrp.equals("⑩ 삶의 만족도 높음")) {
+                smlgrp = "10";
+            }
+
+            //대분류
+            String topgrp="";
+
+            //소계는 통과
+            if("소계".equals(midgrp) || "전체".equals(midgrp) || "남자".equals(midgrp) || "여자".equals(midgrp) || "상".equals(midgrp) || "중".equals(midgrp) || "하".equals(midgrp)) {
+                continue;
+            }
+
+            //대분류 - 중분류보고 만든다
+            if(midgrp != null) {
+                if (midgrp.equals("초등학교") || midgrp.equals("중학교") || midgrp.equals("고등학교")) {
+                    topgrp = "학교급";
+                } else if (midgrp.equals("일반계고") || midgrp.equals("특성화계고")) {
+                    topgrp = "고교유형";
+                } else if (midgrp.equals("대도시") || midgrp.equals("중소도시") || midgrp.equals("읍면지역")) {
+                    topgrp = "지역규모";
+                } else if (midgrp.equals("양부모가정") || midgrp.equals("한부모가정") || midgrp.equals("조손가정") || midgrp.equals("기타")) {
+                    topgrp = "가족유형";
+                }
+            }
+
+            //점수단위(%)
+            String unit = (String) jsonData.get("UNIT_NM");
+
+            //점수
+            String val = (String)jsonData.get("DT");
+
+            dataMap.put("yrdt", yrdt);
+            dataMap.put("topgrp", topgrp);
+            dataMap.put("midgrp", midgrp);
+            dataMap.put("smlgrp", smlgrp);
+            dataMap.put("unit", unit);
+            dataMap.put("val", val);
+/*
+            if(smlgrp.equals("평균")) {
+                continue;
+            }
+*/
+            commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertLifeSatisfaction2");//LifeSatisfaction.insertLifeSatisfaction
+            cnt++;
+        }
+
+        result.put("data", dataMap);
+        result.put("size", cnt);
+        result.put("success", "성공");
+
+        return result;
+    }
 }

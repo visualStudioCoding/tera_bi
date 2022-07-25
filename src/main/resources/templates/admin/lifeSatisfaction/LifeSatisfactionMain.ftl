@@ -20,7 +20,7 @@
             "tblId": frm.tblId.value
         }
     }
-    //1. 삶의 만족도
+    //1. 삶에 대한 만족도
     function api1(){
         const frm = document.forms['frm1'];
         let param = fnParam(frm);
@@ -213,10 +213,10 @@
         let syear = frm.startPrdDe.value;
         syear = syear.substr(0,4);
 
-            frm.startPrdDe.value = syear;
-            let param = fnParam(frm);
-            console.log(param);
-            kosisApiAjax("/admin/lifeSatisfaction/ovrsstrip", callBackFn, 'get', param, errorMsg);
+        frm.startPrdDe.value = syear;
+        let param = fnParam(frm);
+        console.log(param);
+        kosisApiAjax("/admin/lifeSatisfaction/ovrsstrip", callBackFn, 'get', param, errorMsg);
 
         //공통모듈 ajax 함수 호출하기
         //kosisApiAjax("/lifeSatisfaction/Divorce", callBackFn, 'get', param, errorMsg);
@@ -239,10 +239,36 @@
         let syear = frm.startPrdDe.value;
         syear = syear.substr(0,4);
 
-            frm.startPrdDe.value = syear;
-            let param = fnParam(frm);
-            console.log(param);
-            kosisApiAjax("/admin/lifeSatisfaction/prsnlnshr", callBackFn, 'get', param, errorMsg);
+        frm.startPrdDe.value = syear;
+        let param = fnParam(frm);
+        console.log(param);
+        kosisApiAjax("/admin/lifeSatisfaction/prsnlnshr", callBackFn, 'get', param, errorMsg);
+
+        //공통모듈 ajax 함수 호출하기
+        //kosisApiAjax("/lifeSatisfaction/Divorce", callBackFn, 'get', param, errorMsg);
+    }
+
+    //9. 삶의 만족도
+    function api9(){
+        const frm = document.forms['frm9'];
+        let errorMsg = "error";
+        let result="";
+
+        //ajax가 정상 호출 되었을때 실행 되는 함수
+        $("#rst9").html("");
+        let callBackFn = function( data ) {
+            //alert(data.data.yrdt + " " + data.data.mondt + " " + data.success + " ,  " +data.size);
+            result += data.data.yrdt + data.success + " ,  " +data.size + "건<br>";
+            $("#rst9").html(result);
+            console.log(data.data)
+        }
+        let syear = frm.startPrdDe.value;
+        syear = syear.substr(0,4);
+
+        frm.startPrdDe.value = syear;
+        let param = fnParam(frm);
+        console.log(param);
+        kosisApiAjax("/admin/lifeSatisfaction/LifeSatisfaction2", callBackFn, 'get', param, errorMsg);
 
         //공통모듈 ajax 함수 호출하기
         //kosisApiAjax("/lifeSatisfaction/Divorce", callBackFn, 'get', param, errorMsg);
@@ -266,10 +292,10 @@
         left:50%;
         margin-left: -100px;
         margin-top: -200px;
-        }
+    }
     .display-none{ /*감추기*/
         display:none;
-        }
+    }
 </style>
 <div class="wrap-loading display-none">
     <div><img src="/img/loading.gif" /></div>
@@ -290,7 +316,7 @@
                     <input type="hidden" id="newEstPrdCnt" name="newEstPrdCnt" value=""/>
 
                     <div class="card-header">
-                        1.삶의 만족도 (년)
+                        1.삶에 대한 만족도 (년)
                     </div>
                     <div class="card-body">
                         년도입력 <input type="text" name="startPrdDe" id="startPrdDe" value="${data1.yr_dt}" style="width:100%" >
@@ -334,7 +360,7 @@
                             </label>
                         </div>-->
 
-                        년도 <input type="text" name="startPrdDe" id="startPrdDe" value="${data2.yr_dt}${data2.mon_dt}" style="width:100%" >
+                        년도입력(1~12월까지 자동실행됨) <input type="text" name="startPrdDe" id="startPrdDe" value="${data2.yr_dt}${data2.mon_dt}" style="width:100%" >
                         <div id="rst2"></div>
                     </div>
                     <button type="submit" class="btn btn-outline-secondary activator">실행</button>
@@ -375,7 +401,7 @@
                                 Checked checkbox
                             </label>
                         </div>-->
-                        년도입력 <input type="text" name="startPrdDe" id="startPrdDe" value="${data3.yr_dt}${data3.mon_dt}" style="width:100%" >
+                        년도입력(1~12월까지 자동실행됨) <input type="text" name="startPrdDe" id="startPrdDe" value="${data3.yr_dt}${data3.mon_dt}" style="width:100%" >
                         <div id="rst3"></div>
                     </div>
 
@@ -415,7 +441,7 @@
                                  Checked checkbox
                              </label>
                          </div>-->
-                        년도입력 <input type="text" name="startPrdDe" id="startPrdDe" value="${data4.yr_dt}${data4.mon_dt}" style="width:100%" >
+                        년도입력(1~12월까지 자동실행됨) <input type="text" name="startPrdDe" id="startPrdDe" value="${data4.yr_dt}${data4.mon_dt}" style="width:100%" >
                         <div id="rst4"></div>
                     </div>
                     <button type="button" class="btn btn-outline-secondary activator" onclick="api4();">실행</button>
@@ -434,16 +460,16 @@
                 <input type="hidden" id="orgId" name="orgId" value="101"/>
                 <input type="hidden" id="tblId" name="tblId" value="DT_1DA7104S"/>
                 <input type="hidden" id="newEstPrdCnt" name="newEstPrdCnt" value=""/>
-            <div class="card">
-                <div class="card-header">
-                    5. 행정구역(시도)/성별 실업률(월)
-                </div>
-                <div class="card-body">
-                    년월입력 <input type="text" name="startPrdDe" id="startPrdDe" value="${data5.yr_dt}${data5.mon_dt}" style="width:100%" >
-                    <div id="rst5"></div>
-                </div>
-                <button type="submit" class="btn btn-outline-secondary activator" >실행</button>
-            </div></form>
+                <div class="card">
+                    <div class="card-header">
+                        5. 행정구역(시도)/성별 실업률(월)
+                    </div>
+                    <div class="card-body">
+                        년도입력(1~12월까지 자동실행됨) <input type="text" name="startPrdDe" id="startPrdDe" value="${data5.yr_dt}${data5.mon_dt}" style="width:100%" >
+                        <div id="rst5"></div>
+                    </div>
+                    <button type="submit" class="btn btn-outline-secondary activator" >실행</button>
+                </div></form>
         </div>
         <div class="col">
             <form id="frm6" name="frm6" onsubmit="api6();return false">
@@ -455,16 +481,16 @@
                 <input type="hidden" id="orgId" name="orgId" value="101"/>
                 <input type="hidden" id="tblId" name="tblId" value="DT_1JH20151"/>
                 <input type="hidden" id="newEstPrdCnt" name="newEstPrdCnt" value=""/>
-            <div class="card">
-                <div class="card-header">
-                    6. 전산업생산지수(월)
-                </div>
-                <div class="card-body">
-                    년월입력 <input type="text" name="startPrdDe" id="startPrdDe" value="${data6.yr_dt}${data6.mon_dt}" style="width:100%" >
-                    <div id="rst6"></div>
-                </div>
-                <button type="submit" class="btn btn-outline-secondary activator">실행</button>
-            </div></form>
+                <div class="card">
+                    <div class="card-header">
+                        6. 전산업생산지수(월)
+                    </div>
+                    <div class="card-body">
+                        년도입력(1~12월까지 자동실행됨) <input type="text" name="startPrdDe" id="startPrdDe" value="${data6.yr_dt}${data6.mon_dt}" style="width:100%" >
+                        <div id="rst6"></div>
+                    </div>
+                    <button type="submit" class="btn btn-outline-secondary activator">실행</button>
+                </div></form>
         </div>
     </div>
     <div class="row">
@@ -487,16 +513,16 @@
                 <input type="hidden" id="orgId" name="orgId" value="101"/>
                 <input type="hidden" id="tblId" name="tblId" value="DT_1SSCL060R"/>
                 <input type="hidden" id="newEstPrdCnt" name="newEstPrdCnt" value=""/>
-            <div class="card">
-                <div class="card-header">
-                    7. 해외여행 경험 및 횟수(2년)
-                </div>
-                <div class="card-body">
-                    년도입력 <input type="text" name="startPrdDe" id="startPrdDe" value="<#if data7??>${data7.yr_dt}</#if>" style="width:100%" >
-                    <div id="rst7"></div>
-                </div>
-                <button type="submit" class="btn btn-outline-secondary activator">실행</button>
-            </div></form>
+                <div class="card">
+                    <div class="card-header">
+                        7. 해외여행 경험 및 횟수(2년)
+                    </div>
+                    <div class="card-body">
+                        년도입력 <input type="text" name="startPrdDe" id="startPrdDe" value="<#if data7??>${data7.yr_dt}</#if>" style="width:100%" >
+                        <div id="rst7"></div>
+                    </div>
+                    <button type="submit" class="btn btn-outline-secondary activator">실행</button>
+                </div></form>
         </div>
         <div class="col">
             <!--
@@ -513,49 +539,42 @@
                 <input type="hidden" id="orgId" name="orgId" value="101"/>
                 <input type="hidden" id="tblId" name="tblId" value="DT_1EP_2001"/>
                 <input type="hidden" id="newEstPrdCnt" name="newEstPrdCnt" value=""/>
-            <div class="card">
-                <div class="card-header">
-                    8. 기업규모별 개인소득 점유율(년)
-                </div>
-                <div class="card-body">
-                    년도입력 <input type="text" name="startPrdDe" id="startPrdDe" value="<#if data8??>${data8.yr_dt}</#if>" style="width:100%" >
-                    <div id="rst8"></div>
-                </div>
-                <button type="submit" class="btn btn-outline-secondary activator">실행</button>
-            </div></form>
+                <div class="card">
+                    <div class="card-header">
+                        8. 기업규모별 개인소득 점유율(년)
+                    </div>
+                    <div class="card-body">
+                        년도입력 <input type="text" name="startPrdDe" id="startPrdDe" value="<#if data8??>${data8.yr_dt}</#if>" style="width:100%" >
+                        <div id="rst8"></div>
+                    </div>
+                    <button type="submit" class="btn btn-outline-secondary activator">실행</button>
+                </div></form>
         </div>
     </div>
     <div class="row">
         <div class="col">
-            <div class="card">
-                <div class="card-header">
-                    해외여행 경험 및 횟수
-                </div>
-                <div class="card-body">
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                            Default checkbox
-                        </label>
+            <form id="frm9" name="frm9" onsubmit="api9();return false">
+                <input type="hidden" id="itmId" name="itmId" value="QQQ+"/>
+                <input type="hidden" id="objL1" name="objL1" value="ALL"/>
+                <input type="hidden" id="objL2" name="objL2" value="ALL"/>
+                <input type="hidden" id="prdSe" name="prdSe" value="Y"/>
+                <input type="hidden" id="loadGubun" name="loadGubun" value="2"/>
+                <input type="hidden" id="orgId" name="orgId" value="402"/>
+                <input type="hidden" id="tblId" name="tblId" value="DT_ES2017_037"/>
+                <input type="hidden" id="newEstPrdCnt" name="newEstPrdCnt" value=""/>
+                <div class="card">
+                    <div class="card-header">
+                        9.삶의 만족도(년)
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-                        <label class="form-check-label" for="flexCheckChecked">
-                            Checked checkbox
-                        </label>
+                    <div class="card-body">
+                        년도입력 <input type="text" name="startPrdDe" id="startPrdDe" value="<#if data9??>${data9.yr_dt}</#if>" style="width:100%" >
+                        <div id="rst9"></div>
                     </div>
-                </div>
-                <button type="button" class="btn btn-outline-secondary activator">실행</button>
-            </div>
+                    <button type="submit" class="btn btn-outline-secondary activator">실행</button>
+                </div></form>
         </div>
         <div class="col">
-            <div class="card">
+            <#--<div class="card">
                 <div class="card-header">
                     기업규모별 소득
                 </div>
@@ -580,7 +599,7 @@
                     </div>
                 </div>
                 <button type="button" class="btn btn-outline-secondary activator">실행</button>
-            </div>
+            </div>-->
         </div>
     </div>
 </div>
