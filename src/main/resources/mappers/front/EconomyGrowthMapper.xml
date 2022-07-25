@@ -1,37 +1,95 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="bi.front.EconomicGrowth">
+    <!-- 경제성장률 -->
     <select id="selectEconomicGrowth" parameterType="hashMap" resultType="hashMap">
-        SELECT cty_nm, val FROM enmc_grrt WHERE yr_dt = #{yr_dt}
+        SELECT cty_nm, val
+        FROM enmc_grrt
+        WHERE yr_dt = #{yr_dt}
     </select>
 
+    <!-- 환율 -->
     <select id="selectExchangeRate" parameterType="hashMap" resultType="hashMap">
-        SELECT val FROM exchn_rate WHERE type = '원/미국달러' AND DATE_FORMAT(CONCAT(yr_dt, mon_dt, dy_dt), '%Y%m%d') = DATE_FORMAT(NOW(), '%Y%m%d')
+        SELECT *
+        FROM exchn_rate
+        WHERE type = '원/미국달러'
+          AND CONCAT(yr_dt, mon_dt, dy_dt) =
+              (SELECT CONCAT(yr_dt, mon_dt, dy_dt) FROM exchn_rate ORDER BY CONCAT(yr_dt, mon_dt, dy_dt) DESC
+            LIMIT 1)
     </select>
-
+    <!--  전일 환율 (변동률 계산)  -->
     <select id="selectExchangeRateCompare" parameterType="hashMap" resultType="hashMap">
-        SELECT val FROM exchn_rate WHERE type = '원/미국달러' AND DATE_FORMAT(CONCAT(yr_dt, mon_dt, dy_dt), '%Y%m%d') = DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -1 DAY), '%Y%m%d')
+        SELECT *
+        FROM exchn_rate
+        WHERE type = '원/미국달러'
+          AND CONCAT(yr_dt, mon_dt, dy_dt) =
+              (SELECT CONCAT(yr_dt, mon_dt, dy_dt)
+               FROM exchn_rate
+               WHERE type = '원/미국달러'
+               ORDER BY CONCAT(yr_dt, mon_dt, dy_dt) DESC
+            LIMIT 1
+        OFFSET 1)
     </select>
 
+    <!--  기준금리  -->
     <select id="selectBaseRate" parameterType="hashMap" resultType="hashMap">
-        SELECT val FROM base_rate WHERE
-            yr_dt = (SELECT MAX(yr_dt) FROM base_rate) AND
-            mon_dt = (SELECT MAX(mon_dt) FROM base_rate WHERE yr_dt = (SELECT MAX(yr_dt) FROM base_rate))
-                ORDER BY dy_dt DESC LIMIT 1
+        SELECT val
+        FROM base_rate
+        WHERE yr_dt = (SELECT MAX(yr_dt) FROM base_rate)
+          AND mon_dt = (SELECT MAX(mon_dt) FROM base_rate WHERE yr_dt = (SELECT MAX(yr_dt) FROM base_rate))
+        ORDER BY dy_dt DESC LIMIT 1
     </select>
 
+    <!--  기준금리 (변동률 계산)  -->
     <select id="selectBaseRateCompare" parameterType="hashMap" resultType="hashMap">
-        SELECT val FROM base_rate WHERE
-            yr_dt = (SELECT MAX(yr_dt) FROM base_rate) AND
-            mon_dt = (SELECT MAX(mon_dt) FROM base_rate WHERE yr_dt = (SELECT MAX(yr_dt) FROM base_rate))
-                ORDER BY dy_dt DESC LIMIT 1 OFFSET 1
+        SELECT val
+        FROM base_rate
+        WHERE yr_dt = (SELECT MAX(yr_dt) FROM base_rate)
+          AND mon_dt = (SELECT MAX(mon_dt) FROM base_rate WHERE yr_dt = (SELECT MAX(yr_dt) FROM base_rate))
+        ORDER BY dy_dt DESC LIMIT 1
+        OFFSET 1
     </select>
 
+    <!--  GDP  -->
     <select id="selectGDP" parameterType="hashMap" resultType="hashMap">
-        SELECT val FROM gdp ORDER BY yr_dt DESC LIMIT 1
+        SELECT val
+        FROM gdp
+        ORDER BY yr_dt DESC LIMIT 1
     </select>
 
+    <!--  GNI  -->
     <select id="selectGNI" parameterType="hashMap" resultType="hashMap">
-        SELECT val FROM gni ORDER BY yr_dt DESC LIMIT 1
+        SELECT val
+        FROM gni
+        ORDER BY yr_dt DESC LIMIT 1
     </select>
+
+    <!-- 경제성장률  -->
+    <select id="selectEnmcGrrt" parameterType="hashMap" resultType="hashMap">
+        SELECT cty_nm, unit, val
+        FROM enmc_grrt
+        WHERE yr_dt = (SELECT yr_dt FROM enmc_grrt ORDER BY yr_dt DESC LIMIT 1)
+    </select>
+
+    <!--  소비자 물가 상승률  -->
+    <select id="selectCnsmrInrt" parameterType="hashMap" resultType="hashMap">
+        SELECT val
+        FROM cnsmr_inrt
+        ORDER BY CONCAT(yr_dt, Mon_dt) DESC LIMIT 1
+    </select>
+
+    <!--  근원 물가 상승률  -->
+    <select id="selectSrcInrt" parameterType="hashMap" resultType="hashMap">
+        SELECT val
+        FROM src_inrt
+        ORDER BY CONCAT(yr_dt, Mon_dt) DESC LIMIT 1
+    </select>
+
+    <!--  생활 물가 상승률  -->
+    <select id="selectLvngInrt" parameterType="hashMap" resultType="hashMap">
+        SELECT val
+        FROM lvng_inrt
+        ORDER BY CONCAT(yr_dt, Mon_dt) DESC LIMIT 1
+    </select>
+
 </mapper>

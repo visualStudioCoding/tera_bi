@@ -44,7 +44,7 @@ ecGrowthLoc.click(function (e) {
     }
 });
 
-// // 데이터 호출 함수
+// 데이터 호출 함수
 // window.onload = function(){
 //     getExchangeRate();
 // }
@@ -64,6 +64,8 @@ function getExchangeRate(){
         current = data.current
         past = data.past
         diff = data.differ
+
+        $("#currentExChange").text(current)
 
         // document.getElementById("currentExChange").value = current
         // $("#currentExChange").innerHTML+='<h1>TEST TEST</h1>'
