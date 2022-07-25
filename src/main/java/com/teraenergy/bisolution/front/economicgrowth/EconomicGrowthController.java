@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -28,13 +29,15 @@ public class EconomicGrowthController {
     public String economicGrowthMain(Model model) throws Exception {
         log.info(PAGE_ID + DIRECTORY + "Main");
 
-        model.addAttribute("exchangeRate",getExchangeRate());
-        model.addAttribute("baseRate",getBaseRate());
-        model.addAttribute("gdpGni",getGDPGNP());
+        model.addAttribute("exchangeRate", getExchangeRate());
+        model.addAttribute("baseRate", getBaseRate());
+        model.addAttribute("gdpGni", getGDPGNP());
+        model.addAttribute("inflationRate", getInflationRate());
 
         return PAGE_ID + DIRECTORY + "Main";
     }
 
+    //    환율 SELECT
     @ResponseBody
     @GetMapping("/api/getExchangeRate")
         public Map<String, String> getExchangeRate() throws Exception {
@@ -62,6 +65,7 @@ public class EconomicGrowthController {
         return result;
         }
 
+    //    기준금리 SELECT
     @ResponseBody
     @GetMapping("/api/getBaseRate")
     public Map<String, String> getBaseRate() throws Exception {
@@ -88,6 +92,7 @@ public class EconomicGrowthController {
         return result;
     }
 
+    //    GDP 및 GNP SELECT
     @ResponseBody
     @GetMapping("/api/getGDPGNP")
     public Map<String, String> getGDPGNP() throws Exception {
@@ -108,4 +113,38 @@ public class EconomicGrowthController {
 
         return result;
     }
+
+    //    경제성장률률 SELECT
+    @ResponseBody
+    @GetMapping("/api/getEconomicGrowth")
+    public Map<String, List<Map<String, Object>>> getEconomicGrowth() throws Exception {
+
+        List<Map<String, Object>> dataList = (List<Map<String, Object>>) commonService.selectList(null, PAGE_ID + PROGRAM_ID + ".selectEnmcGrrt");
+//        Map<String, String> EmncGrrt = (Map<String, String>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".selectEnmcGrrtOne");
+
+        Map<String, List<Map<String, Object>>> result = new HashMap<>();
+
+        result.put("emncGrrt", dataList);
+
+        return result;
+    }
+
+    //     물가 상승률(소비자, 근원, 생활) SELECT
+    @ResponseBody
+    @GetMapping("/api/getInflationRate")
+    public Map<String, String> getInflationRate() throws Exception {
+
+        Map<String, Float> consume = (Map<String, Float>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".selectCnsmrInrt");
+        Map<String, Float> source = (Map<String, Float>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".selectSrcInrt");
+        Map<String, Float> living = (Map<String, Float>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".selectLvngInrt");
+
+        Map<String, String> result = new HashMap<>();
+
+        result.put("consume", Float.toString(consume.get("val")));
+        result.put("source", Float.toString(source.get("val")));
+        result.put("living", Float.toString(living.get("val")));
+
+        return result;
+    }
+
 }

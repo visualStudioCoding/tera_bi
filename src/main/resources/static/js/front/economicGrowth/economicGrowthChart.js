@@ -4,62 +4,97 @@ const regionChart = echarts.init(regionChartDom);
 let regionChartOp;
 let colors = ["#393939", "#f5b031", "#fad797", "#59ccf7", "#c3b4df"];
 
-regionChartOp = {
-    dataset: {
-        source: [
-            ["score", "성장률", "지역"],
-            [89.3, 58212, "서울특별시"],
-            [57.1, 78254, "부산광역시"],
-            [74.4, 41032, "대구광역시"],
-            [50.1, 12755, "인천광역시"],
-            [89.7, 20145, "광주광역시"],
-            [68.1, 79146, "대전광역시"],
-            [19.6, 91852, "울산광역시"],
-            [10.6, 101852, "세종특별자치시"],
-            [0, 20112, "경기도"],
-        ],
-    },
-    grid: { containLabel: true, x: 0, y: 0, y2: 0 },
-    xAxis: {
-        name: "성장률",
-        axisLabel: {
-            margin: 20,
-            color: "#292b2c",
+// 데이터 호출 함수
+window.onload = function () {
+    getEnmcGrrt();
+
+}
+let ctyNm = [];
+let unit = [];
+let rate = [];
+
+
+function getEnmcGrrt() {
+
+    let callBackFn = function (data) {
+        fnRegionChartOp(data);
+
+    }
+
+    getApiResult("/front/economicGrowth/api/getEconomicGrowth", callBackFn, "get", null, errorMsg);
+
+}
+
+// 경제성장률 데이터 배열 추가 및 차트 선언
+function fnRegionChartOp(data) {
+
+    for (var i = 0; i < data.emncGrrt.length; i++) {
+        ctyNm.push(data.emncGrrt[i].cty_nm);
+        unit.push(data.emncGrrt[i].unit);
+        rate.push(data.emncGrrt[i].val);
+    }
+
+    for (var i = 0; i < ctyNm.length; i++) {
+        if (ctyNm[i] == '전국') {
+            $("#wholeRegion").text(rate[i] + "%")
+        }
+    }
+
+    regionChartOp = {
+        dataset: {
+            source: [
+                ["성장률", "지역"]
+            ],
         },
-    },
-    yAxis: {
-        type: "category",
-        axisLabel: {
-            color: "#292b2c",
-        },
-    },
-    series: [
-        {
-            type: "bar",
-            encode: {
-                // Map the "amount" column to X axis.
-                x: "성장률",
-                // Map the "product" column to Y axis
-                y: "지역",
+        grid: {containLabel: true, x: 0, y: 0, y2: 0},
+        xAxis: {
+            name: "성장률",
+            axisLabel: {
+                margin: 20,
+                color: "#292b2c",
             },
-            itemStyle: {
-                normal: {
-                    label: {
-                        show: true,
-                        position: "right",
-                        color: "#7a8489",
+        },
+        yAxis: {
+            type: "category",
+            axisLabel: {
+                color: "#292b2c",
+            },
+        },
+        series: [
+            {
+                type: "bar",
+                encode: {
+                    // Map the "amount" column to X axis.
+                    x: "성장률",
+                    // Map the "product" column to Y axis
+                    y: "지역",
+                },
+                itemStyle: {
+                    normal: {
+                        label: {
+                            show: true,
+                            position: "right",
+                            color: "#7a8489",
+                        },
+                        color: "#1e70e7",
                     },
-                    color: "#1e70e7",
                 },
             },
+        ],
+        textStyle: {
+            fontFamily: "NanumSquare",
         },
-    ],
-    textStyle: {
-        fontFamily: "NanumSquare",
-    },
-};
+    };
+    console.log(ctyNm)
+    for (let i = 0; i < ctyNm.length; i++) {
+        if(ctyNm[i] == "전국"){
+            continue;
+        }
+        regionChartOp.dataset.source.push([rate[i], ctyNm[i]]);
+    }
 
-regionChart.setOption(regionChartOp);
+    regionChart.setOption(regionChartOp);
+}
 
 /* 차트 - 코로나 시기 성장률 */
 const covidChartDom = document.getElementById("covidGrowthGraph");
@@ -67,20 +102,35 @@ const covidChart = echarts.init(covidChartDom);
 let covidChartOp;
 
 covidChartOp = {
-    grid: { containLabel: true, x: 0, x2: 0 },
+    grid: {
+        containLabel: true,
+        left: 0,
+        top: 10,
+        right: 0,
+        bottom: 0,
+    },
+    label: {
+        show: true,
+    },
     xAxis: {
         type: "category",
         data: ["2019", "2020", "2021", "2022"],
     },
     yAxis: {
         type: "value",
+        axisLabel: {
+            formatter: "{value}%",
+        },
     },
     series: [
         {
-            data: [230, 150, 180, 160],
+            data: [-1.3, -2.2, -0.7, 1.4],
             type: "line",
         },
     ],
+    textStyle: {
+        fontFamily: "NanumSquare",
+    },
 };
 covidChart.setOption(covidChartOp);
 
@@ -89,175 +139,171 @@ const inflChartDom = document.getElementById("inflationGraph");
 const inflChart = echarts.init(inflChartDom);
 let inflChartOp;
 
-inflChartOp = {
-    xAxis: {
-        type: "category",
-        data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-    },
-    yAxis: {
-        type: "value",
-    },
-    series: [
-        {
-            data: [120, 200, 150, 80, 70, 110, 130],
+$.get("../js/inflChartTemp.json", function (_rawData) {
+    run(_rawData);
+});
+function run(_rawData) {
+    const category = ["소비", "근원", "생활"];
+    const datasetWithFilters = [];
+    const seriesList = [];
+    echarts.util.each(category, function (ctg) {
+        var datasetId = "dataset_" + ctg;
+        datasetWithFilters.push({
+            id: datasetId,
+            fromDatasetId: "dataset_raw",
+            transform: {
+                type: "filter",
+                config: {
+                    and: [
+                        { dimension: "Year", gte: 2018 },
+                        { dimension: "Category", "=": ctg },
+                    ],
+                },
+            },
+        });
+        seriesList.push({
             type: "line",
-            symbol: "triangle",
-            symbolSize: 14,
-            lineStyle: {
-                color: "#1e70e7",
-                width: 3,
-                type: "dashed",
+            datasetId: datasetId,
+            showSymbol: true,
+            name: ctg,
+            endLabel: {
+                show: true,
+                formatter: function (params) {
+                    return params.value[1] + ": " + params.value[0] + "%";
+                },
             },
-            itemStyle: {
-                borderWidth: 3,
-                borderColor: "#1e70e7",
-                color: "#1e70e7",
+            labelLayout: {
+                moveOverlap: "shiftY",
             },
+            emphasis: {
+                focus: "series",
+            },
+            encode: {
+                x: "Year",
+                y: "inflPer",
+                label: ["Category", "inflPer"],
+                itemName: "Year",
+                tooltip: "inflPer",
+            },
+        });
+    });
+
+    inflChartOp = {
+        animationDuration: 2000,
+        dataset: [
+            {
+                id: "dataset_raw",
+                source: _rawData,
+            },
+            ...datasetWithFilters,
+        ],
+        tooltip: {
+            order: "valueDesc",
+            trigger: "axis",
         },
-        {
-            data: [20, 65, 128, 170, 150, 100, 100],
-            type: "line",
-            symbol: "circle",
-            symbolSize: 14,
-            lineStyle: {
-                color: "#1e70e7",
-                width: 3,
-                type: "solid",
-            },
-            itemStyle: {
-                borderWidth: 3,
-                borderColor: "#1e70e7",
-                color: "white",
-            },
+        xAxis: {
+            type: "category",
+            nameLocation: "middle",
         },
-        {
-            data: [75, 120, 110, 20, 130, 150, 190],
-            type: "line",
-            symbol: "rect",
-            symbolSize: 14,
-            lineStyle: {
-                color: "#1e70e7",
-                width: 3,
-                type: "dotted",
-            },
-            itemStyle: {
-                borderWidth: 3,
-                borderColor: "#1e70e7",
-                color: "yellow",
-            },
+        yAxis: {
+            name: "물가상승률(%)",
         },
-    ],
-};
-inflChart.setOption(inflChartOp);
+        grid: {
+            containLabel: true,
+            top: 30,
+            left: 25,
+            right: 20,
+            bottom: 0,
+        },
+        textStyle: {
+            fontFamily: "NanumSquare",
+        },
+        series: seriesList,
+    };
+    inflChart.setOption(inflChartOp);
+}
 
 /* 차트 - GDP 대비 국가채무 */
 const gdpDeptChartDom = document.getElementById("gdpDeptGraph");
 const gdpDeptChart = echarts.init(gdpDeptChartDom);
 let gdpDeptGraphOp;
 
-const categories = (function () {
-    let now = new Date();
-    let res = [];
-    let len = 10;
-    while (len--) {
-        res.unshift(now.toLocaleTimeString().replace(/^\D*/, ""));
-        now = new Date(+now - 2000);
-    }
-    return res;
-})();
-const categories2 = (function () {
-    let res = [];
-    let len = 10;
-    while (len--) {
-        res.push(10 - len - 1);
-    }
-    return res;
-})();
-const data = (function () {
-    let res = [];
-    let len = 10;
-    while (len--) {
-        res.push(Math.round(Math.random() * 1000));
-    }
-    return res;
-})();
-const data2 = (function () {
-    let res = [];
-    let len = 0;
-    while (len < 10) {
-        res.push(+(Math.random() * 10 + 5).toFixed(1));
-        len++;
-    }
-    return res;
-})();
-
 gdpDeptGraphOp = {
+    grid: { containLabel: true, left: 10, right: 40, top: 60, bottom: 0 },
     tooltip: {
         trigger: "axis",
         axisPointer: {
             type: "cross",
-            label: {
-                backgroundColor: "#283b56",
+            crossStyle: {
+                color: "#999",
             },
         },
     },
-    legend: {},
     toolbox: {
-        show: true,
         feature: {
-            dataView: { readOnly: false },
-            restore: {},
-            saveAsImage: {},
+            dataView: { show: false, readOnly: false },
+            magicType: { show: false, type: ["line", "bar"] },
+            restore: { show: false },
+            saveAsImage: { show: false },
         },
     },
-    dataZoom: {
-        show: false,
-        start: 0,
-        end: 100,
+    legend: {
+        data: ["GDP(명목)", "GDP(실질)", "국가채무"],
+        padding: 0,
     },
     xAxis: [
         {
             type: "category",
-            boundaryGap: true,
-            data: categories,
-        },
-        {
-            type: "category",
-            boundaryGap: true,
-            data: categories2,
+            data: ["2017", "2018", "2019", "2020", "2021"],
+            axisPointer: {
+                type: "shadow",
+            },
         },
     ],
     yAxis: [
         {
             type: "value",
-            scale: true,
-            name: "Price",
-            max: 30,
-            min: 0,
-            boundaryGap: [0.2, 0.2],
+            name: "GDP(조원)",
         },
         {
             type: "value",
-            scale: true,
-            name: "Order",
-            max: 1200,
-            min: 0,
-            boundaryGap: [0.2, 0.2],
+            name: "국가채무(조원)",
         },
     ],
     series: [
         {
-            name: "Dynamic Bar",
+            name: "국가채무",
             type: "bar",
-            xAxisIndex: 1,
-            yAxisIndex: 1,
-            data: data,
+            tooltip: {
+                valueFormatter: function (value) {
+                    return value + "조";
+                },
+            },
+            data: [660.2, 680.5, 723.2, 846.6, 965.3],
         },
         {
-            name: "Dynamic Line",
+            name: "GDP(명목)",
             type: "line",
-            data: data2,
+            tooltip: {
+                valueFormatter: function (value) {
+                    return value + "조";
+                },
+            },
+            data: [1835, 1898, 1924, 1940, 2071],
+        },
+        {
+            name: "GDP(실질)",
+            type: "line",
+            tooltip: {
+                valueFormatter: function (value) {
+                    return value + "조";
+                },
+            },
+            data: [1760, 1812, 1852, 1839, 1915],
         },
     ],
+    textStyle: {
+        fontFamily: "NanumSquare",
+    },
 };
 gdpDeptChart.setOption(gdpDeptGraphOp);

@@ -2,6 +2,7 @@
 
 <body>
 <#include "*/common/front/navigation.ftl">
+
 <!-- 본문 시작 -->
 <div class="contents">
     <div class="inner economic-growth">
@@ -12,15 +13,25 @@
             <form class="box">
                 <div class="tit">기간설정</div>
                 <div class="input-group">
-                    <input type="radio" name="ecGrowthTerm" id="ecGrowthTerm1" checked/>
+                    <input
+                            type="radio"
+                            name="ecGrowthTerm"
+                            id="ecGrowthTerm1"
+                            checked
+                    />
                     <label for="ecGrowthTerm1">5년</label>
-                    <input type="radio" name="ecGrowthTerm" id="ecGrowthTerm2"/>
+                    <input type="radio" name="ecGrowthTerm" id="ecGrowthTerm2" />
                     <label for="ecGrowthTerm2">10년</label>
-                    <input type="radio" name="ecGrowthTerm" id="ecGrowthDatePick"/>
+                    <input type="radio" name="ecGrowthTerm" id="ecGrowthDatePick" />
                     <label for="ecGrowthDatePick">기간선택</label>
                 </div>
                 <div class="date-picker-group">
-                    <input type="text" name="ecGrowthDatePicker" class="w-100" disabled/>
+                    <input
+                            type="text"
+                            name="ecGrowthDatePicker"
+                            class="w-100"
+                            disabled
+                    />
                     <i class="ri-calendar-line"></i>
                 </div>
                 <button type="button" class="btn-primary w-100">
@@ -30,9 +41,9 @@
             <form class="box">
                 <div class="tit">지역설정</div>
                 <div class="input-group">
-                    <input type="radio" name="ecLoc" id="ecLocAll" checked/>
+                    <input type="radio" name="ecLoc" id="ecLocAll" checked />
                     <label for="ecLocAll">전국</label>
-                    <input type="radio" name="ecLoc" id="ecLocSlcts"/>
+                    <input type="radio" name="ecLoc" id="ecLocSlcts" />
                     <label for="ecLocSlcts">지역선택</label>
                 </div>
                 <div class="select-group">
@@ -100,13 +111,32 @@
         <div class="col container">
             <div class="row">
                 <div class="col-inner-3">
-                    <div id="exRate" class="card">
-                        <figure class="icon">
-                            <i class="ri-exchange-dollar-line"></i>
-                        </figure>
-                        <div class="txt-wrap">
-                            <h6 class="tit">환율</h6>
-                            <b class="center-txt down" id="currentExChange">${exchangeRate.current} 원 / 달러</b>
+                    <div class="title-wrap">
+                        <h6 class="tit">경제 성장률</h6>
+                    </div>
+                    <div class="cont">
+                        <div class="circle-wrap">
+                            <div class="circle">
+                                <span class="txt" id="wholeRegion">3.5%</span>
+                                <div class="wave wave1"></div>
+                                <div class="wave wave2"></div>
+                                <div class="wave wave3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-inner-3">
+                    <div class="title-wrap">
+                        <h6 class="tit">환율 & 기준금리</h6>
+                    </div>
+                    <div class="cont">
+                        <div class="card">
+                            <figure class="icon">
+                                <i class="ri-exchange-dollar-line"></i>
+                            </figure>
+                            <div class="txt-wrap">
+                                <h6 class="tit">환율</h6>
+                                <b class="center-txt down" id="currentExChange">${exchangeRate.current} 원 / 달러</b>
                                 <#if exchangeRate.current?number lt exchangeRate.past?number>
                                     <span class="sub-txt up" id="diffExchange">
                                         ▲ #{exchangeRate.differ?number}
@@ -118,86 +148,78 @@
                                 </#if>
 <#--                            <b class="center-txt down" id="currentExChange">1314.50</b>-->
 <#--                            <span class="sub-txt down" id="diffExchange">▼ 10.50 (-0.79%)</span>-->
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-inner-3">
-                    <div id="baseRate" class="card">
-                        <figure class="icon">
-                            <i class="ri-coin-line"></i></i>
-                        </figure>
-                        <div class="txt-wrap">
-                            <h6 class="tit">기준금리</h6>
-                            <b class="center-txt up">${baseRate.current} %</b>
-                            <#assign current = baseRate.current?number>
-                            <#assign past = baseRate.past?number>
-                            <#if current lt past>
-                                <span class="sub-txt up">
+                        <div class="card">
+                            <figure class="icon">
+                                <i class="ri-coin-line"></i></i>
+                            </figure>
+                            <div class="txt-wrap">
+                                <h6 class="tit">기준금리</h6>
+                                <b class="center-txt up">${baseRate.current} %</b>
+                                <#assign current = baseRate.current?number>
+                                <#assign past = baseRate.past?number>
+                                <#if current lt past>
+                                    <span class="sub-txt up">
                                     ▼ #{baseRate.differ?number}
                                 </span>
-                            <#elseif current == past>
-                                <span class="sub-txt">
+                                <#elseif current == past>
+                                    <span class="sub-txt">
                                     변동없음
                                 </span>
-                            <#else>
-                                <span class="sub-txt down">
+                                <#else>
+                                    <span class="sub-txt down">
                                     ▲ #{baseRate.differ?number}
                                 </span>
-                            </#if>
+                                </#if>
 <#--                            <span class="sub-txt up">▲ 0.25▲ 0.25</span>-->
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-inner-3">
-                    <div id="gdpCard" class="card">
-                        <figure class="icon">
-                            <i class="ri-earth-line"></i>
-                        </figure>
-                        <div class="txt-wrap">
-                            <h6 class="tit">GDP</h6>
-                            <b class="center-txt">${gdpGni.GDP}</b>
-                            <span class="sub-txt">단위: 십억원</span>
+                    <div class="title-wrap">
+                        <h6 class="tit">GDP & GNI</h6>
+                    </div>
+                    <div class="cont">
+                        <div id="gdpCard" class="card">
+                            <figure class="icon">
+                                <i class="ri-earth-line"></i>
+                            </figure>
+                            <div class="txt-wrap">
+                                <h6 class="tit">GDP</h6>
+                                <b class="center-txt">${gdpGni.GDP}</b>
+                                <span class="sub-txt">단위: 십억</span>
+                            </div>
+                        </div>
+                        <div id="gniCard" class="card">
+                            <figure class="icon">
+                                <i class="ri-earth-fill"></i>
+                            </figure>
+                            <div class="txt-wrap">
+                                <h6 class="tit">GNI</h6>
+                                <b class="center-txt">${gdpGni.GNI}</b>
+                                <span class="sub-txt">단위: 십억</span>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-inner-3">
-                    <div id="gniCard" class="card">
-                        <figure class="icon">
-                            <i class="ri-earth-fill"></i>
-                        </figure>
-                        <div class="txt-wrap">
-                            <h6 class="tit">GNI</h6>
-                            <b class="center-txt">${gdpGni.GNI}</b>
-                            <span class="sub-txt">단위: 십억원</span>
-                        </div>
+                    <div class="title-wrap">
+                        <h6 class="tit">GDP 대비 국가채무</h6>
+                    </div>
+                    <div class="cont">
+                        <div id="gdpDeptGraph" style="width:100%; height:200px;"></div>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-inner-9">
+                <div class="col-inner-3">
                     <div class="title-wrap">
-                        <h6 class="tit">경제 성장률</h6>
+                        <h6 class="tit">지역별 경제 성장률</h6>
                     </div>
                     <div class="cont">
-                        <div class="graph-wrap">
-                            <div class="left">
-                                <div class="circle-wrap">
-                                    <div class="sub-tit">전체</div>
-                                    <div class="circle">
-                                        <span class="txt">3.5%</span>
-                                        <div class="wave wave1"></div>
-                                        <div class="wave wave2"></div>
-                                        <div class="wave wave3"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="right">
-                                <div class="graph">
-                                    <span class="sub-tit">지역별</span>
-                                    <div id="regionGrowthGraph" style="width:800px; height:500px;"></div>
-                                </div>
-                            </div>
-                        </div>
+                        <div id="regionGrowthGraph" style="width:100%; height:334px"></div>
                     </div>
                 </div>
                 <div class="col-inner-3">
@@ -205,62 +227,49 @@
                         <h6 class="tit">코로나 시기 성장률</h6>
                     </div>
                     <div class="cont">
-                        <div id="covidGrowthGraph" style="width:100%; height:500px;"></div>
+                        <div id="covidGrowthGraph" style="width:100%; height:334px;"></div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
                 <div class="col-inner-6">
                     <div class="title-wrap">
-                        <h6 class="tit">물가 상승률</h6>
+                        <h6 class="tit">물가 상승률 & 상승 추이</h6>
                     </div>
                     <div class="cont">
                         <p class="caption"><i class="ri-information-fill"></i> 해당년도의 항목별 물가상승률입니다.</p>
-                        <div class="card col-inner-4">
-                            <figure class="icon">
-                                <i class="ri-earth-fill"></i>
-                            </figure>
-                            <div class="txt-wrap">
-                                <h6 class="tit">소비</h6>
-                                <b class="center-txt">2.5%</b>
+                        <div class="diagrams">
+                            <div class="left">
+                                <div class="card">
+                                    <figure class="icon">
+                                        <i class="ri-exchange-funds-line"></i>
+                                    </figure>
+                                    <div class="txt-wrap">
+                                        <h6 class="tit">소비</h6>
+                                        <b class="center-txt">${inflationRate.consume}%</b>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <figure class="icon">
+                                        <i class="ri-swap-line"></i>
+                                    </figure>
+                                    <div class="txt-wrap">
+                                        <h6 class="tit">근원</h6>
+                                        <b class="center-txt">${inflationRate.source}%</b>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <figure class="icon">
+                                        <i class="ri-shopping-basket-line"></i>
+                                    </figure>
+                                    <div class="txt-wrap">
+                                        <h6 class="tit">생활</h6>
+                                        <b class="center-txt">${inflationRate.living}%</b>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="right">
+                                <div id="inflationGraph" style="width:100%; height:270px"></div>
                             </div>
                         </div>
-                        <div class="card col-inner-4">
-                            <figure class="icon">
-                                <i class="ri-earth-fill"></i>
-                            </figure>
-                            <div class="txt-wrap">
-                                <h6 class="tit">근원</h6>
-                                <b class="center-txt">3.4%</b>
-                            </div>
-                        </div>
-                        <div class="card col-inner-4">
-                            <figure class="icon">
-                                <i class="ri-earth-fill"></i>
-                            </figure>
-                            <div class="txt-wrap">
-                                <h6 class="tit">생활</h6>
-                                <b class="center-txt">10%</b>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-inner-6">
-                    <div class="title-wrap">
-                        <h6 class="tit">물가 상승 추이</h6>
-                    </div>
-                    <div class="cont">
-                        <div id="inflationGraph" style="width:100%; height:500px;"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-inner-12">
-                    <div class="title-wrap">
-                        <h6 class="tit">GDP 대비 국가채무</h6>
-                    </div>
-                    <div class="cont">
-                        <div id="gdpDeptGraph" style="width:100%; height:500px;"></div>
                     </div>
                 </div>
             </div>
@@ -268,6 +277,7 @@
     </div>
 </div>
 <!-- /본문 끝 -->
+
 <!-- 푸터 시작 -->
 <#include "*/common/front/footer.ftl">
 <!-- /푸터 끝 -->

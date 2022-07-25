@@ -1,42 +1,61 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="bi.admin.StandardOfLiving">
+
+    <!--  1인당 개인 소득  -->
     <insert id="insertCapitaPersonal" parameterType="hashMap">
         INSERT INTO capita_income
             (yr_dt, cty_nm, unit, val)
-        VALUES(#{yr_dt}, #{cty_nm}, #{unit}, #{val});
+        VALUES (#{yr_dt}, #{cty_nm}, #{unit}, #{val}) ON DUPLICATE KEY
+        UPDATE
+            yr_dt = #{yr_dt},
+            cty_nm = #{cty_nm}
     </insert>
 
+    <!--  1인당 국민총소득  -->
     <insert id="insertGniCapita" parameterType="hashMap">
         INSERT INTO gni_capita
             (yr_dt, unit, gdi_val, gni_val)
-        VALUES(#{yr_dt}, #{unit}, #{gdi_val}, #{gni_val});
+        VALUES (#{yr_dt}, #{unit}, #{gdi_val}, #{gni_val}) ON DUPLICATE KEY
+        UPDATE
+            yr_dt = #{yr_dt}
     </insert>
 
+    <!--  지니계수  -->
     <insert id="insertIncomeDistributionIndex" parameterType="hashMap">
         INSERT INTO gini_cfcnt
             (yr_dt, val)
-        VALUES(#{yr_dt}, #{val});
+        VALUES (#{yr_dt}, #{val}) ON DUPLICATE KEY
+        UPDATE
+            yr_dt = #{yr_dt}
     </insert>
+
+    <!--  최저임금  -->
     <insert id="insertMinPay" parameterType="hashMap">
         INSERT INTO min_pay
             (yr_dt, unit, val)
-        VALUES(#{yrDt}, #{unit}, #{val});
+        VALUES (#{yrDt}, #{unit}, #{val}) ON DUPLICATE KEY
+        UPDATE
+            yr_dt = #{yr_dt}
     </insert>
 
     <select id="compareCapitalPersonal" parameterType="hashMap" resultType="hashMap">
-        SELECT MAX(yr_dt) AS yr_dt FROM capita_income
+        SELECT MAX(yr_dt) AS yr_dt
+        FROM capita_income
     </select>
 
     <select id="compareGniCapita" parameterType="hashMap" resultType="hashMap">
-        SELECT MAX(yr_dt) AS yr_dt FROM gni_capita
+        SELECT MAX(yr_dt) AS yr_dt
+        FROM gni_capita
     </select>
 
     <select id="compareIncomeDistributionIndex" parameterType="hashMap" resultType="hashMap">
-        SELECT MAX(yr_dt) AS yr_dt FROM gini_cfcnt
+        SELECT MAX(yr_dt) AS yr_dt
+        FROM gini_cfcnt
     </select>
     <select id="minPayMaxDate" resultType="hashMap">
-        SELECT MAX(yr_dt) AS yrDt FROM min_pay
+        SELECT MAX(yr_dt) AS yrDt
+        FROM min_pay
     </select>
 
 
