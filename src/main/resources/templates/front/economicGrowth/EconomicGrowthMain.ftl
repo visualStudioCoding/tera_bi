@@ -136,14 +136,15 @@
                             </figure>
                             <div class="txt-wrap">
                                 <h6 class="tit">환율</h6>
-                                <b class="center-txt down" id="currentExChange">${exchangeRate.current} 원 / 달러</b>
                                 <#if exchangeRate.current?number lt exchangeRate.past?number>
-                                    <span class="sub-txt up" id="diffExchange">
-                                        ▲ #{exchangeRate.differ?number}
+                                    <b class="center-txt down" id="currentExChange">${exchangeRate.current} 원 / 달러</b>
+                                    <span class="sub-txt down" id="diffExchange">
+                                        ▼ ${exchangeRate.subtraction} (${exchangeRate.differ?number}%)
                                     </span>
                                 <#else>
-                                    <span class="sub-txt down" id="diffExchange">
-                                        ▼ #{exchangeRate.differ?number}
+                                    <b class="center-txt up" id="currentExChange">${exchangeRate.current} 원 / 달러</b>
+                                    <span class="sub-txt up" id="diffExchange">
+                                        ▲ ${exchangeRate.subtraction} (${exchangeRate.differ?number}%)
                                     </span>
                                 </#if>
 <#--                            <b class="center-txt down" id="currentExChange">1314.50</b>-->
@@ -161,7 +162,7 @@
                                 <#assign past = baseRate.past?number>
                                 <#if current lt past>
                                     <span class="sub-txt up">
-                                    ▼ #{baseRate.differ?number}
+                                    ▼ ${baseRate.differ?number}
                                 </span>
                                 <#elseif current == past>
                                     <span class="sub-txt">
@@ -169,7 +170,7 @@
                                 </span>
                                 <#else>
                                     <span class="sub-txt down">
-                                    ▲ #{baseRate.differ?number}
+                                    ▲ ${baseRate.differ?number}
                                 </span>
                                 </#if>
 <#--                            <span class="sub-txt up">▲ 0.25▲ 0.25</span>-->
