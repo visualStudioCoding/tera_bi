@@ -37,6 +37,24 @@ function getCovidEconomicGrowth() {
     getApiResult("/front/economicGrowth/api/getCovidEconomicGrowth", callBackFn, "get", null, errorMsg);
 }
 
+// 1인당 국민 총 소득 AJAX
+function getCovidEconomicGrowth() {
+
+    let callBackFn = function (data) {
+        fnCovidChartOp(data);
+    }
+    getApiResult("/front/economicGrowth/api/getStateDebt", callBackFn, "get", null, errorMsg);
+}
+
+// 국가 채무 현황 AJAX
+function getCovidEconomicGrowth() {
+
+    let callBackFn = function (data) {
+        fnCovidChartOp(data);
+    }
+    getApiResult("/front/economicGrowth/api/getCovidEconomicGrowth", callBackFn, "get", null, errorMsg);
+}
+
 // 경제성장률 배열 데이터 추가 및 차트 선언
 function fnRegionChartOp(data) {
 

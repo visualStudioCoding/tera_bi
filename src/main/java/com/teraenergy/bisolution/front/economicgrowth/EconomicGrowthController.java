@@ -46,20 +46,26 @@ public class EconomicGrowthController {
         Map<String, Float> dataMapCmp = (Map<String, Float>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".selectExchangeRateCompare");
         Map<String, String> result = new HashMap<>();
 
-        float data = dataMap.get("val");
-        float dataCmp = dataMapCmp.get("val");
+        Float data = dataMap.get("val");
+        Float dataCmp = dataMapCmp.get("val");
+        Float subtraction = null;
         Float cmpResult = null;
 
         if(data < dataCmp){
             cmpResult = (dataCmp - data) / data * 100;
+            subtraction = dataCmp - data;
         }else{
             cmpResult = (data - dataCmp) / data * 100;
+            subtraction = data - dataCmp;
         }
+
         String tmpResult = String.format("%.2f", cmpResult);
+        String tmpSubtraction = String.format("%.2f", subtraction);
 
         result.put("current",Float.toString(data));
         result.put("past",Float.toString(dataCmp));
         result.put("differ", tmpResult);
+        result.put("subtraction", tmpSubtraction);
 
 
         return result;
@@ -164,7 +170,22 @@ public class EconomicGrowthController {
 
         result.put("covidGrowth", covidGrowth);
 
-        System.out.println(result);
         return result;
     }
+
+    // 1인당 국민 총 소득
+    @ResponseBody
+    @GetMapping("/api/getStateDebt")
+    public Map<String, List<Map<String, Object>>> getStateDebt() throws Exception {
+        List<Map<String, Object>> dataList = (List<Map<String, Object>>) commonService.selectList(null, PAGE_ID + PROGRAM_ID + ".selectStateDebt");
+
+        Map<String, List<Map<String, Object>>> result = new HashMap<>();
+
+        result.put("stateDebt", dataList);
+
+        return result;
+    }
+
+    // 국가 채무 현황
+
 }

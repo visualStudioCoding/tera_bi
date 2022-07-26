@@ -130,7 +130,7 @@
                             <#list 1997..1999 as i>
                                 <option value=${i?replace(",","")}>${i?replace(",","")}년</option>
                             </#list>
-                            <#list 2000..2020 as j>
+                            <#list 2000..2021 as j>
                                 <option value=${j?replace(",","")}>${j?replace(",","")}년</option>
                             </#list>
                         </select>
