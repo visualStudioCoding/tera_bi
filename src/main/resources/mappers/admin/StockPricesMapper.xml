@@ -110,4 +110,9 @@
                FROM kosdaq_index
                WHERE yr_dt = (SELECT MAX(yr_dt) FROM kosdaq_index))
     </select>
+    <select id="oilMaxDate" resultType="hashMap">
+        SELECT MAX(yr_dt) AS yrDt, MAX(mon_dt) AS monDt
+        FROM oil_price
+        WHERE yr_dt = (SELECT MAX(yr_dt) FROM oil_price)
+    </select>
 </mapper>
