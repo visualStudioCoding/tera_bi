@@ -89,13 +89,6 @@ div[class*="col-inner"] > div {
 .cont .caption i {
   vertical-align: middle;
 }
-.cont .card {
-  flex-wrap: nowrap;
-  box-shadow: none;
-}
-.cont .circle-wrap {
-  margin: 0 auto;
-}
 
 /******************** heading *********************/
 h2 {
@@ -504,9 +497,19 @@ header .indicator {
   padding: 3rem 0;
   background: var(--gray-30);
 }
+.inner-title:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
 .inner-title h3 {
   position: relative;
   text-align: center;
+  color: #fff;
 }
 
 .title-wrap {
@@ -572,9 +575,13 @@ header .indicator {
 }
 
 /* card (flex 형식, default) */
+.cont .card {
+  flex-wrap: nowrap;
+  box-shadow: none;
+}
 .card {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 }
 .card:after {
   content: "";
@@ -591,6 +598,7 @@ header .indicator {
   justify-content: center;
   width: 3.25rem;
   height: 3.25rem;
+  margin-top: 0.625rem;
   font-size: 1.625rem;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--gray-10) 10%, var(--gray-30) 100%);
@@ -610,9 +618,13 @@ header .indicator {
   color: var(--secondary-color);
 }
 .card .txt-wrap .sub-txt {
+  display: block;
   font-family: "NanumSquare";
   font-size: 0.813rem;
   color: var(--gray-50);
+}
+.card .txt-wrap .sub-txt + .sub-txt {
+  margin-top: 0.25rem;
 }
 /* card (block 형식) */
 .card.card-block {
@@ -630,6 +642,13 @@ header .indicator {
 }
 
 /* circle diagram */
+.cont .circle-wrap {
+  margin: 0.75rem auto 0;
+}
+.cont .circle-wrap .sub-txt {
+  font-weight: 400 !important;
+  font-size: 0.813rem !important;
+}
 .circle-wrap {
   position: relative;
   display: flex;
@@ -650,12 +669,21 @@ header .indicator {
   background: var(--primary-color);
   color: #fff;
   overflow: hidden;
+  text-align: center;
+}
+.circle-wrap .circle .txt-wrap {
+  position: relative;
+  z-index: 5;
 }
 .circle-wrap .circle .txt {
   font-size: 2.5rem;
   font-weight: 600;
   position: relative;
   z-index: 2;
+}
+.circle-wrap .circle .sub-txt {
+  font-size: 0.875rem;
+  font-weight: 600;
 }
 .circle-wrap .circle .wave {
   position: absolute;
@@ -716,9 +744,6 @@ header .indicator {
   background: url(/img/bg01.png) no-repeat center;
   background-size: cover;
 }
-.economic-growth .inner-title h3 {
-  color: #fff;
-}
 .economic-growth .cont .left {
   width: 25%;
 }
@@ -728,8 +753,17 @@ header .indicator {
 #baseRate .icon {
   font-size: 1.625rem;
 }
-.economic-growth .circle-wrap {
-  margin-top: 0.75rem;
+
+/* 종합주가지수 */
+.stock-index .inner-title {
+  background: url(/img/bg03.png) no-repeat center;
+  background-size: cover;
+}
+.stock-index .circle .txt-wrap {
+  margin-top: 1rem;
+}
+.stock-index .circle .txt {
+  font-size: 2.25rem;
 }
 
 /******************** contents (다크모드) *********************/
