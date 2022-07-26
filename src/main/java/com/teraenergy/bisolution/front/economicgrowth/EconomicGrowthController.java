@@ -34,6 +34,8 @@ public class EconomicGrowthController {
         model.addAttribute("gdpGni", getGDPGNP());
         model.addAttribute("inflationRate", getInflationRate());
 
+        model.addAttribute("menuCode", "001");
+
         return PAGE_ID + DIRECTORY + "Main";
     }
 

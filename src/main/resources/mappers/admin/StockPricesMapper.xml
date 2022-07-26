@@ -34,6 +34,19 @@
                               , mon_dt = #{monDt}
                               , dy_dt  = #{dyDt}
     </insert>
+    <insert id="insertOilPrice" parameterType="hashMap">
+        INSERT INTO oil_price
+        ( yr_dt
+        , mon_dt
+        , unit
+        , val)
+        VALUES ( #{yrDt}
+               , #{monDt}
+               , #{unit}
+               , #{val})
+        ON DUPLICATE KEY UPDATE yr_dt  = #{yrDt}
+                              , mon_dt = #{monDt}
+    </insert>
     <insert id="insertBirth" parameterType="hashMap">
         INSERT INTO birth_progress
         ( yr_dt

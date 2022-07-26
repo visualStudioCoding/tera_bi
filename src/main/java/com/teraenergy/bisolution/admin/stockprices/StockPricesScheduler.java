@@ -27,8 +27,8 @@ public class StockPricesScheduler {
 //     0~59 | 0~59 | 0~23 | 1~31 | 1~12 | 0~6 | 생략가능
 
     @Transactional(rollbackFor = Exception.class)
-    @Scheduled(cron = "00 00 18 * 1-5 *")
-    public void getCompositeIndex() throws Exception {
+    @Scheduled(cron = "00 00 18 * * *")
+    public void compositeIndexScheduler() throws Exception {
         String url = "https://ecos.bok.or.kr/api/";
         String parameter = "KeyStatisticList/apiKey/json/kr/66/67/";
         String format = "json";
@@ -83,6 +83,50 @@ public class StockPricesScheduler {
                 } else {
                     commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertKosdaq");
                 }
+            }
+        }
+    }
+
+    //      초   |  분  |  시  |  일  |  월   | 요일 | 연도
+//     0~59 | 0~59 | 0~23 | 1~31 | 1~12 | 0~6 | 생략가능
+
+    @Transactional(rollbackFor = Exception.class)
+    @Scheduled(cron = "00 00 4 * * *")
+    public void oilPriceSchedule() throws Exception {
+        String url = "https://ecos.bok.or.kr/api/";
+        String parameter = "KeyStatisticList/apiKey/json/kr/23/23/";
+        String format = "json";
+        String site = "ecos";
+        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+        JSONArray jsonList = commonService.ecosApiJsonParser(stringBuilder, "KeyStatisticList");
+
+        Map<String, Object> dataMap = new HashMap<>();
+
+        @SuppressWarnings("unchecked")
+        Map<String, String> oilMaxDate = (Map<String, String>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".oilMaxDate");
+
+        for (Object jsonObject : jsonList) {
+            JSONObject jsonData = (JSONObject) jsonObject;
+
+            String dataValue = (String) jsonData.get("DATA_VALUE");
+            String date = (String) jsonData.get("CYCLE");
+            String year = date.substring(0, 4);
+            String month = date.substring(4, 6);
+
+            String oilMaxYear = oilMaxDate.get("yrDt");
+            String oilMaxMonth = oilMaxDate.get("monDt");
+
+            boolean oilDupleCheck = (year + month).equals(oilMaxYear + oilMaxMonth);
+
+            dataMap.put("yrDt", year);
+            dataMap.put("monDt", month);
+            dataMap.put("unit", "달러/배럴");
+            dataMap.put("val", dataValue);
+
+            if (oilDupleCheck) {
+                log.info("이미 등록된 유가 자료입니다.");
+            } else {
+                commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertOilPrice");
             }
         }
     }
