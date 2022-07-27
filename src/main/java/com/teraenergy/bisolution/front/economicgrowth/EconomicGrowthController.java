@@ -2,7 +2,6 @@ package com.teraenergy.bisolution.front.economicgrowth;
 
 import com.teraenergy.global.service.CommonService;
 import lombok.extern.slf4j.Slf4j;
-import org.json.simple.JSONArray;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -106,20 +105,29 @@ public class EconomicGrowthController {
     //    GDP 및 GNP SELECT
     @ResponseBody
     @GetMapping("/api/getGDPGNP")
-    public Map<String, String> getGDPGNP() throws Exception {
+    public Map<String, Map<String, Object>> getGDPGNP() throws Exception {
 
-        Map<String, Float> dataMapGDP = (Map<String, Float>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".selectGDP");
-        Map<String, Float> dataMapGNI = (Map<String, Float>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".selectGNI");
-        String data = Float.toString(dataMapGDP.get("val"));
-        data = data.replaceAll("\\B(?=(\\d{3})+(?!\\d))", ",");
+        Map<String, Object> dataMapGDP = (Map<String, Object>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".selectGDP");
+        Map<String, Object> dataMapGNI = (Map<String, Object>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".selectGNI");
 
-        String dataCmp = Float.toString(dataMapGNI.get("val"));
-        dataCmp = dataCmp.replaceAll("\\B(?=(\\d{3})+(?!\\d))", ",");
+        Map<String, Object> GDP = new HashMap<>();
+        Map<String, Object> GNI = new HashMap<>();
 
-        Map<String, String> result = new HashMap<>();
 
-        result.put("GDP",data);
-        result.put("GNI",dataCmp);
+        String dataGDP = Float.toString((Float) dataMapGDP.get("val"));
+        dataGDP = dataGDP.replaceAll("\\B(?=(\\d{3})+(?!\\d))", ",");
+        GDP.put("val",dataGDP);
+        GDP.put("unit",dataMapGDP.get("unit"));
+
+        String dataGNI = Float.toString((Float) dataMapGNI.get("val"));
+        dataGNI = dataGNI.replaceAll("\\B(?=(\\d{3})+(?!\\d))", ",");
+        GNI.put("val", dataGNI);
+        GNI.put("unit",dataMapGNI.get("unit"));
+
+        Map<String, Map<String, Object>> result = new HashMap<>();
+
+        result.put("GDP", GDP);
+        result.put("GNI", GNI);
 
 
         return result;
@@ -161,7 +169,7 @@ public class EconomicGrowthController {
     //     물가 상승률(소비자, 근원, 생활) Chart
     @ResponseBody
     @GetMapping("/api/getInflationRatePeriod")
-    public JSONArray getInflationRatePeriod() throws Exception {
+    public List<Object> getInflationRatePeriod() throws Exception {
 
         List<Map<String, Object>> consume = (List<Map<String, Object>>) commonService.selectList(null, PAGE_ID + PROGRAM_ID + ".selectCnsmrInrtPeriod");
         List<Map<String, Object>> source = (List<Map<String, Object>>) commonService.selectList(null, PAGE_ID + PROGRAM_ID + ".selectSrcInrtPeriod");
@@ -175,14 +183,14 @@ public class EconomicGrowthController {
 //            totalItm.add(living.get(i));
 //        }
 
-        JSONArray totalItm = new JSONArray();
+        List<Object> totalItm = new ArrayList<>();
 
         int count = 0;
 
         for (int i = 0; i < consume.size() * 3; i++) {
-            JSONArray consumeList = new JSONArray();
-            JSONArray sourceList = new JSONArray();
-            JSONArray livingList = new JSONArray();
+            List<Object> consumeList = new ArrayList<>();
+            List<Object> sourceList = new ArrayList<>();
+            List<Object> livingList = new ArrayList<>();
 
             consumeList.add(consume.get(count).get("val"));
             consumeList.add(consume.get(count).get("category"));
@@ -203,6 +211,13 @@ public class EconomicGrowthController {
             i+=2;
             count++;
         }
+        List<String> guid = new ArrayList<>();
+
+        guid.add("inflPer");
+        guid.add("Category");
+        guid.add("Year");
+
+        totalItm.add(0, guid);
 
 //        Map<String, List<Map<String, Object>>> result = new HashMap<>();
 //
@@ -210,6 +225,7 @@ public class EconomicGrowthController {
 
         return totalItm;
     }
+
 
     //      코로나 시기 경제 성장률 Chart
     @ResponseBody
@@ -219,7 +235,7 @@ public class EconomicGrowthController {
         List<Map<String, Object>> covidGrowth = (List<Map<String, Object>>) commonService.selectList(null, PAGE_ID + PROGRAM_ID + ".selectCovidGrowth");
 
         Map<String, Object> tmpData = new HashMap<>();
-        tmpData.put("val", 4);
+        tmpData.put("val", 3.6);
         tmpData.put("yr_dt", 2021);
 
         covidGrowth.add(tmpData);

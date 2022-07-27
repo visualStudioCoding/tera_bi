@@ -61,22 +61,25 @@
                             </figure>
                             <div class="txt-wrap">
                                 <h6 class="tit">기준금리</h6>
-                                <b class="center-txt up">${baseRate.current} %</b>
                                 <#assign current = baseRate.current?number>
                                 <#assign past = baseRate.past?number>
                                 <#if current lt past>
+                                    <b class="center-txt up">${baseRate.current} %</b>
                                     <span class="sub-txt up">
                                     ▼ ${baseRate.differ?number}
                                 </span>
                                 <#elseif current == past>
+                                    <b class="center-txt">${baseRate.current} %</b>
                                     <span class="sub-txt">
                                     변동없음
                                 </span>
                                 <#else>
+                                    <b class="center-txt down">${baseRate.current} %</b>
                                     <span class="sub-txt down">
                                     ▲ ${baseRate.differ?number}
                                 </span>
                                 </#if>
+<#--                                <b class="center-txt">${baseRate.current} %</b>-->
 <#--                            <span class="sub-txt up">▲ 0.25▲ 0.25</span>-->
                             </div>
                         </div>
@@ -93,8 +96,8 @@
                             </figure>
                             <div class="txt-wrap">
                                 <h6 class="tit">GDP</h6>
-                                <b class="center-txt">${gdpGni.GDP}</b>
-                                <span class="sub-txt">단위: 십억</span>
+                                <b class="center-txt">${gdpGni.GDP.val}</b>
+                                <span class="sub-txt">단위: ${gdpGni.GDP.unit}</span>
                             </div>
                         </div>
                         <div id="gniCard" class="card">
@@ -103,8 +106,8 @@
                             </figure>
                             <div class="txt-wrap">
                                 <h6 class="tit">GNI</h6>
-                                <b class="center-txt">${gdpGni.GNI}</b>
-                                <span class="sub-txt">단위: 십억</span>
+                                <b class="center-txt">${gdpGni.GNI.val}</b>
+                                <span class="sub-txt">단위: ${gdpGni.GNI.unit}</span>
                             </div>
                         </div>
                     </div>
