@@ -13,14 +13,9 @@
             <form class="box">
                 <div class="tit">기간설정</div>
                 <div class="input-group">
-                    <input
-                            type="radio"
-                            name="ecGrowthTerm"
-                            id="ecGrowthTerm1"
-                            checked
-                    />
+                    <input type="radio" name="ecGrowthTerm" id="ecGrowthTerm1" value="5" checked/>
                     <label for="ecGrowthTerm1">5년</label>
-                    <input type="radio" name="ecGrowthTerm" id="ecGrowthTerm2" />
+                    <input type="radio" name="ecGrowthTerm" id="ecGrowthTerm2" value="10" />
                     <label for="ecGrowthTerm2">10년</label>
                     <input type="radio" name="ecGrowthTerm" id="ecGrowthDatePick" />
                     <label for="ecGrowthDatePick">기간선택</label>
@@ -34,7 +29,7 @@
                     />
                     <i class="ri-calendar-line"></i>
                 </div>
-                <button type="button" class="btn-primary w-100">
+                <button type="button" class="btn-primary w-100" onclick = "getStateDebtSetPeriod()">
                     <i class="ri-check-line"></i>적용
                 </button>
             </form>

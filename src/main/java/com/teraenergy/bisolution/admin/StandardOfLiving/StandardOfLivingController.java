@@ -50,6 +50,7 @@ public class StandardOfLivingController {
 
         String format = "json";
         String site = "kosis";
+        String message = "성공";
 
         StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
 
@@ -58,24 +59,30 @@ public class StandardOfLivingController {
 
         JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
 
-        for(Object jsonObject : jsonList){
+        for(Object jsonObject : jsonList) {
             JSONObject jsonData = (JSONObject) jsonObject;
 
-            String yr_dt = (String) jsonData.get("PRD_DE");
-            String cty_nm = (String) jsonData.get("C1_NM");
-            String unit = (String) jsonData.get("UNIT_NM");
-            String val = (String) jsonData.get("DT");
+            if ("Fail".equals(jsonData.get("RESULT"))) {
+                dataMap.put("err", jsonData.get("CODE"));
+                message = (String) jsonData.get("MESSAGE");
+            } else {
 
-            dataMap.put("yr_dt", yr_dt);
-            dataMap.put("cty_nm", cty_nm);
-            dataMap.put("unit", unit);
-            dataMap.put("val", val);
+                String yr_dt = (String) jsonData.get("PRD_DE");
+                String cty_nm = (String) jsonData.get("C1_NM");
+                String unit = (String) jsonData.get("UNIT_NM");
+                String val = (String) jsonData.get("DT");
 
-            commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertCapitaPersonal");
+                dataMap.put("yr_dt", yr_dt);
+                dataMap.put("cty_nm", cty_nm);
+                dataMap.put("unit", unit);
+                dataMap.put("val", val);
+
+                commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertCapitaPersonal");
+            }
         }
 
         result.put("data", dataMap);
-        result.put("success", "성공");
+        result.put("success", message);
 
         return result;
     }
@@ -159,6 +166,7 @@ public class StandardOfLivingController {
 
         String format = "json";
         String site = "kosis";
+        String message = "성공";
 
         StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
 
@@ -167,19 +175,24 @@ public class StandardOfLivingController {
 
         JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
 
-        for(Object jsonObject : jsonList){
+        for(Object jsonObject : jsonList) {
             JSONObject jsonData = (JSONObject) jsonObject;
+            if ("Fail".equals(jsonData.get("RESULT"))) {
+                dataMap.put("err", jsonData.get("CODE"));
+                message = (String) jsonData.get("MESSAGE");
+            } else {
 
-            String yr_dt = (String) jsonData.get("PRD_DE");
-            String val = (String) jsonData.get("DT");
+                String yr_dt = (String) jsonData.get("PRD_DE");
+                String val = (String) jsonData.get("DT");
 
-            dataMap.put("yr_dt", yr_dt);
-            dataMap.put("val", val);
-            System.out.println(dataMap);
-            commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertIncomeDistributionIndex");
+                dataMap.put("yr_dt", yr_dt);
+                dataMap.put("val", val);
+                System.out.println(dataMap);
+                commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertIncomeDistributionIndex");
+            }
         }
         result.put("data", dataMap);
-        result.put("success", "성공");
+        result.put("success", message);
 
         return result;
     }

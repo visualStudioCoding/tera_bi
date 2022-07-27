@@ -50,6 +50,7 @@ public class EconomicGrowthController {
         //kosis = json, enara = xml
         String format = "json";
         String site = "ecos";
+        String message = "성공";
         StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
 
         JSONArray jsonList = commonService.ecosApiJsonParser(stringBuilder, "StatisticSearch");
@@ -60,26 +61,31 @@ public class EconomicGrowthController {
         for(Object jsonObject : jsonList){
             JSONObject jsonData = (JSONObject) jsonObject;
 
-            String baseMoneyRate = (String) jsonData.get("DATA_VALUE");
-            String unit = (String) jsonData.get("UNIT_NAME");
-            String date = (String) jsonData.get("TIME");
-            String year = date.substring(0, 4);
-            String month = date.substring(4,6);
-            String day = date.substring(6,8);
+            if("Fail".equals(jsonData.get("RESULT"))){
+                dataMap.put("err", jsonData.get("CODE"));
+                message = (String) jsonData.get("MESSAGE");
+            }else {
+                String baseMoneyRate = (String) jsonData.get("DATA_VALUE");
+                String unit = (String) jsonData.get("UNIT_NAME");
+                String date = (String) jsonData.get("TIME");
+                String year = date.substring(0, 4);
+                String month = date.substring(4, 6);
+                String day = date.substring(6, 8);
 
-            dataMap.put("yr_dt", year);
-            dataMap.put("mon_dt", month);
-            dataMap.put("dy_dt", day);
-            dataMap.put("unit", unit);
-            dataMap.put("val", baseMoneyRate);
-            System.out.println(dataMap);
+                dataMap.put("yr_dt", year);
+                dataMap.put("mon_dt", month);
+                dataMap.put("dy_dt", day);
+                dataMap.put("unit", unit);
+                dataMap.put("val", baseMoneyRate);
+                System.out.println(dataMap);
 
-            commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertBaseRate");
+                commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertBaseRate");
+            }
 
         }
 
         result.put("data", dataMap);
-        result.put("success", "성공");
+        result.put("success", message);
 
         return result;
     }
@@ -107,6 +113,7 @@ public class EconomicGrowthController {
             //kosis = json, enara = xml
             String format = "json";
             String site = "ecos";
+            String message = "성공";
             StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
 
             JSONArray jsonList = commonService.ecosApiJsonParser(stringBuilder, "StatisticSearch");
@@ -116,35 +123,39 @@ public class EconomicGrowthController {
             for (Object jsonObject : jsonList) {
                 JSONObject jsonData = (JSONObject) jsonObject;
 
-                String typeBf = jsonData.get("ITEM_NAME1").toString();
-                String type = null;
+                if("Fail".equals(jsonData.get("RESULT"))){
+                    dataMap.put("err", jsonData.get("CODE"));
+                    message = (String) jsonData.get("MESSAGE");
+                }else {
+                    String typeBf = jsonData.get("ITEM_NAME1").toString();
+                    String type = null;
 
-                if (typeBf.contains("매매기준율")) {
-                    type = typeBf.replace("(매매기준율)", "");
-                }else{
-                    type = typeBf;
+                    if (typeBf.contains("매매기준율")) {
+                        type = typeBf.replace("(매매기준율)", "");
+                    } else {
+                        type = typeBf;
+                    }
+                    String exMoneyRate = (String) jsonData.get("DATA_VALUE");
+                    String unit = (String) jsonData.get("UNIT_NAME");
+                    String date = (String) jsonData.get("TIME");
+                    String year = date.substring(0, 4);
+                    String month = date.substring(4, 6);
+                    String day = date.substring(6, 8);
+                    dataMap.put("yr_dt", year);
+                    dataMap.put("mon_dt", month);
+                    dataMap.put("dy_dt", day);
+                    dataMap.put("type", type);
+                    dataMap.put("unit", unit);
+                    dataMap.put("val", exMoneyRate);
+                    System.out.println(dataMap);
+
+                    commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertExchangeRate");
                 }
-                String exMoneyRate = (String) jsonData.get("DATA_VALUE");
-                String unit = (String) jsonData.get("UNIT_NAME");
-                String date = (String) jsonData.get("TIME");
-                String year = date.substring(0, 4);
-                String month = date.substring(4, 6);
-                String day = date.substring(6, 8);
-                dataMap.put("yr_dt", year);
-                dataMap.put("mon_dt", month);
-                dataMap.put("dy_dt", day);
-                dataMap.put("type", type);
-                dataMap.put("unit", unit);
-                dataMap.put("val", exMoneyRate);
-                System.out.println(dataMap);
-
-                commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertExchangeRate");
-
             }
 
 
             result.put("data", dataMap);
-            result.put("success", "성공");
+            result.put("success", message);
         }
         return result;
     }
@@ -172,6 +183,7 @@ public class EconomicGrowthController {
         System.out.println(parameter);
         String format = "json";
         String site = "kosis";
+        String message = "성공";
 
         StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
 
@@ -182,23 +194,29 @@ public class EconomicGrowthController {
 
         for(Object jsonObject : jsonList){
             JSONObject jsonData = (JSONObject) jsonObject;
-            if("국가채무".equals((String) jsonData.get("C1_NM"))) {
-                String year = (String) jsonData.get("PRD_DE");
-                String unit = (String) jsonData.get("UNIT_NM");
-                String val = (String) jsonData.get("DT");
+            if("Fail".equals(jsonData.get("RESULT"))){
+                dataMap.put("err", jsonData.get("err"));
+                message = (String) jsonData.get("errMsg");
+            }else {
+                if ("국가채무".equals((String) jsonData.get("C1_NM"))) {
+                    String year = (String) jsonData.get("PRD_DE");
+                    String unit = (String) jsonData.get("UNIT_NM");
+                    String val = (String) jsonData.get("DT");
 
-                dataMap.put("yr_dt", year);
-                dataMap.put("unit", unit);
-                dataMap.put("val", val);
+                    dataMap.put("yr_dt", year);
+                    dataMap.put("unit", unit);
+                    dataMap.put("val", val);
+                    message = "성공";
 
-                commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertStateDebt");
+                    commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertStateDebt");
 
-                break;
+                    break;
+                }
             }
         }
 
         result.put("data", dataMap);
-        result.put("success", "성공");
+        result.put("success", message);
 
 
         return result;
@@ -213,6 +231,7 @@ public class EconomicGrowthController {
         System.out.println(parameter);
         String format = "json";
         String site = "kosis";
+        String message = "성공";
 
         String year = null;
         String unit = null;
@@ -226,34 +245,38 @@ public class EconomicGrowthController {
 
         for(Object jsonObject : jsonList){
             JSONObject jsonData = (JSONObject) jsonObject;
-            if("국내총생산(시장가격 GDP)".equals((String) jsonData.get("C1_NM"))){
-                year = (String) jsonData.get("PRD_DE");
-                unit = (String) jsonData.get("UNIT_NM");
-                val = (String) jsonData.get("DT");
-            }else if("국내총소득(GDI)".equals((String) jsonData.get("C1_NM"))){
-                year = (String) jsonData.get("PRD_DE");
-                unit = (String) jsonData.get("UNIT_NM");
-                val = (String) jsonData.get("DT");
-            }else if("국민총소득(GNI)".equals((String) jsonData.get("C1_NM"))){
-                year = (String) jsonData.get("PRD_DE");
-                unit = (String) jsonData.get("UNIT_NM");
-                val = (String) jsonData.get("DT");
-            }
-            dataMap.put("yr_dt", year);
-            dataMap.put("unit", unit);
-            dataMap.put("val", val);
+            if("Fail".equals(jsonData.get("RESULT"))){
+                dataMap.put("err", jsonData.get("err"));
+                message = (String) jsonData.get("errMsg");
+            }else {
+                if ("국내총생산(시장가격 GDP)".equals((String) jsonData.get("C1_NM"))) {
+                    year = (String) jsonData.get("PRD_DE");
+                    unit = (String) jsonData.get("UNIT_NM");
+                    val = (String) jsonData.get("DT");
+                } else if ("국내총소득(GDI)".equals((String) jsonData.get("C1_NM"))) {
+                    year = (String) jsonData.get("PRD_DE");
+                    unit = (String) jsonData.get("UNIT_NM");
+                    val = (String) jsonData.get("DT");
+                } else if ("국민총소득(GNI)".equals((String) jsonData.get("C1_NM"))) {
+                    year = (String) jsonData.get("PRD_DE");
+                    unit = (String) jsonData.get("UNIT_NM");
+                    val = (String) jsonData.get("DT");
+                }
+                dataMap.put("yr_dt", year);
+                dataMap.put("unit", unit);
+                dataMap.put("val", val);
 
-            if("국내총생산(시장가격 GDP)".equals((String) jsonData.get("C1_NM"))){
-                commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertGDP");
-            }else if("국내총소득(GDI)".equals((String) jsonData.get("C1_NM"))){
-                commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertGDI");
-            }else if("국민총소득(GNI)".equals((String) jsonData.get("C1_NM"))){
-                commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertGNI");
+                if ("국내총생산(시장가격 GDP)".equals((String) jsonData.get("C1_NM"))) {
+                    commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertGDP");
+                } else if ("국내총소득(GDI)".equals((String) jsonData.get("C1_NM"))) {
+                    commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertGDI");
+                } else if ("국민총소득(GNI)".equals((String) jsonData.get("C1_NM"))) {
+                    commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertGNI");
+                }
             }
-
         }
         result.put("data", dataMap);
-        result.put("success", "성공");
+        result.put("success", message);
 
         return result;
     }
@@ -267,6 +290,8 @@ public class EconomicGrowthController {
         System.out.println(parameter);
         String format = "json";
         String site = "kosis";
+        String message = "성공";
+
 
         StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
         JSONArray jsonArray = (JSONArray) commonService.apiJsonParser(stringBuilder);
@@ -274,24 +299,30 @@ public class EconomicGrowthController {
         Map<String, Object> dataMap = new HashMap<>();
         Map<String, Object> result = new HashMap<>();
 
-        for(Object jsonObject : jsonArray){
+        for(Object jsonObject : jsonArray) {
             JSONObject jsonData = (JSONObject) jsonObject;
 
-            String yrdt = (String) jsonData.get("PRD_DE");
-            String city = (String) jsonData.get("C1_NM");
-            String unit = (String) jsonData.get("UNIT_NM");
-            String value = (String) jsonData.get("DT");
+            if ("Fail".equals(jsonData.get("RESULT"))) {
+                dataMap.put("err", jsonData.get("err"));
+                message = (String) jsonData.get("errMsg");
 
-            dataMap.put("yr_dt", yrdt);
-            dataMap.put("cty_nm", city);
-            dataMap.put("unit", unit);
-            dataMap.put("val", value);
+            } else {
+                String yrdt = (String) jsonData.get("PRD_DE");
+                String city = (String) jsonData.get("C1_NM");
+                String unit = (String) jsonData.get("UNIT_NM");
+                String value = (String) jsonData.get("DT");
 
-            commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertGrowthRate");
+                dataMap.put("yr_dt", yrdt);
+                dataMap.put("cty_nm", city);
+                dataMap.put("unit", unit);
+                dataMap.put("val", value);
+
+                commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertGrowthRate");
+            }
         }
 
         result.put("data", dataMap);
-        result.put("success", "성공");
+        result.put("success", message);
 
         return result;
     }
@@ -367,31 +398,38 @@ public class EconomicGrowthController {
         String month = null;
         String val = null;
         String unit = null;
+        String message = "성공";
 
-        for(Object jsonObject : jsonArray){
+        for(Object jsonObject : jsonArray) {
             JSONObject jsonData = (JSONObject) jsonObject;
 
-            year = jsonData.get("PRD_DE").toString().substring(0, 4);
-            month = jsonData.get("PRD_DE").toString().substring(4,6);
-            val = (String) jsonData.get("DT");
-            unit = (String) jsonData.get("ITM_NM");
+            if ("Fail".equals(jsonData.get("RESULT"))) {
+                dataMap.put("err", jsonData.get("err"));
+                message = (String) jsonData.get("errMsg");
 
-            dataMap.put("val",val);
-            dataMap.put("yr_dt",year);
-            dataMap.put("mon_dt",month);
-            dataMap.put("unit", unit);
+            } else {
+                year = jsonData.get("PRD_DE").toString().substring(0, 4);
+                month = jsonData.get("PRD_DE").toString().substring(4, 6);
+                val = (String) jsonData.get("DT");
+                unit = (String) jsonData.get("ITM_NM");
 
-            if("총지수".equals(jsonData.get("C1_NM"))){
-                commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertConsumerPriceInflation");
-            }else if("생활물가지수".equals(jsonData.get("C1_NM"))){
-                commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertLivingInflationRate");
-            }else if("농산물및석유류제외지수".equals(jsonData.get("C1_NM"))){
-                commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertCoreInflationRate");
+                dataMap.put("val", val);
+                dataMap.put("yr_dt", year);
+                dataMap.put("mon_dt", month);
+                dataMap.put("unit", unit);
+
+                if ("총지수".equals(jsonData.get("C1_NM"))) {
+                    commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertConsumerPriceInflation");
+                } else if ("생활물가지수".equals(jsonData.get("C1_NM"))) {
+                    commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertLivingInflationRate");
+                } else if ("농산물및석유류제외지수".equals(jsonData.get("C1_NM"))) {
+                    commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertCoreInflationRate");
+                }
             }
         }
 
         result.put("data",dataMap);
-        result.put("success", "성공");
+        result.put("success", message);
 
         return result;
     }

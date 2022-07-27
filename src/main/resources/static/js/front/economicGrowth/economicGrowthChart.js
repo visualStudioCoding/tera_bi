@@ -8,7 +8,7 @@ let colors = ["#393939", "#f5b031", "#fad797", "#59ccf7", "#c3b4df"];
 window.onload = function () {
     getEnmcGrrt();
     getCovidEconomicGrowth();
-
+    getStateDebtSetPeriod()
 }
 
 // 데이터 배열
@@ -18,6 +18,7 @@ let rate = [];
 
 let covidGrowth = [];
 let covidYear = [];
+
 
 // 경제성장률 AJAX
 function getEnmcGrrt() {
@@ -37,22 +38,29 @@ function getCovidEconomicGrowth() {
     getApiResult("/front/economicGrowth/api/getCovidEconomicGrowth", callBackFn, "get", null, errorMsg);
 }
 
-// 1인당 국민 총 소득 AJAX
-function getCovidEconomicGrowth() {
+// 1인당 국민 총 소득 및 국가 채무 현황 AJAX
+/*function getStateDebt() {
 
     let callBackFn = function (data) {
-        fnCovidChartOp(data);
+        fngdpDeptGraphOp(data);
     }
     getApiResult("/front/economicGrowth/api/getStateDebt", callBackFn, "get", null, errorMsg);
-}
+}*/
 
-// 국가 채무 현황 AJAX
-function getCovidEconomicGrowth() {
+// 1인당 국민 총 소득 및 국가 채무 현황 기간설정 AJAX
+function getStateDebtSetPeriod() {
+
+    let period =  $("input[name=ecGrowthTerm]:checked").val();
+
+    if(period == 'on'){
+        period =  $("input[name=ecGrowthDatePicker]").val();
+    }
+    console.log(period);
 
     let callBackFn = function (data) {
-        fnCovidChartOp(data);
+        fngdpDeptGraphOp(data);
     }
-    getApiResult("/front/economicGrowth/api/getCovidEconomicGrowth", callBackFn, "get", null, errorMsg);
+    commonAjax("/front/economicGrowth/api/getStateDebt", callBackFn, "get", period, errorMsg);
 }
 
 // 경제성장률 배열 데이터 추가 및 차트 선언
@@ -115,7 +123,6 @@ function fnRegionChartOp(data) {
             fontFamily: "NanumSquare",
         },
     };
-    console.log(ctyNm)
     for (let i = 0; i < ctyNm.length; i++) {
         if(ctyNm[i] == "전국"){
             continue;
@@ -137,9 +144,6 @@ function fnCovidChartOp(data){
         covidGrowth.push(data.covidGrowth[i].val);
         covidYear.push(data.covidGrowth[i].yr_dt);
     }
-
-    console.log(covidYear)
-    console.log(covidGrowth)
 
     covidChartOp = {
         grid: {
@@ -273,82 +277,107 @@ const gdpDeptChartDom = document.getElementById("gdpDeptGraph");
 const gdpDeptChart = echarts.init(gdpDeptChartDom);
 let gdpDeptGraphOp;
 
-gdpDeptGraphOp = {
-    grid: { containLabel: true, left: 10, right: 40, top: 60, bottom: 0 },
-    tooltip: {
-        trigger: "axis",
-        axisPointer: {
-            type: "cross",
-            crossStyle: {
-                color: "#999",
-            },
-        },
-    },
-    toolbox: {
-        feature: {
-            dataView: { show: false, readOnly: false },
-            magicType: { show: false, type: ["line", "bar"] },
-            restore: { show: false },
-            saveAsImage: { show: false },
-        },
-    },
-    legend: {
-        data: ["GDP(명목)", "GDP(실질)", "국가채무"],
-        padding: 0,
-    },
-    xAxis: [
-        {
-            type: "category",
-            data: ["2017", "2018", "2019", "2020", "2021"],
+function fngdpDeptGraphOp(data) {
+
+    let period = [];
+    let gni = [];
+    let gdi = [];
+    let debt = [];
+
+    for (var i = 0; i < data.gni.length; i++) {
+        period.push(data.gni[i].yr_dt);
+        gni.push(data.gni[i].gni_val);
+        gdi.push(data.gni[i].gdi_val);
+    }
+
+    for (var i = 0; i < data.debt.length; i++) {
+        debt.push(data.debt[i].val);
+    }
+
+    gdpDeptGraphOp = {
+        grid: {containLabel: true, left: 10, right: 40, top: 60, bottom: 0},
+        tooltip: {
+            trigger: "axis",
             axisPointer: {
-                type: "shadow",
-            },
-        },
-    ],
-    yAxis: [
-        {
-            type: "value",
-            name: "GDP(조원)",
-        },
-        {
-            type: "value",
-            name: "국가채무(조원)",
-        },
-    ],
-    series: [
-        {
-            name: "국가채무",
-            type: "bar",
-            tooltip: {
-                valueFormatter: function (value) {
-                    return value + "조";
+                type: "cross",
+                crossStyle: {
+                    color: "#999",
                 },
             },
-            data: [660.2, 680.5, 723.2, 846.6, 965.3],
         },
-        {
-            name: "GDP(명목)",
-            type: "line",
-            tooltip: {
-                valueFormatter: function (value) {
-                    return value + "조";
+        toolbox: {
+            feature: {
+                dataView: {show: false, readOnly: false},
+                magicType: {show: false, type: ["line", "bar"]},
+                restore: {show: false},
+                saveAsImage: {show: false},
+            },
+        },
+        legend: {
+            data: ["GDP(명목)", "GDP(실질)", "국가채무"],
+            padding: 0,
+        },
+        xAxis: [
+            {
+                type: "category",
+                data: [],
+                axisPointer: {
+                    type: "shadow",
                 },
             },
-            data: [1835, 1898, 1924, 1940, 2071],
-        },
-        {
-            name: "GDP(실질)",
-            type: "line",
-            tooltip: {
-                valueFormatter: function (value) {
-                    return value + "조";
-                },
+        ],
+        yAxis: [
+            {
+                type: "value",
+                name: "GDP(조원)",
             },
-            data: [1760, 1812, 1852, 1839, 1915],
+            {
+                type: "value",
+                name: "국가채무(조원)",
+            },
+        ],
+        series: [
+            {
+                name: "국가채무",
+                type: "bar",
+                tooltip: {
+                    valueFormatter: function (value) {
+                        return value + "조";
+                    },
+                },
+                data: [],
+            },
+            {
+                name: "GDP(명목)",
+                type: "line",
+                tooltip: {
+                    valueFormatter: function (value) {
+                        return value + "조";
+                    },
+                },
+                data: [],
+            },
+            {
+                name: "GDP(실질)",
+                type: "line",
+                tooltip: {
+                    valueFormatter: function (value) {
+                        return value + "조";
+                    },
+                },
+                data: [],
+            },
+        ],
+        textStyle: {
+            fontFamily: "NanumSquare",
         },
-    ],
-    textStyle: {
-        fontFamily: "NanumSquare",
-    },
-};
-gdpDeptChart.setOption(gdpDeptGraphOp);
+    };
+
+    gdpDeptGraphOp.xAxis[0].data = period
+    gdpDeptGraphOp.series[0].data = debt
+    gdpDeptGraphOp.series[1].data = gni
+    gdpDeptGraphOp.series[2].data = gdi
+
+
+    gdpDeptChart.setOption(gdpDeptGraphOp);
+}
