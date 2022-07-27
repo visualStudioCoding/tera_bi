@@ -15,14 +15,23 @@
             <div class="row">
                 <div class="col-inner-3">
                     <div class="title-wrap">
-                        <h6 class="tit">종합 주가 지수</h6>
+                        <h6 class="tit">종합 주가 지수(KOSPI)</h6>
                     </div>
                     <div class="cont">
                         <div class="circle-wrap">
                             <div class="circle">
                                 <div class="txt-wrap">
-                                    <span class="txt">2,346.71</span>
-                                    <span class="sub-txt">▼ 10.50 (-0.79%)</span>
+                                    <#if kospiIndex.current?number lt kospiIndex.past?number>
+                                        <span class="txt">${kospiIndex.current}</span>
+                                        <span class="sub-txt">
+                                        ▼ ${kospiIndex.subtraction} (${kospiIndex.subRate?number}%)
+                                        </span>
+                                    <#else>
+                                        <span class="txt">${kospiIndex.current}</span>
+                                        <span class="sub-txt">
+                                        ▲ ${kospiIndex.subtraction} (${kospiIndex.subRate}%)
+                                        </span>
+                                    </#if>
                                 </div>
                                 <div class="wave wave1"></div>
                                 <div class="wave wave2"></div>
@@ -42,8 +51,17 @@
                             </figure>
                             <div class="txt-wrap">
                                 <h6 class="tit">환율</h6>
-                                <b class="center-txt down">1314.50</b>
-                                <span class="sub-txt down">▼ 10.50 (-0.79%)</span>
+                                <#if exchangeRate.current?number lt exchangeRate.past?number>
+                                    <b class="center-txt">${exchangeRate.current}</b>
+                                    <span class="sub-txt down">
+                                        ▼ ${exchangeRate.subtraction} (${exchangeRate.subRate}%)
+                                    </span>
+                                <#else>
+                                    <b class="center-txt">${exchangeRate.current}</b>
+                                    <span class="sub-txt up">
+                                        ▲ ${exchangeRate.subtraction} (${exchangeRate.subRate}%)
+                                    </span>
+                                </#if>
                             </div>
                         </div>
                         <div class="card">
@@ -52,8 +70,17 @@
                             </figure>
                             <div class="txt-wrap">
                                 <h6 class="tit">기준금리</h6>
-                                <b class="center-txt up">1.75%</b>
-                                <span class="sub-txt up">▲ 0.25</span>
+                                <#if baseRate.current?number lt baseRate.past?number>
+                                    <b class="center-txt">${baseRate.current}</b>
+                                    <span class="sub-txt down">
+                                        ▼ ${baseRate.subtraction} (${baseRate.subRate}%)
+                                    </span>
+                                <#else>
+                                    <b class="center-txt">${baseRate.current}</b>
+                                    <span class="sub-txt up">
+                                        ▲ ${baseRate.subtraction} (${baseRate.subRate}%)
+                                    </span>
+                                </#if>
                             </div>
                         </div>
                     </div>
@@ -69,8 +96,17 @@
                             </figure>
                             <div class="txt-wrap">
                                 <h6 class="tit">코스닥</h6>
-                                <b class="center-txt">788.41</b>
-                                <span class="sub-txt down">▼ 1.16 (-0.15%)</span>
+                                <#if kosdaqIndex.current?number lt kosdaqIndex.past?number>
+                                    <b class="center-txt">${kosdaqIndex.current}</b>
+                                    <span class="sub-txt down">
+                                        ▼ ${kosdaqIndex.subtraction} (${kosdaqIndex.subRate}%)
+                                    </span>
+                                <#else>
+                                    <b class="center-txt">${kosdaqIndex.current}</b>
+                                    <span class="sub-txt up">
+                                        ▲ ${kosdaqIndex.subtraction} (${kosdaqIndex.subRate}%)
+                                    </span>
+                                </#if>
                             </div>
                         </div>
                         <div id="wtiCard" class="card">
@@ -79,8 +115,17 @@
                             </figure>
                             <div class="txt-wrap">
                                 <h6 class="tit">유가</h6>
-                                <b class="center-txt">96.70</b>
-                                <span class="sub-txt up">▲ 2.00</span>
+                                <#if oilPrice.current?number lt oilPrice.past?number>
+                                    <b class="center-txt">${oilPrice.current}</b>
+                                    <span class="sub-txt down">
+                                        ▼ ${oilPrice.subtraction}
+                                    </span>
+                                <#else>
+                                    <b class="center-txt">${oilPrice.current}</b>
+                                    <span class="sub-txt up">
+                                        ▲ ${oilPrice.subtraction}
+                                    </span>
+                                </#if>
                                 <span class="sub-txt">단위: 달러</span>
                             </div>
                         </div>

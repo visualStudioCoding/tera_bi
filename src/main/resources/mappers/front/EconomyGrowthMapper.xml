@@ -13,11 +13,11 @@
     <select id="selectExchangeRate" parameterType="hashMap" resultType="hashMap">
         SELECT *
         FROM exchn_rate
-        WHERE type = '원/달러'
+        WHERE type = '원/미국달러'
           AND CONCAT(yr_dt, mon_dt, dy_dt) =
               (SELECT CONCAT(yr_dt, mon_dt, dy_dt)
                FROM exchn_rate
-               WHERE type = '원/달러'
+               WHERE type = '원/미국달러'
                ORDER BY CONCAT(yr_dt, mon_dt, dy_dt) DESC
             LIMIT 1)
     </select>
@@ -25,11 +25,11 @@
     <select id="selectExchangeRateCompare" parameterType="hashMap" resultType="hashMap">
         SELECT *
         FROM exchn_rate
-        WHERE type = '원/달러'
+        WHERE type = '원/미국달러'
           AND CONCAT(yr_dt, mon_dt, dy_dt) =
               (SELECT CONCAT(yr_dt, mon_dt, dy_dt)
                FROM exchn_rate
-               WHERE type = '원/달러'
+               WHERE type = '원/미국달러'
                ORDER BY CONCAT(yr_dt, mon_dt, dy_dt) DESC
             LIMIT 1
         OFFSET 1)
@@ -106,21 +106,21 @@
 
     <!--  소비자 물가 상승률 차트 -->
     <select id="selectCnsmrInrtPeriod" parameterType="hashMap" resultType="hashMap">
-        SELECT val, '소비' AS category, CONCAT(yr_dt, mon_dt) AS period
+        SELECT val, '소비' AS category, yr_dt AS period
         FROM cnsmr_inrt
         WHERE yr_dt = 2022 AND mon_dt BETWEEN 1 AND 6;
     </select>
 
     <!--  근원 물가 상승률 차트 -->
     <select id="selectSrcInrtPeriod" parameterType="hashMap" resultType="hashMap">
-        SELECT val, '근원' AS category, CONCAT(yr_dt, mon_dt) AS period
+        SELECT val, '근원' AS category, yr_dt AS period
         FROM src_inrt
         WHERE yr_dt = 2022 AND mon_dt BETWEEN 1 AND 6;
     </select>
 
     <!--  생활 물가 상승률 차트 -->
     <select id="selectLvngInrtPeriod" parameterType="hashMap" resultType="hashMap">
-        SELECT val, '생활' AS category, CONCAT(yr_dt, mon_dt) AS period
+        SELECT val, '생활' AS category, yr_dt AS period
         FROM lvng_inrt
         WHERE yr_dt = 2022 AND mon_dt BETWEEN 1 AND 6;
     </select>

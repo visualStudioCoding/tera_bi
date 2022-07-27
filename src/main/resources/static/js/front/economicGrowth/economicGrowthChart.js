@@ -189,16 +189,16 @@ const inflChartDom = document.getElementById("inflationGraph");
 const inflChart = echarts.init(inflChartDom);
 let inflChartOp;
 
-// $.get("../js/inflChartTemp.json", function (_rawData) {
-//     run(_rawData);
-// });
-function getInflChart() {
+$.get("/js/inflChartTemp.json", function (_rawData) {
+    run(_rawData);
+});
+/*function getInflChart() {
 
     let callBackFn = function (data) {
         run(data);
     }
     getApiResult("/front/economicGrowth/api/getInflationRatePeriod", callBackFn, "get", null, errorMsg);
-}
+}*/
 
 function run(_rawData) {
 
