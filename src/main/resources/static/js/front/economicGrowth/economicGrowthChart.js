@@ -8,7 +8,8 @@ let colors = ["#393939", "#f5b031", "#fad797", "#59ccf7", "#c3b4df"];
 window.onload = function () {
     getEnmcGrrt();
     getCovidEconomicGrowth();
-    getStateDebtSetPeriod()
+    getStateDebtSetPeriod();
+    getInflChart();
 }
 
 // 데이터 배열
@@ -188,10 +189,21 @@ const inflChartDom = document.getElementById("inflationGraph");
 const inflChart = echarts.init(inflChartDom);
 let inflChartOp;
 
-$.get("../js/inflChartTemp.json", function (_rawData) {
-    run(_rawData);
-});
+// $.get("../js/inflChartTemp.json", function (_rawData) {
+//     run(_rawData);
+// });
+function getInflChart() {
+
+    let callBackFn = function (data) {
+        run(data);
+    }
+    getApiResult("/front/economicGrowth/api/getInflationRatePeriod", callBackFn, "get", null, errorMsg);
+}
+
 function run(_rawData) {
+
+    console.log(_rawData);
+
     const category = ["소비", "근원", "생활"];
     const datasetWithFilters = [];
     const seriesList = [];

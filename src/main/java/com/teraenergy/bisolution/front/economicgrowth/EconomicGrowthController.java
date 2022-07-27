@@ -2,6 +2,7 @@ package com.teraenergy.bisolution.front.economicgrowth;
 
 import com.teraenergy.global.service.CommonService;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONArray;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -157,7 +158,60 @@ public class EconomicGrowthController {
         return result;
     }
 
-    //      코로나 시기 경제 성장률
+    //     물가 상승률(소비자, 근원, 생활) Chart
+    @ResponseBody
+    @GetMapping("/api/getInflationRatePeriod")
+    public JSONArray getInflationRatePeriod() throws Exception {
+
+        List<Map<String, Object>> consume = (List<Map<String, Object>>) commonService.selectList(null, PAGE_ID + PROGRAM_ID + ".selectCnsmrInrtPeriod");
+        List<Map<String, Object>> source = (List<Map<String, Object>>) commonService.selectList(null, PAGE_ID + PROGRAM_ID + ".selectSrcInrtPeriod");
+        List<Map<String, Object>> living = (List<Map<String, Object>>) commonService.selectList(null, PAGE_ID + PROGRAM_ID + ".selectLvngInrtPeriod");
+
+//        List<Map<String, Object>> totalItm = new ArrayList<>();
+//
+//        for (int i = 0; i < consume.size(); i++) {
+//            totalItm.add(consume.get(i));
+//            totalItm.add(source.get(i));
+//            totalItm.add(living.get(i));
+//        }
+
+        JSONArray totalItm = new JSONArray();
+
+        int count = 0;
+
+        for (int i = 0; i < consume.size() * 3; i++) {
+            JSONArray consumeList = new JSONArray();
+            JSONArray sourceList = new JSONArray();
+            JSONArray livingList = new JSONArray();
+
+            consumeList.add(consume.get(count).get("val"));
+            consumeList.add(consume.get(count).get("category"));
+            consumeList.add(consume.get(count).get("period"));
+
+            sourceList.add(source.get(count).get("val"));
+            sourceList.add(source.get(count).get("category"));
+            sourceList.add(source.get(count).get("period"));
+
+            livingList.add(living.get(count).get("val"));
+            livingList.add(living.get(count).get("category"));
+            livingList.add(living.get(count).get("period"));
+
+            totalItm.add(i, consumeList);
+            totalItm.add(i + 1, sourceList);
+            totalItm.add(i + 2, livingList);
+
+            i+=2;
+            count++;
+        }
+
+//        Map<String, List<Map<String, Object>>> result = new HashMap<>();
+//
+//        result.put("data", totalItm);
+
+        return totalItm;
+    }
+
+    //      코로나 시기 경제 성장률 Chart
     @ResponseBody
     @GetMapping("/api/getCovidEconomicGrowth")
     public Map<String, List<Map<String, Object>>> getCovidEconomicGrowth() throws Exception {
@@ -177,7 +231,7 @@ public class EconomicGrowthController {
         return result;
     }
 
-    // 1인당 국민 총 소득 및 국가 채무 현황
+    // 1인당 국민 총 소득 및 국가 채무 현황 Chart
     @ResponseBody
     @GetMapping("/api/getStateDebt")
     public Map<String, List<Map<String, Object>>> getStateDebt(String parameter) throws Exception {
