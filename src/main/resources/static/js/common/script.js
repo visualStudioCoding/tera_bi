@@ -1,16 +1,16 @@
 /******************** 공통 *********************/
 /* 기간 선택 */
-$("input[name='ecGrowthTerm']").click(function (e) {
-    if (e.target.id !== "ecGrowthDatePick") {
-        ecGrowthTerm.attr("disabled", true);
-    } else if (e.target.id === "ecGrowthDatePick") {
-        ecGrowthTerm.attr("disabled", false);
+$("input[name='term']").click(function (e) {
+    if (e.target.id !== "termDatePick") {
+        term.attr("disabled", true);
+    } else if (e.target.id === "termDatePick") {
+        term.attr("disabled", false);
     }
 });
 
 /* date range picker */
-const ecGrowthTerm = $("input[name='ecGrowthDatePicker']");
-ecGrowthTerm.daterangepicker({
+const term = $("input[name='termDatePicker']");
+term.daterangepicker({
     locale: {
         format: "YYYY-MM-DD",
         daysOfWeek: ["월", "화", "수", "목", "금", "토", "일"],
@@ -34,12 +34,12 @@ ecGrowthTerm.daterangepicker({
 });
 
 /* 지역 선택 */
-const ecGrowthLoc = $("input[name='ecLoc']");
-const ecGrowthLocSlct = $(".economic-growth .box .select-group select");
-ecGrowthLoc.click(function (e) {
+const loc = $("input[name='ecLoc']");
+const locSlct = $(".economic-growth .box .select-group select");
+loc.click(function (e) {
     if (e.target.id === "ecLocAll") {
-        ecGrowthLocSlct.attr("disabled", true);
+        locSlct.attr("disabled", true);
     } else if (e.target.id === "ecLocSlcts") {
-        ecGrowthLocSlct.attr("disabled", false);
+        locSlct.attr("disabled", false);
     }
 });
