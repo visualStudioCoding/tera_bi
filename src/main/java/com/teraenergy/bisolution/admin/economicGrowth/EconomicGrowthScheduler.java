@@ -7,6 +7,8 @@ import org.json.simple.JSONObject;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
@@ -29,51 +31,38 @@ public class EconomicGrowthScheduler {
 // *  |  *  |  *  |  *  |  *  |  *
 // 초    분     시    일    월    요일
 
-    //기준금리
-//기준금리 및 환율
+//      기준금리
     @Scheduled(cron = "* 30 8 * * *")
     @Transactional(rollbackFor = Exception.class)
     public void monthlyExchangeRateScheduler() throws Exception {
         String url = "https://ecos.bok.or.kr/api/";
-        String parameter = "KeyStatisticList/apiKey/json/kr/1/100/";
+        String parameter = "StatisticSearch/apiKey/json/kr/1/10000/722Y001/D/20220725/20220725/0101000/?/?/";
 
         String format = "json";
         String site = "ecos";
+        String message = "성공";
+
         StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
 
-        JSONArray jsonList = commonService.ecosApiJsonParser(stringBuilder, "KeyStatisticList");
+        JSONArray jsonList = commonService.ecosApiJsonParser(stringBuilder, "StatisticSearch");
         Map<String, Object> dataMap = new HashMap<>();
 
         Map<String, String> compareBase = (Map<String, String>) commonService.selectContents(null,PAGE_ID + PROGRAM_ID + ".compareBaseRate");
-        Map<String, String> compareExchange = (Map<String, String>) commonService.selectContents(null,PAGE_ID + PROGRAM_ID + ".compareExchangeRate");
 
         for(Object jsonObject : jsonList){
             JSONObject jsonData = (JSONObject) jsonObject;
-            String date = (String) jsonData.get("CYCLE");
-            String year = "";
-            String month = "";
-            String day = "";
-            if(date.length() > 6) {
-                year = date.substring(0, 4);
-                month = date.substring(4, 6);
-                day = date.substring(6, 8);
-            }
 
-            String maxYear = compareBase.get("yr_dt");
-            String maxMonth = compareBase.get("mon_dt");
-            String maxDay = compareBase.get("dy_dt");
-
-            boolean baseDupleCheck = (year + month + day).equals(maxYear + maxMonth + maxDay);
-
-            String exMaxYear = compareExchange.get("yr_dt");
-            String exMaxMonth = compareExchange.get("mon_dt");
-            String exMaxDay = compareExchange.get("dy_dt");
-            boolean exDupleCheck = (year + month + day).equals(exMaxYear + exMaxMonth + exMaxDay);
-
-
-            if("시장금리".equals(jsonData.get("CLASS_NAME")) && jsonData.get("KEYSTAT_NAME").toString().contains("기준금리") && !baseDupleCheck) {
+            if("Fail".equals(jsonData.get("RESULT"))){
+                System.out.println("Fail to Load Data");
+                break;
+            }else {
                 String baseMoneyRate = (String) jsonData.get("DATA_VALUE");
                 String unit = (String) jsonData.get("UNIT_NAME");
+                String date = (String) jsonData.get("TIME");
+                String year = date.substring(0, 4);
+                String month = date.substring(4, 6);
+                String day = date.substring(6, 8);
+
                 dataMap.put("yr_dt", year);
                 dataMap.put("mon_dt", month);
                 dataMap.put("dy_dt", day);
@@ -82,20 +71,69 @@ public class EconomicGrowthScheduler {
                 System.out.println(dataMap);
 
                 commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertBaseRate");
-            } else if("환율".equals(jsonData.get("CLASS_NAME")) && !exDupleCheck) {
-                String[] type = jsonData.get("KEYSTAT_NAME").toString().split(" ");
-                String det_type = type[0];
-                String exMoneyRate = (String) jsonData.get("DATA_VALUE");
-                String unit = (String) jsonData.get("UNIT_NAME");
-                dataMap.put("yr_dt", year);
-                dataMap.put("mon_dt", month);
-                dataMap.put("dy_dt", day);
-                dataMap.put("type", det_type);
-                dataMap.put("unit", unit);
-                dataMap.put("val", exMoneyRate);
-                System.out.println(dataMap);
+            }
 
-                commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertExchangeRate");
+        }
+    }
+
+    //환율
+    @Scheduled(cron = "* 30 8 * * *")
+    @Transactional(rollbackFor = Exception.class)
+    public void getExchangeRate() throws Exception {
+
+        String url = "https://ecos.bok.or.kr/api/";
+        String parameter = "StatisticSearch/apiKey/json/kr/1/10000/731Y001/D/20220727/20220727/0000001/?/?/";
+
+        String[] typeList = {"0000001", "0000053", "0000002", "0000003"};
+
+        Map<String, Object> result = new HashMap<>();
+
+        for (int i = 0; i < typeList.length; i++) {
+            if(i >= 1){
+                parameter = parameter.replace(typeList[i-1], typeList[i]);
+            }
+
+            //kosis = json, enara = xml
+            String format = "json";
+            String site = "ecos";
+            String message = "성공";
+            StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+
+            JSONArray jsonList = commonService.ecosApiJsonParser(stringBuilder, "StatisticSearch");
+            System.out.println(jsonList);
+            Map<String, Object> dataMap = new HashMap<>();
+
+            for (Object jsonObject : jsonList) {
+                JSONObject jsonData = (JSONObject) jsonObject;
+
+                if("Fail".equals(jsonData.get("RESULT"))){
+                    System.out.println("Fail to Load Data");
+                    break;
+                }else {
+                    String typeBf = jsonData.get("ITEM_NAME1").toString();
+                    String type = null;
+
+                    if (typeBf.contains("매매기준율")) {
+                        type = typeBf.replace("(매매기준율)", "");
+                    } else {
+                        type = typeBf;
+                    }
+                    String exMoneyRate = (String) jsonData.get("DATA_VALUE");
+                    String unit = (String) jsonData.get("UNIT_NAME");
+                    String date = (String) jsonData.get("TIME");
+                    String year = date.substring(0, 4);
+                    String month = date.substring(4, 6);
+                    String day = date.substring(6, 8);
+                    dataMap.put("yr_dt", year);
+                    dataMap.put("mon_dt", month);
+                    dataMap.put("dy_dt", day);
+                    dataMap.put("type", type);
+                    dataMap.put("unit", unit);
+                    dataMap.put("val", exMoneyRate);
+                    System.out.println(dataMap);
+
+                    commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertExchangeRate");
+                }
             }
         }
     }

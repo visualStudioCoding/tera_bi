@@ -27,7 +27,7 @@ function getEnmcGrrt() {
     let callBackFn = function (data) {
         fnRegionChartOp(data);
     }
-    getApiResult("/front/economicGrowth/api/getEconomicGrowth", callBackFn, "get", null, errorMsg);
+    commonAjax("/front/economicGrowth/api/getEconomicGrowth", callBackFn, "get", null, errorMsg);
 }
 
 // 코로나 시기 경제성장률 AJAX
@@ -36,7 +36,7 @@ function getCovidEconomicGrowth() {
     let callBackFn = function (data) {
         fnCovidChartOp(data);
     }
-    getApiResult("/front/economicGrowth/api/getCovidEconomicGrowth", callBackFn, "get", null, errorMsg);
+    commonAjax("/front/economicGrowth/api/getCovidEconomicGrowth", callBackFn, "get", null, errorMsg);
 }
 
 // 1인당 국민 총 소득 및 국가 채무 현황 AJAX
@@ -45,7 +45,7 @@ function getCovidEconomicGrowth() {
     let callBackFn = function (data) {
         fngdpDeptGraphOp(data);
     }
-    getApiResult("/front/economicGrowth/api/getStateDebt", callBackFn, "get", null, errorMsg);
+    commonAjax("/front/economicGrowth/api/getStateDebt", callBackFn, "get", null, errorMsg);
 }*/
 
 // 1인당 국민 총 소득 및 국가 채무 현황 기간설정 AJAX
@@ -189,16 +189,16 @@ const inflChartDom = document.getElementById("inflationGraph");
 const inflChart = echarts.init(inflChartDom);
 let inflChartOp;
 
-$.get("/js/inflChartTemp.json", function (_rawData) {
-    run(_rawData);
-});
-/*function getInflChart() {
+// $.get("../js/inflChartTemp.json", function (_rawData) {
+//     run(_rawData);
+// });
+function getInflChart() {
 
     let callBackFn = function (data) {
         run(data);
     }
-    getApiResult("/front/economicGrowth/api/getInflationRatePeriod", callBackFn, "get", null, errorMsg);
-}*/
+    commonAjax("/front/economicGrowth/api/getInflationRatePeriod", callBackFn, "get", null, errorMsg);
+}
 
 function run(_rawData) {
 
@@ -295,11 +295,13 @@ function fngdpDeptGraphOp(data) {
     let gni = [];
     let gdi = [];
     let debt = [];
+    let unit = null;
 
     for (var i = 0; i < data.gni.length; i++) {
         period.push(data.gni[i].yr_dt);
         gni.push(data.gni[i].gni_val);
         gdi.push(data.gni[i].gdi_val);
+        unit = data.gni[i].unit;
     }
 
     for (var i = 0; i < data.debt.length; i++) {
@@ -341,7 +343,7 @@ function fngdpDeptGraphOp(data) {
         yAxis: [
             {
                 type: "value",
-                name: "GDP(조원)",
+                name: "GDP(" + unit + ")",
             },
             {
                 type: "value",
@@ -364,7 +366,7 @@ function fngdpDeptGraphOp(data) {
                 type: "line",
                 tooltip: {
                     valueFormatter: function (value) {
-                        return value + "조";
+                        return value + unit;
                     },
                 },
                 data: [],
@@ -374,7 +376,7 @@ function fngdpDeptGraphOp(data) {
                 type: "line",
                 tooltip: {
                     valueFormatter: function (value) {
-                        return value + "조";
+                        return value + unit;
                     },
                 },
                 data: [],
