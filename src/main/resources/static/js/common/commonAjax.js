@@ -17,8 +17,6 @@ let commonAjax = function(url, fn, methodType, param, errorMsg){
         data: data,
         dataType: "json"
     });
-
-
     //콜백함수
     request.done(fn);
     console.log(fn);

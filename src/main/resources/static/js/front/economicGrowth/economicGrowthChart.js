@@ -50,10 +50,10 @@ function getCovidEconomicGrowth() {
 // 1인당 국민 총 소득 및 국가 채무 현황 기간설정 AJAX
 function getStateDebtSetPeriod() {
 
-    let period =  $("input[name=ecGrowthTerm]:checked").val();
+    let period =  $("input[name=term]:checked").val();
 
     if(period == 'on'){
-        period =  $("input[name=ecGrowthDatePicker]").val();
+        period =  $("input[name=termDatePicker]").val();
     }
     console.log(period);
 
