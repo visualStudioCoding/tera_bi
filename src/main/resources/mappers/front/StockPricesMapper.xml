@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="bi.front.StockPrices">
+    <!-- 최근 코스피 지수 -->
+    <select id="selectKospiIndex" resultType="hashMap">
+        SELECT yr_dt  AS yrDt
+             , mon_dt AS monDt
+             , dy_dt  AS dyDt
+             , unit
+             , val
+        FROM kospi_index
+        WHERE yr_dt = (SELECT MAX(yr_dt) FROM kospi_index)
+          AND mon_dt = (SELECT MAX(mon_dt) FROM kospi_index WHERE yr_dt = (SELECT MAX(yr_dt) FROM kospi_index))
+        ORDER BY dy_dt DESC
+        LIMIT 1
+    </select>
+    <!-- 최근 하루전 코스피 지수 -->
+    <select id="selectKospiIndexOffset" resultType="hashMap">
+        SELECT yr_dt  AS yrDt
+             , mon_dt AS monDt
+             , dy_dt  AS dyDt
+             , unit
+             , val
+        FROM kospi_index
+        WHERE yr_dt = (SELECT MAX(yr_dt) FROM kospi_index)
+          AND mon_dt = (SELECT MAX(mon_dt) FROM kospi_index WHERE yr_dt = (SELECT MAX(yr_dt) FROM kospi_index))
+        ORDER BY dy_dt DESC
+        LIMIT 1 OFFSET 1;
+    </select>
+    <!-- 최근 코스닥 지수 -->
+    <select id="selectKosdaqIndex" resultType="hashMap">
+        SELECT yr_dt  AS yrDt
+             , mon_dt AS monDt
+             , dy_dt  AS dyDt
+             , unit
+             , val
+        FROM kosdaq_index
+        WHERE yr_dt = (SELECT MAX(yr_dt) FROM kosdaq_index)
+          AND mon_dt = (SELECT MAX(mon_dt) FROM kosdaq_index WHERE yr_dt = (SELECT MAX(yr_dt) FROM kosdaq_index))
+        ORDER BY dy_dt DESC
+        LIMIT 1
+    </select>
+    <!-- 최근 하루전 코스닥 지수 -->
+    <select id="selectKosdaqIndexOffset" resultType="hashMap">
+        SELECT yr_dt  AS yrDt
+             , mon_dt AS monDt
+             , dy_dt  AS dyDt
+             , unit
+             , val
+        FROM kosdaq_index
+        WHERE yr_dt = (SELECT MAX(yr_dt) FROM kosdaq_index)
+          AND mon_dt = (SELECT MAX(mon_dt) FROM kosdaq_index WHERE yr_dt = (SELECT MAX(yr_dt) FROM kosdaq_index))
+        ORDER BY dy_dt DESC
+        LIMIT 1 OFFSET 1;
+    </select>
+    <!-- 최근 유가 -->
+    <select id="selectOilPrice" resultType="hashMap">
+        SELECT yr_dt  AS yrDt
+             , mon_dt AS monDt
+             , unit
+             , val
+        FROM oil_price
+        WHERE yr_dt = (SELECT MAX(yr_dt) FROM oil_price)
+        ORDER BY mon_dt DESC
+        LIMIT 1
+    </select>
+    <!-- 최근 하루전 유가 -->
+    <select id="selectOilPriceOffset" resultType="hashMap">
+        SELECT yr_dt  AS yrDt
+             , mon_dt AS monDt
+             , unit
+             , val
+        FROM oil_price
+        WHERE yr_dt = (SELECT MAX(yr_dt) FROM oil_price)
+        ORDER BY mon_dt DESC
+        LIMIT 1 OFFSET 1;
+    </select>
+</mapper>

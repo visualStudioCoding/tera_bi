@@ -27,11 +27,19 @@ public class StockPricesController {
     @Resource(name = "commonService")
     private CommonService commonService;
 
+    @Resource(name = "stockPricesService")
+    private StockPricesService stockPricesService;
+
     @GetMapping("/main")
     public String stockPricesMain(Model model) throws Exception {
         log.info(PAGE_ID + DIRECTORY + "Main");
-
         model.addAttribute("menuCode", "003");
+
+        model.addAttribute("kospiIndex", stockPricesService.getOffsetMap(PROGRAM_ID, PAGE_ID, ".selectKospiIndex"));
+        model.addAttribute("kosdaqIndex", stockPricesService.getOffsetMap(PROGRAM_ID, PAGE_ID, ".selectKosdaqIndex"));
+        model.addAttribute("oilPrice", stockPricesService.getOffsetMap(PROGRAM_ID, PAGE_ID, ".selectOilPrice"));
+        model.addAttribute("baseRate", stockPricesService.getOffsetMap(".EconomicGrowth", PAGE_ID, ".selectBaseRate"));
+        model.addAttribute("exchangeRate", stockPricesService.getOffsetMap(".EconomicGrowth", PAGE_ID, ".selectExchangeRate"));
         return PAGE_ID + DIRECTORY + "Main";
     }
 
