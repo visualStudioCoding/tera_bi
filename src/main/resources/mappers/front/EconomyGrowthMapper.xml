@@ -75,6 +75,14 @@
         WHERE yr_dt = (SELECT yr_dt FROM enmc_grrt ORDER BY yr_dt DESC LIMIT 1)
     </select>
 
+    <!-- 경제성장률(지역 설정)  -->
+    <select id="selectEnmcGrrtRegionSet" parameterType="hashMap" resultType="hashMap">
+        SELECT cty_nm, unit, val
+        FROM enmc_grrt
+        WHERE yr_dt = (SELECT yr_dt FROM enmc_grrt ORDER BY yr_dt DESC LIMIT 1)
+          AND cty_nm = #{cty_nm}
+    </select>
+
     <!--  소비자 물가 상승률  -->
     <select id="selectCnsmrInrt" parameterType="hashMap" resultType="hashMap">
         SELECT val
@@ -103,23 +111,21 @@
         WHERE yr_dt BETWEEN 2019 AND (SELECT yr_dt FROM enmc_grrt ORDER BY yr_dt DESC LIMIT 1) AND cty_nm = '전국'
     </select>
 
-    <!--  1.인당 국민 총소득(실질, 명목)  -->
-    <select id="selectGdiGni" parameterType="hashMap" resultType="hashMap">
-        SELECT yr_dt, unit, gdi_val, gni_val
-        FROM gni_capita
-        WHERE yr_dt BETWEEN (SELECT yr_dt FROM national_debt ORDER BY yr_dt DESC LIMIT 1) - 5 AND (
+    <!--  국가 채무 현황  -->
+    <select id="selectStateDebt" parameterType="hashMap" resultType="hashMap">
+        SELECT yr_dt, unit, val
+        FROM national_debt
+        WHERE yr_dt BETWEEN (SELECT yr_dt FROM national_debt ORDER BY yr_dt DESC LIMIT 1) - #{searchPeriod} AND (
         SELECT yr_dt
         FROM national_debt
         ORDER BY yr_dt DESC LIMIT 1)
     </select>
 
-    <!--  국가 채무 현황  -->
-    <select id="selectStateDebt" parameterType="hashMap" resultType="hashMap">
+    <!--  국가 채무 현황 기간 세부 설정  -->
+    <select id="selectStateDebtDetail" parameterType="hashMap" resultType="hashMap">
         SELECT yr_dt, unit, val
         FROM national_debt
-        WHERE yr_dt BETWEEN (SELECT yr_dt FROM national_debt ORDER BY yr_dt DESC LIMIT 1) - 5 AND (
-        SELECT yr_dt
-        FROM national_debt
-        ORDER BY yr_dt DESC LIMIT 1)
+        WHERE yr_dt BETWEEN YEAR(#{searchStartDate}) AND YEAR(#{searchEndDate})
     </select>
+
 </mapper>

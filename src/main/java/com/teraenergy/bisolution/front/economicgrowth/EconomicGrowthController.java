@@ -6,9 +6,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -173,19 +175,37 @@ public class EconomicGrowthController {
         return result;
     }
 
-    // 1인당 국민 총 소득
+    // 1인당 국민 총 소득 및 국가 채무 현황
     @ResponseBody
     @GetMapping("/api/getStateDebt")
-    public Map<String, List<Map<String, Object>>> getStateDebt() throws Exception {
-        List<Map<String, Object>> dataList = (List<Map<String, Object>>) commonService.selectList(null, PAGE_ID + PROGRAM_ID + ".selectStateDebt");
+    public Map<String, List<Map<String, Object>>> getStateDebt(String parameter) throws Exception {
+        Map<String, String> dataMap = new HashMap<>();
+
+        if(parameter.contains("-")){
+            parameter = parameter.replaceAll("[-]", "");
+            String[] periods = parameter.split("  ");
+            dataMap.put("searchStartDate", periods[0]);
+            dataMap.put("searchEndDate", periods[1]);
+        }else{
+            dataMap.put("searchPeriod", parameter);
+        }
+
+        List<Map<String, Object>> gni = new ArrayList<>();
+        List<Map<String, Object>> debt = new ArrayList<>();
+
+        if(dataMap.size() <= 1) {
+            gni = (List<Map<String, Object>>) commonService.selectList(dataMap, PAGE_ID + ".StandardOfLiving" + ".selectGrossNationalIncome");
+            debt = (List<Map<String, Object>>) commonService.selectList(dataMap, PAGE_ID + PROGRAM_ID + ".selectStateDebt");
+        }else{
+            gni = (List<Map<String, Object>>) commonService.selectList(dataMap, PAGE_ID + ".StandardOfLiving" + ".selectGrossNationalIncomeDetail");
+            debt = (List<Map<String, Object>>) commonService.selectList(dataMap, PAGE_ID + PROGRAM_ID + ".selectStateDebtDetail");
+        }
 
         Map<String, List<Map<String, Object>>> result = new HashMap<>();
 
-        result.put("stateDebt", dataList);
+        result.put("gni", gni);
+        result.put("debt", debt);
 
         return result;
     }
-
-    // 국가 채무 현황
-
 }

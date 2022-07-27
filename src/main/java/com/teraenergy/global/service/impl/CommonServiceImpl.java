@@ -24,13 +24,12 @@ import java.util.Map;
 public class CommonServiceImpl implements CommonService {
 
 	private final ApiKeyConfiguration apiKeyConfiguration;
+    @Resource(name="commonMapper")
+	private CommonMapper commonMapper;
 
 	public CommonServiceImpl(ApiKeyConfiguration apiKeyConfiguration) {
 		this.apiKeyConfiguration = apiKeyConfiguration;
 	}
-
-    @Resource(name="commonMapper")
-	private CommonMapper commonMapper;
 
 	@Override
     public List<?> selectList(final Object paramDTO, final String queryId) throws Exception {
@@ -167,13 +166,32 @@ public class CommonServiceImpl implements CommonService {
 
 	public JSONArray apiJsonParser(StringBuilder stringBuilder) throws ParseException {
 		JSONParser jsonParser = new JSONParser();
-		return (JSONArray) jsonParser.parse(String.valueOf(stringBuilder));
+		try{
+            return (JSONArray) jsonParser.parse(String.valueOf(stringBuilder));
+        }catch(Exception e){
+            JSONArray sendData = new JSONArray();
+            org.json.simple.JSONObject dataContent = (org.json.simple.JSONObject) jsonParser.parse(String.valueOf(stringBuilder));
+            dataContent.put("RESULT", "Fail");
+
+            sendData.add(dataContent);
+            System.out.println(sendData);
+            return sendData;
+        }
 	}
 	public JSONArray ecosApiJsonParser(StringBuilder stringBuilder, String statistic) throws ParseException {
 		JSONParser jsonParser = new JSONParser();
 		org.json.simple.JSONObject jsonObject = (org.json.simple.JSONObject) jsonParser.parse(String.valueOf(stringBuilder));
-		org.json.simple.JSONObject root = (org.json.simple.JSONObject) jsonObject.get(statistic);
-		return (JSONArray) root.get("row");
+        try {
+            org.json.simple.JSONObject root = (org.json.simple.JSONObject) jsonObject.get(statistic);
+            return (JSONArray) root.get("row");
+        }catch(Exception e){
+            org.json.simple.JSONObject root = (org.json.simple.JSONObject) jsonObject.get("RESULT");
+            root.put("RESULT", "Fail");
+            JSONArray sendData = new JSONArray();
+            sendData.add(root);
+//            root.put("row", sendData);
+            return sendData;
+        }
 	}
 
     public org.json.JSONObject apiXmlParser(StringBuilder stringBuilder) {

@@ -44,11 +44,6 @@ ecGrowthLoc.click(function (e) {
     }
 });
 
-// 데이터 호출 함수
-// window.onload = function(){
-//     getExchangeRate();
-// }
-
 let errorMsg = "데이터 호출 에러";
 
 function getExchangeRate(){
