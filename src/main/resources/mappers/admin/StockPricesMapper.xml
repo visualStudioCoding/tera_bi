@@ -34,6 +34,19 @@
                               , mon_dt = #{monDt}
                               , dy_dt  = #{dyDt}
     </insert>
+    <insert id="insertOilPrice" parameterType="hashMap">
+        INSERT INTO oil_price
+        ( yr_dt
+        , mon_dt
+        , unit
+        , val)
+        VALUES ( #{yrDt}
+               , #{monDt}
+               , #{unit}
+               , #{val})
+        ON DUPLICATE KEY UPDATE yr_dt  = #{yrDt}
+                              , mon_dt = #{monDt}
+    </insert>
     <insert id="insertBirth" parameterType="hashMap">
         INSERT INTO birth_progress
         ( yr_dt
@@ -96,5 +109,10 @@
               (SELECT MAX(mon_dt)
                FROM kosdaq_index
                WHERE yr_dt = (SELECT MAX(yr_dt) FROM kosdaq_index))
+    </select>
+    <select id="oilMaxDate" resultType="hashMap">
+        SELECT MAX(yr_dt) AS yrDt, MAX(mon_dt) AS monDt
+        FROM oil_price
+        WHERE yr_dt = (SELECT MAX(yr_dt) FROM oil_price)
     </select>
 </mapper>

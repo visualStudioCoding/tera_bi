@@ -90,6 +90,40 @@ public class StockPricesController {
         return result;
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    @ResponseBody
+    @GetMapping("/api/oilPrice")
+    public Object getOilPrice(String url, String parameter) throws Exception {
+        Map<String, Object> result = new HashMap<>();
+        String format = "json";
+        String site = "ecos";
+        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+
+        JSONArray jsonList = commonService.ecosApiJsonParser(stringBuilder, "StatisticSearch");
+
+        Map<String, Object> dataMap = new HashMap<>();
+
+        List<Map<String, Object>> dataList = new ArrayList<>();
+        for (Object jsonObject : jsonList) {
+            JSONObject jsonData = (JSONObject) jsonObject;
+
+            String dataValue = (String) jsonData.get("DATA_VALUE");
+            String date = (String) jsonData.get("TIME");
+            String year = date.substring(0, 4);
+            String month = date.substring(4, 6);
+
+            dataMap.put("yrDt", year);
+            dataMap.put("monDt", month);
+            dataMap.put("unit", "달러/배럴");
+            dataMap.put("val", dataValue);
+            dataList.add(dataMap);
+            commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertOilPrice");
+        }
+        result.put("data", dataList);
+        result.put("success", "성공");
+        return result;
+    }
+
     /*@Transactional(rollbackFor = Exception.class)
     @ResponseBody
     @GetMapping("/api/compositeIndex")

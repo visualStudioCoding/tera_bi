@@ -7,27 +7,27 @@
         <div class="nav-wrap">
             <ul class="nav">
                 <li>
-                    <a href="/front/economicGrowth/main" class="nav-link on" aria-current="page">
+                    <a href="/front/economicGrowth/main?menuCode=001" class="nav-link <#if menuCode = '001'>on</#if>" aria-current="page">
                         <span><i class="ri-funds-box-fill"></i>경제성장지표</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/front/standardOfLiving/main" class="nav-link">
+                    <a href="/front/standardOfLiving/main?menuCode=002" class="nav-link<#if menuCode = '002'>on</#if>">
                         <span><i class="ri-pie-chart-2-fill"></i>생활수준지표</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/front/stockPrices/main" class="nav-link">
+                    <a href="/front/stockPrices/main?menuCode=003" class="nav-link <#if menuCode = '003'>on</#if>">
                         <span><i class="ri-line-chart-fill"></i>종합주가지수</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/front/realEstate/main" class="nav-link"
+                    <a href="/front/realEstate/main?menuCode=004" class="nav-link <#if menuCode = '004'>on</#if>"
                     ><span><i class="ri-building-fill"></i>부동산시장동향</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/front/lifeSatisfaction/main" class="nav-link">
+                    <a href="/front/lifeSatisfaction/main?menuCode=005" class="nav-link <#if menuCode = '005'>on</#if>">
                         <span><i class="ri-file-list-3-fill"></i>경영지표분석</span>
                     </a>
                 </li>
