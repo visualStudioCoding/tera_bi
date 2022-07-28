@@ -27,4 +27,6 @@ function getExchangeRate(){
 
 $("#termSetting").click(function(){
     getStateDebtSetPeriod();
+    getInflChart();
+    getEnmcGrrt();
 });

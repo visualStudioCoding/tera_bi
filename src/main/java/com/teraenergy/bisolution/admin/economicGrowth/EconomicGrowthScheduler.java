@@ -32,11 +32,16 @@ public class EconomicGrowthScheduler {
 // 초    분     시    일    월    요일
 
 //      기준금리
-    @Scheduled(cron = "* 30 8 * * *")
+    @Scheduled(cron = "* 00 10 * * *")
     @Transactional(rollbackFor = Exception.class)
     public void monthlyExchangeRateScheduler() throws Exception {
+
+        LocalDate now = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String formatedNow = now.format(formatter);
+
         String url = "https://ecos.bok.or.kr/api/";
-        String parameter = "StatisticSearch/apiKey/json/kr/1/10000/722Y001/D/20220725/20220725/0101000/?/?/";
+        String parameter = "StatisticSearch/apiKey/json/kr/1/10000/722Y001/D/" + formatedNow + "/" + formatedNow + "/0101000/?/?/";
 
         String format = "json";
         String site = "ecos";
@@ -46,8 +51,6 @@ public class EconomicGrowthScheduler {
 
         JSONArray jsonList = commonService.ecosApiJsonParser(stringBuilder, "StatisticSearch");
         Map<String, Object> dataMap = new HashMap<>();
-
-        Map<String, String> compareBase = (Map<String, String>) commonService.selectContents(null,PAGE_ID + PROGRAM_ID + ".compareBaseRate");
 
         for(Object jsonObject : jsonList){
             JSONObject jsonData = (JSONObject) jsonObject;
@@ -77,12 +80,16 @@ public class EconomicGrowthScheduler {
     }
 
     //환율
-    @Scheduled(cron = "* 30 8 * * *")
+    @Scheduled(cron = "* 30 11 * * *")
     @Transactional(rollbackFor = Exception.class)
     public void getExchangeRate() throws Exception {
 
+        LocalDate now = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String formatedNow = now.format(formatter);
+
         String url = "https://ecos.bok.or.kr/api/";
-        String parameter = "StatisticSearch/apiKey/json/kr/1/10000/731Y001/D/20220727/20220727/0000001/?/?/";
+        String parameter = "StatisticSearch/apiKey/json/kr/1/10000/731Y001/D/" + formatedNow + "/" + formatedNow + "/0000001/?/?/";
 
         String[] typeList = {"0000001", "0000053", "0000002", "0000003"};
 

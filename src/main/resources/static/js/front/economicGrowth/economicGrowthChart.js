@@ -24,10 +24,17 @@ let covidYear = [];
 // 경제성장률 AJAX
 function getEnmcGrrt() {
 
+    let period =  $("input[name=term]:checked").val();
+
+    if(period == 'on'){
+        period =  $("input[name=termDatePicker]").val();
+    }
+    console.log(period);
+
     let callBackFn = function (data) {
         fnRegionChartOp(data);
     }
-    commonAjax("/front/economicGrowth/api/getEconomicGrowth", callBackFn, "get", null, errorMsg);
+    commonAjax("/front/economicGrowth/api/getEconomicGrowth", callBackFn, "get", period, errorMsg);
 }
 
 // 코로나 시기 경제성장률 AJAX
@@ -194,10 +201,17 @@ let inflChartOp;
 // });
 function getInflChart() {
 
+    let period =  $("input[name=term]:checked").val();
+
+    if(period == 'on'){
+        period =  $("input[name=termDatePicker]").val();
+    }
+    console.log(period);
+
     let callBackFn = function (data) {
         run(data);
     }
-    commonAjax("/front/economicGrowth/api/getInflationRatePeriod", callBackFn, "get", null, errorMsg);
+    commonAjax("/front/economicGrowth/api/getInflationRatePeriod", callBackFn, "get", period, errorMsg);
 }
 
 function run(_rawData) {
@@ -216,7 +230,7 @@ function run(_rawData) {
                 type: "filter",
                 config: {
                     and: [
-                        { dimension: "Year", gte: 2018 },
+                        { dimension: "Year", gte: 1980 },
                         { dimension: "Category", "=": ctg },
                     ],
                 },
@@ -273,7 +287,7 @@ function run(_rawData) {
             containLabel: true,
             top: 30,
             left: 25,
-            right: 20,
+            right: 45,
             bottom: 0,
         },
         textStyle: {
@@ -292,16 +306,16 @@ let gdpDeptGraphOp;
 function fngdpDeptGraphOp(data) {
 
     let period = [];
-    let gni = [];
-    let gdi = [];
+    let realGDP = [];
+    let nmnlGDP = [];
     let debt = [];
     let unit = null;
 
-    for (var i = 0; i < data.gni.length; i++) {
-        period.push(data.gni[i].yr_dt);
-        gni.push(data.gni[i].gni_val);
-        gdi.push(data.gni[i].gdi_val);
-        unit = data.gni[i].unit;
+    for (var i = 0; i < data.gdp.length; i++) {
+        period.push(data.gdp[i].yr_dt);
+        realGDP.push(data.gdp[i].real_val * 0.001);
+        nmnlGDP.push(data.gdp[i].nmnl_val * 0.001);
+        unit = "조원";
     }
 
     for (var i = 0; i < data.debt.length; i++) {
@@ -389,8 +403,8 @@ function fngdpDeptGraphOp(data) {
 
     gdpDeptGraphOp.xAxis[0].data = period
     gdpDeptGraphOp.series[0].data = debt
-    gdpDeptGraphOp.series[1].data = gni
-    gdpDeptGraphOp.series[2].data = gdi
+    gdpDeptGraphOp.series[1].data = nmnlGDP
+    gdpDeptGraphOp.series[2].data = realGDP
 
 
     gdpDeptChart.setOption(gdpDeptGraphOp);

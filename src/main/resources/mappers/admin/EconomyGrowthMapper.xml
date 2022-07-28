@@ -17,13 +17,20 @@
             yr_dt = #{yr_dt}
     </insert>
 
-    <!--  GDP  -->
-    <insert id="insertGDP" parameterType="hashMap">
+    <!--  RealGDP Insert  -->
+    <insert id="insertRealGDP" parameterType="hashMap">
         INSERT INTO gdp
-            (yr_dt, unit, val)
+            (yr_dt, unit, real_val)
         VALUES (#{yr_dt}, #{unit}, #{val}) ON DUPLICATE KEY
         UPDATE
             yr_dt = #{yr_dt}
+    </insert>
+
+    <!--  NMNL GDP Update -->
+    <insert id="insertNmnlGDP" parameterType="hashMap">
+        UPDATE gdp
+        SET nmnl_val = #{val}
+        WHERE yr_dt = #{yr_dt}
     </insert>
 
     <!--  GDI  -->

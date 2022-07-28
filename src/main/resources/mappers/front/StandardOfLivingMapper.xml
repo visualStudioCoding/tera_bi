@@ -2,21 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="bi.front.StandardOfLiving">
 
-    <!--  1.인당 국민 총소득(실질, 명목)  -->
-    <select id="selectGrossNationalIncome" parameterType="hashMap" resultType="hashMap">
-        SELECT yr_dt, unit, gdi_val, gni_val
-        FROM gni_capita
-        WHERE yr_dt BETWEEN (SELECT yr_dt FROM national_debt ORDER BY yr_dt DESC LIMIT 1) - #{searchPeriod} AND (
-        SELECT yr_dt
-        FROM national_debt
-        ORDER BY yr_dt DESC LIMIT 1)
-    </select>
+<!--    &lt;!&ndash;  1.인당 국민 총소득(실질, 명목)  &ndash;&gt;-->
+<!--    <select id="selectGrossNationalIncome" parameterType="hashMap" resultType="hashMap">-->
+<!--        SELECT yr_dt, unit, gdi_val, gni_val-->
+<!--        FROM gni_capita-->
+<!--        WHERE yr_dt BETWEEN (SELECT yr_dt FROM national_debt ORDER BY yr_dt DESC LIMIT 1) - #{searchPeriod} AND (-->
+<!--        SELECT yr_dt-->
+<!--        FROM national_debt-->
+<!--        ORDER BY yr_dt DESC LIMIT 1)-->
+<!--    </select>-->
 
-    <!--  1.인당 국민 총소득(실질, 명목) 기간 세부 설정  -->
-    <select id="selectGrossNationalIncomeDetail" parameterType="hashMap" resultType="hashMap">
-        SELECT yr_dt, unit, gdi_val, gni_val
-        FROM gni_capita
-        WHERE yr_dt BETWEEN YEAR(#{searchStartDate}) AND YEAR(#{searchEndDate})
-    </select>
+<!--    &lt;!&ndash;  1.인당 국민 총소득(실질, 명목) 기간 세부 설정  &ndash;&gt;-->
+<!--    <select id="selectGrossNationalIncomeDetail" parameterType="hashMap" resultType="hashMap">-->
+<!--        SELECT yr_dt, unit, gdi_val, gni_val-->
+<!--        FROM gni_capita-->
+<!--        WHERE yr_dt BETWEEN YEAR(#{searchStartDate}) AND YEAR(#{searchEndDate})-->
+<!--    </select>-->
 
 </mapper>

@@ -34,7 +34,7 @@ public class EconomicGrowthController {
     @GetMapping("/main")
     public String economicGrowthMain() throws Exception {
         log.info(PAGE_ID + DIRECTORY + "List");
-        commonService.selectList(null,PAGE_ID + PROGRAM_ID + ".selectStateDebt");
+        commonService.selectList(null, PAGE_ID + PROGRAM_ID + ".selectStateDebt");
         return PAGE_ID + DIRECTORY + "Main";
     }
 
@@ -58,13 +58,13 @@ public class EconomicGrowthController {
         Map<String, Object> dataMap = new HashMap<>();
         Map<String, Object> result = new HashMap<>();
 
-        for(Object jsonObject : jsonList){
+        for (Object jsonObject : jsonList) {
             JSONObject jsonData = (JSONObject) jsonObject;
 
-            if("Fail".equals(jsonData.get("RESULT"))){
+            if ("Fail".equals(jsonData.get("RESULT"))) {
                 dataMap.put("err", jsonData.get("CODE"));
                 message = (String) jsonData.get("MESSAGE");
-            }else {
+            } else {
                 String baseMoneyRate = (String) jsonData.get("DATA_VALUE");
                 String unit = (String) jsonData.get("UNIT_NAME");
                 String date = (String) jsonData.get("TIME");
@@ -105,8 +105,8 @@ public class EconomicGrowthController {
 
         for (int i = 0; i < typeList.length; i++) {
             System.out.println(typeList[i]);
-            if(i >= 1){
-                parameter = parameter.replace(typeList[i-1], typeList[i]);
+            if (i >= 1) {
+                parameter = parameter.replace(typeList[i - 1], typeList[i]);
             }
             System.out.println(parameter);
 
@@ -123,10 +123,10 @@ public class EconomicGrowthController {
             for (Object jsonObject : jsonList) {
                 JSONObject jsonData = (JSONObject) jsonObject;
 
-                if("Fail".equals(jsonData.get("RESULT"))){
+                if ("Fail".equals(jsonData.get("RESULT"))) {
                     dataMap.put("err", jsonData.get("CODE"));
                     message = (String) jsonData.get("MESSAGE");
-                }else {
+                } else {
                     String typeBf = jsonData.get("ITEM_NAME1").toString();
                     String type = null;
 
@@ -144,7 +144,13 @@ public class EconomicGrowthController {
                     dataMap.put("yr_dt", year);
                     dataMap.put("mon_dt", month);
                     dataMap.put("dy_dt", day);
-                    dataMap.put("type", type);
+                    if (type == "원/달러") {
+                        dataMap.put("type", "원/미국달러");
+                    } else if (type == "원/일본엔(100엔)") {
+                        dataMap.put("type", "원/엔(100엔)");
+                    } else {
+                        dataMap.put("type", type);
+                    }
                     dataMap.put("unit", unit);
                     dataMap.put("val", exMoneyRate);
                     System.out.println(dataMap);
@@ -169,11 +175,12 @@ public class EconomicGrowthController {
         List<ArrayList> resultList = (List<ArrayList>) commonService.selectList(dataMap, PAGE_ID + PROGRAM_ID + ".selectStateDebt");
 
         result.put("title", "국가채무현황");
-        result.put("datas",resultList);
+        result.put("datas", resultList);
         result.put("result", "success");
 
         return result;
     }
+
     // 국가채무현황
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
@@ -192,12 +199,12 @@ public class EconomicGrowthController {
         Map<String, Object> result = new HashMap<>();
         Map<String, Object> dataMap = new HashMap<>();
 
-        for(Object jsonObject : jsonList){
+        for (Object jsonObject : jsonList) {
             JSONObject jsonData = (JSONObject) jsonObject;
-            if("Fail".equals(jsonData.get("RESULT"))){
+            if ("Fail".equals(jsonData.get("RESULT"))) {
                 dataMap.put("err", jsonData.get("err"));
                 message = (String) jsonData.get("errMsg");
-            }else {
+            } else {
                 if ("국가채무".equals((String) jsonData.get("C1_NM"))) {
                     String year = (String) jsonData.get("PRD_DE");
                     String unit = (String) jsonData.get("UNIT_NM");
@@ -222,10 +229,10 @@ public class EconomicGrowthController {
         return result;
     }
 
-    // 경제활동별 GDP 및 GNI
+    // 경제활동별 GDI 및 GNI
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
-    @GetMapping("/api/getGdpAndGni")
+    @GetMapping("/api/getGdiAndGni")
     public Object getGdpAndGni(String url, String parameter) throws Exception {
         System.out.println(url);
         System.out.println(parameter);
@@ -243,17 +250,13 @@ public class EconomicGrowthController {
         Map<String, Object> result = new HashMap<>();
         Map<String, Object> dataMap = new HashMap<>();
 
-        for(Object jsonObject : jsonList){
+        for (Object jsonObject : jsonList) {
             JSONObject jsonData = (JSONObject) jsonObject;
-            if("Fail".equals(jsonData.get("RESULT"))){
+            if ("Fail".equals(jsonData.get("RESULT"))) {
                 dataMap.put("err", jsonData.get("err"));
                 message = (String) jsonData.get("errMsg");
-            }else {
-                if ("국내총생산(시장가격 GDP)".equals((String) jsonData.get("C1_NM"))) {
-                    year = (String) jsonData.get("PRD_DE");
-                    unit = (String) jsonData.get("UNIT_NM");
-                    val = (String) jsonData.get("DT");
-                } else if ("국내총소득(GDI)".equals((String) jsonData.get("C1_NM"))) {
+            } else {
+                if ("국내총소득(GDI)".equals((String) jsonData.get("C1_NM"))) {
                     year = (String) jsonData.get("PRD_DE");
                     unit = (String) jsonData.get("UNIT_NM");
                     val = (String) jsonData.get("DT");
@@ -266,9 +269,7 @@ public class EconomicGrowthController {
                 dataMap.put("unit", unit);
                 dataMap.put("val", val);
 
-                if ("국내총생산(시장가격 GDP)".equals((String) jsonData.get("C1_NM"))) {
-                    commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertGDP");
-                } else if ("국내총소득(GDI)".equals((String) jsonData.get("C1_NM"))) {
+                if ("국내총소득(GDI)".equals((String) jsonData.get("C1_NM"))) {
                     commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertGDI");
                 } else if ("국민총소득(GNI)".equals((String) jsonData.get("C1_NM"))) {
                     commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertGNI");
@@ -276,6 +277,69 @@ public class EconomicGrowthController {
             }
         }
         result.put("data", dataMap);
+        result.put("success", message);
+
+        return result;
+    }
+
+    //  GDP
+    @Transactional(rollbackFor = Exception.class)
+    @ResponseBody
+    @GetMapping("/api/getGdp")
+    public Object getGdp(String url, String parameter) throws Exception {
+
+        System.out.println(parameter);
+        System.out.println(url);
+
+        //kosis = json, enara = xml
+        String format = "json";
+        String site = "ecos";
+        String message = "성공";
+
+        String[] tblCd = {"200Y009", "200Y010"};
+
+        Map<String, Object> result = new HashMap<>();
+
+        for (int i = 0; i < tblCd.length; i++) {
+            Map<String, Object> dataMap = new HashMap<>();
+
+            if(i == 1) {
+
+                String[] splitParams = parameter.split(tblCd[0]);
+
+                parameter = splitParams[0] + tblCd[1] + splitParams[1];
+
+            }
+
+            StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+
+            JSONArray jsonList = commonService.ecosApiJsonParser(stringBuilder, "StatisticSearch");
+
+            for (Object jsonObject : jsonList) {
+                JSONObject jsonData = (JSONObject) jsonObject;
+
+                if ("Fail".equals(jsonData.get("RESULT"))) {
+                    dataMap.put("err", jsonData.get("CODE"));
+                    message = (String) jsonData.get("MESSAGE");
+                } else {
+                    String GDP = (String) jsonData.get("DATA_VALUE");
+                    String unit = (String) jsonData.get("UNIT_NAME");
+                    String yrDt = (String) jsonData.get("TIME");
+
+                    dataMap.put("yr_dt", yrDt);
+                    dataMap.put("unit", unit);
+                    dataMap.put("val", GDP);
+                    System.out.println(dataMap);
+
+                    if(i == 1){
+                        commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertNmnlGDP");
+                    }else {
+                        commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertRealGDP");
+                    }
+                }
+            }
+        }
+
         result.put("success", message);
 
         return result;
@@ -299,7 +363,7 @@ public class EconomicGrowthController {
         Map<String, Object> dataMap = new HashMap<>();
         Map<String, Object> result = new HashMap<>();
 
-        for(Object jsonObject : jsonArray) {
+        for (Object jsonObject : jsonArray) {
             JSONObject jsonData = (JSONObject) jsonObject;
 
             if ("Fail".equals(jsonData.get("RESULT"))) {
@@ -327,7 +391,7 @@ public class EconomicGrowthController {
         return result;
     }
 
-//    소비자/근원/생활 물가 상승률
+    //    소비자/근원/생활 물가 상승률
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
     @GetMapping("/api/getInflationRate")
@@ -400,7 +464,7 @@ public class EconomicGrowthController {
         String unit = null;
         String message = "성공";
 
-        for(Object jsonObject : jsonArray) {
+        for (Object jsonObject : jsonArray) {
             JSONObject jsonData = (JSONObject) jsonObject;
 
             if ("Fail".equals(jsonData.get("RESULT"))) {
@@ -428,7 +492,7 @@ public class EconomicGrowthController {
             }
         }
 
-        result.put("data",dataMap);
+        result.put("data", dataMap);
         result.put("success", message);
 
         return result;

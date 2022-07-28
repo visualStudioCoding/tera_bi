@@ -94,7 +94,7 @@ function getEcosParam(form){
     let ecosParam = form.serviceNm.value
                 + "/apiKey/" + form.resultType.value
                 + "/kr/1/10000/" + form.tableCode.value
-                + "/D/" + startDt + "/" + endDt + "/"
+                + "/" + form.cycle.value + "/" + startDt + "/" + endDt + "/"
                 + form.itmCode.value + "/?/?/?"
 
     return ecosParam;
@@ -147,7 +147,7 @@ function getStateDebt() {
     kosisApiAjax("/admin/economicGrowth/api/getStateDebt", callBackFn, 'get', params, errorMsg);
 }
 
-function getGdpAndGni() {
+function getGdiAndGni() {
     let formData = document.forms["gdpAndgni_opt"]
 
     let params = getKosisParam(formData)
@@ -159,7 +159,22 @@ function getGdpAndGni() {
     }
     //공통모듈 ajax 함수 호출하기
     // kosisApiAjax("/getIncome", callBackFn, 'get', kosisParam, errorMsg);
-    kosisApiAjax("/admin/economicGrowth/api/getGdpAndGni", callBackFn, 'get', params, errorMsg);
+    kosisApiAjax("/admin/economicGrowth/api/getGdiAndGni", callBackFn, 'get', params, errorMsg);
+}
+
+function getGDP() {
+    let formData = document.forms["getGDP_opt"];
+
+    let params = getEcosParam(formData);
+
+    //ajax가 정상 호출 되었을때 실행 되는 함수
+    let callBackFn = function( data ) {
+        alert(data.success);
+        console.log(data.data)
+    }
+    //공통모듈 ajax 함수 호출하기
+    // kosisApiAjax("/getIncome", callBackFn, 'get', kosisParam, errorMsg);
+    ecosApiAjax("/admin/economicGrowth/api/getGdp", callBackFn, 'get', params, errorMsg);
 }
 
 function getGrowthRate(){
