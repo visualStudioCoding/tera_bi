@@ -3,9 +3,9 @@ const errorMsg = "데이터 호출 실패";
 // 데이터 호출 함수
 window.onload = function () {
     getGdp();
-    getCovidKospi();
-    getKospi();
-    getInflYear();
+    // getCovidKospi();
+    // getKospi();
+    // getInflYear();
 }
 
 // GDP 차트
@@ -13,10 +13,10 @@ function getGdp(){
     let callBackFn = function (data) {
         fnGdpChart(data);
     }
-    let period =  $("input[name=ecGrowthTerm]:checked").val();
+    let period =  $("input[name=term]:checked").val();
 
     if(period === 'on'){
-        period =  $("input[name=ecGrowthDatePicker]").val();
+        period =  $("input[name=termDatePicker]").val();
     }
     commonAjax("/front/economicGrowth/api/getStateDebt", callBackFn, "get", period, errorMsg);
 }

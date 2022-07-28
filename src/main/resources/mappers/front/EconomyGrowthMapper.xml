@@ -20,11 +20,11 @@
     <select id="selectExchangeRate" parameterType="hashMap" resultType="hashMap">
         SELECT *
         FROM exchn_rate
-        WHERE type = '원/미국달러'
+        WHERE type = '원/달러'
           AND CONCAT(yr_dt, mon_dt, dy_dt) =
               (SELECT CONCAT(yr_dt, mon_dt, dy_dt)
                FROM exchn_rate
-               WHERE type = '원/미국달러'
+               WHERE type = '원/달러'
                ORDER BY CONCAT(yr_dt, mon_dt, dy_dt) DESC
             LIMIT 1)
     </select>
@@ -32,11 +32,11 @@
     <select id="selectExchangeRateCompare" parameterType="hashMap" resultType="hashMap">
         SELECT *
         FROM exchn_rate
-        WHERE type = '원/미국달러'
+        WHERE type = '원/달러'
           AND CONCAT(yr_dt, mon_dt, dy_dt) =
               (SELECT CONCAT(yr_dt, mon_dt, dy_dt)
                FROM exchn_rate
-               WHERE type = '원/미국달러'
+               WHERE type = '원/달러'
                ORDER BY CONCAT(yr_dt, mon_dt, dy_dt) DESC
             LIMIT 1
         OFFSET 1)
