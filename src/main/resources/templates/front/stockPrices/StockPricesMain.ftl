@@ -26,6 +26,9 @@
                                         <span class="sub-txt">
                                         ▼ ${kospiIndex.subtraction} (${kospiIndex.subRate?number}%)
                                         </span>
+                                    <#elseif kospiIndex.current?number == kospiIndex.past?number>
+                                        <b class="center-txt">${kospiIndex.current} %</b>
+                                        <span class="sub-txt">변동없음</span>
                                     <#else>
                                         <span class="txt">${kospiIndex.current}</span>
                                         <span class="sub-txt">
@@ -56,6 +59,11 @@
                                     <span class="sub-txt down">
                                         ▼ ${exchangeRate.subtraction} (${exchangeRate.subRate}%)
                                     </span>
+                                <#elseif exchangeRate.current?number == exchangeRate.past?number>
+                                    <b class="center-txt">${exchangeRate.current} %</b>
+                                    <span class="sub-txt">
+                                    변동없음
+                                </span>
                                 <#else>
                                     <b class="center-txt">${exchangeRate.current}</b>
                                     <span class="sub-txt up">
@@ -66,7 +74,7 @@
                         </div>
                         <div class="card">
                             <figure class="icon">
-                                <i class="ri-coin-line"></i></i>
+                                <i class="ri-coin-line"></i>
                             </figure>
                             <div class="txt-wrap">
                                 <h6 class="tit">기준금리</h6>
@@ -75,6 +83,11 @@
                                     <span class="sub-txt down">
                                         ▼ ${baseRate.subtraction} (${baseRate.subRate}%)
                                     </span>
+                                <#elseif baseRate.current?number == baseRate.past?number>
+                                    <b class="center-txt">${baseRate.current} %</b>
+                                    <span class="sub-txt">
+                                    변동없음
+                                </span>
                                 <#else>
                                     <b class="center-txt">${baseRate.current}</b>
                                     <span class="sub-txt up">
@@ -101,6 +114,9 @@
                                     <span class="sub-txt down">
                                         ▼ ${kosdaqIndex.subtraction} (${kosdaqIndex.subRate}%)
                                     </span>
+                                <#elseif kosdaqIndex.current?number == kosdaqIndex.past?number>
+                                    <b class="center-txt">${kosdaqIndex.current} %</b>
+                                    <span class="sub-txt">변동없음</span>
                                 <#else>
                                     <b class="center-txt">${kosdaqIndex.current}</b>
                                     <span class="sub-txt up">
@@ -118,15 +134,18 @@
                                 <#if oilPrice.current?number lt oilPrice.past?number>
                                     <b class="center-txt">${oilPrice.current}</b>
                                     <span class="sub-txt down">
-                                        ▼ ${oilPrice.subtraction}
+                                        ▼ ${oilPrice.subtraction} (${oilPrice.subRate}%)
                                     </span>
+                                <#elseif oilPrice.current?number == oilPrice.past?number>
+                                    <b class="center-txt">${oilPrice.current} %</b>
+                                    <span class="sub-txt">변동없음</span>
                                 <#else>
                                     <b class="center-txt">${oilPrice.current}</b>
                                     <span class="sub-txt up">
-                                        ▲ ${oilPrice.subtraction}
+                                        ▲ ${oilPrice.subtraction} (${oilPrice.subRate}%)
                                     </span>
                                 </#if>
-                                <span class="sub-txt">단위: 달러</span>
+                                <span class="sub-txt">단위 : ${oilPrice.unit}</span>
                             </div>
                         </div>
                     </div>

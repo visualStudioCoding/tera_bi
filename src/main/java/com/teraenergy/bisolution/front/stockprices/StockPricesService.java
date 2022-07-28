@@ -13,30 +13,35 @@ public class StockPricesService {
     @Resource(name = "commonService")
     private CommonService commonService;
 
-
     public Map<String, Object> getOffsetMap(String programId, String pageId, String queryId) throws Exception {
 
-        Map<String, Object> data = (Map<String, Object>) commonService.selectContents(null, pageId + programId + queryId);
+        Map<String, String> recent = new HashMap<>();
+        recent.put("recent", "recent");
+        Map<String, Object> data = (Map<String, Object>) commonService.selectContents(recent, pageId + programId + queryId);
 
-        String offset = "Offset";
+        Map<String, String> offset = new HashMap<>();
+        offset.put("offset", "offset");
+        if (queryId.equals(".selectBaseRate")) {
+            queryId = ".selectBaseRateCompare";
+        } else if(queryId.equals(".selectExchangeRate")) queryId = ".selectExchangeRateCompare";
+        Map<String, Object> dataOffset = (Map<String, Object>) commonService.selectContents(offset, pageId + programId + queryId);
 
-        if(programId.equals(".EconomicGrowth")) offset = "Compare";
-        Map<String, Object> dataOffset = (Map<String, Object>) commonService.selectContents(null, pageId + programId + queryId + offset);
+        float dataFloat = (Float) data.get("val");
+        float dataFloatOffset = (Float) dataOffset.get("val");
+        String unit = (String) data.get("unit");
 
-        Float dataFloat = (Float) data.get("val");
-        Float dataFloatOffset = (Float) dataOffset.get("val");
-
-        return getOffset(dataFloat, dataFloatOffset);
+        return getOffset(dataFloat, dataFloatOffset, unit);
     }
-    private Map<String, Object> getOffset(Float data, Float dataOffset) {
 
-        Float subtraction = null;
-        Float subRate = null;
+    private Map<String, Object> getOffset(float data, float dataOffset, String unit) {
 
-        if(data < dataOffset){
+        float subtraction;
+        float subRate;
+
+        if (data < dataOffset) {
             subRate = (dataOffset - data) / data * 100;
             subtraction = dataOffset - data;
-        }else{
+        } else {
             subRate = (data - dataOffset) / data * 100;
             subtraction = data - dataOffset;
         }
@@ -45,12 +50,12 @@ public class StockPricesService {
 
         String tmpSubRate = String.format("%.2f", subRate);
         String tmpSubtraction = String.format("%.2f", subtraction);
-        result.put("current",Float.toString(data));
-        result.put("past",Float.toString(dataOffset));
+        result.put("current", Float.toString(data));
+        result.put("past", Float.toString(dataOffset));
         result.put("subRate", tmpSubRate);
         result.put("subtraction", tmpSubtraction);
+        result.put("unit", unit);
 
         return result;
     }
-
 }

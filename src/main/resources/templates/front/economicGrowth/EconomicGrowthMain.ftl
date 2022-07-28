@@ -96,8 +96,8 @@
                             </figure>
                             <div class="txt-wrap">
                                 <h6 class="tit">GDP</h6>
-                                <b class="center-txt">${gdpGni.GDP.val}</b>
-                                <span class="sub-txt">단위: ${gdpGni.GDP.unit}</span>
+<#--                                <b class="center-txt">${gdpGni.GDP.val}</b>-->
+<#--                                <span class="sub-txt">단위: ${gdpGni.GDP.unit}</span>-->
                             </div>
                         </div>
                         <div id="gniCard" class="card">
@@ -106,8 +106,8 @@
                             </figure>
                             <div class="txt-wrap">
                                 <h6 class="tit">GNI</h6>
-                                <b class="center-txt">${gdpGni.GNI.val}</b>
-                                <span class="sub-txt">단위: ${gdpGni.GNI.unit}</span>
+<#--                                <b class="center-txt">${gdpGni.GNI.val}</b>-->
+<#--                                <span class="sub-txt">단위: ${gdpGni.GNI.unit}</span>-->
                             </div>
                         </div>
                     </div>
