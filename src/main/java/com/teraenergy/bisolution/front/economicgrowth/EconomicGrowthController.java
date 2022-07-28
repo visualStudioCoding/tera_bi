@@ -141,11 +141,18 @@ public class EconomicGrowthController {
 
         Map<String, String> params = new HashMap<>();
 
-        params.put("searchPeriod", parameter);
+        LocalDate now = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy");
+        String currentYear = now.format(formatter);
 
-        System.out.println("-----------------------------------");
-        System.out.println(params);
-        System.out.println("-----------------------------------");
+        if (parameter.contains("-")) {
+            parameter = parameter.replaceAll("[-]", "");
+            String[] periods = parameter.split("  ");
+
+            params.put("searchDate", periods[0].substring(0,4));
+        } else {
+            params.put("searchDate", Integer.toString(Integer.parseInt(currentYear) - Integer.parseInt(parameter)));
+        }
 
         List<Map<String, Object>> dataList = (List<Map<String, Object>>) commonService.selectList(params, PAGE_ID + PROGRAM_ID + ".selectEconomicGrowthPeriod");
 //        Map<String, String> EmncGrrt = (Map<String, String>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".selectEnmcGrrtOne");
@@ -153,10 +160,6 @@ public class EconomicGrowthController {
         Map<String, List<Map<String, Object>>> result = new HashMap<>();
 
         result.put("emncGrrt", dataList);
-
-        System.out.println("-----------------------------------");
-        System.out.println(result);
-        System.out.println("-----------------------------------");
 
         return result;
     }
@@ -197,7 +200,7 @@ public class EconomicGrowthController {
             params.put("searchStartDate", periods[0].substring(0,6));
             params.put("searchEndDate", periods[1].substring(0,6));
         } else {
-            params.put("yr_dt", Integer.toString(Integer.parseInt(currentYear) - Integer.parseInt(parameter)));
+            params.put("searchDate", Integer.toString(Integer.parseInt(currentYear) - Integer.parseInt(parameter)));
         }
 
         List<Map<String, Object>> consume = new ArrayList<>();

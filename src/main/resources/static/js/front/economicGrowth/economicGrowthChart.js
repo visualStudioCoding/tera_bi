@@ -13,9 +13,7 @@ window.onload = function () {
 }
 
 // 데이터 배열
-let ctyNm = [];
 let unit = [];
-let rate = [];
 
 let covidGrowth = [];
 let covidYear = [];
@@ -26,13 +24,12 @@ function getEnmcGrrt() {
 
     let period =  $("input[name=term]:checked").val();
 
-    if(period == 'on'){
+    if(period === 'on'){
         period =  $("input[name=termDatePicker]").val();
     }
-    console.log(period);
-
     let callBackFn = function (data) {
         fnRegionChartOp(data);
+        
     }
     commonAjax("/front/economicGrowth/api/getEconomicGrowth", callBackFn, "get", period, errorMsg);
 }
@@ -60,10 +57,9 @@ function getStateDebtSetPeriod() {
 
     let period =  $("input[name=term]:checked").val();
 
-    if(period == 'on'){
+    if(period === 'on'){
         period =  $("input[name=termDatePicker]").val();
     }
-    console.log(period);
 
     let callBackFn = function (data) {
         fngdpDeptGraphOp(data);
@@ -74,14 +70,31 @@ function getStateDebtSetPeriod() {
 // 경제성장률 배열 데이터 추가 및 차트 선언
 function fnRegionChartOp(data) {
 
+    console.log(data)
+    let dataList = [];
+    let ctyNm = [];
+    let rate = [];
+
     for (var i = 0; i < data.emncGrrt.length; i++) {
         ctyNm.push(data.emncGrrt[i].cty_nm);
         unit.push(data.emncGrrt[i].unit);
         rate.push(data.emncGrrt[i].val);
     }
 
+    for (let i = 0; i < ctyNm.length; i++) {
+        if(i === 0){
+            dataList.push(["성장률", "지역"]);
+        }
+        if(ctyNm[i] === '전국'){
+            continue;
+        }
+        dataList.push([rate[i], ctyNm[i]]);
+    }
+
+    console.log(dataList)
+
     for (var i = 0; i < ctyNm.length; i++) {
-        if (ctyNm[i] == '전국') {
+        if (ctyNm[i] === '전국') {
             $("#wholeRegion").text(rate[i] + "%")
         }
     }
@@ -89,7 +102,6 @@ function fnRegionChartOp(data) {
     regionChartOp = {
         dataset: {
             source: [
-                ["성장률", "지역"]
             ],
         },
         grid: {containLabel: true, x: 0, y: 0, y2: 0},
@@ -132,10 +144,10 @@ function fnRegionChartOp(data) {
         },
     };
     for (let i = 0; i < ctyNm.length; i++) {
-        if(ctyNm[i] == "전국"){
+        if(ctyNm[i] === "전국"){
             continue;
         }
-        regionChartOp.dataset.source.push([rate[i], ctyNm[i]]);
+        regionChartOp.dataset.source = dataList;
     }
 
     regionChart.setOption(regionChartOp);
@@ -203,10 +215,9 @@ function getInflChart() {
 
     let period =  $("input[name=term]:checked").val();
 
-    if(period == 'on'){
+    if(period === 'on'){
         period =  $("input[name=termDatePicker]").val();
     }
-    console.log(period);
 
     let callBackFn = function (data) {
         run(data);
@@ -215,8 +226,6 @@ function getInflChart() {
 }
 
 function run(_rawData) {
-
-    console.log(_rawData);
 
     const category = ["소비", "근원", "생활"];
     const datasetWithFilters = [];

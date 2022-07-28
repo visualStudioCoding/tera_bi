@@ -13,7 +13,7 @@
     <select id="selectEconomicGrowthPeriod" parameterType="hashMap" resultType="hashMap">
         SELECT cty_nm, val
         FROM enmc_grrt
-        WHERE yr_dt = (SELECT yr_dt FROM enmc_grrt ORDER BY yr_dt DESC LIMIT 1) - #{searchPeriod}
+        WHERE yr_dt = #{searchDate}
     </select>
 
     <!-- 환율 -->
@@ -115,21 +115,21 @@
     <select id="selectCnsmrInrtPeriod" parameterType="hashMap" resultType="hashMap">
         SELECT val, '소비' AS category, CONCAT(yr_dt, '.', mon_dt) AS period
         FROM cnsmr_inrt
-        WHERE yr_dt = #{yr_dt}
+        WHERE yr_dt = #{searchDate}
     </select>
 
     <!--  근원 물가 상승률 차트 -->
     <select id="selectSrcInrtPeriod" parameterType="hashMap" resultType="hashMap">
         SELECT val, '근원' AS category, CONCAT(yr_dt, '.', mon_dt) AS period
         FROM src_inrt
-        WHERE yr_dt = #{yr_dt}
+        WHERE yr_dt = #{searchDate}
     </select>
 
     <!--  생활 물가 상승률 차트 -->
     <select id="selectLvngInrtPeriod" parameterType="hashMap" resultType="hashMap">
         SELECT val, '생활' AS category, CONCAT(yr_dt, '.', mon_dt) AS period
         FROM lvng_inrt
-        WHERE yr_dt = #{yr_dt}
+        WHERE yr_dt = #{searchDate}
     </select>
 
     <!--  소비자 물가 상승률 차트 기간 상세 설정 -->
