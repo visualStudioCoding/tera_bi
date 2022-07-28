@@ -34,7 +34,7 @@ public class EconomicGrowthController {
 
         model.addAttribute("exchangeRate", getExchangeRate());
         model.addAttribute("baseRate", getBaseRate());
-//        model.addAttribute("gdpGni", getGDPGNP());
+        model.addAttribute("gdpGni", getGDPGNP());
         model.addAttribute("inflationRate", getInflationRate());
 
         model.addAttribute("menuCode", "001");
