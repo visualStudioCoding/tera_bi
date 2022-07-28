@@ -9,6 +9,13 @@
         WHERE yr_dt = #{yr_dt}
     </select>
 
+    <!-- 경제성장률 기간 상세 설정 -->
+    <select id="selectEconomicGrowthPeriod" parameterType="hashMap" resultType="hashMap">
+        SELECT cty_nm, val
+        FROM enmc_grrt
+        WHERE yr_dt = (SELECT yr_dt FROM enmc_grrt ORDER BY yr_dt DESC LIMIT 1) - #{searchPeriod}
+    </select>
+
     <!-- 환율 -->
     <select id="selectExchangeRate" parameterType="hashMap" resultType="hashMap">
         SELECT *
@@ -56,7 +63,7 @@
 
     <!--  GDP  -->
     <select id="selectGDP" parameterType="hashMap" resultType="hashMap">
-        SELECT val, unit
+        SELECT real_val, unit
         FROM gdp
         ORDER BY yr_dt DESC LIMIT 1
     </select>
@@ -108,21 +115,43 @@
     <select id="selectCnsmrInrtPeriod" parameterType="hashMap" resultType="hashMap">
         SELECT val, '소비' AS category, CONCAT(yr_dt, '.', mon_dt) AS period
         FROM cnsmr_inrt
-        WHERE yr_dt = 2022 AND mon_dt BETWEEN 1 AND 6;
+        WHERE yr_dt = #{yr_dt}
     </select>
 
     <!--  근원 물가 상승률 차트 -->
     <select id="selectSrcInrtPeriod" parameterType="hashMap" resultType="hashMap">
         SELECT val, '근원' AS category, CONCAT(yr_dt, '.', mon_dt) AS period
         FROM src_inrt
-        WHERE yr_dt = 2022 AND mon_dt BETWEEN 1 AND 6;
+        WHERE yr_dt = #{yr_dt}
     </select>
 
     <!--  생활 물가 상승률 차트 -->
     <select id="selectLvngInrtPeriod" parameterType="hashMap" resultType="hashMap">
         SELECT val, '생활' AS category, CONCAT(yr_dt, '.', mon_dt) AS period
         FROM lvng_inrt
-        WHERE yr_dt = 2022 AND mon_dt BETWEEN 1 AND 6;
+        WHERE yr_dt = #{yr_dt}
+    </select>
+
+    <!--  소비자 물가 상승률 차트 기간 상세 설정 -->
+    <select id="selectCnsmrInrtDetail" parameterType="hashMap" resultType="hashMap">
+        SELECT val, '소비' AS category, CONCAT(yr_dt, '.', mon_dt) AS period
+        FROM cnsmr_inrt
+        WHERE CONCAT(yr_dt, mon_dt) BETWEEN #{searchStartDate} AND #{searchEndDate}
+
+    </select>
+
+    <!--  근원 물가 상승률 차트 기간 상세 설정 -->
+    <select id="selectSrcInrtDetail" parameterType="hashMap" resultType="hashMap">
+        SELECT val, '근원' AS category, CONCAT(yr_dt, '.', mon_dt) AS period
+        FROM src_inrt
+        WHERE CONCAT(yr_dt, mon_dt) BETWEEN #{searchStartDate} AND #{searchEndDate}
+    </select>
+
+    <!--  생활 물가 상승률 차트 기간 상세 설정 -->
+    <select id="selectLvngInrtDetail" parameterType="hashMap" resultType="hashMap">
+        SELECT val, '생활' AS category, CONCAT(yr_dt, '.', mon_dt) AS period
+        FROM lvng_inrt
+        WHERE CONCAT(yr_dt, mon_dt) BETWEEN #{searchStartDate} AND #{searchEndDate}
     </select>
 
     <!--  코로나 시기 경제 성장률  -->
@@ -136,7 +165,8 @@
     <select id="selectStateDebt" parameterType="hashMap" resultType="hashMap">
         SELECT yr_dt, unit, val
         FROM national_debt
-        WHERE yr_dt BETWEEN (SELECT yr_dt FROM national_debt ORDER BY yr_dt DESC LIMIT 1) - #{searchPeriod} AND (
+        WHERE yr_dt BETWEEN (SELECT yr_dt FROM national_debt ORDER BY yr_dt DESC LIMIT 1) - #{searchPeriod}
+          AND (
         SELECT yr_dt
         FROM national_debt
         ORDER BY yr_dt DESC LIMIT 1)
@@ -146,7 +176,25 @@
     <select id="selectStateDebtDetail" parameterType="hashMap" resultType="hashMap">
         SELECT yr_dt, unit, val
         FROM national_debt
-        WHERE yr_dt BETWEEN YEAR(#{searchStartDate}) AND YEAR(#{searchEndDate})
+        WHERE yr_dt BETWEEN YEAR (#{searchStartDate}) AND YEAR (#{searchEndDate})
+    </select>
+
+    <!-- 실질 및 명목 GDP  -->
+    <select id="selectWholeGDP" parameterType="hashMap" resultType="hashMap">
+        SELECT yr_dt, unit, real_val, nmnl_val
+        FROM gdp
+        WHERE yr_dt BETWEEN (SELECT yr_dt FROM gdp ORDER BY yr_dt DESC LIMIT 1) - #{searchPeriod}
+          AND (
+        SELECT yr_dt
+        FROM national_debt
+        ORDER BY yr_dt DESC LIMIT 1)
+    </select>
+
+    <!-- 실질 및 명목 GDP 기간 세부 설정  -->
+    <select id="selectWholeGDPDetail" parameterType="hashMap" resultType="hashMap">
+        SELECT yr_dt, unit, real_val, nmnl_val
+        FROM gdp
+        WHERE yr_dt BETWEEN YEAR (#{searchStartDate}) AND YEAR (#{searchEndDate})
     </select>
 
 </mapper>

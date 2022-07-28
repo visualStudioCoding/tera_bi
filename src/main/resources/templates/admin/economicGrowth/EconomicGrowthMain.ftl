@@ -18,9 +18,9 @@
                             <span>끝 년도 선택</span>
                         <input type="date" name="endDt">
                         </div>
-                        <#assign name_list = ["serviceNm", "resultType", "tableCode", "itmCode"]>
-                        <#assign val_list = ["StatisticSearch", "json", "722Y001", "0101000"]>
-                        <#list 0..3 as k>
+                        <#assign name_list = ["serviceNm", "resultType", "tableCode", "cycle","itmCode"]>
+                        <#assign val_list = ["StatisticSearch", "json", "722Y001", "D", "0101000"]>
+                        <#list 0..4 as k>
                             <input type="hidden" name=${name_list[k]} value=${val_list[k]}  />
                         </#list>
                     </div>
@@ -43,9 +43,9 @@
                             <span>끝 년도 선택</span>
                             <input type="date" name="endDt">
                         </div>
-                        <#assign name_list = ["serviceNm", "resultType", "tableCode", "itmCode"]>
-                        <#assign val_list = ["StatisticSearch", "json", "731Y001", "0000001"]>
-                        <#list 0..3 as k>
+                        <#assign name_list = ["serviceNm", "resultType", "tableCode", "cycle","itmCode"]>
+                        <#assign val_list = ["StatisticSearch", "json", "731Y001", "D", "0000001"]>
+                        <#list 0..4 as k>
                             <input type="hidden" name=${name_list[k]} value=${val_list[k]}  />
                         </#list>
                     </div>
@@ -53,6 +53,8 @@
                 <button type="button" id="MonthlyExchangeRate" class="btn btn-outline-secondary activator" onclick="getExchangeRate()">실행</button>
             </div>
         </div>
+    </div>
+    <div class="row">
         <div class="col">
             <div class="card">
                 <div class="card-header">
@@ -88,12 +90,49 @@
                 <button type="button" class="btn btn-outline-secondary activator" onclick="getInflationRate()">실행</button>
             </div>
         </div>
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    GDP
+                </div>
+                <form name="getGDP_opt">
+                    <div class="card-body">
+                        <span>년도 선택</span>
+                        <select class="form-select" name="startDt" aria-label="Default select example">
+                            <option selected>조회를 시작할 년도를 선택하세요</option>
+                            <#list 1953..1999 as i>
+                                <option value=${i?replace(",","")}>${i?replace(",","")}년</option>
+                            </#list>
+                            <#list 2000..2021 as j>
+                                <option value=${j?replace(",","")}>${j?replace(",","")}년</option>
+                            </#list>
+                        </select>
+                        <br>
+                        <select class="form-select" name="endDt" aria-label="Default select example">
+                            <option selected>조회할 마지막 년도를 선택하세요</option>
+                            <#list 1953..1999 as i>
+                                <option value=${i?replace(",","")}>${i?replace(",","")}년</option>
+                            </#list>
+                            <#list 2000..2021 as j>
+                                <option value=${j?replace(",","")}>${j?replace(",","")}년</option>
+                            </#list>
+                        </select>
+                        <#assign name_list = ["serviceNm", "resultType", "tableCode", "cycle","itmCode"]>
+                        <#assign val_list = ["StatisticSearch", "json", "200Y009", "A", "10601"]>
+                        <#list 0..4 as k>
+                            <input type="hidden" name=${name_list[k]} value=${val_list[k]}  />
+                        </#list>
+                    </div>
+                </form>
+                <button type="button" class="btn btn-outline-secondary activator" onclick="getGDP()">실행</button>
+            </div>
+        </div>
     </div>
     <div class="row">
         <div class="col">
             <div class="card">
                 <div class="card-header">
-                    경제활동별 GDP 및 GNI
+                    경제활동별 GDI 및 GNI
                 </div>
                 <form name="gdpAndgni_opt">
                     <div class="card-body">
