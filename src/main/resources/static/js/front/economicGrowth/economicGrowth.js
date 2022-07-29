@@ -25,6 +25,68 @@ function getExchangeRate(){
 
 }
 
+// 데이터 호출 함수
+window.onload = function () {
+    getEnmcGrrt();
+    getCovidEconomicGrowth();
+    getStateDebtSetPeriod();
+    getInflChart();
+}
+
+// 경제성장률 AJAX
+function getEnmcGrrt() {
+
+    let period =  $("input[name=term]:checked").val();
+
+    if(period === 'on'){
+        period =  $("input[name=termDatePicker]").val();
+    }
+    let callBackFn = function (data) {
+        fnRegionChartOp(data);
+
+    }
+    commonAjax("/front/economicGrowth/api/getEconomicGrowth", callBackFn, "get", period, errorMsg);
+}
+
+// 코로나 시기 경제성장률 AJAX
+function getCovidEconomicGrowth() {
+
+    let callBackFn = function (data) {
+        fnCovidChartOp(data);
+    }
+    commonAjax("/front/economicGrowth/api/getCovidEconomicGrowth", callBackFn, "get", null, errorMsg);
+}
+
+// 1인당 국민 총 소득 및 국가 채무 현황 기간설정 AJAX
+function getStateDebtSetPeriod() {
+
+    let period =  $("input[name=term]:checked").val();
+
+    if(period === 'on'){
+        period =  $("input[name=termDatePicker]").val();
+    }
+
+    let callBackFn = function (data) {
+        fngdpDeptGraphOp(data);
+    }
+    commonAjax("/front/economicGrowth/api/getStateDebt", callBackFn, "get", period, errorMsg);
+}
+
+// 물가상승률 AJAX
+function getInflChart() {
+
+    let period =  $("input[name=term]:checked").val();
+
+    if(period === 'on'){
+        period =  $("input[name=termDatePicker]").val();
+    }
+
+    let callBackFn = function (data) {
+        run(data);
+    }
+    commonAjax("/front/economicGrowth/api/getInflationRatePeriod", callBackFn, "get", period, errorMsg);
+}
+
 $("#termSetting").click(function(){
     getStateDebtSetPeriod();
     getInflChart();

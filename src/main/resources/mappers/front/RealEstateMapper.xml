@@ -2,5 +2,49 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="bi.front.RealEstate">
+<!--  행정구역별 매매거래  -->
+    <select id="selectAptSalesStatus" parameterType="hashMap" resultType="hashMap">
+        SELECT cty_nm, SUM(val) AS val FROM apt_account WHERE yr_dt = '2022' AND cty_nm != '전국' GROUP BY cty_nm
+    </select>
 
+<!--  연령대별 매매거래  -->
+    <select id="selectAgeAptSales" parameterType="hashMap" resultType="hashMap">
+        SELECT age, SUM(val) AS val FROM age_apt WHERE age != '매입자연령대' AND yr_dt = (SELECT yr_dt FROM age_apt ORDER BY yr_dt DESC LIMIT 1) GROUP BY age
+    </select>
+
+<!--  건축년수별 매매거래  -->
+    <select id="selectBuiltYear" parameterType="hashMap" resultType="hashMap">
+        SELECT COUNT(*) AS val, CASE
+        WHEN YEAR(SYSDATE()) - built_year <![CDATA[<]]> 5 THEN '5년 미만'
+        WHEN 5 <![CDATA[<=]]> YEAR(SYSDATE()) - built_year AND
+        YEAR(SYSDATE()) - built_year <![CDATA[<]]> 10 THEN '10년 미만'
+        WHEN 10 <![CDATA[<=]]> YEAR(SYSDATE()) - built_year AND
+        YEAR(SYSDATE()) - built_year <![CDATA[<]]> 15 THEN '15년 미만'
+        WHEN 15 <![CDATA[<=]]> YEAR(SYSDATE()) - built_year AND
+        YEAR(SYSDATE()) - built_year <![CDATA[<]]> 20 THEN '20년 미만'
+        WHEN 20 <![CDATA[<=]]> YEAR(SYSDATE()) - built_year AND
+        YEAR(SYSDATE()) - built_year <![CDATA[<]]> 25 THEN '25년 미만'
+        WHEN 25 <![CDATA[<=]]> YEAR(SYSDATE()) - built_year AND
+        YEAR(SYSDATE()) - built_year <![CDATA[<]]> 30 THEN '30년 미만'
+        WHEN 30 <![CDATA[<=]]> YEAR(SYSDATE()) - built_year AND
+        YEAR(SYSDATE()) - built_year <![CDATA[<]]> 35 THEN '35년 미만'
+        WHEN 35 <![CDATA[<=]]> YEAR(SYSDATE()) - built_year AND
+        YEAR(SYSDATE()) - built_year <![CDATA[<]]> 40 THEN '40년 미만'
+        WHEN 40 <![CDATA[<=]]> YEAR(SYSDATE()) - built_year AND
+        YEAR(SYSDATE()) - built_year <![CDATA[<]]> 45 THEN '45년 미만'
+        WHEN 45 <![CDATA[<=]]> YEAR(SYSDATE()) - built_year AND
+        YEAR(SYSDATE()) - built_year <![CDATA[<]]> 50 THEN '50년 미만'
+        WHEN 50 <![CDATA[<=]]> YEAR(SYSDATE()) - built_year AND
+        YEAR(SYSDATE()) - built_year <![CDATA[<]]> 55 THEN '55년 미만'
+        WHEN 55 <![CDATA[<=]]> YEAR(SYSDATE()) - built_year AND
+        YEAR(SYSDATE()) - built_year <![CDATA[<]]> 60 THEN '60년 미만'
+        WHEN YEAR(SYSDATE()) - built_year <![CDATA[>=]]> 60 THEN '60년 이상'
+        END AS term
+        FROM trade_apt WHERE built_year != 'None' AND trade_year = '2022' GROUP BY term ORDER BY CAST(term AS UNSIGNED)
+    </select>
+
+<!--  지역별 인구수  -->
+    <select id="selectRegionPopulation" parameterType="hashMap" resultType="hashMap">
+        SELECT cty_nm, SUM(val) AS val FROM gender_population WHERE yr_dt = 2022 AND cty_nm != '전국' GROUP BY cty_nm
+    </select>
 </mapper>

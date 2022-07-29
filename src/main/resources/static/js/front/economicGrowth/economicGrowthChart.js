@@ -1,79 +1,16 @@
 /* 차트 - 지역별 경제성장률 */
-const regionChartDom = document.getElementById("regionGrowthGraph");
-const regionChart = echarts.init(regionChartDom);
-let regionChartOp;
-let colors = ["#393939", "#f5b031", "#fad797", "#59ccf7", "#c3b4df"];
-
-// 데이터 호출 함수
-window.onload = function () {
-    getEnmcGrrt();
-    getCovidEconomicGrowth();
-    getStateDebtSetPeriod();
-    getInflChart();
-}
-
-// 데이터 배열
-let unit = [];
-
-let covidGrowth = [];
-let covidYear = [];
-
-
-// 경제성장률 AJAX
-function getEnmcGrrt() {
-
-    let period =  $("input[name=term]:checked").val();
-
-    if(period === 'on'){
-        period =  $("input[name=termDatePicker]").val();
-    }
-    let callBackFn = function (data) {
-        fnRegionChartOp(data);
-        
-    }
-    commonAjax("/front/economicGrowth/api/getEconomicGrowth", callBackFn, "get", period, errorMsg);
-}
-
-// 코로나 시기 경제성장률 AJAX
-function getCovidEconomicGrowth() {
-
-    let callBackFn = function (data) {
-        fnCovidChartOp(data);
-    }
-    commonAjax("/front/economicGrowth/api/getCovidEconomicGrowth", callBackFn, "get", null, errorMsg);
-}
-
-// 1인당 국민 총 소득 및 국가 채무 현황 AJAX
-/*function getStateDebt() {
-
-    let callBackFn = function (data) {
-        fngdpDeptGraphOp(data);
-    }
-    commonAjax("/front/economicGrowth/api/getStateDebt", callBackFn, "get", null, errorMsg);
-}*/
-
-// 1인당 국민 총 소득 및 국가 채무 현황 기간설정 AJAX
-function getStateDebtSetPeriod() {
-
-    let period =  $("input[name=term]:checked").val();
-
-    if(period === 'on'){
-        period =  $("input[name=termDatePicker]").val();
-    }
-
-    let callBackFn = function (data) {
-        fngdpDeptGraphOp(data);
-    }
-    commonAjax("/front/economicGrowth/api/getStateDebt", callBackFn, "get", period, errorMsg);
-}
-
-// 경제성장률 배열 데이터 추가 및 차트 선언
 function fnRegionChartOp(data) {
+
+    const regionChartDom = document.getElementById("regionGrowthGraph");
+    const regionChart = echarts.init(regionChartDom);
+    let regionChartOp;
+    let colors = ["#393939", "#f5b031", "#fad797", "#59ccf7", "#c3b4df"];
 
     console.log(data)
     let dataList = [];
     let ctyNm = [];
     let rate = [];
+    let unit = [];
 
     for (var i = 0; i < data.emncGrrt.length; i++) {
         ctyNm.push(data.emncGrrt[i].cty_nm);
@@ -160,6 +97,9 @@ let covidChartOp;
 
 function fnCovidChartOp(data){
 
+    let covidGrowth = [];
+    let covidYear = [];
+
     for (var i = 0; i < data.covidGrowth.length; i++) {
         covidGrowth.push(data.covidGrowth[i].val);
         covidYear.push(data.covidGrowth[i].yr_dt);
@@ -207,23 +147,6 @@ function fnCovidChartOp(data){
 const inflChartDom = document.getElementById("inflationGraph");
 const inflChart = echarts.init(inflChartDom);
 let inflChartOp;
-
-// $.get("../js/inflChartTemp.json", function (_rawData) {
-//     run(_rawData);
-// });
-function getInflChart() {
-
-    let period =  $("input[name=term]:checked").val();
-
-    if(period === 'on'){
-        period =  $("input[name=termDatePicker]").val();
-    }
-
-    let callBackFn = function (data) {
-        run(data);
-    }
-    commonAjax("/front/economicGrowth/api/getInflationRatePeriod", callBackFn, "get", period, errorMsg);
-}
 
 function run(_rawData) {
 
