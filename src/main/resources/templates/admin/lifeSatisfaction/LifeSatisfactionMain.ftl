@@ -274,6 +274,7 @@
         //kosisApiAjax("/lifeSatisfaction/Divorce", callBackFn, 'get', param, errorMsg);
     }
 </script>
+
 <!-- 로딩중이미지 -->
 <style type="text/css" >
     .wrap-loading{ /*화면 전체를 어둡게 합니다.*/
