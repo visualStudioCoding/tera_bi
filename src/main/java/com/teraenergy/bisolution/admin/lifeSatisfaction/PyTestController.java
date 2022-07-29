@@ -172,4 +172,29 @@ public class PyTestController {
         }
         return "main/test/test";
     }
+
+    @RequestMapping(value="/test4.do")
+    public String test4() {
+        System.out.println("자바파이썬테스트4");
+        try {
+            //그냥 실행
+//		ProcessBuilder pb = new ProcessBuilder("python","C:\\eGovFrameDev-4.0.0-64bit\\workspace\\testpy\\test.py");
+            //ProcessBuilder pb = new ProcessBuilder("python","C:\\eGovFrameDev-4.0.0-64bit\\workspace\\testpy\\java1.py");
+            ProcessBuilder pb = new ProcessBuilder("python","C:\\eGovFrameDev-4.0.0-64bit\\workspace\\testpy\\kia3.py");
+            //ProcessBuilder pb = new ProcessBuilder("python","/home/terabi/py/java1.py");
+            Process p = pb.start();
+            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream(), "utf-8"));
+
+
+            String line = "";
+            //함수호출이(return)이 아니고 파이썬 함수에서 print된걸 받아오는것이다
+            while((line = br.readLine()) != null) {
+                System.out.println("dd : " + line);
+            }
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return "main/test/test";
+    }
 }
