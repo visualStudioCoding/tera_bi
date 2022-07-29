@@ -31,17 +31,17 @@ public class EconomicGrowthScheduler {
 // *  |  *  |  *  |  *  |  *  |  *
 // 초    분     시    일    월    요일
 
-//      기준금리
+    //      기준금리
     @Scheduled(cron = "* 00 10 * * *")
     @Transactional(rollbackFor = Exception.class)
     public void monthlyExchangeRateScheduler() throws Exception {
 
         LocalDate now = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        String formatedNow = now.format(formatter);
+        String formattedNow = now.format(formatter);
 
         String url = "https://ecos.bok.or.kr/api/";
-        String parameter = "StatisticSearch/apiKey/json/kr/1/10000/722Y001/D/" + formatedNow + "/" + formatedNow + "/0101000/?/?/";
+        String parameter = "StatisticSearch/apiKey/json/kr/1/10000/722Y001/D/" + formattedNow + "/" + formattedNow + "/0101000/?/?/";
 
         String format = "json";
         String site = "ecos";
@@ -52,13 +52,13 @@ public class EconomicGrowthScheduler {
         JSONArray jsonList = commonService.ecosApiJsonParser(stringBuilder, "StatisticSearch");
         Map<String, Object> dataMap = new HashMap<>();
 
-        for(Object jsonObject : jsonList){
+        for (Object jsonObject : jsonList) {
             JSONObject jsonData = (JSONObject) jsonObject;
 
-            if("Fail".equals(jsonData.get("RESULT"))){
+            if ("Fail".equals(jsonData.get("RESULT"))) {
                 System.out.println("Fail to Load Data");
                 break;
-            }else {
+            } else {
                 String baseMoneyRate = (String) jsonData.get("DATA_VALUE");
                 String unit = (String) jsonData.get("UNIT_NAME");
                 String date = (String) jsonData.get("TIME");
@@ -86,18 +86,18 @@ public class EconomicGrowthScheduler {
 
         LocalDate now = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        String formatedNow = now.format(formatter);
+        String formattedNow = now.format(formatter);
 
         String url = "https://ecos.bok.or.kr/api/";
-        String parameter = "StatisticSearch/apiKey/json/kr/1/10000/731Y001/D/" + formatedNow + "/" + formatedNow + "/0000001/?/?/";
+        String parameter = "StatisticSearch/apiKey/json/kr/1/10000/731Y001/D/" + formattedNow + "/" + formattedNow + "/0000001/?/?/";
 
         String[] typeList = {"0000001", "0000053", "0000002", "0000003"};
 
         Map<String, Object> result = new HashMap<>();
 
         for (int i = 0; i < typeList.length; i++) {
-            if(i >= 1){
-                parameter = parameter.replace(typeList[i-1], typeList[i]);
+            if (i >= 1) {
+                parameter = parameter.replace(typeList[i - 1], typeList[i]);
             }
 
             //kosis = json, enara = xml
@@ -113,10 +113,10 @@ public class EconomicGrowthScheduler {
             for (Object jsonObject : jsonList) {
                 JSONObject jsonData = (JSONObject) jsonObject;
 
-                if("Fail".equals(jsonData.get("RESULT"))){
+                if ("Fail".equals(jsonData.get("RESULT"))) {
                     System.out.println("Fail to Load Data");
                     break;
-                }else {
+                } else {
                     String typeBf = jsonData.get("ITEM_NAME1").toString();
                     String type = null;
 
@@ -145,8 +145,8 @@ public class EconomicGrowthScheduler {
         }
     }
 
-//    국가채무현황
-    @Scheduled(cron="0 0 0 23 9 *")
+    //    국가채무현황
+    @Scheduled(cron = "0 0 0 23 9 *")
     @Transactional(rollbackFor = Exception.class)
     public void stateDebtScheduler() throws Exception {
 
@@ -160,16 +160,16 @@ public class EconomicGrowthScheduler {
         JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
 
         Map<String, Object> dataMap = new HashMap<>();
-        Map<String, String> compareDebt = (Map<String, String>) commonService.selectContents(null,PAGE_ID + PROGRAM_ID + ".compareStateDebt");
+        Map<String, String> compareDebt = (Map<String, String>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".compareStateDebt");
 
-        for(Object jsonObject : jsonList){
+        for (Object jsonObject : jsonList) {
             JSONObject jsonData = (JSONObject) jsonObject;
-            if("국가채무".equals((String) jsonData.get("C1_NM"))) {
+            if ("국가채무".equals((String) jsonData.get("C1_NM"))) {
                 String year = (String) jsonData.get("PRD_DE");
                 String unit = (String) jsonData.get("UNIT_NM");
                 String val = (String) jsonData.get("DT");
 
-                if(compareDebt.get("yr_dt").equals(year)){
+                if (compareDebt.get("yr_dt").equals(year)) {
                     System.out.println("중복된 데이터입니다.");
                     break;
                 }
@@ -185,8 +185,8 @@ public class EconomicGrowthScheduler {
         }
     }
 
-    // 경제활동별 GDP 및 GNI
-    @Scheduled(cron="0 0 0 30 6 *")
+    // 경제활동별 GDI  및 GNI
+    @Scheduled(cron = "0 0 0 30 6 *")
     @Transactional(rollbackFor = Exception.class)
     public void gdpAndGniScheduler() throws Exception {
         String url = "https://kosis.kr/openapi/Param/statisticsParameterData.do";
@@ -202,38 +202,27 @@ public class EconomicGrowthScheduler {
         JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringbuilder);
 
         Map<String, Object> dataMap = new HashMap<>();
-        Map<String, String> compareGDP = (Map<String, String>) commonService.selectContents(null,PAGE_ID + PROGRAM_ID + ".compareGDP");
-        Map<String, String> compareGDI = (Map<String, String>) commonService.selectContents(null,PAGE_ID + PROGRAM_ID + ".compareGDI");
-        Map<String, String> compareGNI = (Map<String, String>) commonService.selectContents(null,PAGE_ID + PROGRAM_ID + ".compareGNI");
+        Map<String, String> compareGDI = (Map<String, String>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".compareGDI");
+        Map<String, String> compareGNI = (Map<String, String>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".compareGNI");
 
-        for(Object jsonObject : jsonList){
+        for (Object jsonObject : jsonList) {
             JSONObject jsonData = (JSONObject) jsonObject;
-            if("국내총생산(시장가격 GDP)".equals((String) jsonData.get("C1_NM"))){
+            if ("국내총소득(GDI)".equals((String) jsonData.get("C1_NM"))) {
                 year = (String) jsonData.get("PRD_DE");
                 unit = (String) jsonData.get("UNIT_NM");
                 val = (String) jsonData.get("DT");
 
-                if(compareGDP.get("yr_dt").equals(year)){
+                if (compareGDI.get("yr_dt").equals(year)) {
                     System.out.println("중복된 데이터입니다.");
                     continue;
                 }
 
-            }else if("국내총소득(GDI)".equals((String) jsonData.get("C1_NM"))){
+            } else if ("국민총소득(GNI)".equals((String) jsonData.get("C1_NM"))) {
                 year = (String) jsonData.get("PRD_DE");
                 unit = (String) jsonData.get("UNIT_NM");
                 val = (String) jsonData.get("DT");
 
-                if(compareGDI.get("yr_dt").equals(year)){
-                    System.out.println("중복된 데이터입니다.");
-                    continue;
-                }
-
-            }else if("국민총소득(GNI)".equals((String) jsonData.get("C1_NM"))){
-                year = (String) jsonData.get("PRD_DE");
-                unit = (String) jsonData.get("UNIT_NM");
-                val = (String) jsonData.get("DT");
-
-                if(compareGNI.get("yr_dt").equals(year)){
+                if (compareGNI.get("yr_dt").equals(year)) {
                     System.out.println("중복된 데이터입니다.");
                     continue;
                 }
@@ -242,19 +231,81 @@ public class EconomicGrowthScheduler {
             dataMap.put("unit", unit);
             dataMap.put("val", val);
 
-            if("국내총생산(시장가격 GDP)".equals((String) jsonData.get("C1_NM"))){
+            if ("국내총생산(시장가격 GDP)".equals((String) jsonData.get("C1_NM"))) {
                 commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertGDP");
-            }else if("국내총소득(GDI)".equals((String) jsonData.get("C1_NM"))){
+            } else if ("국내총소득(GDI)".equals((String) jsonData.get("C1_NM"))) {
                 commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertGDI");
-            }else if("국민총소득(GNI)".equals((String) jsonData.get("C1_NM"))){
+            } else if ("국민총소득(GNI)".equals((String) jsonData.get("C1_NM"))) {
                 commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertGNI");
             }
 
         }
     }
 
+    @Scheduled(cron="* 0 13 12 3 *")
+    @Transactional(rollbackFor = Exception.class)
+    public void Gdp() throws Exception {
+
+        LocalDate now = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy");
+        String formattedNow = now.format(formatter);
+
+        String url = "https://ecos.bok.or.kr/api/";
+        String parameter = "StatisticSearch/apiKey/json/kr/1/10000/200Y009/A/" + formattedNow + "/" + formattedNow + "/10601/?/?/?";
+
+        //kosis = json, enara = xml
+        String format = "json";
+        String site = "ecos";
+        String message = "성공";
+
+        String[] tblCd = {"200Y009", "200Y010"};
+
+        Map<String, Object> result = new HashMap<>();
+
+        for (int i = 0; i < tblCd.length; i++) {
+            Map<String, Object> dataMap = new HashMap<>();
+
+            if(i == 1) {
+
+                String[] splitParams = parameter.split(tblCd[0]);
+
+                parameter = splitParams[0] + tblCd[1] + splitParams[1];
+
+            }
+
+            StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+
+            JSONArray jsonList = commonService.ecosApiJsonParser(stringBuilder, "StatisticSearch");
+
+            for (Object jsonObject : jsonList) {
+                JSONObject jsonData = (JSONObject) jsonObject;
+
+                if ("Fail".equals(jsonData.get("RESULT"))) {
+                    dataMap.put("err", jsonData.get("CODE"));
+                    message = (String) jsonData.get("MESSAGE");
+                } else {
+                    String GDP = (String) jsonData.get("DATA_VALUE");
+                    String unit = (String) jsonData.get("UNIT_NAME");
+                    String yrDt = (String) jsonData.get("TIME");
+
+                    dataMap.put("yr_dt", yrDt);
+                    dataMap.put("unit", unit);
+                    dataMap.put("val", GDP);
+                    System.out.println(dataMap);
+
+                    if(i == 1){
+                        commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertNmnlGDP");
+                    }else {
+                        commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertRealGDP");
+                    }
+                }
+            }
+        }
+    }
+
+
     // 경제성장률
-    @Scheduled(cron="0 0 0 28 12 *")
+    @Scheduled(cron = "0 0 0 28 12 *")
     @Transactional(rollbackFor = Exception.class)
     public void growthRateScheduler() throws Exception {
         String url = "https://kosis.kr/openapi/Param/statisticsParameterData.do";
@@ -266,9 +317,9 @@ public class EconomicGrowthScheduler {
         JSONArray jsonArray = (JSONArray) commonService.apiJsonParser(stringBuilder);
 
         Map<String, Object> dataMap = new HashMap<>();
-        Map<String, String> compareGrowth = (Map<String, String>) commonService.selectContents(null,PAGE_ID + PROGRAM_ID + "compareGrowthRate");
+        Map<String, String> compareGrowth = (Map<String, String>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + "compareGrowthRate");
 
-        for(Object jsonObject : jsonArray){
+        for (Object jsonObject : jsonArray) {
             JSONObject jsonData = (JSONObject) jsonObject;
 
             String yrdt = (String) jsonData.get("PRD_DE");
@@ -276,7 +327,7 @@ public class EconomicGrowthScheduler {
             String unit = (String) jsonData.get("UNIT_NM");
             String value = (String) jsonData.get("DT");
 
-            if(compareGrowth.get("yr_dt").equals(yrdt)){
+            if (compareGrowth.get("yr_dt").equals(yrdt)) {
                 System.out.println("중복된 데이터입니다.");
                 break;
             }
@@ -291,7 +342,7 @@ public class EconomicGrowthScheduler {
     }
 
     // 소비자/근원/생활 물가 상승률
-    @Scheduled(cron="0 0 0 5 * *")
+    @Scheduled(cron = "0 0 0 5 * *")
     @Transactional(rollbackFor = Exception.class)
     public void inflationRateScheduler() throws Exception {
         String url = "https://kosis.kr/openapi/Param/statisticsParameterData.do";
@@ -300,9 +351,9 @@ public class EconomicGrowthScheduler {
         String site = "kosis";
 
         Map<String, Object> dataMap = new HashMap<>();
-        Map<String, String> comparePriceInflation = (Map<String, String>) commonService.selectContents(null,PAGE_ID + PROGRAM_ID + ".comparePriceInflation");
-        Map<String, String> compareLivingInflation = (Map<String, String>) commonService.selectContents(null,PAGE_ID + PROGRAM_ID + ".compareLivingInflation");
-        Map<String, String> compareCoreInflation = (Map<String, String>) commonService.selectContents(null,PAGE_ID + PROGRAM_ID + ".compareCoreInflation");
+        Map<String, String> comparePriceInflation = (Map<String, String>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".comparePriceInflation");
+        Map<String, String> compareLivingInflation = (Map<String, String>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".compareLivingInflation");
+        Map<String, String> compareCoreInflation = (Map<String, String>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".compareCoreInflation");
 
         StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
         JSONArray jsonArray = (JSONArray) commonService.apiJsonParser(stringBuilder);
@@ -320,29 +371,29 @@ public class EconomicGrowthScheduler {
         String maxLivingInflation_m = compareLivingInflation.get("mon_dt");
         String maxCoreInflation_m = compareCoreInflation.get("mon_dt");
 
-        for(Object jsonObject : jsonArray){
+        for (Object jsonObject : jsonArray) {
             JSONObject jsonData = (JSONObject) jsonObject;
 
             year = jsonData.get("PRD_DE").toString().substring(0, 4);
-            month = jsonData.get("PRD_DE").toString().substring(4,6);
+            month = jsonData.get("PRD_DE").toString().substring(4, 6);
             val = (String) jsonData.get("DT");
             unit = (String) jsonData.get("ITM_NM");
 
-            if(maxPriceInflation_y.equals(year) &&  maxPriceInflation_m.equals(month) || maxLivingInflation_y.equals(year) && maxLivingInflation_m.equals(month) || maxCoreInflation_y.equals(year) && maxCoreInflation_m.equals(month)){
+            if (maxPriceInflation_y.equals(year) && maxPriceInflation_m.equals(month) || maxLivingInflation_y.equals(year) && maxLivingInflation_m.equals(month) || maxCoreInflation_y.equals(year) && maxCoreInflation_m.equals(month)) {
                 System.out.println("중복된 데이터입니다.");
                 break;
             }
 
-            dataMap.put("val",val);
-            dataMap.put("yr_dt",year);
-            dataMap.put("mon_dt",month);
+            dataMap.put("val", val);
+            dataMap.put("yr_dt", year);
+            dataMap.put("mon_dt", month);
             dataMap.put("unit", unit);
 
-            if("총지수".equals(jsonData.get("C1_NM"))){
+            if ("총지수".equals(jsonData.get("C1_NM"))) {
                 commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertConsumerPriceInflation");
-            }else if("생활물가지수".equals(jsonData.get("C1_NM"))){
+            } else if ("생활물가지수".equals(jsonData.get("C1_NM"))) {
                 commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertLivingInflationRate");
-            }else if("농산물및석유류제외지수".equals(jsonData.get("C1_NM"))){
+            } else if ("농산물및석유류제외지수".equals(jsonData.get("C1_NM"))) {
                 commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertCoreInflationRate");
             }
         }
