@@ -149,7 +149,7 @@ const inflChart = echarts.init(inflChartDom);
 let inflChartOp;
 
 function run(_rawData) {
-
+    console.log(_rawData);
     const category = ["소비", "근원", "생활"];
     const datasetWithFilters = [];
     const seriesList = [];

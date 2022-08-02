@@ -19,11 +19,15 @@
              , dy_dt  AS dyDt
              , unit
              , val
-        FROM kospi_index
-        WHERE yr_dt = (SELECT MAX(yr_dt) FROM kospi_index)
-          AND mon_dt = (SELECT MAX(mon_dt) FROM kospi_index WHERE yr_dt = (SELECT MAX(yr_dt) FROM kospi_index))
-        ORDER BY dy_dt DESC
-        <include refid="offsetWhere"/>
+            FROM kospi_index
+            WHERE CONCAT(yr_dt, mon_dt, dy_dt) =
+                  (
+                  SELECT CONCAT(yr_dt, mon_dt, dy_dt)
+                      FROM kospi_index
+                      ORDER BY CONCAT(yr_dt, mon_dt, dy_dt) DESC
+                      <include refid="offsetWhere"/>
+                  )
+
     </select>
     <!-- 코스닥 지수 -->
     <select id="selectKosdaqIndex" resultType="hashMap">
@@ -32,11 +36,14 @@
              , dy_dt  AS dyDt
              , unit
              , val
-        FROM kosdaq_index
-        WHERE yr_dt = (SELECT MAX(yr_dt) FROM kosdaq_index)
-          AND mon_dt = (SELECT MAX(mon_dt) FROM kosdaq_index WHERE yr_dt = (SELECT MAX(yr_dt) FROM kosdaq_index))
-        ORDER BY dy_dt DESC
-        <include refid="offsetWhere"/>
+            FROM kosdaq_index
+            WHERE CONCAT(yr_dt, mon_dt, dy_dt) =
+                  (
+                  SELECT CONCAT(yr_dt, mon_dt, dy_dt)
+                      FROM kospi_index
+                      ORDER BY CONCAT(yr_dt, mon_dt, dy_dt) DESC
+                      <include refid="offsetWhere"/>
+                  )
     </select>
     <!-- 최근 유가 -->
     <select id="selectOilPrice" resultType="hashMap">
@@ -44,9 +51,62 @@
              , mon_dt AS monDt
              , unit
              , val
-        FROM oil_price
-        WHERE yr_dt = (SELECT MAX(yr_dt) FROM oil_price)
-        ORDER BY mon_dt DESC
-        <include refid="offsetWhere"/>
+            FROM oil_price
+            WHERE CONCAT(yr_dt, mon_dt) =
+                  (
+                  SELECT CONCAT(yr_dt, mon_dt)
+                      FROM oil_price
+                      ORDER BY CONCAT(yr_dt, mon_dt) DESC
+                      <include refid="offsetWhere"/>
+                  )
+    </select>
+
+    <!--  코로나 시기 kospi  -->
+    <select id="selectCovidKospi" parameterType="hashMap" resultType="hashMap">
+        SELECT CONCAT(yr_dt, '/', mon_dt, '/', dy_dt)  AS kospiDate
+             , val
+            FROM kospi_index
+            WHERE yr_dt BETWEEN 2019 AND (
+                                         SELECT yr_dt
+                                             FROM kospi_index
+                                             ORDER BY yr_dt DESC
+                                             LIMIT 1
+                                         )
+    </select>
+    <!--  기준금리와 kospi  -->
+    <select id="selectBaseRateAndKospi" parameterType="hashMap" resultType="hashMap">
+        select CONCAT(yr_dt, '/', mon_dt, '/', dy_dt) AS date
+             , val
+             , 'kospi'                                AS type
+            FROM kospi_index
+            where yr_dt BETWEEN (
+                                SELECT yr_dt
+                                    FROM kospi_index
+                                    ORDER BY yr_dt DESC
+                                    LIMIT 1
+                                )  - #{searchPeriod}
+                      AND (
+                          SELECT yr_dt
+                              FROM kospi_index
+                              ORDER BY yr_dt DESC
+                              LIMIT 1
+                          )
+        UNION ALL
+        select CONCAT(yr_dt, '/', mon_dt, '/', dy_dt) AS baseDate
+             , val
+             , 'base'                                 AS type
+            FROM base_rate
+            where yr_dt BETWEEN (
+                                SELECT yr_dt
+                                    FROM base_rate
+                                    ORDER BY yr_dt DESC
+                                    LIMIT 1
+                                )  - #{searchPeriod}
+                      AND (
+                          SELECT yr_dt
+                              FROM base_rate
+                              ORDER BY yr_dt DESC
+                              LIMIT 1
+                          )
     </select>
 </mapper>

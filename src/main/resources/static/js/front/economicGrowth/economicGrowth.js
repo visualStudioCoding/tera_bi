@@ -45,7 +45,8 @@ function getEnmcGrrt() {
         fnRegionChartOp(data);
 
     }
-    commonAjax("/front/economicGrowth/api/getEconomicGrowth", callBackFn, "get", period, errorMsg);
+    let param = {parameter: period}
+    commonAjax("/front/economicGrowth/api/getEconomicGrowth", callBackFn, "get", param, errorMsg);
 }
 
 // 코로나 시기 경제성장률 AJAX
@@ -65,11 +66,11 @@ function getStateDebtSetPeriod() {
     if(period === 'on'){
         period =  $("input[name=termDatePicker]").val();
     }
-
+    let param = {parameter: period}
     let callBackFn = function (data) {
         fngdpDeptGraphOp(data);
     }
-    commonAjax("/front/economicGrowth/api/getStateDebt", callBackFn, "get", period, errorMsg);
+    commonAjax("/front/economicGrowth/api/getStateDebt", callBackFn, "get", param, errorMsg);
 }
 
 // 물가상승률 AJAX
@@ -80,11 +81,11 @@ function getInflChart() {
     if(period === 'on'){
         period =  $("input[name=termDatePicker]").val();
     }
-
+    let param = {parameter: period}
     let callBackFn = function (data) {
         run(data);
     }
-    commonAjax("/front/economicGrowth/api/getInflationRatePeriod", callBackFn, "get", period, errorMsg);
+    commonAjax("/front/economicGrowth/api/getInflationRatePeriod", callBackFn, "get", param, errorMsg);
 }
 
 $("#termSetting").click(function(){

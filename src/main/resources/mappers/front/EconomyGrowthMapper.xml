@@ -197,4 +197,24 @@
         WHERE yr_dt BETWEEN YEAR (#{searchStartDate}) AND YEAR (#{searchEndDate})
     </select>
 
+    <!-- 연간 경제성장률  -->
+    <select id="selectAnnualGrowthRate" parameterType="hashMap" resultType="hashMap">
+        SELECT yr_dt AS yrDt, unit, val
+        FROM enmc_grrt
+        WHERE cty_nm LIKE '전국%'
+        AND yr_dt BETWEEN (SELECT yr_dt FROM enmc_grrt ORDER BY yr_dt DESC LIMIT 1) - #{searchPeriod}
+          AND (
+        SELECT yr_dt
+        FROM enmc_grrt
+        ORDER BY yr_dt DESC LIMIT 1)
+    </select>
+
+    <!-- 연간 경제성장률 기간 세부 설정  -->
+    <select id="selectAnnualGrowthRateDetail" parameterType="hashMap" resultType="hashMap">
+        SELECT yr_dt AS yrDt, unit, val
+        FROM enmc_grrt
+        WHERE cty_nm LIKE '전국%'
+        AND yr_dt BETWEEN YEAR (#{searchStartDate}) AND YEAR (#{searchEndDate})
+    </select>
+
 </mapper>

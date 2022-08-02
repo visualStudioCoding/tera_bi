@@ -13,10 +13,11 @@ public class StockPricesService {
     @Resource(name = "commonService")
     private CommonService commonService;
 
-    public Map<String, Object> getOffsetMap(String programId, String pageId, String queryId) throws Exception {
+    public Map<String, Object> getOffsetMap(Map<String, Object> paramMap, String programId, String pageId, String queryId) throws Exception {
 
         Map<String, String> recent = new HashMap<>();
         recent.put("recent", "recent");
+        @SuppressWarnings("unchecked")
         Map<String, Object> data = (Map<String, Object>) commonService.selectContents(recent, pageId + programId + queryId);
 
         Map<String, String> offset = new HashMap<>();
@@ -24,6 +25,7 @@ public class StockPricesService {
         if (queryId.equals(".selectBaseRate")) {
             queryId = ".selectBaseRateCompare";
         } else if(queryId.equals(".selectExchangeRate")) queryId = ".selectExchangeRateCompare";
+        @SuppressWarnings("unchecked")
         Map<String, Object> dataOffset = (Map<String, Object>) commonService.selectContents(offset, pageId + programId + queryId);
 
         float dataFloat = (Float) data.get("val");
