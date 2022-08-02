@@ -2,12 +2,87 @@ const errorMsg = "데이터 호출 실패";
 
 // 데이터 호출 함수
 window.onload = function () {
+    getKospiIndex();
+    getKosdaqIndex();
+    getOilPrice();
+    getBaseRate();
+    getExchangeRate();
     getGdp();
     getCovidKospi();
     // getKospi();
-    // getInflYear();
+    getInflYear();
 }
 
+$("#termSetting").click(function(){
+    getGdp();
+    getInflYear();
+});
+
+// kospi
+function getKospiIndex(){
+    let callBackFn = function (data) {
+        fnDashboardSetting(data, 'kospi');
+    }
+    let period =  $("input[name=term]:checked").val();
+
+    if(period === 'on'){
+        period =  $("input[name=termDatePicker]").val();
+    }
+    let param = {term: period}
+    commonAjax("/front/stockPrices/api/getKospiIndex", callBackFn, "get", param, errorMsg);
+}
+// kosdaq
+function getKosdaqIndex(){
+    let callBackFn = function (data) {
+        fnDashboardSetting(data, 'kosdaq');
+    }
+    let period =  $("input[name=term]:checked").val();
+
+    if(period === 'on'){
+        period =  $("input[name=termDatePicker]").val();
+    }
+    let param = {term: period}
+    commonAjax("/front/stockPrices/api/getKosdaqIndex", callBackFn, "get", param, errorMsg);
+}
+// oilPrice
+function getOilPrice(){
+    let callBackFn = function (data) {
+        fnDashboardSetting(data, 'oil');
+    }
+    let period =  $("input[name=term]:checked").val();
+
+    if(period === 'on'){
+        period =  $("input[name=termDatePicker]").val();
+    }
+    let param = {term: period}
+    commonAjax("/front/stockPrices/api/getOilPrice", callBackFn, "get", param, errorMsg);
+}
+// baseRate
+function getBaseRate(){
+    let callBackFn = function (data) {
+        fnDashboardSetting(data, 'baseRate');
+    }
+    let period =  $("input[name=term]:checked").val();
+
+    if(period === 'on'){
+        period =  $("input[name=termDatePicker]").val();
+    }
+    let param = {term: period}
+    commonAjax("/front/stockPrices/api/getBaseRate", callBackFn, "get", param, errorMsg);
+}
+// exchangeRate
+function getExchangeRate(){
+    let callBackFn = function (data) {
+        fnDashboardSetting(data, 'exchangeRate');
+    }
+    let period =  $("input[name=term]:checked").val();
+
+    if(period === 'on'){
+        period =  $("input[name=termDatePicker]").val();
+    }
+    let param = {term: period}
+    commonAjax("/front/stockPrices/api/getExchangeRate", callBackFn, "get", param, errorMsg);
+}
 // GDP 차트
 function getGdp(){
     let callBackFn = function (data) {
@@ -18,14 +93,15 @@ function getGdp(){
     if(period === 'on'){
         period =  $("input[name=termDatePicker]").val();
     }
-    commonAjax("/front/economicGrowth/api/getStateDebt", callBackFn, "get", period, errorMsg);
+    let param = {term: period}
+    commonAjax("/front/stockPrices/api/getGdpData", callBackFn, "get", param, errorMsg);
 }
 // 코로나 시기 kospi 차트
 function getCovidKospi(){
     let callBackFn = function (data) {
         fnCovidKospiChart(data);
     }
-    commonAjax("/front/stockPrices/api/", callBackFn, "get", null, errorMsg);
+    commonAjax("/front/stockPrices/api/getCovidKospi", callBackFn, "get", null, errorMsg);
 }
 // 기준금리 & kospi 차트
 function getKospi(){
@@ -39,9 +115,36 @@ function getInflYear(){
     let callBackFn = function (data) {
         fnInflYearChart(data);
     }
-    commonAjax("/front/stockPrices/api/", callBackFn, "get", null, errorMsg);
+
+    let period =  $("input[name=term]:checked").val();
+
+    if(period === 'on'){
+        period =  $("input[name=termDatePicker]").val();
+    }
+    let param = {term: period}
+    commonAjax("/front/stockPrices/api/getAnnualGrowthRate", callBackFn, "get", param, errorMsg);
 }
 
+function fnDashboardSetting(data, id){
+    let current = data.current;
+    let past = data.past;
+    let subtraction = data.subtraction;
+    let subRate = data.subRate;
+
+    if(current < past) {
+        $('#' + id + 'Point').text(current);
+        $('#' + id + 'Variance').text('▼' + subtraction + ' ' + '(' + subRate + ')').addClass('down');
+        if(id === 'kospi') $('#kospiVariance').removeClass('down')
+    } else if(current === past) {
+        $('#' + id + 'Point').text(current);
+        $('#' + id + 'Variance').text('변동없음');
+    } else {
+        $('#' + id + 'Point').text(current);
+        $('#' + id + 'Variance').text('▲' + subtraction + ' ' + '(' + subRate + ')').addClass('up');
+        if(id === 'kospi') $('#kospiVariance').removeClass('up')
+    }
+
+}
 
 
 

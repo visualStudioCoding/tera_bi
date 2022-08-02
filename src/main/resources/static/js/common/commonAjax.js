@@ -8,13 +8,12 @@ let commonAjax = function(url, fn, methodType, param, errorMsg){
     console.log("url : ", url);
     console.log("data : ", param);
     console.log("methodType : ", methodType);
-     console.log("errorMsg : ", errorMsg);
+    console.log("errorMsg : ", errorMsg);
 
-    let data = {parameter:param};
     let request = $.ajax({
         url: url,
         method: methodType,
-        data: data,
+        data: param,
         dataType: "json"
     });
     //콜백함수
