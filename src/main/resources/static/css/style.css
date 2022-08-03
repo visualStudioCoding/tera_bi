@@ -50,6 +50,9 @@ div[class*="col-inner"] {
 div[class*="col-inner"] > div {
   width: 100%;
 }
+.col-inner-2 {
+  width: calc(12.5% - var(--gap));
+}
 .col-inner-3 {
   width: calc(25% - var(--gap));
 }
@@ -625,7 +628,7 @@ header .indicator {
   clear: both;
 }
 .card + .card {
-  margin-top: 2rem;
+  margin-top: 1.5rem;
 }
 .card .icon {
   flex-shrink: 0;
@@ -641,6 +644,7 @@ header .indicator {
 }
 .card .txt-wrap {
   width: calc(100% - 3.5rem);
+  height: 5.625rem;
   margin-left: 1.5rem;
 }
 .card .txt-wrap > * {
@@ -678,6 +682,9 @@ header .indicator {
 }
 
 /* graphs */
+.graph-wrap > div + div {
+  margin-top: 1.5rem;
+}
 .graph-wrap + .graph-wrap {
   margin-top: 1.5rem;
 }
@@ -774,15 +781,69 @@ header .indicator {
   }
 }
 
+/* info text */
+.info-txt {
+  position: relative;
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem 0.5rem 1.75rem;
+  background: var(--gray-10);
+  border-radius: 0.5rem;
+  font-size: 0.813rem;
+  font-weight: 600;
+  color: var(--secondary-color);
+}
+.info-txt:before {
+  content: "";
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  width: 0.25rem;
+  height: 0.25rem;
+  background: var(--gray-50);
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
+.info-txt > span {
+  display: inline-block;
+  margin: 0 0.25rem;
+  font-weight: 600;
+}
+.info-txt .emp {
+  font-size: 1.25rem;
+  vertical-align: middle;
+}
+
 /* diagrams */
 .diagrams {
   display: flex;
   align-items: center;
 }
 
+/* counter */
+.count-ani,
+.count-ani-per {
+  position: relative;
+}
+.count-ani:after,
+.count-ani-per:after {
+  content: attr(data-unit);
+  font-size: 0.75rem;
+  vertical-align: 2px;
+  margin-left: 0.15rem;
+}
+.emp.count-ani-per:after {
+  vertical-align: middle;
+}
+
+/* etc */
+.emp + small {
+  vertical-align: -1px;
+  font-size: 0.75rem;
+}
+
 /* 경제성장지표 */
 .economic-growth .inner-title {
-  background: url(../img/bg01.png) no-repeat center;
+  background: url(../img/bg01.png) no-repeat top;
   background-size: cover;
 }
 .economic-growth .cont .left {
@@ -793,6 +854,18 @@ header .indicator {
 }
 #baseRate .icon {
   font-size: 1.625rem;
+}
+
+/* 생활수준지표 */
+.stnd-living .inner-title {
+  background: url(../img/bg02.png) no-repeat bottom;
+  background-size: cover;
+}
+.card.min-wage .icon {
+  font-size: 1.5rem;
+}
+.card.cs-infl .icon {
+  font-size: 1.5rem;
 }
 
 /* 종합주가지수 */

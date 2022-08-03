@@ -21,7 +21,7 @@
                         <div class="circle-wrap">
                             <div class="circle">
                                 <div class="txt-wrap">
-                                    <span class="txt" id="kospiPoint"></span>
+                                    <span class="txt count-ani-per" id="kospiPoint"></span>
                                     <span class="sub-txt" id="kospiVariance"></span>
                                 </div>
                                 <div class="wave wave1"></div>

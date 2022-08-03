@@ -134,21 +134,25 @@ function getInflYear(){
 }
 
 function fnDashboardSetting(data, id){
+
+    let pointId = $('#' + id + 'Point');
+    let VarianceId = $('#' + id + 'Variance');
+
     let current = data.current;
     let past = data.past;
     let subtraction = data.subtraction;
     let subRate = data.subRate;
 
     if(current < past) {
-        $('#' + id + 'Point').text(current);
-        $('#' + id + 'Variance').text('▼' + subtraction + ' ' + '(' + subRate + ')').addClass('down');
+        pointId.text(current);
+        VarianceId.text('▼' + subtraction + ' ' + '(' + subRate + ')').addClass('down');
         if(id === 'kospi') $('#kospiVariance').removeClass('down')
     } else if(current === past) {
-        $('#' + id + 'Point').text(current);
-        $('#' + id + 'Variance').text('변동없음');
+        pointId.text(current);
+        VarianceId.text('변동없음');
     } else {
-        $('#' + id + 'Point').text(current);
-        $('#' + id + 'Variance').text('▲' + subtraction + ' ' + '(' + subRate + ')').addClass('up');
+        pointId.text(current);
+        VarianceId.text('▲' + subtraction + ' ' + '(' + subRate + ')').addClass('up');
         if(id === 'kospi') $('#kospiVariance').removeClass('up')
     }
 
