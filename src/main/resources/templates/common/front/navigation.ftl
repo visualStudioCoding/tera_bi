@@ -12,7 +12,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/front/standardOfLiving/main?menuCode=002" class="nav-link<#if menuCode = '002'>on</#if>">
+                    <a href="/front/standardOfLiving/main?menuCode=002" class="nav-link <#if menuCode = '002'>on</#if>">
                         <span><i class="ri-pie-chart-2-fill"></i>생활수준지표</span>
                     </a>
                 </li>

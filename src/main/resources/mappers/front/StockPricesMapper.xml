@@ -75,11 +75,11 @@
     </select>
     <!--  기준금리와 kospi  -->
     <select id="selectBaseRateAndKospi" parameterType="hashMap" resultType="hashMap">
-        SELECT CONCAT(yr_dt, '/', mon_dt, '/', dy_dt) AS date
-             , val
+        SELECT CONCAT(ki.yr_dt, '/', ki.mon_dt, '/', ki.dy_dt) AS date
+             , ki.val
              , 'kospi'                                AS type
-            FROM kospi_index
-            WHERE yr_dt BETWEEN (
+            FROM kospi_index ki INNER JOIN base_rate br ON CONCAT(ki.yr_dt, ki.mon_dt, ki.dy_dt) = CONCAT(br.yr_dt, br.mon_dt, br.dy_dt)
+            WHERE ki.yr_dt BETWEEN (
                                 SELECT yr_dt
                                     FROM kospi_index
                                     ORDER BY yr_dt DESC
@@ -92,11 +92,11 @@
                               LIMIT 1
                           )
         UNION ALL
-        SELECT CONCAT(yr_dt, '/', mon_dt, '/', dy_dt) AS baseDate
-             , val
+        SELECT CONCAT(br.yr_dt, '/', br.mon_dt, '/', br.dy_dt) AS baseDate
+             , br.val
              , 'base'                                 AS type
-            FROM base_rate
-            WHERE yr_dt BETWEEN (
+            FROM base_rate br INNER JOIN kospi_index ki ON CONCAT(ki.yr_dt, ki.mon_dt, ki.dy_dt) = CONCAT(br.yr_dt, br.mon_dt, br.dy_dt)
+            WHERE br.yr_dt BETWEEN (
                                 SELECT yr_dt
                                     FROM base_rate
                                     ORDER BY yr_dt DESC

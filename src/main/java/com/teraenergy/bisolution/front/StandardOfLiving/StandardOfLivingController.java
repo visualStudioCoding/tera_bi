@@ -6,12 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Controller
@@ -28,7 +24,7 @@ public class StandardOfLivingController {
     @GetMapping("/main")
     public String standardOfLivingMain(Model model) throws Exception {
         log.info(PAGE_ID + DIRECTORY + "Main");
-
+        model.addAttribute("menuCode", "002");
         return PAGE_ID + DIRECTORY + "Main";
     }
 
