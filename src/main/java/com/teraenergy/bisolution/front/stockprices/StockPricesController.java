@@ -11,10 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  *
@@ -77,11 +74,12 @@ public class StockPricesController {
     public List<Object> gdpData(@RequestParam Map<String, Object> paramMap) throws Exception {
         log.info(PAGE_ID + DIRECTORY + "getGdpData");
 
-        Map<String, String> dateParam = SearchUtil.searchDate(paramMap, "period");
+        Map<String, String> dateParam = SearchUtil.searchDate(paramMap);
 
         List<Map<String, Object>> gdpMap;
 
         if(dateParam.size() <= 1) {
+            if("0".equals(dateParam.get("searchPeriod"))) dateParam.put("searchPeriod", "5");
             gdpMap = (List<Map<String, Object>>) commonService.selectList(dateParam, PAGE_ID + ECONOMIC_PROGRAM_ID + ".selectWholeGDP");
         } else{
             gdpMap = (List<Map<String, Object>>) commonService.selectList(dateParam, PAGE_ID + ECONOMIC_PROGRAM_ID + ".selectWholeGDPDetail");
@@ -122,11 +120,12 @@ public class StockPricesController {
     @GetMapping("/api/getAnnualGrowthRate")
     public Map<String, List<Map<String, Object>>> annualGrowthRate(@RequestParam Map<String, Object> paramMap) throws Exception {
 
-        Map<String, String> dateParam = SearchUtil.searchDate(paramMap, "period");
+        Map<String, String> dateParam = SearchUtil.searchDate(paramMap);
 
         List<Map<String, Object>> annualGrowthRateList;
 
         if(dateParam.size() <= 1) {
+            if("0".equals(dateParam.get("searchPeriod"))) dateParam.put("searchPeriod", "5");
             annualGrowthRateList = (List<Map<String, Object>>) commonService.selectList(dateParam, PAGE_ID + ECONOMIC_PROGRAM_ID + ".selectAnnualGrowthRate");
         } else{
             annualGrowthRateList = (List<Map<String, Object>>) commonService.selectList(dateParam, PAGE_ID + ECONOMIC_PROGRAM_ID + ".selectAnnualGrowthRateDetail");
@@ -135,6 +134,27 @@ public class StockPricesController {
         Map<String, List<Map<String, Object>>> result = new HashMap<>();
 
         result.put("annualGrowthRate", annualGrowthRateList);
+
+        return result;
+    }
+    // 연간 경제성장률
+    @ResponseBody
+    @GetMapping("/api/getBaseRateAndKospi")
+    public Map<String, List<Map<String, Object>>> baseRateAndKospi(@RequestParam Map<String, Object> paramMap) throws Exception {
+
+        Map<String, String> dateParam = SearchUtil.searchDate(paramMap);
+
+        List<Map<String, Object>> baseRateAndKospiList;
+
+        if(dateParam.size() <= 1) {
+            baseRateAndKospiList = (List<Map<String, Object>>) commonService.selectList(dateParam, PAGE_ID + PROGRAM_ID + ".selectBaseRateAndKospi");
+        } else{
+            baseRateAndKospiList = (List<Map<String, Object>>) commonService.selectList(dateParam, PAGE_ID + PROGRAM_ID + ".selectBaseRateAndKospiDetail");
+        }
+
+        Map<String, List<Map<String, Object>>> result = new LinkedHashMap<>();
+
+        result.put("baseRateAndKospi", baseRateAndKospiList);
 
         return result;
     }

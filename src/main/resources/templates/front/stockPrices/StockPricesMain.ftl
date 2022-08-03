@@ -91,7 +91,7 @@
                         <h6 class="tit">GDP</h6>
                     </div>
                     <div class="cont">
-                        <div id="gdpGraph" style="width:125%; height:200px;"></div>
+                        <div id="gdpGraph" style="width:100%; height:200px;"></div>
                     </div>
                 </div>
             </div>

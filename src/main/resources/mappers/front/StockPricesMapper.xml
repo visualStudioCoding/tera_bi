@@ -75,16 +75,16 @@
     </select>
     <!--  기준금리와 kospi  -->
     <select id="selectBaseRateAndKospi" parameterType="hashMap" resultType="hashMap">
-        select CONCAT(yr_dt, '/', mon_dt, '/', dy_dt) AS date
+        SELECT CONCAT(yr_dt, '/', mon_dt, '/', dy_dt) AS date
              , val
              , 'kospi'                                AS type
             FROM kospi_index
-            where yr_dt BETWEEN (
+            WHERE yr_dt BETWEEN (
                                 SELECT yr_dt
                                     FROM kospi_index
                                     ORDER BY yr_dt DESC
                                     LIMIT 1
-                                )  - #{searchPeriod}
+                                ) - #{searchPeriod}
                       AND (
                           SELECT yr_dt
                               FROM kospi_index
@@ -92,21 +92,37 @@
                               LIMIT 1
                           )
         UNION ALL
-        select CONCAT(yr_dt, '/', mon_dt, '/', dy_dt) AS baseDate
+        SELECT CONCAT(yr_dt, '/', mon_dt, '/', dy_dt) AS baseDate
              , val
              , 'base'                                 AS type
             FROM base_rate
-            where yr_dt BETWEEN (
+            WHERE yr_dt BETWEEN (
                                 SELECT yr_dt
                                     FROM base_rate
                                     ORDER BY yr_dt DESC
                                     LIMIT 1
-                                )  - #{searchPeriod}
+                                ) - #{searchPeriod}
                       AND (
                           SELECT yr_dt
                               FROM base_rate
                               ORDER BY yr_dt DESC
                               LIMIT 1
                           )
+        ORDER BY date
+    </select>
+    <!--  기준금리와 kospi 기간 세부 설정  -->
+    <select id="selectBaseRateAndKospiDetail" parameterType="hashMap" resultType="hashMap">
+        SELECT CONCAT(yr_dt, '/', mon_dt, '/', dy_dt) AS date
+             , val
+             , 'kospi'                                AS type
+            FROM kospi_index
+            WHERE CONCAT(yr_dt, mon_dt, dy_dt) BETWEEN #{searchStartDate} AND #{searchEndDate}
+        UNION ALL
+        SELECT CONCAT(yr_dt, '/', mon_dt, '/', dy_dt) AS baseDate
+             , val
+             , 'base'                                 AS type
+            FROM base_rate
+            WHERE CONCAT(yr_dt, mon_dt, dy_dt) BETWEEN #{searchStartDate} AND #{searchEndDate}
+        ORDER BY date
     </select>
 </mapper>
