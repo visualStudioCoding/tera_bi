@@ -1,17 +1,13 @@
 <form class="box">
     <div class="tit">기간설정</div>
     <div class="input-group">
-        <input
-                type="radio"
-                name="term"
-                id="term1"
-                value="5"
-                checked
-        />
+        <input type="radio" name="term" id="term0" value="0" checked/>
+        <label for="term0">최근</label>
+        <input type="radio" name="term" id="term1" value="5"/>
         <label for="term1">5년</label>
-        <input type="radio" name="term" id="term2" value="10" />
+        <input type="radio" name="term" id="term2" value="10"/>
         <label for="term2">10년</label>
-        <input type="radio" name="term" id="termDatePick" />
+        <input type="radio" name="term" id="termDatePick"/>
         <label for="termDatePick">기간선택</label>
     </div>
     <div class="date-picker-group">
@@ -30,9 +26,9 @@
 <form class="box">
     <div class="tit">지역설정</div>
     <div class="input-group">
-        <input type="radio" name="ecLoc" id="ecLocAll" checked />
+        <input type="radio" name="ecLoc" id="ecLocAll" checked/>
         <label for="ecLocAll">전국</label>
-        <input type="radio" name="ecLoc" id="ecLocSlcts" />
+        <input type="radio" name="ecLoc" id="ecLocSlcts"/>
         <label for="ecLocSlcts">지역선택</label>
     </div>
     <div class="select-group">

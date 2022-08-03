@@ -9,7 +9,7 @@ window.onload = function () {
     getExchangeRate();
     getGdp();
     getCovidKospi();
-    // getKospi();
+    getBaseRateAndKospi();
     getInflYear();
 }
 
@@ -104,11 +104,19 @@ function getCovidKospi(){
     commonAjax("/front/stockPrices/api/getCovidKospi", callBackFn, "get", null, errorMsg);
 }
 // 기준금리 & kospi 차트
-function getKospi(){
+function getBaseRateAndKospi(){
     let callBackFn = function (data) {
-        fnKospiChart(data);
+        console.log(data);
+        fnBaseRateAndKospi(data);
     }
-    commonAjax("/front/stockPrices/api/", callBackFn, "get", null, errorMsg);
+
+    let period =  $("input[name=term]:checked").val();
+
+    if(period === 'on'){
+        period =  $("input[name=termDatePicker]").val();
+    }
+    let param = {term: period}
+    commonAjax("/front/stockPrices/api/getBaseRateAndKospi", callBackFn, "get", param, errorMsg);
 }
 // 연도별 경제성장률 차트
 function getInflYear(){

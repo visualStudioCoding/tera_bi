@@ -120,40 +120,26 @@ function fnCovidKospiChart(data) {
 }
 
 /* 차트 - 기준금리와 KOSPI */
-function fnKospiChart() {
+function fnBaseRateAndKospi(data) {
+    let baseRate = [];
+    let kospi = [];
+    let date = [];
+
+    for (let i = 0; i < data.baseRateAndKospi.length; i++) {
+        if(data.baseRateAndKospi[i].type === 'kospi') {
+            kospi.push(data.baseRateAndKospi[i].val);
+        } else {
+            date.push(data.baseRateAndKospi[i].date);
+            baseRate.push(data.baseRateAndKospi[i].val);
+        }
+    }
     const kospiChartDom = document.getElementById("baseRateKospiGraph");
     if (kospiChartDom) {
         const kospiChart = echarts.init(kospiChartDom);
         let kospiGraphOp;
 
         // prettier-ignore
-        let timeData = [
-            '2010/7/9',
-            '2010/11/16',
-            '2011/1/13',
-            '2011/3/10',
-            '2011/6/10',
-            '2012/7/12',
-            '2012/10/11',
-            '2013/5/9',
-            '2014/8/14',
-            '2014/10/15',
-            '2015/3/12',
-            '2015/6/11',
-            '2016/6/9',
-            '2017/11/30',
-            '2018/11/30',
-            '2019/7/18',
-            '2019/10/16',
-            '2020/3/17',
-            '2020/5/28',
-            '2021/8/26',
-            '2021/11/25',
-            '2022/1/14',
-            '2022/4/14',
-            '2022/5/26',
-            '2022/7/13',
-        ];
+        let timeData = date;
 
         kospiGraphOp = {
             tooltip: {
@@ -252,9 +238,7 @@ function fnKospiChart() {
                         ]),
                     },
                     // prettier-ignore
-                    data: [
-                        2.25, 2.50, 2.75, 3.00, 3.25, 3.00, 2.75, 2.50, 2.25, 2.00, 1.75, 1.50, 1.25, 1.50, 1.75, 1.50, 1.25, 0.75, 0.50, 0.75, 1.00, 1.25, 1.50, 1.75, 2.25,
-                    ],
+                    data: [],
                 },
                 {
                     name: "KOSPI",
@@ -282,23 +266,23 @@ function fnKospiChart() {
                         ]),
                     },
                     // prettier-ignore
-                    data: [
-                        1759.33, 1904.63, 2069.73, 2106.7, 2100.69, 1881.99, 1912.06, 2001.05, 2068.54, 1964.43, 2041.03, 2074.2, 1970.35, 2476.37, 2096.86, 2024.55, 2083.48, 1754.64, 2029.6, 3199.27, 2839.01, 2663.34, 2695.05, 2685.9, 2411.92,
-                    ],
+                    data: [],
                 },
             ],
             textStyle: {
                 fontFamily: "NanumSquare",
             },
         };
+
+        kospiGraphOp.series[0].data = baseRate;
+        kospiGraphOp.series[1].data = kospi;
+
         kospiChart.setOption(kospiGraphOp);
     }
 }
 
 /* 차트 - 연도별 경제성장률 */
 function fnInflYearChart(data) {
-    console.log(data);
-
     let growthRate = [];
     let year = [];
 
