@@ -38,13 +38,18 @@ public class StockPricesController {
     private StockPricesService stockPricesService;
 
     @GetMapping("/main")
-    public String stockPricesMain(Model model) throws Exception {
+    public String stockPricesMain(@RequestParam Map<String, Object> paramMap, Model model) throws Exception {
         log.info(PAGE_ID + DIRECTORY + "Main");
         model.addAttribute("menuCode", "003");
+        model.addAttribute("kospiIndex", stockPricesService.getOffsetMap(paramMap, PROGRAM_ID, PAGE_ID, ".selectKospiIndex"));
+        model.addAttribute("kosdaqIndex", stockPricesService.getOffsetMap(paramMap, PROGRAM_ID, PAGE_ID, ".selectKosdaqIndex"));
+        model.addAttribute("oilPrice", stockPricesService.getOffsetMap(paramMap, PROGRAM_ID, PAGE_ID, ".selectOilPrice"));
+        model.addAttribute("baseRate", stockPricesService.getOffsetMap(paramMap, ECONOMIC_PROGRAM_ID, PAGE_ID, ".selectBaseRate"));
+        model.addAttribute("exchangeRate", stockPricesService.getOffsetMap(paramMap, ECONOMIC_PROGRAM_ID, PAGE_ID, ".selectExchangeRate"));
         return PAGE_ID + DIRECTORY + "Main";
     }
 
-    @ResponseBody
+    /*@ResponseBody
     @GetMapping("/api/getKospiIndex")
     public Map<String, Object> kospiIndex(@RequestParam Map<String, Object> paramMap) throws Exception {
         return stockPricesService.getOffsetMap(paramMap, PROGRAM_ID, PAGE_ID, ".selectKospiIndex");
@@ -67,7 +72,7 @@ public class StockPricesController {
     @GetMapping("/api/getExchangeRate")
     public Map<String, Object> exchangeRate(@RequestParam Map<String, Object> paramMap) throws Exception {
         return stockPricesService.getOffsetMap(paramMap, ECONOMIC_PROGRAM_ID, PAGE_ID, ".selectExchangeRate");
-    }
+    }*/
 
     @ResponseBody
     @GetMapping("/api/getGdpData")
