@@ -21,8 +21,22 @@
                         <div class="circle-wrap">
                             <div class="circle">
                                 <div class="txt-wrap">
-                                    <span class="txt count-ani-per" id="kospiPoint"></span>
-                                    <span class="sub-txt" id="kospiVariance"></span>
+                                    <#if kospiIndex.current?number lt kospiIndex.past?number>
+                                        <span class="txt count-ani-per" data-unit="P">${kospiIndex.current}</span>
+                                        <span class="sub-txt">
+                                        ▼ ${kospiIndex.subtraction} (${kospiIndex.subRate?number}%)
+                                        </span>
+                                    <#elseif kospiIndex.current?number == kospiIndex.past?number>
+                                        <span class="txt count-ani-per" data-unit="P">${kospiIndex.current} %</span>
+                                        <span class="sub-txt">변동없음</span>
+                                    <#else>
+                                        <span class="txt count-ani-per" data-unit="P">${kospiIndex.current}</span>
+                                        <span class="sub-txt">
+                                        ▲ ${kospiIndex.subtraction} (${kospiIndex.subRate}%)
+                                        </span>
+                                    </#if>
+                                    <#--<span class="txt" id="kospiPoint" data-unit="P"></span>
+                                    <span class="sub-txt" id="kospiVariance"></span>-->
                                 </div>
                                 <div class="wave wave1"></div>
                                 <div class="wave wave2"></div>
@@ -42,8 +56,24 @@
                             </figure>
                             <div class="txt-wrap">
                                 <h6 class="tit">환율</h6>
-                                <b class="center-txt" id="exchangeRatePoint"></b>
-                                <span class="sub-txt" id="exchangeRateVariance"></span>
+                                <#if exchangeRate.current?number lt exchangeRate.past?number>
+                                    <b class="center-txt count-ani-per" data-unit="원/달러">${exchangeRate.current}</b>
+                                    <span class="sub-txt down">
+                                        ▼ ${exchangeRate.subtraction} (${exchangeRate.subRate}%)
+                                    </span>
+                                <#elseif exchangeRate.current?number == exchangeRate.past?number>
+                                    <b class="center-txt count-ani-per" data-unit="원/달러">${exchangeRate.current} %</b>
+                                    <span class="sub-txt">
+                                    변동없음
+                                </span>
+                                <#else>
+                                    <b class="center-txt count-ani-per" data-unit="원/달러">${exchangeRate.current}</b>
+                                    <span class="sub-txt up">
+                                        ▲ ${exchangeRate.subtraction} (${exchangeRate.subRate}%)
+                                    </span>
+                                </#if>
+                                <#--<b class="center-txt" id="exchangeRatePoint" data-unit="원/달러"></b>
+                                <span class="sub-txt" id="exchangeRateVariance"></span>-->
                             </div>
                         </div>
                         <div class="card">
@@ -52,8 +82,24 @@
                             </figure>
                             <div class="txt-wrap">
                                 <h6 class="tit">기준금리</h6>
-                                <b class="center-txt" id="baseRatePoint"></b>
-                                <span class="sub-txt" id="baseRateVariance"></span>
+                                <#if baseRate.current?number lt baseRate.past?number>
+                                    <b class="center-txt count-ani-per" data-unit="%">${baseRate.current}</b>
+                                    <span class="sub-txt down">
+                                        ▼ ${baseRate.subtraction} (${baseRate.subRate}%)
+                                    </span>
+                                <#elseif baseRate.current?number == baseRate.past?number>
+                                    <b class="center-txt count-ani-per" data-unit="%">${baseRate.current} %</b>
+                                    <span class="sub-txt">
+                                    변동없음
+                                </span>
+                                <#else>
+                                    <b class="center-txt count-ani-per" data-unit="%">${baseRate.current}</b>
+                                    <span class="sub-txt up">
+                                        ▲ ${baseRate.subtraction} (${baseRate.subRate}%)
+                                    </span>
+                                </#if>
+                                <#--<b class="center-txt" id="baseRatePoint" data-unit="%"></b>
+                                <span class="sub-txt" id="baseRateVariance"></span>-->
                             </div>
                         </div>
                     </div>
@@ -69,8 +115,22 @@
                             </figure>
                             <div class="txt-wrap">
                                 <h6 class="tit">코스닥</h6>
-                                <b class="center-txt" id="kosdaqPoint"></b>
-                                <span class="sub-txt" id="kosdaqVariance"></span>
+                                <#if kosdaqIndex.current?number lt kosdaqIndex.past?number>
+                                    <b class="center-txt count-ani-per" data-unit="P">${kosdaqIndex.current}</b>
+                                    <span class="sub-txt down">
+                                        ▼ ${kosdaqIndex.subtraction} (${kosdaqIndex.subRate}%)
+                                    </span>
+                                <#elseif kosdaqIndex.current?number == kosdaqIndex.past?number>
+                                    <b class="center-txt count-ani-per" data-unit="P">${kosdaqIndex.current} %</b>
+                                    <span class="sub-txt">변동없음</span>
+                                <#else>
+                                    <b class="center-txt count-ani-per" data-unit="P">${kosdaqIndex.current}</b>
+                                    <span class="sub-txt up">
+                                        ▲ ${kosdaqIndex.subtraction} (${kosdaqIndex.subRate}%)
+                                    </span>
+                                </#if>
+                                <#--<b class="center-txt" id="kosdaqPoint" data-unit="P"></b>
+                                <span class="sub-txt" id="kosdaqVariance"></span>-->
                             </div>
                         </div>
                         <div id="wtiCard" class="card">
@@ -79,9 +139,22 @@
                             </figure>
                             <div class="txt-wrap">
                                 <h6 class="tit">유가</h6>
-                                <b class="center-txt" id="oilPoint"></b>
-                                <span class="sub-txt" id="oilVariance"></span>
-                                <span class="sub-txt">단위 : 달러/배럴</span>
+                                <#if oilPrice.current?number lt oilPrice.past?number>
+                                    <b class="center-txt count-ani-per" data-unit="달러/배럴">${oilPrice.current}</b>
+                                    <span class="sub-txt down">
+                                        ▼ ${oilPrice.subtraction} (${oilPrice.subRate}%)
+                                    </span>
+                                <#elseif oilPrice.current?number == oilPrice.past?number>
+                                    <b class="center-txt count-ani-per" data-unit="달러/배럴">${oilPrice.current} %</b>
+                                    <span class="sub-txt">변동없음</span>
+                                <#else>
+                                    <b class="center-txt count-ani-per" data-unit="달러/배럴">${oilPrice.current}</b>
+                                    <span class="sub-txt up">
+                                        ▲ ${oilPrice.subtraction} (${oilPrice.subRate}%)
+                                    </span>
+                                </#if>
+                                <#--<b class="center-txt" id="oilPoint" data-unit="달러/배럴"></b>
+                                <span class="sub-txt" id="oilVariance"></span>-->
                             </div>
                         </div>
                     </div>

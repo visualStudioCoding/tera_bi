@@ -112,17 +112,17 @@
     </select>
     <!--  기준금리와 kospi 기간 세부 설정  -->
     <select id="selectBaseRateAndKospiDetail" parameterType="hashMap" resultType="hashMap">
-        SELECT CONCAT(yr_dt, '/', mon_dt, '/', dy_dt) AS date
-             , val
+        SELECT CONCAT(ki.yr_dt, '/', ki.mon_dt, '/', ki.dy_dt) AS date
+             , ki.val
              , 'kospi'                                AS type
-            FROM kospi_index
-            WHERE CONCAT(yr_dt, mon_dt, dy_dt) BETWEEN #{searchStartDate} AND #{searchEndDate}
+            FROM kospi_index ki INNER JOIN base_rate br ON CONCAT(ki.yr_dt, ki.mon_dt, ki.dy_dt) = CONCAT(br.yr_dt, br.mon_dt, br.dy_dt)
+            WHERE CONCAT(ki.yr_dt, ki.mon_dt, ki.dy_dt) BETWEEN #{searchStartDate} AND #{searchEndDate}
         UNION ALL
-        SELECT CONCAT(yr_dt, '/', mon_dt, '/', dy_dt) AS baseDate
-             , val
+        SELECT CONCAT(br.yr_dt, '/', br.mon_dt, '/', br.dy_dt) AS baseDate
+             , br.val
              , 'base'                                 AS type
-            FROM base_rate
-            WHERE CONCAT(yr_dt, mon_dt, dy_dt) BETWEEN #{searchStartDate} AND #{searchEndDate}
+            FROM base_rate br INNER JOIN kospi_index ki ON CONCAT(ki.yr_dt, ki.mon_dt, ki.dy_dt) = CONCAT(br.yr_dt, br.mon_dt, br.dy_dt)
+            WHERE CONCAT(br.yr_dt, br.mon_dt, br.dy_dt) BETWEEN #{searchStartDate} AND #{searchEndDate}
         ORDER BY date
     </select>
 </mapper>

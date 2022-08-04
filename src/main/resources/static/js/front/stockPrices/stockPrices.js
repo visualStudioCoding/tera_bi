@@ -2,22 +2,25 @@ const errorMsg = "데이터 호출 실패";
 
 // 데이터 호출 함수
 window.onload = function () {
-    getKospiIndex();
-    getKosdaqIndex();
-    getOilPrice();
-    getBaseRate();
-    getExchangeRate();
+    // getKospiIndex();
+    // getKosdaqIndex();
+    // getOilPrice();
+    // getBaseRate();
+    // getExchangeRate();
     getGdp();
     getCovidKospi();
     getBaseRateAndKospi();
     getInflYear();
-}
+    countAnimation();
 
+}
 $("#termSetting").click(function(){
     getGdp();
     getInflYear();
+    getBaseRateAndKospi();
 });
 
+/*
 // kospi
 function getKospiIndex(){
     let callBackFn = function (data) {
@@ -83,6 +86,8 @@ function getExchangeRate(){
     let param = {term: period}
     commonAjax("/front/stockPrices/api/getExchangeRate", callBackFn, "get", param, errorMsg);
 }
+*/
+
 // GDP 차트
 function getGdp(){
     let callBackFn = function (data) {
@@ -133,10 +138,13 @@ function getInflYear(){
     commonAjax("/front/stockPrices/api/getAnnualGrowthRate", callBackFn, "get", param, errorMsg);
 }
 
+/*
 function fnDashboardSetting(data, id){
 
     let pointId = $('#' + id + 'Point');
     let VarianceId = $('#' + id + 'Variance');
+
+    pointId.addClass('count-ani-per');
 
     let current = data.current;
     let past = data.past;
@@ -157,6 +165,7 @@ function fnDashboardSetting(data, id){
     }
 
 }
+*/
 
 
 
