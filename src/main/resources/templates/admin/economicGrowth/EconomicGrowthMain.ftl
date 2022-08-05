@@ -219,20 +219,22 @@
                 <div class="card-header">
                     국제 주요국 경제성장률
                 </div>
-                <form name="growthRateCountry_opt">
+                <form name="growthRateInternational_opt">
                     <div class="card-body">
                         <span>년도 선택</span>
                         <select class="form-select" name="prdDe" aria-label="Default select example" disabled>
                             <option selected>해당 API는 년도를 선택할 수 없습니다.</option>
                         </select>
-                        <input type="hidden" name="tableCode" value="902Y015"/>
-                        <input type="hidden" name="countryCode" value="KOR"/>
-                        <input type="hidden" name="periodCode" value="A"/>
-                        <input type="hidden" name="starPrdDe" value="1950"/>
-                        <input type="hidden" name="endPrdDe" value="${nowDate?string("yyyy")}"/>
+                        <#assign name_list = ["serviceNm", "resultType", "tableCode", "cycle","itmCode"]>
+                        <#assign val_list = ["StatisticSearch", "json", "902Y015", "A", "KOR"]>
+                        <#list 0..4 as k>
+                            <input type="hidden" name=${name_list[k]} value=${val_list[k]}  />
+                        </#list>
+                        <input type="hidden" name="startDt" value="1950"/>
+                        <input type="hidden" name="endDt" value="${nowDate?string("yyyy")}"/>
                     </div>
                 </form>
-                <button type="button" class="btn btn-outline-secondary activator" onclick="getGrowthRateCountry()">실행</button>
+                <button type="button" class="btn btn-outline-secondary activator" onclick="getGrowthRateInternational()">실행</button>
             </div>
         </div>
     </div>

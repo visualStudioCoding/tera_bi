@@ -177,8 +177,8 @@ function getGDP() {
     ecosApiAjax("/admin/economicGrowth/api/getGdp", callBackFn, 'get', params, errorMsg);
 }
 
-function getGrowthRateCountry() {
-    let formData = document.forms["growthRateCountry_opt"];
+function getGrowthRateInternational() {
+    let formData = document.forms["growthRateInternational_opt"];
 
     let params = getEcosParam(formData);
 
@@ -188,7 +188,7 @@ function getGrowthRateCountry() {
         console.log(data.data)
     }
     //공통모듈 ajax 함수 호출하기
-    ecosApiAjax("/admin/economicGrowth/api/getGrowthRateCountry", callBackFn, 'get', params, errorMsg);
+    ecosApiAjax("/admin/economicGrowth/api/getGrowthRateInternational", callBackFn, 'get', params, errorMsg);
 }
 
 function getGrowthRate(){
