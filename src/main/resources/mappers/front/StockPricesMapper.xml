@@ -17,6 +17,7 @@
         SELECT yr_dt  AS yrDt
              , mon_dt AS monDt
              , dy_dt  AS dyDt
+             , CONCAT(yr_dt, '.', mon_dt, '.', dy_dt) AS baseDate
              , unit
              , val
             FROM kospi_index
@@ -27,13 +28,13 @@
                       ORDER BY CONCAT(yr_dt, mon_dt, dy_dt) DESC
                       <include refid="offsetWhere"/>
                   )
-
     </select>
     <!-- 코스닥 지수 -->
     <select id="selectKosdaqIndex" resultType="hashMap">
         SELECT yr_dt  AS yrDt
              , mon_dt AS monDt
              , dy_dt  AS dyDt
+             , CONCAT(yr_dt, '.', mon_dt, '.', dy_dt) AS baseDate
              , unit
              , val
             FROM kosdaq_index
@@ -49,6 +50,7 @@
     <select id="selectOilPrice" resultType="hashMap">
         SELECT yr_dt  AS yrDt
              , mon_dt AS monDt
+             , CONCAT(yr_dt, '.', mon_dt) AS baseDate
              , unit
              , val
             FROM oil_price
@@ -66,8 +68,8 @@
         SELECT CONCAT(yr_dt, '/', mon_dt, '/', dy_dt)  AS kospiDate
              , val
             FROM kospi_index
-            WHERE yr_dt BETWEEN 2019 AND (
-                                         SELECT yr_dt
+            WHERE CONCAT(yr_dt, mon_dt) BETWEEN 201912 AND (
+                                         SELECT CONCAT(yr_dt, mon_dt)
                                              FROM kospi_index
                                              ORDER BY yr_dt DESC
                                              LIMIT 1

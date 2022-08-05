@@ -1,6 +1,7 @@
 package com.teraenergy.bisolution.admin.stockprices;
 
 
+import com.teraenergy.global.service.ApiParseService;
 import com.teraenergy.global.service.CommonService;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
@@ -35,6 +36,8 @@ public class StockPricesController {
 
     @Resource(name = "commonService")
     private CommonService commonService;
+    @Resource(name = "apiParseService")
+    private ApiParseService apiParseService;
 
     @GetMapping("/main")
     public String stockPricesMain() throws Exception {
@@ -55,9 +58,9 @@ public class StockPricesController {
             if (i > 0) {
                 parameter = parameter.replace(categoryList[i - 1], categoryList[i]);
             }
-            StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+            StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
 
-            JSONArray jsonList = commonService.ecosApiJsonParser(stringBuilder, "StatisticSearch");
+            JSONArray jsonList = apiParseService.ecosApiJsonParser(stringBuilder, "StatisticSearch");
 
             Map<String, Object> dataMap = new HashMap<>();
 
@@ -97,9 +100,9 @@ public class StockPricesController {
         Map<String, Object> result = new HashMap<>();
         String format = "json";
         String site = "ecos";
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+        StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
 
-        JSONArray jsonList = commonService.ecosApiJsonParser(stringBuilder, "StatisticSearch");
+        JSONArray jsonList = apiParseService.ecosApiJsonParser(stringBuilder, "StatisticSearch");
 
         Map<String, Object> dataMap = new HashMap<>();
 
@@ -131,11 +134,11 @@ public class StockPricesController {
         //kosis = json, enara = xml
         String format = "xml";
         String site = "enara";
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+        StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
 
         Map<String, Object> result = new HashMap<>();
 //      통계표
-        org.json.JSONObject table = commonService.apiXmlParser(stringBuilder);
+        org.json.JSONObject table = apiParseService.apiXmlParser(stringBuilder);
         String unit = table.getString("단위");
         org.json.JSONArray innerTable = table.getJSONArray("표");
         org.json.JSONObject monthTable = innerTable.getJSONObject(1);
@@ -180,11 +183,11 @@ public class StockPricesController {
         //kosis = json, enara = xml
         String format = "xml";
         String site = "enara";
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+        StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
 
         Map<String, Object> result = new HashMap<>();
 //      통계표
-        org.json.JSONObject table = commonService.apiXmlParser(stringBuilder);
+        org.json.JSONObject table = apiParseService.apiXmlParser(stringBuilder);
         String unit = table.getString("단위");
         String[] units = unit.split(",");
         org.json.JSONObject innerTable = table.getJSONObject("표");

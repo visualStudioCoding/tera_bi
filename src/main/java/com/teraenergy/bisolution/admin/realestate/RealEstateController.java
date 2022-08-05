@@ -2,6 +2,7 @@ package com.teraenergy.bisolution.admin.realestate;
 
 
 import com.teraenergy.global.common.utilities.AreaNameUtil;
+import com.teraenergy.global.service.ApiParseService;
 import com.teraenergy.global.service.CommonService;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
@@ -37,6 +38,8 @@ public class RealEstateController {
     private static final String SITE = "kosis";
     @Resource(name = "commonService")
     private CommonService commonService;
+    @Resource(name = "apiParseService")
+    private ApiParseService apiParseService;
     @Resource(name = "realEstateService")
     private RealEstateService realEstateService;
 
@@ -62,8 +65,8 @@ public class RealEstateController {
 
             parameter = realEstateService.stringCombination(splitParams, month);
 
-            StringBuilder stringBuilder = commonService.getApiResult(url, parameter, FORMAT, SITE);
-            JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+            StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, FORMAT, SITE);
+            JSONArray jsonList = (JSONArray) apiParseService.apiJsonParser(stringBuilder);
 
 
             for (Object jsonObject : jsonList) {
@@ -114,8 +117,8 @@ public class RealEstateController {
 
             parameter = realEstateService.stringCombination(splitParams, month);
 
-            StringBuilder stringBuilder = commonService.getApiResult(url, parameter, FORMAT, SITE);
-            JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+            StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, FORMAT, SITE);
+            JSONArray jsonList = (JSONArray) apiParseService.apiJsonParser(stringBuilder);
 
             for (Object jsonObject : jsonList) {
                 JSONObject jsonData = (JSONObject) jsonObject;
@@ -160,8 +163,8 @@ public class RealEstateController {
 
             parameter = realEstateService.stringCombination(splitParams, month);
 
-            StringBuilder stringBuilder = commonService.getApiResult(url, parameter, FORMAT, SITE);
-            JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+            StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, FORMAT, SITE);
+            JSONArray jsonList = (JSONArray) apiParseService.apiJsonParser(stringBuilder);
 
             for (Object jsonObject : jsonList) {
                 JSONObject jsonData = (JSONObject) jsonObject;
@@ -202,8 +205,8 @@ public class RealEstateController {
 
             parameter = realEstateService.stringCombination(splitParams, month);
 
-            StringBuilder stringBuilder = commonService.getApiResult(url, parameter, FORMAT, SITE);
-            JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+            StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, FORMAT, SITE);
+            JSONArray jsonList = (JSONArray) apiParseService.apiJsonParser(stringBuilder);
 
             for (Object jsonObject : jsonList) {
                 JSONObject jsonData = (JSONObject) jsonObject;
@@ -248,8 +251,8 @@ public class RealEstateController {
         for (int month = 1; month <= 12; month++) {
             parameter = realEstateService.stringCombination(splitParams, month);
 
-            StringBuilder stringBuilder = commonService.getApiResult(url, parameter, FORMAT, SITE);
-            JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+            StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, FORMAT, SITE);
+            JSONArray jsonList = (JSONArray) apiParseService.apiJsonParser(stringBuilder);
 
             for (Object jsonObject : jsonList) {
                 Map<String, Object> dataMap = new HashMap<>();
@@ -305,8 +308,8 @@ public class RealEstateController {
         for (int month = 1; month <= 12; month++) {
             parameter = realEstateService.stringCombination(splitParams, month);
 
-            StringBuilder stringBuilder = commonService.getApiResult(url, parameter, FORMAT, SITE);
-            JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+            StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, FORMAT, SITE);
+            JSONArray jsonList = (JSONArray) apiParseService.apiJsonParser(stringBuilder);
 
             for (Object jsonObject : jsonList) {
                 Map<String, Object> dataMap = new HashMap<>();
@@ -355,8 +358,8 @@ public class RealEstateController {
     public Object getGrossRegionalProduct(String url, String parameter) throws Exception {
         Map<String, Object> result = new HashMap<>();
         List<Map<String, Object>> dataList = new ArrayList<>();
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, FORMAT, SITE);
-        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, FORMAT, SITE);
+        JSONArray jsonList = (JSONArray) apiParseService.apiJsonParser(stringBuilder);
 
         for (Object jsonObject : jsonList) {
             Map<String, Object> dataMap = new HashMap<>();

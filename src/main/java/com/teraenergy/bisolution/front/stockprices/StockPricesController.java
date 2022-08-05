@@ -2,6 +2,7 @@ package com.teraenergy.bisolution.front.stockprices;
 
 import com.teraenergy.global.common.utilities.SearchUtil;
 import com.teraenergy.global.service.CommonService;
+import com.teraenergy.global.service.VolatilityService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,44 +35,54 @@ public class StockPricesController {
     @Resource(name = "commonService")
     private CommonService commonService;
 
-    @Resource(name = "stockPricesService")
-    private StockPricesService stockPricesService;
+    @Resource(name = "volatilityService")
+    private VolatilityService volatilityService;
 
     @GetMapping("/main")
     public String stockPricesMain(@RequestParam Map<String, Object> paramMap, Model model) throws Exception {
         log.info(PAGE_ID + DIRECTORY + "Main");
         model.addAttribute("menuCode", "003");
-        model.addAttribute("kospiIndex", stockPricesService.getOffsetMap(paramMap, PROGRAM_ID, PAGE_ID, ".selectKospiIndex"));
-        model.addAttribute("kosdaqIndex", stockPricesService.getOffsetMap(paramMap, PROGRAM_ID, PAGE_ID, ".selectKosdaqIndex"));
-        model.addAttribute("oilPrice", stockPricesService.getOffsetMap(paramMap, PROGRAM_ID, PAGE_ID, ".selectOilPrice"));
-        model.addAttribute("baseRate", stockPricesService.getOffsetMap(paramMap, ECONOMIC_PROGRAM_ID, PAGE_ID, ".selectBaseRate"));
-        model.addAttribute("exchangeRate", stockPricesService.getOffsetMap(paramMap, ECONOMIC_PROGRAM_ID, PAGE_ID, ".selectExchangeRate"));
+
+        //if(StringUtils.isEmpty((String) paramMap.get("searchPeriod"))) paramMap.put("term", "5");
+
+        Map<String, String> dateParam = SearchUtil.searchDate(paramMap);
+        //if("0".equals(dateParam.get("searchPeriod"))) dateParam.put("searchPeriod", "5");
+        model.addAttribute("kospiIndex", volatilityService.getOffsetMap(dateParam, PROGRAM_ID, PAGE_ID, ".selectKospiIndex"));
+        model.addAttribute("kosdaqIndex", volatilityService.getOffsetMap(dateParam, PROGRAM_ID, PAGE_ID, ".selectKosdaqIndex"));
+        model.addAttribute("oilPrice", volatilityService.getOffsetMap(dateParam, PROGRAM_ID, PAGE_ID, ".selectOilPrice"));
+        model.addAttribute("baseRate", volatilityService.getOffsetMap(dateParam, ECONOMIC_PROGRAM_ID, PAGE_ID, ".selectBaseRate"));
+        model.addAttribute("exchangeRate", volatilityService.getOffsetMap(dateParam, ECONOMIC_PROGRAM_ID, PAGE_ID, ".selectExchangeRate"));
         return PAGE_ID + DIRECTORY + "Main";
     }
 
     /*@ResponseBody
     @GetMapping("/api/getKospiIndex")
     public Map<String, Object> kospiIndex(@RequestParam Map<String, Object> paramMap) throws Exception {
-        return stockPricesService.getOffsetMap(paramMap, PROGRAM_ID, PAGE_ID, ".selectKospiIndex");
+        Map<String, String> dateParam = SearchUtil.searchDate(paramMap);
+        return stockPricesService.getOffsetMap(dateParam, PROGRAM_ID, PAGE_ID, ".selectKospiIndex");
     }
     @ResponseBody
     @GetMapping("/api/getKosdaqIndex")
     public Map<String, Object> kosdaqIndex(@RequestParam Map<String, Object> paramMap) throws Exception {
-        return stockPricesService.getOffsetMap(paramMap, PROGRAM_ID, PAGE_ID, ".selectKosdaqIndex");
+        Map<String, String> dateParam = SearchUtil.searchDate(paramMap);
+        return stockPricesService.getOffsetMap(dateParam, PROGRAM_ID, PAGE_ID, ".selectKosdaqIndex");
     }
     @ResponseBody
     @GetMapping("/api/getOilPrice")
     public Map<String, Object> oilPrice(@RequestParam Map<String, Object> paramMap) throws Exception {
-        return stockPricesService.getOffsetMap(paramMap, PROGRAM_ID, PAGE_ID, ".selectOilPrice");
+        Map<String, String> dateParam = SearchUtil.searchDate(paramMap);
+        return stockPricesService.getOffsetMap(dateParam, PROGRAM_ID, PAGE_ID, ".selectOilPrice");
     }@ResponseBody
     @GetMapping("/api/getBaseRate")
     public Map<String, Object> baseRate(@RequestParam Map<String, Object> paramMap) throws Exception {
-        return stockPricesService.getOffsetMap(paramMap, ECONOMIC_PROGRAM_ID, PAGE_ID, ".selectBaseRate");
+        Map<String, String> dateParam = SearchUtil.searchDate(paramMap);
+        return stockPricesService.getOffsetMap(dateParam, ECONOMIC_PROGRAM_ID, PAGE_ID, ".selectBaseRate");
     }
     @ResponseBody
     @GetMapping("/api/getExchangeRate")
     public Map<String, Object> exchangeRate(@RequestParam Map<String, Object> paramMap) throws Exception {
-        return stockPricesService.getOffsetMap(paramMap, ECONOMIC_PROGRAM_ID, PAGE_ID, ".selectExchangeRate");
+        Map<String, String> dateParam = SearchUtil.searchDate(paramMap);
+        return stockPricesService.getOffsetMap(dateParam, ECONOMIC_PROGRAM_ID, PAGE_ID, ".selectExchangeRate");
     }*/
 
     @ResponseBody
@@ -142,7 +153,7 @@ public class StockPricesController {
 
         return result;
     }
-    // 연간 경제성장률
+    // 기준금리 & kospi
     @ResponseBody
     @GetMapping("/api/getBaseRateAndKospi")
     public Map<String, List<Map<String, Object>>> baseRateAndKospi(@RequestParam Map<String, Object> paramMap) throws Exception {

@@ -1,31 +1,22 @@
 package com.teraenergy.bisolution.admin.lifeSatisfaction;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
-
 import com.teraenergy.global.common.utilities.AreaNameUtil;
+import com.teraenergy.global.service.ApiParseService;
 import com.teraenergy.global.service.CommonService;
+import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import lombok.extern.slf4j.Slf4j;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @Controller
@@ -37,6 +28,9 @@ public class LifeSatisfactionController {
 
     @Resource(name = "commonService")
     private CommonService commonService;
+
+    @Resource(name = "apiParseService")
+    private ApiParseService apiParseService;
 
     @GetMapping("/admin/lifeSatisfaction/main")
 //    public String mainIndex(HttpServletResponse response,Model model) throws IOException {
@@ -113,8 +107,8 @@ public class LifeSatisfactionController {
         //kosis = json, enara = xml
         String format = "json";
         String site = "kosis";
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
-        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
+        JSONArray jsonList = (JSONArray) apiParseService.apiJsonParser(stringBuilder);
         //
         // {"err":"30","errMsg":"데이터가 존재하지 않습니다."}
 
@@ -224,8 +218,8 @@ public class LifeSatisfactionController {
         //kosis = json, enara = xml
         String format = "json";
         String site = "kosis";
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
-        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
+        JSONArray jsonList = (JSONArray) apiParseService.apiJsonParser(stringBuilder);
         //
         // {"err":"30","errMsg":"데이터가 존재하지 않습니다."}
 
@@ -340,8 +334,8 @@ public class LifeSatisfactionController {
         //kosis = json, enara = xml
         String format = "json";
         String site = "kosis";
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
-        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
+        JSONArray jsonList = (JSONArray) apiParseService.apiJsonParser(stringBuilder);
         //
         // {"err":"30","errMsg":"데이터가 존재하지 않습니다."}
 
@@ -461,8 +455,8 @@ public class LifeSatisfactionController {
         //kosis = json, enara = xml
         String format = "json";
         String site = "kosis";
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
-        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
+        JSONArray jsonList = (JSONArray) apiParseService.apiJsonParser(stringBuilder);
         //
         // {"err":"30","errMsg":"데이터가 존재하지 않습니다."}
 
@@ -522,8 +516,8 @@ public class LifeSatisfactionController {
         //kosis = json, enara = xml
         String format = "json";
         String site = "kosis";
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
-        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
+        JSONArray jsonList = (JSONArray) apiParseService.apiJsonParser(stringBuilder);
         //
         // {"err":"30","errMsg":"데이터가 존재하지 않습니다."}
 
@@ -583,8 +577,8 @@ public class LifeSatisfactionController {
         //kosis = json, enara = xml
         String format = "json";
         String site = "kosis";
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
-        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
+        JSONArray jsonList = (JSONArray) apiParseService.apiJsonParser(stringBuilder);
         //
         // {"err":"30","errMsg":"데이터가 존재하지 않습니다."}
 
@@ -636,8 +630,8 @@ public class LifeSatisfactionController {
         //kosis = json, enara = xml
         String format = "json";
         String site = "kosis";
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
-        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
+        JSONArray jsonList = (JSONArray) apiParseService.apiJsonParser(stringBuilder);
         //
         // {"err":"30","errMsg":"데이터가 존재하지 않습니다."}
 
@@ -702,8 +696,8 @@ public class LifeSatisfactionController {
         //kosis = json, enara = xml
         String format = "json";
         String site = "kosis";
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
-        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
+        JSONArray jsonList = (JSONArray) apiParseService.apiJsonParser(stringBuilder);
         //
         // {"err":"30","errMsg":"데이터가 존재하지 않습니다."}
 
@@ -761,8 +755,8 @@ public class LifeSatisfactionController {
         //kosis = json, enara = xml
         String format = "json";
         String site = "kosis";
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
-        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
+        JSONArray jsonList = (JSONArray) apiParseService.apiJsonParser(stringBuilder);
         //
         // {"err":"30","errMsg":"데이터가 존재하지 않습니다."}
 

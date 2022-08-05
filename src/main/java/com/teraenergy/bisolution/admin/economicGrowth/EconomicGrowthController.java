@@ -1,5 +1,6 @@
 package com.teraenergy.bisolution.admin.economicGrowth;
 
+import com.teraenergy.global.service.ApiParseService;
 import com.teraenergy.global.service.CommonService;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
@@ -28,6 +29,9 @@ public class EconomicGrowthController {
     @Resource(name = "commonService")
     private CommonService commonService;
 
+    @Resource(name = "apiParseService")
+    private ApiParseService apiParseService;
+
     @Resource(name = "economicGrowthService")
     private EconomicGrowthService economicGrowthService;
 
@@ -51,9 +55,9 @@ public class EconomicGrowthController {
         String format = "json";
         String site = "ecos";
         String message = "성공";
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+        StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
 
-        JSONArray jsonList = commonService.ecosApiJsonParser(stringBuilder, "StatisticSearch");
+        JSONArray jsonList = apiParseService.ecosApiJsonParser(stringBuilder, "StatisticSearch");
         System.out.println(jsonList);
         Map<String, Object> dataMap = new HashMap<>();
         Map<String, Object> result = new HashMap<>();
@@ -114,9 +118,9 @@ public class EconomicGrowthController {
             String format = "json";
             String site = "ecos";
             String message = "성공";
-            StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+            StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
 
-            JSONArray jsonList = commonService.ecosApiJsonParser(stringBuilder, "StatisticSearch");
+            JSONArray jsonList = apiParseService.ecosApiJsonParser(stringBuilder, "StatisticSearch");
             System.out.println(jsonList);
             Map<String, Object> dataMap = new HashMap<>();
 
@@ -192,9 +196,9 @@ public class EconomicGrowthController {
         String site = "kosis";
         String message = "성공";
 
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+        StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
 
-        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        JSONArray jsonList = (JSONArray) apiParseService.apiJsonParser(stringBuilder);
 
         Map<String, Object> result = new HashMap<>();
         Map<String, Object> dataMap = new HashMap<>();
@@ -244,8 +248,8 @@ public class EconomicGrowthController {
         String unit = null;
         String val = null;
 
-        StringBuilder stringbuilder = commonService.getApiResult(url, parameter, format, site);
-        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringbuilder);
+        StringBuilder stringbuilder = apiParseService.getApiResult(url, parameter, format, site);
+        JSONArray jsonList = (JSONArray) apiParseService.apiJsonParser(stringbuilder);
 
         Map<String, Object> result = new HashMap<>();
         Map<String, Object> dataMap = new HashMap<>();
@@ -311,9 +315,9 @@ public class EconomicGrowthController {
 
             }
 
-            StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+            StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
 
-            JSONArray jsonList = commonService.ecosApiJsonParser(stringBuilder, "StatisticSearch");
+            JSONArray jsonList = apiParseService.ecosApiJsonParser(stringBuilder, "StatisticSearch");
 
             for (Object jsonObject : jsonList) {
                 JSONObject jsonData = (JSONObject) jsonObject;
@@ -357,8 +361,8 @@ public class EconomicGrowthController {
         String message = "성공";
 
 
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
-        JSONArray jsonArray = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
+        JSONArray jsonArray = (JSONArray) apiParseService.apiJsonParser(stringBuilder);
 
         Map<String, Object> dataMap = new HashMap<>();
         Map<String, Object> result = new HashMap<>();
@@ -418,8 +422,8 @@ public class EconomicGrowthController {
 //                }
 //                parameter = economicGrowthService.combineParams(splitParams, Integer.toString(year), mon_dt);
 //                System.out.println(parameter);
-//                StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
-//                JSONArray jsonArray = (JSONArray) commonService.apiJsonParser(stringBuilder);
+//                StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
+//                JSONArray jsonArray = (JSONArray) apiParseService.apiJsonParser(stringBuilder);
 //
 //
 //                String years = null;
@@ -455,8 +459,8 @@ public class EconomicGrowthController {
 //            }
 //        }
 
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
-        JSONArray jsonArray = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
+        JSONArray jsonArray = (JSONArray) apiParseService.apiJsonParser(stringBuilder);
 
         String year = null;
         String month = null;
