@@ -1,5 +1,6 @@
 package com.teraenergy.bisolution.admin.economicGrowth;
 
+import com.teraenergy.global.common.utilities.DateUtil;
 import com.teraenergy.global.service.ApiParseService;
 import com.teraenergy.global.service.CommonService;
 import org.json.simple.JSONArray;
@@ -337,6 +338,51 @@ public class EconomicGrowthScheduler {
             dataMap.put("val", value);
 
             commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertGrowthRate");
+        }
+    }
+
+    // 국제 경제 성장률
+    @Scheduled(cron = "* 00 10 28 12 *")
+    @Transactional(rollbackFor = Exception.class)
+    public void growthRateInternationalScheduler() throws Exception {
+
+        String year = DateUtil.getThisYear();
+
+        String url = "https://ecos.bok.or.kr/api/";
+        String parameter = "StatisticSearch/apiKey/json/kr/1/100/902Y015/A/" + year + "/" + year + "/KOR/?/?/?";
+
+        String format = "json";
+        String site = "ecos";
+
+        String[] countryList = {"KOR", "ISR","FRA","CHN","AUS","CAN","JPN","DEU","GBR","USA"};
+
+        for (int i = 0; i < countryList.length; i++) {
+
+            if (i >= 1) {
+                parameter = parameter.replace(countryList[i - 1], countryList[i]);
+            }
+
+            StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
+
+            JSONArray jsonList = apiParseService.ecosApiJsonParser(stringBuilder, "StatisticSearch");
+            Map<String, Object> dataMap = new HashMap<>();
+
+            for (Object jsonObject : jsonList) {
+                JSONObject jsonData = (JSONObject) jsonObject;
+
+                String val = (String) jsonData.get("DATA_VALUE");
+                String unit = (String) jsonData.get("UNIT_NAME");
+                String yrDt = (String) jsonData.get("TIME");
+                String countryName = (String) jsonData.get("ITEM_NAME1");
+
+                dataMap.put("yrDt", yrDt);
+                dataMap.put("unit", unit);
+                dataMap.put("val", val);
+                dataMap.put("cntryNm", countryName);
+
+                commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertGrowthRateInternational");
+
+            }
         }
     }
 

@@ -61,6 +61,16 @@
             cty_nm = #{cty_nm}
     </insert>
 
+    <!--  국제 경제성장률  -->
+    <insert id="insertGrowthRateInternational" parameterType="hashMap">
+        INSERT INTO intrn_enmc_grrt
+            (yr_dt, unit, val, cntry_nm)
+        VALUES (#{yrDt}, #{unit}, #{val}, #{cntryNm} ) ON DUPLICATE KEY
+        UPDATE
+            yr_dt = #{yrDt},
+            cntry_nm = #{cntryNm}
+    </insert>
+
     <!--  기준금리  -->
     <insert id="insertBaseRate" parameterType="hashMap">
         INSERT INTO base_rate

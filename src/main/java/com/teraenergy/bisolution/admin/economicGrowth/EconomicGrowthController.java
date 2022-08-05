@@ -395,6 +395,62 @@ public class EconomicGrowthController {
         return result;
     }
 
+    //  국제 경제 성장률
+    @Transactional(rollbackFor = Exception.class)
+    @ResponseBody
+    @GetMapping("/api/getGrowthRateInternational")
+    public Object getGrowthRateInternational(String url, String parameter) throws Exception {
+
+        System.out.println(parameter);
+        System.out.println(url);
+
+        //kosis = json, enara = xml
+        String format = "json";
+        String site = "ecos";
+        String message = "성공";
+
+        String[] countryList = {"KOR", "ISR","FRA","CHN","AUS","CAN","JPN","DEU","GBR","USA"};
+
+        Map<String, Object> result = new HashMap<>();
+
+        for (int i = 0; i < countryList.length; i++) {
+            Map<String, Object> dataMap = new HashMap<>();
+
+            if (i >= 1) {
+                parameter = parameter.replace(countryList[i - 1], countryList[i]);
+            }
+
+            StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
+
+            JSONArray jsonList = apiParseService.ecosApiJsonParser(stringBuilder, "StatisticSearch");
+
+            for (Object jsonObject : jsonList) {
+                JSONObject jsonData = (JSONObject) jsonObject;
+
+                if ("Fail".equals(jsonData.get("RESULT"))) {
+                    dataMap.put("err", jsonData.get("CODE"));
+                    message = (String) jsonData.get("MESSAGE");
+                } else {
+                    String val = (String) jsonData.get("DATA_VALUE");
+                    String unit = (String) jsonData.get("UNIT_NAME");
+                    String yrDt = (String) jsonData.get("TIME");
+                    String countryName = (String) jsonData.get("ITEM_NAME1");
+
+                    dataMap.put("yrDt", yrDt);
+                    dataMap.put("unit", unit);
+                    dataMap.put("val", val);
+                    dataMap.put("cntryNm", countryName);
+
+                    commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertGrowthRateInternational");
+                }
+            }
+        }
+
+        result.put("success", message);
+
+        return result;
+    }
+
     //    소비자/근원/생활 물가 상승률
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody

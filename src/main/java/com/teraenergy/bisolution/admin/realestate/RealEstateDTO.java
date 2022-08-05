@@ -1,7 +1,5 @@
 package com.teraenergy.bisolution.admin.realestate;
 
-import org.apache.ibatis.type.Alias;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +12,7 @@ import lombok.Setter;
 public class RealEstateDTO {
 
     private Integer idx;
+
     private String aptNm;
     private String layer;
     private String payment;
