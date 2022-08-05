@@ -1,22 +1,32 @@
 package com.teraenergy.bisolution.admin.lifeSatisfaction;
 
-import com.teraenergy.global.common.utilities.AreaNameUtil;
-import com.teraenergy.global.service.ApiParseService;
-import com.teraenergy.global.service.CommonService;
-import lombok.extern.slf4j.Slf4j;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.annotation.Resource;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+
+import com.teraenergy.global.common.utilities.AreaNameUtil;
+import com.teraenergy.global.service.ApiParseService;
+import com.teraenergy.global.service.CommonService;
+import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Slf4j
 @Controller
@@ -47,47 +57,47 @@ public class LifeSatisfactionController {
         model.addAttribute("year", year);
 
         //1.삶의 만족도
-        Map<String,Object> dataMap1 = new HashMap<>();
+        Map<String, Object> dataMap1 = new HashMap<>();
         dataMap1 = (Map<String, Object>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".selectLifeSatisfaction");
         model.addAttribute("data1", dataMap1);
 
         //2.결혼
-        Map<String,Object> dataMap2 = new HashMap<>();
+        Map<String, Object> dataMap2 = new HashMap<>();
         dataMap2 = (Map<String, Object>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".selectMarriage");
         model.addAttribute("data2", dataMap2);
 
         //3.이혼
-        Map<String,Object> dataMap3 = new HashMap<>();
+        Map<String, Object> dataMap3 = new HashMap<>();
         dataMap3 = (Map<String, Object>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".selectDivorce");
         model.addAttribute("data3", dataMap3);
 
         //4. 고용률
-        Map<String,Object> dataMap4 = new HashMap<>();
+        Map<String, Object> dataMap4 = new HashMap<>();
         dataMap4 = (Map<String, Object>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".selectEmplyrate");
         model.addAttribute("data4", dataMap4);
 
         //5.실업률
-        Map<String,Object> dataMap5 = new HashMap<>();
+        Map<String, Object> dataMap5 = new HashMap<>();
         dataMap5 = (Map<String, Object>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".selectUnmplrate");
         model.addAttribute("data5", dataMap5);
 
         //6.전산업생산지수
-        Map<String,Object> dataMap6 = new HashMap<>();
+        Map<String, Object> dataMap6 = new HashMap<>();
         dataMap6 = (Map<String, Object>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".selectAllprindex");
         model.addAttribute("data6", dataMap6);
 
         //7.해외여행
-        Map<String,Object> dataMap7 = new HashMap<>();
+        Map<String, Object> dataMap7 = new HashMap<>();
         dataMap7 = (Map<String, Object>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".selectOvrsstrip");
         model.addAttribute("data7", dataMap7);
 
         //8.기업규모별 개인소득 점유율
-        Map<String,Object> dataMap8 = new HashMap<>();
+        Map<String, Object> dataMap8 = new HashMap<>();
         dataMap8 = (Map<String, Object>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".selectPrsnlinshr");
         model.addAttribute("data8", dataMap8);
 
         //9.삶의 만족도
-        Map<String,Object> dataMap9 = new HashMap<>();
+        Map<String, Object> dataMap9 = new HashMap<>();
         dataMap9 = (Map<String, Object>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".selectLifeSatisfaction2");
         model.addAttribute("data9", dataMap9);
 
@@ -114,7 +124,7 @@ public class LifeSatisfactionController {
 
         Map<String, Object> result = new HashMap<>();
         Map<String, Object> dataMap = new HashMap<>();
-        int cnt=1;
+        int cnt = 1;
         for (Object jsonObject : jsonList) {
             JSONObject jsonData = (JSONObject) jsonObject;
 
@@ -126,37 +136,37 @@ public class LifeSatisfactionController {
 
             //소분류 - 점수종류 (0~10)
             String smlgrp = (String) jsonData.get("C2_NM");
-            if(smlgrp.equals("ⓞ 전혀 만족하지 않는다")) {
+            if (smlgrp.equals("ⓞ 전혀 만족하지 않는다")) {
                 smlgrp = "0";
-            } else if(smlgrp.equals("ⓞ 전혀 만족하지 않는다")) {
+            } else if (smlgrp.equals("ⓞ 전혀 만족하지 않는다")) {
                 smlgrp = "0";
-            } else if(smlgrp.equals("①")) {
+            } else if (smlgrp.equals("①")) {
                 smlgrp = "1";
-            } else if(smlgrp.equals("②")) {
+            } else if (smlgrp.equals("②")) {
                 smlgrp = "2";
-            } else if(smlgrp.equals("③")) {
+            } else if (smlgrp.equals("③")) {
                 smlgrp = "3";
-            } else if(smlgrp.equals("④")) {
+            } else if (smlgrp.equals("④")) {
                 smlgrp = "4";
-            } else if(smlgrp.equals("⑤ 보통")) {
+            } else if (smlgrp.equals("⑤ 보통")) {
                 smlgrp = "5";
-            } else if(smlgrp.equals("⑥")) {
+            } else if (smlgrp.equals("⑥")) {
                 smlgrp = "6";
-            } else if(smlgrp.equals("⑦")) {
+            } else if (smlgrp.equals("⑦")) {
                 smlgrp = "7";
-            } else if(smlgrp.equals("⑧")) {
+            } else if (smlgrp.equals("⑧")) {
                 smlgrp = "8";
-            } else if(smlgrp.equals("⑨")) {
+            } else if (smlgrp.equals("⑨")) {
                 smlgrp = "9";
-            } else if(smlgrp.equals("⑩ 매우 만족한다")) {
+            } else if (smlgrp.equals("⑩ 매우 만족한다")) {
                 smlgrp = "10";
             }
 
             //대분류
-            String topgrp="";
+            String topgrp = "";
 
             //대분류 - 중분류보고 만든다
-            if(midgrp != null) {
+            if (midgrp != null) {
                 if (midgrp.equals("전체")) {
                     topgrp = "전체";
                 } else if (midgrp.equals("도시(동부)")) {
@@ -167,7 +177,7 @@ public class LifeSatisfactionController {
                     topgrp = "성별";
                 } else if (midgrp.equals("여자")) {
                     topgrp = "성별";
-                } else if (midgrp.equals("19~29세") || midgrp.equals("30~39세") || midgrp.equals("40~49세") || midgrp.equals("50~59세") || midgrp.equals("60~69세")|| midgrp.equals("60세 이상")|| midgrp.equals("65세 이상")) {
+                } else if (midgrp.equals("19~29세") || midgrp.equals("30~39세") || midgrp.equals("40~49세") || midgrp.equals("50~59세") || midgrp.equals("60~69세") || midgrp.equals("60세 이상") || midgrp.equals("65세 이상")) {
                     topgrp = "연령별";
                 } else if (midgrp.equals("전문관리") || midgrp.equals("사무") || midgrp.equals("서비스판매") || midgrp.equals("농림어업") || midgrp.equals("기능노무") || midgrp.equals("기타")) {
                     topgrp = "직업별";

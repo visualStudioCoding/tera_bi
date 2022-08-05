@@ -22,9 +22,9 @@
                         <#--                            <option value=${i?left_pad(2,'00')}>${i?left_pad(2,'00')}월</option>-->
                         <#--                        </#list>-->
                         <#--                    </select>-->
-                        <#assign name_list = ["itmId", "objL1", "prdSe", "loadGubun", "orgId", "tblId"]>
-                        <#assign val_list = ["T21+T22+", "ALL", "M", "2", "101", "DT_1B040A3"]>
-                        <#list 0..5 as k>
+                        <#assign name_list = ["itmId", "objL1", "objL2", "objL3","prdSe", "loadGubun", "orgId", "tblId"]>
+                        <#assign val_list = ["T21+T22+", "ALL", "", "", "M", "2", "101", "DT_1B040A3"]>
+                        <#list 0..7 as k>
                             <input type="hidden" name=${name_list[k]} value=${val_list[k]}  />
                         </#list>
                         <input type="hidden" name="objL2" value="" />
@@ -52,9 +52,9 @@
                         <#--                            <option value=${i?left_pad(2,'00')}>${i?left_pad(2,'00')}월</option>-->
                         <#--                        </#list>-->
                         <#--                    </select>-->
-                        <#assign name_list = ["itmId", "objL1", "prdSe", "loadGubun", "orgId", "tblId"]>
-                        <#assign val_list = ["13103114448T1+", "ALL", "M", "2", "408", "DT_408_2006_S0064"]>
-                        <#list 0..5 as k>
+                        <#assign name_list = ["itmId", "objL1", "objL2", "objL3","prdSe", "loadGubun", "orgId", "tblId"]>
+                        <#assign val_list = ["13103114448T1+", "ALL", "", "", "M", "2", "408", "DT_408_2006_S0064"]>
+                        <#list 0..7 as k>
                             <input type="hidden" name=${name_list[k]} value=${val_list[k]}  />
                         </#list>
                         <input type="hidden" name="objL2" value="" />
@@ -84,9 +84,9 @@
                         <#--                            <option value=${i?left_pad(2,'00')}>${i?left_pad(2,'00')}월</option>-->
                         <#--                        </#list>-->
                         <#--                    </select>-->
-                        <#assign name_list = ["itmId", "objL1", "objL2", "prdSe", "loadGubun", "orgId", "tblId"]>
-                        <#assign val_list = ["T3+T4+", populationObjL1, "ALL", "M", "2", "101", "DT_1B04005N"]>
-                        <#list 0..6 as k>
+                        <#assign name_list = ["itmId", "objL1", "objL2", "objL3", "prdSe", "loadGubun", "orgId", "tblId"]>
+                        <#assign val_list = ["T3+T4+", populationObjL1, "ALL",  "", "M", "2", "101", "DT_1B04005N"]>
+                        <#list 0..7 as k>
                             <input type="hidden" name=${name_list[k]} value=${val_list[k]}  />
                         </#list>
                             <#--<input type="hidden" name="objL1" value=${populationObjL1}  />-->
@@ -108,9 +108,9 @@
                                 <option value=${i?c}>${i?c}년</option>
                             </#list>
                         </select>
-                        <#assign name_list = ["itmId", "objL1", "objL2", "prdSe", "loadGubun", "orgId", "tblId"]>
-                        <#assign val_list = ["T1+", "ALL", "Z10", "Y", "2", "101", "DT_1C81"]>
-                        <#list 0..6 as k>
+                        <#assign name_list = ["itmId", "objL1", "objL2", "objL3", "prdSe", "loadGubun", "orgId", "tblId"]>
+                        <#assign val_list = ["T1+", "ALL", "Z10", "", "Y", "2", "101", "DT_1C81"]>
+                        <#list 0..7 as k>
                             <input type="hidden" name=${name_list[k]} value=${val_list[k]}  />
                         </#list>
                         <#--<input type="hidden" name="objL1" value=${populationObjL1}  />-->
@@ -139,9 +139,9 @@
                         <#--                            <option value=${i?left_pad(2,'00')}>${i?left_pad(2,'00')}월</option>-->
                         <#--                        </#list>-->
                         <#--                    </select>-->
-                        <#assign name_list = ["itmId", "objL1", "objL2", "prdSe", "loadGubun", "orgId", "tblId"]>
-                        <#assign val_list = ["13103871087T1+", "ALL", "ALL", "M", "2", "101", "DT_1YL202001E"]>
-                        <#list 0..6 as k>
+                        <#assign name_list = ["itmId", "objL1", "objL2", "objL3", "prdSe", "loadGubun", "orgId", "tblId"]>
+                        <#assign val_list = ["13103871087T1+", "ALL", "ALL", "", "M", "2", "101", "DT_1YL202001E"]>
+                        <#list 0..7 as k>
                             <input type="hidden" name=${name_list[k]} value=${val_list[k]}  />
                         </#list>
                     </div>
@@ -167,14 +167,42 @@
                         <#--                            <option value=${i?left_pad(2,'00')}>${i?left_pad(2,'00')}월</option>-->
                         <#--                        </#list>-->
                         <#--                    </select>-->
-                        <#assign name_list = ["itmId", "objL1", "objL2", "prdSe", "loadGubun", "orgId", "tblId"]>
-                        <#assign val_list = ["13103130735T1+", "ALL", "13102130735B.00010001+13102130735B.00010002+13102130735B.00010003+13102130735B.00010004+13102130735B.00010005+13102130735B.00010006+13102130735B.00010007+", "M", "2", "408", "DT_408_2006_S0077"]>
-                        <#list 0..6 as k>
+                        <#assign name_list = ["itmId", "objL1", "objL2", "objL3", "prdSe", "loadGubun", "orgId", "tblId"]>
+                        <#assign val_list = ["13103130735T1+", "ALL", "13102130735B.00010001+13102130735B.00010002+13102130735B.00010003+13102130735B.00010004+13102130735B.00010005+13102130735B.00010006+13102130735B.00010007+", "", "M", "2", "408", "DT_408_2006_S0077"]>
+                        <#list 0..7 as k>
                             <input type="hidden" name=${name_list[k]} value=${val_list[k]}  />
                         </#list>
                     </div>
                 </form>
                 <button type="button" class="btn btn-outline-secondary activator" onclick="fnAgeAptSales()">실행</button>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <form id="formApartmentOwner" name="formApartmentOwner">
+                    <#--                <input type="hidden" id="prdDe" name="prdDe" value=""/>-->
+                    <div class="card-header">성별, 연령대별 아파트 소유자 현황</div>
+                    <div class="card-body">
+                        <select class="form-select" name="prdDe" id="prdDe" aria-label="Default select example">
+                            <#--                        <option selected>데이터를 호출할 년도를 선택하세요</option>-->
+                            <#list 2012..2022 as i>
+                                <option value=${i?c}>${i?c}년</option>
+                            </#list>
+                        </select>
+                        <#--                    <select class="form-select" name="genderPrdDeMonth" id="genderPrdDeMonth" aria-label="Default select example">-->
+                        <#--                        <option selected>데이터를 호출할 월을 선택하세요</option>-->
+                        <#--                        <#list 1..12 as i>-->
+                        <#--                            <option value=${i?left_pad(2,'00')}>${i?left_pad(2,'00')}월</option>-->
+                        <#--                        </#list>-->
+                        <#--                    </select>-->
+                        <#assign name_list = ["itmId", "objL1", "objL2", "objL3", "prdSe", "loadGubun", "orgId", "tblId"]>
+                        <#assign val_list = ["T001+", "00+11+11010+11020+11030+11040+11050+11060+11070+11080+11090+11100+11110+11120+11130+11140+11150+11160+11170+11180+11190+11200+11210+11220+11230+11240+11250+21+21010+21020+21030+21040+21050+21060+21070+21080+21090+21100+21110+21120+21130+21140+21150+21310+22+22010+22020+22030+22040+22050+22060+22070+22310+23+23010+23020+23030+23040+23050+23060+23070+23080+23090+23310+23320+24+24010+24020+24030+24040+24050+25+25010+25020+25030+25040+25050+26+26010+26020+26030+26040+26310+29+29010+31+31010+31011+31012+31013+31014+31020+31021+31022+31023+31030+31040+31041+31042+31050+31060+31070+31080+31090+31091+31092+31100+31101+31103+31104+31110+31120+31130+31140+31150+31160+31170+31180+31190+31191+31192+31193+31200+31210+31220+31230+31240+31250+31260+31270+31280+31350+31370+31380+32+32010+32020+32030+32040+32050+32060+32070+32310+32320+32330+32340+32350+32360+32370+32380+32390+32400+32410+33+33020+33030+33040+33041+33042+33043+33044+33320+33330+33340+33350+33360+33370+33380+33390+34+34010+34011+34012+34020+34030+34040+34050+34060+34070+34080+34310+34330+34340+34350+34360+34370+34380+35+35010+35011+35012+35020+35030+35040+35050+35060+35310+35320+35330+35340+35350+35360+35370+35380+36+36010+36020+36030+36040+36060+36310+36320+36330+36350+36360+36370+36380+36390+36400+36410+36420+36430+36440+36450+36460+36470+36480+37+37010+37011+37012+37020+37030+37040+37050+37060+37070+37080+37090+37100+37310+37320+37330+37340+37350+37360+37370+37380+37390+37400+37410+37420+37430+38+38030+38050+38060+38070+38080+38090+38100+38110+38111+38112+38113+38114+38115+38310+38320+38330+38340+38350+38360+38370+38380+38390+38400+39+39010+39020+", "0+1+2+", "000+100+200+300+400+500+600+700+800+", "Y", "2", "101", "DT_1OH0513"]>
+                        <#list 0..7 as k>
+                            <input type="hidden" name=${name_list[k]} value=${val_list[k]}  />
+                        </#list>
+                    </div>
+                </form>
+                <button type="button" class="btn btn-outline-secondary activator" onclick="fnApartmentOwner()">실행</button>
             </div>
         </div>
     </div>

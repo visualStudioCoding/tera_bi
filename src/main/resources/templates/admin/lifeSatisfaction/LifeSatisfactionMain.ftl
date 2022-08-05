@@ -205,9 +205,9 @@
         //ajax가 정상 호출 되었을때 실행 되는 함수
         $("#rst7").html("");
         let callBackFn = function( data ) {
-            //alert(data.data.yrdt + " " + data.data.mondt + " " + data.success + " ,  " +data.size);
-            result += data.data.yrdt + data.success + " ,  " +data.size + "건<br>";
-            $("#rst7").html(result);
+            // //alert(data.data.yrdt + " " + data.data.mondt + " " + data.success + " ,  " +data.size);
+            // result += data.data.yrdt + data.success + " ,  " +data.size + "건<br>";
+            // $("#rst7").html(result);
             console.log(data.data)
         }
         let syear = frm.startPrdDe.value;
@@ -506,17 +506,17 @@
             &prdSe=Y&startPrdDe=2021&endPrdDe=2021&loadGubun=2&orgId=101&tblId=DT_1SSCL060R
             -->
             <form id="frm7" name="frm7" onsubmit="api7();return false">
-                <input type="hidden" id="itmId" name="itmId" value="T00+T10+T11+T12+T13+T14+T15+T16+T17+T18+"/>
-                <input type="hidden" id="objL1" name="objL1" value="ALL"/>
-                <input type="hidden" id="objL2" name="objL2" value="ALL"/>
+                <input type="hidden" id="itmId" name="itmId" value="13103314009T01+"/>
+                <input type="hidden" id="objL1" name="objL1" value="13102314009A.2+13102314009A.3+13102314009A.4+13102314009A.5+13102314009A.6+13102314009A.7+"/>
+                <input type="hidden" id="objL2" name="objL2" value=""/>
                 <input type="hidden" id="prdSe" name="prdSe" value="Y"/>
                 <input type="hidden" id="loadGubun" name="loadGubun" value="2"/>
-                <input type="hidden" id="orgId" name="orgId" value="101"/>
-                <input type="hidden" id="tblId" name="tblId" value="DT_1SSCL060R"/>
+                <input type="hidden" id="orgId" name="orgId" value="314"/>
+                <input type="hidden" id="tblId" name="tblId" value="DT_AGE_DEP_AGG_MONTH"/>
                 <input type="hidden" id="newEstPrdCnt" name="newEstPrdCnt" value=""/>
                 <div class="card">
                     <div class="card-header">
-                        7. 해외여행 경험 및 횟수(2년)
+                        7. 해외여행 경험 및 횟수
                     </div>
                     <div class="card-body">
                         년도입력 <input type="text" name="startPrdDe" id="startPrdDe" value="<#if data7??>${data7.yr_dt}</#if>" style="width:100%" >

@@ -41,12 +41,12 @@
                             <div class="txt-wrap">
                                 <h6 class="tit">환율</h6>
                                 <#if exchangeRate.current?number lt exchangeRate.past?number>
-                                    <b class="center-txt down" id="currentExChange">${exchangeRate.current} 원 / 달러</b>
+                                    <b class="center-txt down count-ani-per" id="currentExChange" data-unit="원 / 달러">${exchangeRate.current}</b>
                                     <span class="sub-txt down" id="diffExchange">
                                         ▼ ${exchangeRate.subtraction} (${exchangeRate.differ?number}%)
                                     </span>
                                 <#else>
-                                    <b class="center-txt up" id="currentExChange">${exchangeRate.current} 원 / 달러</b>
+                                    <b class="center-txt up count-ani-per" id="currentExChange" data-unit="원 / 달러">${exchangeRate.current}</b>
                                     <span class="sub-txt up" id="diffExchange">
                                         ▲ ${exchangeRate.subtraction} (${exchangeRate.differ?number}%)
                                     </span>
@@ -64,17 +64,17 @@
                                 <#assign current = baseRate.current?number>
                                 <#assign past = baseRate.past?number>
                                 <#if current lt past>
-                                    <b class="center-txt up">${baseRate.current} %</b>
+                                    <b class="center-txt up count-ani-per" data-unit="%">${baseRate.current}</b>
                                     <span class="sub-txt up">
                                     ▼ ${baseRate.differ?number}
                                 </span>
                                 <#elseif current == past>
-                                    <b class="center-txt">${baseRate.current} %</b>
+                                    <b class="center-txt count-ani-per" data-unit="%">${baseRate.current}</b>
                                     <span class="sub-txt">
                                     변동없음
                                 </span>
                                 <#else>
-                                    <b class="center-txt down">${baseRate.current} %</b>
+                                    <b class="center-txt down count-ani-per">${baseRate.current} %</b>
                                     <span class="sub-txt down">
                                     ▲ ${baseRate.differ?number}
                                 </span>

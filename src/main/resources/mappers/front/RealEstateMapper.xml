@@ -2,20 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="bi.front.RealEstate">
-<!--  행정구역별 매매거래  -->
+    <!--  행정구역별 매매거래  -->
     <select id="selectAptSalesStatus" parameterType="hashMap" resultType="hashMap">
-        SELECT cty_nm, SUM(val) AS val FROM apt_account WHERE yr_dt = '2022' AND cty_nm != '전국' GROUP BY cty_nm
+        SELECT cty_nm, SUM(val) AS val
+        FROM apt_account
+        WHERE yr_dt = #{searchDate}
+          AND cty_nm != '전국'
+        GROUP BY cty_nm
     </select>
 
-<!--  연령대별 매매거래  -->
+    <!--  연령대별 매매거래  -->
     <select id="selectAgeAptSales" parameterType="hashMap" resultType="hashMap">
-        SELECT age, SUM(val) AS val FROM age_apt WHERE age != '매입자연령대' AND yr_dt = (SELECT yr_dt FROM age_apt ORDER BY yr_dt DESC LIMIT 1) GROUP BY age
+        SELECT age, SUM(val) AS val
+        FROM age_apt
+        WHERE age != '매입자연령대' AND yr_dt = (SELECT yr_dt FROM age_apt ORDER BY yr_dt DESC LIMIT 1)
+        GROUP BY age
     </select>
 
-<!--  건축년수별 매매거래  -->
+    <!--  건축년수별 매매거래  -->
     <select id="selectBuiltYear" parameterType="hashMap" resultType="hashMap">
-        SELECT COUNT(*) AS val, CASE
-        WHEN YEAR(SYSDATE()) - built_year <![CDATA[<]]> 5 THEN '5년 미만'
+        SELECT COUNT(*) AS    val,
+               CASE
+                   WHEN YEAR (SYSDATE()) - built_year <![CDATA[<]]> 5 THEN '5년 미만'
         WHEN 5 <![CDATA[<=]]> YEAR(SYSDATE()) - built_year AND
         YEAR(SYSDATE()) - built_year <![CDATA[<]]> 10 THEN '10년 미만'
         WHEN 10 <![CDATA[<=]]> YEAR(SYSDATE()) - built_year AND
@@ -39,12 +47,74 @@
         WHEN 55 <![CDATA[<=]]> YEAR(SYSDATE()) - built_year AND
         YEAR(SYSDATE()) - built_year <![CDATA[<]]> 60 THEN '60년 미만'
         WHEN YEAR(SYSDATE()) - built_year <![CDATA[>=]]> 60 THEN '60년 이상'
-        END AS term
-        FROM trade_apt WHERE built_year != 'None' AND trade_year = '2022' GROUP BY term ORDER BY CAST(term AS UNSIGNED)
+        END
+        AS term
+        FROM trade_apt WHERE built_year != 'None' AND
+        #{searchDate}
+        GROUP
+        BY
+        term
+        ORDER
+        BY
+        CAST
+        (
+        term
+        AS
+        UNSIGNED
+        )
     </select>
 
-<!--  지역별 인구수  -->
+    <!--  지역별 인구수  -->
     <select id="selectRegionPopulation" parameterType="hashMap" resultType="hashMap">
-        SELECT cty_nm, SUM(val) AS val FROM gender_population WHERE yr_dt = 2022 AND cty_nm != '전국' GROUP BY cty_nm
+        SELECT cty_nm, SUM(val) AS val
+        FROM gender_population
+        WHERE yr_dt = #{searchDate}
+          AND cty_nm != '전국'
+        GROUP BY cty_nm
+    </select>
+
+    <!--  미분양주택 및 소비자 물가 상승률률  -->
+    <select id="selectUnsoldAndCnsmr" parameterType="hashMap" resultType="hashMap">
+        SELECT CONCAT(yr_dt, '/', mon_dt) AS period, SUM(val) AS val, 'unsold' as type
+        FROM unsold_house
+        WHERE CONCAT(yr_dt, mon_dt) BETWEEN CONCAT(#{searchDate}, '01')
+            AND
+            (SELECT CONCAT(yr_dt, mon_dt)
+             FROM unsold_house
+             ORDER BY CONCAT(yr_dt, mon_dt) DESC
+            LIMIT 1)
+          AND dst_nm = '계'
+        GROUP BY period
+
+        UNION ALL
+
+        SELECT CONCAT(yr_dt, '/', mon_dt) as period, FORMAT(val, 1) as val, 'cnsmr' as type
+        FROM cnsmr_inrt
+        WHERE CONCAT(yr_dt, mon_dt) BETWEEN CONCAT(#{searchDate}, '01')
+                  AND
+                  (SELECT CONCAT(yr_dt, mon_dt)
+                   FROM unsold_house
+                   ORDER BY CONCAT(yr_dt, mon_dt) DESC
+            LIMIT 1)
+    </select>
+
+    <!--  성별 인구 비율  -->
+    <select id="selectGenderPopulation" parameterType="hashMap" resultType="hashMap">
+        SELECT gender, SUM(val) as val
+        FROM gender_population
+        WHERE CONCAT(yr_dt, mon_dt) =
+              (SELECT CONCAT(#{searchDate}, (SELECT mon_dt
+                                             FROM gender_population
+                                             WHERE yr_dt = #{searchDate}
+                                             ORDER BY mon_dt DESC LIMIT 1)))
+          AND cty_nm IN ('전국')
+        GROUP BY gender
+    </select>
+
+    <!--  연령 별 인구 비율  -->
+    <select id="selectAgePopulation" parameterType="hashMap" resultType="hashMap">
+        SELECT age, SUM(manCnt, wmnCnt)
+        FROM view_population
+        WHERE ctyNm IN '전국' AND age NOT IN '계'
     </select>
 </mapper>

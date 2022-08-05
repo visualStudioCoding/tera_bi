@@ -184,6 +184,27 @@
         SELECT MAX(yr_dt) AS yrDt
         FROM grp
     </select>
-
+    <insert id="insertGenderAgeApt" parameterType="hashMap">
+        INSERT INTO gender_age_apt
+        ( yr_dt
+        , cty_nm
+        , age
+        , gender
+        , val
+        , unit)
+        VALUES ( #{yrDt}
+               , #{ctyNm}
+               , #{age}
+               , #{gender}
+               , #{val}
+               , #{unit})
+            ON DUPLICATE KEY UPDATE yr_dt  = #{yrDt}
+                                 , cty_nm = #{ctyNm}
+                                 , age = #{age}
+                                 , gender = #{gender}
+    </insert>
+    <update id="updateGenderAgeApt" parameterType="hashMap">
+        UPDATE gender_age_apt SET max_cnt
+    </update>
 
 </mapper>

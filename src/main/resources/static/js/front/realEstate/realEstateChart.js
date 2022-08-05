@@ -427,244 +427,231 @@ function fnPopRegionGraphOp(data) {
     }
 }
 
-/* 차트 - 기준금리별 미분양주택 */
-const brHousingChartDom = document.getElementById("brHousingGraph");
-if (brHousingChartDom) {
-    const brHousingChart = echarts.init(brHousingChartDom);
-    let brHousingGraphOp;
+function fnCMHousingChartDom(data) {
+    let unsoldList = [];
+    let cnsmrList = [];
+    let period = [];
 
-    // prettier-ignore
-    let timeData = [
-        '2010/7/9',
-        '2010/11/16',
-        '2011/1/13',
-        '2011/3/10',
-        '2011/6/10',
-        '2012/7/12',
-        '2012/10/11',
-        '2013/5/9',
-        '2014/8/14',
-        '2014/10/15',
-        '2015/3/12',
-        '2015/6/11',
-        '2016/6/9',
-        '2017/11/30',
-        '2018/11/30',
-        '2019/7/18',
-        '2019/10/16',
-        '2020/3/17',
-        '2020/5/28',
-        '2021/8/26',
-        '2021/11/25',
-        '2022/1/14',
-        '2022/4/14',
-        '2022/5/26',
-        '2022/7/13',
-    ];
+    for (let i = 0; i < data.cnsmr.length; i++) {
+        unsoldList.push(data.unsold[i].val);
+        cnsmrList.push(data.cnsmr[i].val);
+        period.push(data.unsold[i].period);
 
-    brHousingGraphOp = {
-        tooltip: {
-            trigger: "axis",
-        },
-        legend: {
-            data: ["기준금리", "미분양주택(호)"],
-            center: "center",
-            padding: 0,
-        },
-        axisPointer: {
-            link: [
+    }
+    console.log(unsoldList)
+    console.log(cnsmrList)
+
+    /* 차트 - 기준금리별 미분양주택 */
+    const cmHousingChartDom = document.getElementById("cmHousingGraph");
+    if (cmHousingChartDom) {
+        const cmHousingChart = echarts.init(cmHousingChartDom);
+        let cmHousingGraphOp;
+
+        // prettier-ignore
+        let timeData = period;
+
+        cmHousingGraphOp = {
+            tooltip: {
+                trigger: "axis",
+            },
+            legend: {
+                data: ["소미자물가", "미분양주택(호)"],
+                center: "center",
+                padding: 0,
+            },
+            axisPointer: {
+                link: [
+                    {
+                        xAxisIndex: "all",
+                    },
+                ],
+            },
+            dataZoom: [
                 {
-                    xAxisIndex: "all",
+                    show: true,
+                    realtime: true,
+                    xAxisIndex: [0, 1],
+                    height: "86%",
+                    bottom: 5,
+                    right: 20,
+                    orient: "vertical",
                 },
             ],
-        },
-        dataZoom: [
-            {
-                show: true,
-                realtime: true,
-                xAxisIndex: [0, 1],
-                height: "86%",
-                bottom: 5,
-                right: 20,
-                orient: "vertical",
-            },
-        ],
-        grid: [
-            {
-                containLabel: true,
-                top: 30,
-                left: 35,
-                right: "12%",
-                height: "38%",
-            },
-            {
-                containLabel: true,
-                left: 5,
-                right: "12%",
-                top: "60%",
-                height: "38%",
-            },
-        ],
-        xAxis: [
-            {
-                type: "category",
-                boundaryGap: false,
-                axisLine: {onZero: true},
-                data: timeData,
-            },
-            {
-                gridIndex: 1,
-                type: "category",
-                boundaryGap: false,
-                axisLine: {onZero: true},
-                data: timeData,
-                position: "top",
-            },
-        ],
-        yAxis: [
-            {
-                name: "",
-                type: "value",
-                splitNumber: 4,
-            },
-            {
-                gridIndex: 1,
-                name: "",
-                type: "value",
-                inverse: true,
-                splitNumber: 3,
-            },
-        ],
-        series: [
-            {
-                name: "기준금리",
-                type: "line",
-                symbolSize: 0,
-                lineStyle: {
-                    width: 2,
-                    shadowColor: "rgba(0,0,0,0.3)",
-                    shadowBlur: 8,
-                    shadowOffsetY: 4,
+            grid: [
+                {
+                    containLabel: true,
+                    top: 30,
+                    left: 35,
+                    right: "12%",
+                    height: "38%",
                 },
-                areaStyle: {
-                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                        {
-                            offset: 1,
-                            color: "rgb(67,203,255)",
-                        },
-                        {
-                            offset: 0,
-                            color: "rgb(115,110,254)",
-                        },
-                    ]),
+                {
+                    containLabel: true,
+                    left: 5,
+                    right: "12%",
+                    top: "60%",
+                    height: "38%",
                 },
-                // prettier-ignore
-                data: [
-                    2.25, 2.50, 2.75, 3.00, 3.25, 3.00, 2.75, 2.50, 2.25, 2.00, 1.75, 1.50, 1.25, 1.50, 1.75, 1.50, 1.25, 0.75, 0.50, 0.75, 1.00, 1.25, 1.50, 1.75, 2.25,
-                ],
-            },
-            {
-                name: "미분양주택(호)",
-                type: "line",
-                xAxisIndex: 1,
-                yAxisIndex: 1,
-                symbolSize: 0,
-                color: "#ff6629",
-                lineStyle: {
+            ],
+            xAxis: [
+                {
+                    type: "category",
+                    boundaryGap: false,
+                    axisLine: {onZero: true},
+                    data: timeData,
+                },
+                {
+                    gridIndex: 1,
+                    type: "category",
+                    boundaryGap: false,
+                    axisLine: {onZero: true},
+                    data: timeData,
+                    position: "top",
+                },
+            ],
+            yAxis: [
+                {
+                    name: "",
+                    type: "value",
+                    splitNumber: 4,
+                },
+                {
+                    gridIndex: 1,
+                    name: "",
+                    type: "value",
+                    inverse: true,
+                    splitNumber: 3,
+                },
+            ],
+            series: [
+                {
+                    name: "소비자물가",
+                    type: "line",
+                    symbolSize: 0,
+                    lineStyle: {
+                        width: 2,
+                        shadowColor: "rgba(0,0,0,0.3)",
+                        shadowBlur: 8,
+                        shadowOffsetY: 4,
+                    },
+                    areaStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            {
+                                offset: 1,
+                                color: "rgb(67,203,255)",
+                            },
+                            {
+                                offset: 0,
+                                color: "rgb(115,110,254)",
+                            },
+                        ]),
+                    },
+                    // prettier-ignore
+                    data: [],
+                },
+                {
+                    name: "미분양주택(호)",
+                    type: "line",
+                    xAxisIndex: 1,
+                    yAxisIndex: 1,
+                    symbolSize: 0,
                     color: "#ff6629",
-                    width: 2,
-                    shadowColor: "rgba(0,0,0,0.1)",
-                    shadowBlur: 8,
-                    shadowOffsetY: -4,
+                    lineStyle: {
+                        color: "#ff6629",
+                        width: 2,
+                        shadowColor: "rgba(0,0,0,0.1)",
+                        shadowBlur: 8,
+                        shadowOffsetY: -4,
+                    },
+                    areaStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            {
+                                offset: 0,
+                                color: "#FCCF31",
+                            },
+                            {
+                                offset: 1,
+                                color: "#F55555",
+                            },
+                        ]),
+                    },
+                    // prettier-ignore
+                    data: [],
                 },
-                areaStyle: {
-                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                        {
-                            offset: 0,
-                            color: "#FCCF31",
-                        },
-                        {
-                            offset: 1,
-                            color: "#F55555",
-                        },
-                    ]),
-                },
-                // prettier-ignore
-                data: [
-                    50485, 46269, 43207, 41890, 39704, 26516, 27324, 27488, 19136, 17581, 13507, 12578, 10785, 10109, 16638, 19094, 16649, 15788, 8177, 7388, 7165, 6978, 6830, 6540, 6237,
-                ],
+            ],
+            textStyle: {
+                fontFamily: "NanumSquare",
             },
-        ],
-        textStyle: {
-            fontFamily: "NanumSquare",
-        },
-    };
-    brHousingChart.setOption(brHousingGraphOp);
+        };
+        cmHousingGraphOp.series[0].data = cnsmrList;
+        cmHousingGraphOp.series[1].data = unsoldList;
+        cmHousingChart.setOption(cmHousingGraphOp);
+    }
 }
 
-/* 차트 - 소유자 비율 (성별) */
-const ownerByGenderChartDom = document.getElementById("ownerByGenderGraph");
-if (ownerByGenderChartDom) {
-    const ownerByGenderChart = echarts.init(ownerByGenderChartDom);
-    let ownerByGenderGraphOp;
+function fnPopulationByGenderChartDom(data) {
+    /* 차트 - 소유자 비율 (성별) -> 인구 비율 */
+    const ownerByGenderChartDom = document.getElementById("ownerByGenderGraph");
+    if (ownerByGenderChartDom) {
+        const ownerByGenderChart = echarts.init(ownerByGenderChartDom);
+        let ownerByGenderGraphOp;
 
-    ownerByGenderGraphOp = {
-        title: {
-            text: "성별",
-            left: "center",
-            textStyle: {
-                fontSize: 14,
-            },
-        },
-        tooltip: {
-            trigger: "item",
-            valueFormatter: function (value) {
-                return value.toLocaleString("ko-KR") + "명";
-            },
-        },
-        legend: {
-            top: "center",
-            left: "right",
-            orient: "vertical",
-        },
-        series: [
-            {
-                name: "",
-                type: "pie",
-                center: ["50%", "57%"],
-                radius: ["30%", "80%"],
-                itemStyle: {
-                    borderRadius: 4,
-                    borderColor: "#fff",
-                    borderWidth: 2,
+        ownerByGenderGraphOp = {
+            title: {
+                text: "성별",
+                left: "center",
+                textStyle: {
+                    fontSize: 14,
                 },
-                label: {
-                    show: true,
-                    formatter: "{b}\n {d}%",
-                    position: "inside",
-                    lineHeight: 16,
+            },
+            tooltip: {
+                trigger: "item",
+                valueFormatter: function (value) {
+                    return value.toLocaleString("ko-KR") + "명";
                 },
-                emphasis: {
+            },
+            legend: {
+                top: "center",
+                left: "right",
+                orient: "vertical",
+            },
+            series: [
+                {
+                    name: "",
+                    type: "pie",
+                    center: ["50%", "57%"],
+                    radius: ["30%", "80%"],
+                    itemStyle: {
+                        borderRadius: 4,
+                        borderColor: "#fff",
+                        borderWidth: 2,
+                    },
                     label: {
                         show: true,
-                        fontSize: "16",
-                        fontWeight: "bold",
+                        formatter: "{b}\n {d}%",
+                        position: "inside",
+                        lineHeight: 16,
                     },
+                    emphasis: {
+                        label: {
+                            show: true,
+                            fontSize: "16",
+                            fontWeight: "bold",
+                        },
+                    },
+                    labelLine: {
+                        show: false,
+                    },
+                    data: [],
                 },
-                labelLine: {
-                    show: false,
-                },
-                data: [
-                    {value: 8581160, name: "남성"},
-                    {value: 3149011, name: "여성"},
-                ],
+            ],
+            textStyle: {
+                fontFamily: "NanumSquare",
             },
-        ],
-        textStyle: {
-            fontFamily: "NanumSquare",
-        },
-    };
-    ownerByGenderChart.setOption(ownerByGenderGraphOp);
+        };
+        ownerByGenderGraphOp.series[0].data = data
+        ownerByGenderChart.setOption(ownerByGenderGraphOp);
+    }
 }
 
 /* 차트 - 소유자 비율 (연령별) */

@@ -194,27 +194,19 @@
     <insert id="insertOvrsstrip" parameterType="hashMap">
         INSERT INTO ovrss_trip
         (yr_dt
-        , cty_nm
-        , top_grp
-        , mid_grp
+        , ages
         , unit
-        ,val
-        , reg_dt
+        , val
         )
         VALUES
-            (#{yrdt}
-            , #{ctynm}
-            , #{topgrp}
-            , #{midgrp}
+            (#{yrDt}
+            , #{ages}
             , #{unit}
             , #{val}
-            , now()
             )
             ON DUPLICATE KEY UPDATE
                                  yr_dt   = #{yrdt}
-                                 ,cty_nm = #{ctynm}
-                                 ,top_grp = #{topgrp}
-                                 ,mid_grp = #{midgrp}
+                                 , ages = #{ages}
     </insert>
 
     <!--기업규모별 개인소득 점유율-->

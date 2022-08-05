@@ -31,7 +31,15 @@ window.onload = function () {
     getCovidEconomicGrowth();
     getStateDebtSetPeriod();
     getInflChart();
+    countAnimation();
 }
+
+$("#termSetting").click(function(){
+    getStateDebtSetPeriod();
+    getInflChart();
+    getEnmcGrrt();
+});
+
 
 // 경제성장률 AJAX
 function getEnmcGrrt() {
@@ -41,11 +49,11 @@ function getEnmcGrrt() {
     if(period === 'on'){
         period =  $("input[name=termDatePicker]").val();
     }
+
+    let param = {parameter: period}
     let callBackFn = function (data) {
         fnRegionChartOp(data);
-
     }
-    let param = {parameter: period}
     commonAjax("/front/economicGrowth/api/getEconomicGrowth", callBackFn, "get", param, errorMsg);
 }
 
@@ -67,6 +75,7 @@ function getStateDebtSetPeriod() {
         period =  $("input[name=termDatePicker]").val();
     }
     let param = {parameter: period}
+
     let callBackFn = function (data) {
         fngdpDeptGraphOp(data);
     }
@@ -87,9 +96,3 @@ function getInflChart() {
     }
     commonAjax("/front/economicGrowth/api/getInflationRatePeriod", callBackFn, "get", param, errorMsg);
 }
-
-$("#termSetting").click(function(){
-    getStateDebtSetPeriod();
-    getInflChart();
-    getEnmcGrrt();
-});
