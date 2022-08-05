@@ -1,5 +1,6 @@
 package com.teraenergy.bisolution.admin.StandardOfLiving;
 
+import com.teraenergy.global.service.ApiParseService;
 import com.teraenergy.global.service.CommonService;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
@@ -23,6 +24,8 @@ public class StandardOfLivingScheduler {
 
     @Resource(name = "commonService")
     private CommonService commonService;
+    @Resource(name = "apiParseService")
+    private ApiParseService apiParseService;
 
     //   1인당 개인소득
     @Scheduled(cron = "0 0 0 18 3 *")
@@ -34,12 +37,12 @@ public class StandardOfLivingScheduler {
         String format = "json";
         String site = "kosis";
 
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+        StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
 
         Map<String, Object> dataMap = new HashMap<>();
         Map<String, String> compareCapitalPersonal = (Map<String, String>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".compareCapitalPersonal");
 
-        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        JSONArray jsonList = (JSONArray) apiParseService.apiJsonParser(stringBuilder);
 
         for (Object jsonObject : jsonList) {
             JSONObject jsonData = (JSONObject) jsonObject;
@@ -72,10 +75,10 @@ public class StandardOfLivingScheduler {
         String format = "xml";
         String site = "enara";
 
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+        StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
 
 //      통계표
-        org.json.JSONObject table = commonService.apiXmlParser(stringBuilder);
+        org.json.JSONObject table = apiParseService.apiXmlParser(stringBuilder);
         String unit = table.getString("단위");
         String[] gubun = unit.split(",");
         org.json.JSONObject inner_table = table.getJSONObject("표");
@@ -162,12 +165,12 @@ public class StandardOfLivingScheduler {
         String format = "json";
         String site = "kosis";
 
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+        StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
 
         Map<String, Object> dataMap = new HashMap<>();
         Map<String, String> compareIncomeDistributionIndex = (Map<String, String>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".compareIncomeDistributionIndex");
 
-        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        JSONArray jsonList = (JSONArray) apiParseService.apiJsonParser(stringBuilder);
 
         for (Object jsonObject : jsonList) {
             JSONObject jsonData = (JSONObject) jsonObject;
@@ -194,10 +197,10 @@ public class StandardOfLivingScheduler {
         //kosis = json, enara = xml
         String format = "xml";
         String site = "enara";
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+        StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
 
 //      통계표
-        org.json.JSONObject table = commonService.apiXmlParser(stringBuilder);
+        org.json.JSONObject table = apiParseService.apiXmlParser(stringBuilder);
         String unit = table.getString("단위");
         String[] units = unit.split(",");
         org.json.JSONObject innerTable = table.getJSONObject("표");

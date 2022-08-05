@@ -1,6 +1,7 @@
 package com.teraenergy.bisolution.admin.stockprices;
 
 import com.teraenergy.global.common.utilities.DateUtil;
+import com.teraenergy.global.service.ApiParseService;
 import com.teraenergy.global.service.CommonService;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
@@ -23,6 +24,8 @@ public class StockPricesScheduler {
     private static final String ENARA_URL = "http://www.index.go.kr/openApi/xml_stts.do";
     @Resource(name = "commonService")
     private CommonService commonService;
+    @Resource(name = "apiParseService")
+    private ApiParseService apiParseService;
 
     //      초   |  분  |  시  |  일  |  월   | 요일 | 연도
 //     0~59 | 0~59 | 0~23 | 1~31 | 1~12 | 0~6 | 생략가능
@@ -46,9 +49,9 @@ public class StockPricesScheduler {
             if (i > 0) {
                 parameter = parameter.replace(categoryList[i - 1], categoryList[i]);
             }
-            StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+            StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
 
-            JSONArray jsonList = commonService.ecosApiJsonParser(stringBuilder, "StatisticSearch");
+            JSONArray jsonList = apiParseService.ecosApiJsonParser(stringBuilder, "StatisticSearch");
 
             Map<String, Object> dataMap = new HashMap<>();
 
@@ -87,8 +90,8 @@ public class StockPricesScheduler {
         String parameter = "KeyStatisticList/apiKey/json/kr/23/23/";
         String format = "json";
         String site = "ecos";
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
-        JSONArray jsonList = commonService.ecosApiJsonParser(stringBuilder, "KeyStatisticList");
+        StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
+        JSONArray jsonList = apiParseService.ecosApiJsonParser(stringBuilder, "KeyStatisticList");
 
         Map<String, Object> dataMap = new HashMap<>();
 
@@ -129,12 +132,12 @@ public class StockPricesScheduler {
     public void getCompositeIndex() throws Exception {
         String parameter = "?userId=&statsCode=100803";
 
-        StringBuilder stringBuilder = commonService.getApiResult(ENARA_URL, parameter, FORMAT, SITE);
+        StringBuilder stringBuilder = apiParseService.getApiResult(ENARA_URL, parameter, FORMAT, SITE);
 
         @SuppressWarnings("unchecked")
         Map<String, String> maxDate = (Map<String, String>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".stockPricesMaxDate");
 //      통계표
-        org.json.JSONObject table = commonService.apiXmlParser(stringBuilder);
+        org.json.JSONObject table = apiParseService.apiXmlParser(stringBuilder);
         String unit = table.getString("단위");
         org.json.JSONArray innerTable = table.getJSONArray("표");
         org.json.JSONObject monthTable = innerTable.getJSONObject(1);
@@ -188,13 +191,13 @@ public class StockPricesScheduler {
     public void getBirthDeath() throws Exception {
         log.info("StockPricesScheduler.getBirthDeath");
         String parameter = "?userId=&statsCode=101101";
-        StringBuilder stringBuilder = commonService.getApiResult(ENARA_URL, parameter, FORMAT, SITE);
+        StringBuilder stringBuilder = apiParseService.getApiResult(ENARA_URL, parameter, FORMAT, SITE);
 
         @SuppressWarnings("unchecked")
         Map<String, String> maxDate = (Map<String, String>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".stockPricesMaxDate");
 
 //      통계표
-        org.json.JSONObject table = commonService.apiXmlParser(stringBuilder);
+        org.json.JSONObject table = apiParseService.apiXmlParser(stringBuilder);
         String unit = table.getString("단위");
         String[] units = unit.split(",");
         org.json.JSONObject innerTable = table.getJSONObject("표");

@@ -17,46 +17,46 @@ navLis.forEach((li, idx) => {
     });
 });
 /******************** 본문 공통 *********************/
+// function countAnimation() {
 /* 초기 화면 진입 시, 숫자 카운트 애니메이션 (0 이상의 정수) */
 /* 적용하고 싶은 텍스트에 'count-ani' 클래스 추가하면 됨 */
-const count = document.querySelectorAll(".count-ani");
+    const count = document.querySelectorAll(".count-ani");
 
-count.forEach((cnt) => {
-    let endNum = parseFloat(cnt.textContent.replace(",", ""));
-    let now = endNum;
+    count.forEach((cnt) => {
+        let endNum = parseFloat(cnt.textContent.replace(",", ""));
+        let now = endNum;
 
-    let counter = setInterval(() => {
-        cnt.textContent = Math.ceil(endNum - now).toLocaleString("ko-KR");
+        let counter = setInterval(() => {
+            cnt.textContent = Math.ceil(endNum - now).toLocaleString("ko-KR");
 
-        // 카운트 증가 애니메이션
-        if (now < 1) {
-            clearInterval(counter);
-        }
-        const step = now / 10;
-        now -= step;
-    }, 30);
-});
-function countAnimation() {
-/* 초기 화면 진입 시, 숫자 카운트 애니메이션 (소수점 2자리 실수 + %) */
-/* 적용하고 싶은 텍스트에 'count-ani-per' 클래스 추가하면 됨 */
-const countFloat = document.querySelectorAll(".count-ani-per");
-console.log('값 확인 : ', $('#kospiPoint').val());
-countFloat.forEach((cnt) => {
-    let endNum = parseFloat(cnt.textContent.replace(",", ""));
-    let now = endNum;
+            // 카운트 증가 애니메이션
+            if (now < 1) {
+                clearInterval(counter);
+            }
+            const step = now / 10;
+            now -= step;
+        }, 30);
+    });
 
-    let counter = setInterval(() => {
-        cnt.textContent = (Math.ceil((endNum - now) * 100) / 100 + 1).toFixed(2); // 데이터 오차 없애기 위해 +1 처리
+    /* 초기 화면 진입 시, 숫자 카운트 애니메이션 (소수점 2자리 실수 + %) */
+    /* 적용하고 싶은 텍스트에 'count-ani-per' 클래스 추가하면 됨 */
+    const countFloat = document.querySelectorAll(".count-ani-per");
+    countFloat.forEach((cnt) => {
+        let endNum = parseFloat(cnt.textContent.replace(",", ""));
 
-        // 카운트 증가 애니메이션
-        if (now < 1) {
-            clearInterval(counter);
-        }
-        const step = now / 100 - 0.01; // 데이터 오차 없애기 위해 -0.01 처리
-        now -= step;
-    }, 1);
-});
-}
+        let now = endNum;
+        let counter = setInterval(() => {
+            cnt.textContent = (Math.ceil((endNum - now) * 100) / 100 + 1).toLocaleString("ko-KR", { minimumFractionDigits: 2 }); // 데이터 오차 없애기 위해 +1 처리
+
+            // 카운트 증가 애니메이션
+            if (now < 1) {
+                clearInterval(counter);
+            }
+            const step = now / 100 - 0.01; // 데이터 오차 없애기 위해 -0.01 처리
+            now -= step;
+        }, 1);
+    });
+// }
 /******************** 공통 *********************/
 /* 기간 선택 */
 $("input[name='term']").click(function (e) {

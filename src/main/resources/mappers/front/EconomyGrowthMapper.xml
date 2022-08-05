@@ -18,7 +18,7 @@
 
     <!-- 환율 -->
     <select id="selectExchangeRate" parameterType="hashMap" resultType="hashMap">
-        SELECT *
+        SELECT yr_dt, mon_dt, dy_dt, type, unit, val, CONCAT(yr_dt, '.', mon_dt, '.', dy_dt) AS baseDate
         FROM exchn_rate
         WHERE type = '원/미국달러'
           AND CONCAT(yr_dt, mon_dt, dy_dt) =
@@ -30,7 +30,7 @@
     </select>
     <!--  전일 환율 (변동률 계산)  -->
     <select id="selectExchangeRateCompare" parameterType="hashMap" resultType="hashMap">
-        SELECT *
+        SELECT yr_dt, mon_dt, dy_dt, type, unit, val, CONCAT(yr_dt, '.', mon_dt, '.', dy_dt) AS baseDate
         FROM exchn_rate
         WHERE type = '원/미국달러'
           AND CONCAT(yr_dt, mon_dt, dy_dt) =
@@ -44,7 +44,7 @@
 
     <!--  기준금리  -->
     <select id="selectBaseRate" parameterType="hashMap" resultType="hashMap">
-        SELECT val
+        SELECT yr_dt, mon_dt, dy_dt, unit, val, CONCAT(yr_dt, '.', mon_dt, '.', dy_dt) AS baseDate
         FROM base_rate
         WHERE yr_dt = (SELECT MAX(yr_dt) FROM base_rate)
           AND mon_dt = (SELECT MAX(mon_dt) FROM base_rate WHERE yr_dt = (SELECT MAX(yr_dt) FROM base_rate))
@@ -53,7 +53,7 @@
 
     <!--  기준금리 (변동률 계산)  -->
     <select id="selectBaseRateCompare" parameterType="hashMap" resultType="hashMap">
-        SELECT val
+        SELECT yr_dt, mon_dt, dy_dt, unit, val, CONCAT(yr_dt, '.', mon_dt, '.', dy_dt) AS baseDate
         FROM base_rate
         WHERE yr_dt = (SELECT MAX(yr_dt) FROM base_rate)
           AND mon_dt = (SELECT MAX(mon_dt) FROM base_rate WHERE yr_dt = (SELECT MAX(yr_dt) FROM base_rate))

@@ -18,15 +18,19 @@
                         <h6 class="tit">종합 주가 지수(KOSPI)</h6>
                     </div>
                     <div class="cont">
+                        <p class="caption"><i class="ri-information-fill"></i> 기준일 : ${kospiIndex.baseDate}</p>
+                        <#--<p class="caption"><i class="ri-information-fill"></i><span id="kospiBaseDate"></span></p>-->
                         <div class="circle-wrap">
                             <div class="circle">
                                 <div class="txt-wrap">
-                                    <#if kospiIndex.current?number lt kospiIndex.past?number>
+                                    <#assign kospiIndexCurrent = kospiIndex.current?replace(",","")>
+                                    <#assign kospiIndexPast = kospiIndex.past?replace(",","")>
+                                    <#if kospiIndexCurrent?number lt kospiIndexPast?number>
                                         <span class="txt count-ani-per" data-unit="P">${kospiIndex.current}</span>
                                         <span class="sub-txt">
-                                        ▼ ${kospiIndex.subtraction} (${kospiIndex.subRate?number}%)
+                                        ▼ ${kospiIndex.subtraction} (${kospiIndex.subRate}%)
                                         </span>
-                                    <#elseif kospiIndex.current?number == kospiIndex.past?number>
+                                    <#elseif kospiIndexCurrent?number == kospiIndexPast?number>
                                         <span class="txt count-ani-per" data-unit="P">${kospiIndex.current} %</span>
                                         <span class="sub-txt">변동없음</span>
                                     <#else>
@@ -56,12 +60,14 @@
                             </figure>
                             <div class="txt-wrap">
                                 <h6 class="tit">환율</h6>
-                                <#if exchangeRate.current?number lt exchangeRate.past?number>
+                                <#assign exchangeRateCurrent = exchangeRate.current?replace(",","")>
+                                <#assign exchangeRatePast = exchangeRate.past?replace(",","")>
+                                <#if exchangeRateCurrent?number lt exchangeRatePast?number>
                                     <b class="center-txt count-ani-per" data-unit="원/달러">${exchangeRate.current}</b>
                                     <span class="sub-txt down">
                                         ▼ ${exchangeRate.subtraction} (${exchangeRate.subRate}%)
                                     </span>
-                                <#elseif exchangeRate.current?number == exchangeRate.past?number>
+                                <#elseif exchangeRateCurrent?number == exchangeRatePast?number>
                                     <b class="center-txt count-ani-per" data-unit="원/달러">${exchangeRate.current} %</b>
                                     <span class="sub-txt">
                                     변동없음
@@ -72,8 +78,10 @@
                                         ▲ ${exchangeRate.subtraction} (${exchangeRate.subRate}%)
                                     </span>
                                 </#if>
+                                <p class="caption"><i class="ri-information-fill"></i> 기준일 : ${exchangeRate.baseDate}</p>
                                 <#--<b class="center-txt" id="exchangeRatePoint" data-unit="원/달러"></b>
-                                <span class="sub-txt" id="exchangeRateVariance"></span>-->
+                                <span class="sub-txt" id="exchangeRateVariance"></span>
+                                <p class="caption"><i class="ri-information-fill"></i><span id="exchangeRateBaseDate"></span></p>-->
                             </div>
                         </div>
                         <div class="card">
@@ -82,12 +90,14 @@
                             </figure>
                             <div class="txt-wrap">
                                 <h6 class="tit">기준금리</h6>
-                                <#if baseRate.current?number lt baseRate.past?number>
+                                <#assign baseRateCurrent = baseRate.current?replace(",","")>
+                                <#assign baseRatePast = baseRate.past?replace(",","")>
+                                <#if baseRateCurrent?number lt baseRatePast?number>
                                     <b class="center-txt count-ani-per" data-unit="%">${baseRate.current}</b>
                                     <span class="sub-txt down">
                                         ▼ ${baseRate.subtraction} (${baseRate.subRate}%)
                                     </span>
-                                <#elseif baseRate.current?number == baseRate.past?number>
+                                <#elseif baseRateCurrent?number == baseRatePast?number>
                                     <b class="center-txt count-ani-per" data-unit="%">${baseRate.current} %</b>
                                     <span class="sub-txt">
                                     변동없음
@@ -98,8 +108,10 @@
                                         ▲ ${baseRate.subtraction} (${baseRate.subRate}%)
                                     </span>
                                 </#if>
+                                <p class="caption"><i class="ri-information-fill"></i> 기준일 : ${baseRate.baseDate}</p>
                                 <#--<b class="center-txt" id="baseRatePoint" data-unit="%"></b>
-                                <span class="sub-txt" id="baseRateVariance"></span>-->
+                                <span class="sub-txt" id="baseRateVariance"></span>
+                                <p class="caption"><i class="ri-information-fill"></i><span id="baseRateBaseDate"></span></p>-->
                             </div>
                         </div>
                     </div>
@@ -115,12 +127,14 @@
                             </figure>
                             <div class="txt-wrap">
                                 <h6 class="tit">코스닥</h6>
-                                <#if kosdaqIndex.current?number lt kosdaqIndex.past?number>
+                                <#assign kosdaqIndexCurrent = kosdaqIndex.current?number>
+                                <#assign kosdaqIndexPast = kosdaqIndex.past?number>
+                                <#if kosdaqIndexCurrent?number lt kosdaqIndexPast?number>
                                     <b class="center-txt count-ani-per" data-unit="P">${kosdaqIndex.current}</b>
                                     <span class="sub-txt down">
                                         ▼ ${kosdaqIndex.subtraction} (${kosdaqIndex.subRate}%)
                                     </span>
-                                <#elseif kosdaqIndex.current?number == kosdaqIndex.past?number>
+                                <#elseif kosdaqIndexCurrent?number == kosdaqIndexPast?number>
                                     <b class="center-txt count-ani-per" data-unit="P">${kosdaqIndex.current} %</b>
                                     <span class="sub-txt">변동없음</span>
                                 <#else>
@@ -129,8 +143,10 @@
                                         ▲ ${kosdaqIndex.subtraction} (${kosdaqIndex.subRate}%)
                                     </span>
                                 </#if>
+                                <p class="caption"><i class="ri-information-fill"></i> 기준일 : ${kosdaqIndex.baseDate}</p>
                                 <#--<b class="center-txt" id="kosdaqPoint" data-unit="P"></b>
-                                <span class="sub-txt" id="kosdaqVariance"></span>-->
+                                <span class="sub-txt" id="kosdaqVariance"></span>
+                                <p class="caption"><i class="ri-information-fill"></i><span id="kosdaqBaseDate"></span></p>-->
                             </div>
                         </div>
                         <div id="wtiCard" class="card">
@@ -139,12 +155,14 @@
                             </figure>
                             <div class="txt-wrap">
                                 <h6 class="tit">유가</h6>
-                                <#if oilPrice.current?number lt oilPrice.past?number>
+                                <#assign oilPriceCurrent = oilPrice.current?number>
+                                <#assign oilPricePast = oilPrice.past?number>
+                                <#if oilPriceCurrent lt oilPricePast>
                                     <b class="center-txt count-ani-per" data-unit="달러/배럴">${oilPrice.current}</b>
                                     <span class="sub-txt down">
                                         ▼ ${oilPrice.subtraction} (${oilPrice.subRate}%)
                                     </span>
-                                <#elseif oilPrice.current?number == oilPrice.past?number>
+                                <#elseif oilPriceCurrent == oilPricePast>
                                     <b class="center-txt count-ani-per" data-unit="달러/배럴">${oilPrice.current} %</b>
                                     <span class="sub-txt">변동없음</span>
                                 <#else>
@@ -153,8 +171,10 @@
                                         ▲ ${oilPrice.subtraction} (${oilPrice.subRate}%)
                                     </span>
                                 </#if>
+                                <p class="caption"><i class="ri-information-fill"></i> 기준일 : ${oilPrice.baseDate}</p>
                                 <#--<b class="center-txt" id="oilPoint" data-unit="달러/배럴"></b>
-                                <span class="sub-txt" id="oilVariance"></span>-->
+                                <span class="sub-txt" id="oilVariance"></span>
+                                <p class="caption"><i class="ri-information-fill"></i><span id="oilBaseDate"></span></p>-->
                             </div>
                         </div>
                     </div>
@@ -174,6 +194,7 @@
                         <h6 class="tit">코로나 시기 KOSPI</h6>
                     </div>
                     <div class="cont">
+                        <p class="caption"><i class="ri-information-fill"></i> 코로나19 범유행 : 2019년 12월 </p>
                         <div id="covidKospiGraph" style="width:100%; height:334px"></div>
                     </div>
                 </div>

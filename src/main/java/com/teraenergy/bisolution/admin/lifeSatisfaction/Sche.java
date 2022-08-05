@@ -1,5 +1,6 @@
 package com.teraenergy.bisolution.admin.lifeSatisfaction;
 
+import com.teraenergy.global.service.ApiParseService;
 import com.teraenergy.global.service.CommonService;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -18,6 +19,9 @@ public class Sche {
 
     @Resource(name = "commonService")
     private CommonService commonService;
+
+    @Resource(name = "apiParseService")
+    private ApiParseService apiParseService;
 
     //@Scheduled(cron = "0 0/2 * * * *")   //2분마다
     //@Scheduled(cron = "0 0 4 * * *")   //4시마다
@@ -48,8 +52,8 @@ public class Sche {
         String site = "kosis";
 
         for(int i=0;i<parameter.length;i++) {
-            StringBuilder stringBuilder = commonService.getApiResult(url, parameter[i], format, site);
-            JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+            StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter[i], format, site);
+            JSONArray jsonList = (JSONArray) apiParseService.apiJsonParser(stringBuilder);
             //
             // {"err":"30","errMsg":"데이터가 존재하지 않습니다."}
 
@@ -159,8 +163,8 @@ public class Sche {
 
         String format = "json";
         String site = "kosis";
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
-        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
+        JSONArray jsonList = (JSONArray) apiParseService.apiJsonParser(stringBuilder);
         //
         // {"err":"30","errMsg":"데이터가 존재하지 않습니다."}
 
@@ -264,8 +268,8 @@ public class Sche {
 
         String format = "json";
         String site = "kosis";
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
-        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
+        JSONArray jsonList = (JSONArray) apiParseService.apiJsonParser(stringBuilder);
         //
         // {"err":"30","errMsg":"데이터가 존재하지 않습니다."}
 
@@ -371,8 +375,8 @@ public class Sche {
 
         String format = "json";
         String site = "kosis";
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
-        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
+        JSONArray jsonList = (JSONArray) apiParseService.apiJsonParser(stringBuilder);
         //
         // {"err":"30","errMsg":"데이터가 존재하지 않습니다."}
 
@@ -480,8 +484,8 @@ public class Sche {
 
         String format = "json";
         String site = "kosis";
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
-        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
+        JSONArray jsonList = (JSONArray) apiParseService.apiJsonParser(stringBuilder);
         //
         // {"err":"30","errMsg":"데이터가 존재하지 않습니다."}
 
@@ -534,8 +538,8 @@ public class Sche {
 
         String format = "json";
         String site = "kosis";
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
-        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
+        JSONArray jsonList = (JSONArray) apiParseService.apiJsonParser(stringBuilder);
         //
         // {"err":"30","errMsg":"데이터가 존재하지 않습니다."}
 
@@ -586,8 +590,8 @@ public class Sche {
 
         String format = "json";
         String site = "kosis";
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
-        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
+        JSONArray jsonList = (JSONArray) apiParseService.apiJsonParser(stringBuilder);
         //
         // {"err":"30","errMsg":"데이터가 존재하지 않습니다."}
 
@@ -634,8 +638,8 @@ public class Sche {
 
         String format = "json";
         String site = "kosis";
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
-        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
+        JSONArray jsonList = (JSONArray) apiParseService.apiJsonParser(stringBuilder);
         //
         // {"err":"30","errMsg":"데이터가 존재하지 않습니다."}
 
@@ -694,8 +698,8 @@ public class Sche {
 
         String format = "json";
         String site = "kosis";
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
-        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
+        JSONArray jsonList = (JSONArray) apiParseService.apiJsonParser(stringBuilder);
         //
         // {"err":"30","errMsg":"데이터가 존재하지 않습니다."}
 
@@ -746,8 +750,8 @@ public class Sche {
 
         String format = "json";
         String site = "kosis";
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
-        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
+        JSONArray jsonList = (JSONArray) apiParseService.apiJsonParser(stringBuilder);
         //
         // {"err":"30","errMsg":"데이터가 존재하지 않습니다."}
 

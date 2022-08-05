@@ -11,7 +11,7 @@ window.onload = function () {
     getCovidKospi();
     getBaseRateAndKospi();
     getInflYear();
-    countAnimation();
+    // countAnimation();
 
 }
 $("#termSetting").click(function(){
@@ -137,12 +137,12 @@ function getInflYear(){
     let param = {term: period}
     commonAjax("/front/stockPrices/api/getAnnualGrowthRate", callBackFn, "get", param, errorMsg);
 }
-
 /*
 function fnDashboardSetting(data, id){
 
     let pointId = $('#' + id + 'Point');
     let VarianceId = $('#' + id + 'Variance');
+    let baseDateId = $('#' + id + 'BaseDate');
 
     pointId.addClass('count-ani-per');
 
@@ -150,6 +150,7 @@ function fnDashboardSetting(data, id){
     let past = data.past;
     let subtraction = data.subtraction;
     let subRate = data.subRate;
+    let baseDate = data.baseDate;
 
     if(current < past) {
         pointId.text(current);
@@ -163,6 +164,8 @@ function fnDashboardSetting(data, id){
         VarianceId.text('▲' + subtraction + ' ' + '(' + subRate + ')').addClass('up');
         if(id === 'kospi') $('#kospiVariance').removeClass('up')
     }
+
+    baseDateId.text(' 기준일 : ' + baseDate);
 
 }
 */

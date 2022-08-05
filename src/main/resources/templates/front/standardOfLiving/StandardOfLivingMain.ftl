@@ -29,8 +29,8 @@
                                     </figure>
                                     <div class="txt-wrap">
                                         <h6 class="tit">최저임금</h6>
-                                        <b class="center-txt up count-ani" data-unit="원"
-                                        >9,610</b
+                                        <b class="center-txt up count-ani-per" data-unit="원"
+                                        >9,610.87</b
                                         >
                                         <span class="sub-txt up">▲ 0.5%</span>
                                     </div>

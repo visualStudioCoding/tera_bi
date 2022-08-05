@@ -1,20 +1,16 @@
 package com.teraenergy.bisolution.admin.economicGrowth;
 
-import com.teraenergy.global.common.utilities.DateUtil;
+import com.teraenergy.global.service.ApiParseService;
 import com.teraenergy.global.service.CommonService;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +22,9 @@ public class EconomicGrowthScheduler {
 
     @Resource(name = "commonService")
     private CommonService commonService;
+
+    @Resource(name = "apiParseService")
+    private ApiParseService apiParseService;
 
 // cron 실행 주기
 // *  |  *  |  *  |  *  |  *  |  *
@@ -47,9 +46,9 @@ public class EconomicGrowthScheduler {
         String site = "ecos";
         String message = "성공";
 
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+        StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
 
-        JSONArray jsonList = commonService.ecosApiJsonParser(stringBuilder, "StatisticSearch");
+        JSONArray jsonList = apiParseService.ecosApiJsonParser(stringBuilder, "StatisticSearch");
         Map<String, Object> dataMap = new HashMap<>();
 
         for (Object jsonObject : jsonList) {
@@ -104,9 +103,9 @@ public class EconomicGrowthScheduler {
             String format = "json";
             String site = "ecos";
             String message = "성공";
-            StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+            StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
 
-            JSONArray jsonList = commonService.ecosApiJsonParser(stringBuilder, "StatisticSearch");
+            JSONArray jsonList = apiParseService.ecosApiJsonParser(stringBuilder, "StatisticSearch");
             System.out.println(jsonList);
             Map<String, Object> dataMap = new HashMap<>();
 
@@ -155,9 +154,9 @@ public class EconomicGrowthScheduler {
         String format = "json";
         String site = "kosis";
 
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+        StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
 
-        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        JSONArray jsonList = (JSONArray) apiParseService.apiJsonParser(stringBuilder);
 
         Map<String, Object> dataMap = new HashMap<>();
         Map<String, String> compareDebt = (Map<String, String>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".compareStateDebt");
@@ -198,8 +197,8 @@ public class EconomicGrowthScheduler {
         String unit = null;
         String val = null;
 
-        StringBuilder stringbuilder = commonService.getApiResult(url, parameter, format, site);
-        JSONArray jsonList = (JSONArray) commonService.apiJsonParser(stringbuilder);
+        StringBuilder stringbuilder = apiParseService.getApiResult(url, parameter, format, site);
+        JSONArray jsonList = (JSONArray) apiParseService.apiJsonParser(stringbuilder);
 
         Map<String, Object> dataMap = new HashMap<>();
         Map<String, String> compareGDI = (Map<String, String>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".compareGDI");
@@ -273,9 +272,9 @@ public class EconomicGrowthScheduler {
 
             }
 
-            StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
+            StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
 
-            JSONArray jsonList = commonService.ecosApiJsonParser(stringBuilder, "StatisticSearch");
+            JSONArray jsonList = apiParseService.ecosApiJsonParser(stringBuilder, "StatisticSearch");
 
             for (Object jsonObject : jsonList) {
                 JSONObject jsonData = (JSONObject) jsonObject;
@@ -313,8 +312,8 @@ public class EconomicGrowthScheduler {
         String format = "json";
         String site = "kosis";
 
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
-        JSONArray jsonArray = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
+        JSONArray jsonArray = (JSONArray) apiParseService.apiJsonParser(stringBuilder);
 
         Map<String, Object> dataMap = new HashMap<>();
         Map<String, String> compareGrowth = (Map<String, String>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + "compareGrowthRate");
@@ -355,8 +354,8 @@ public class EconomicGrowthScheduler {
         Map<String, String> compareLivingInflation = (Map<String, String>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".compareLivingInflation");
         Map<String, String> compareCoreInflation = (Map<String, String>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".compareCoreInflation");
 
-        StringBuilder stringBuilder = commonService.getApiResult(url, parameter, format, site);
-        JSONArray jsonArray = (JSONArray) commonService.apiJsonParser(stringBuilder);
+        StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
+        JSONArray jsonArray = (JSONArray) apiParseService.apiJsonParser(stringBuilder);
 
         String year = null;
         String month = null;

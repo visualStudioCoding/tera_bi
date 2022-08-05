@@ -34,11 +34,4 @@ public interface CommonService {
 	/* 삭제 */
 	int deleteContents(Object paramDTO, String queryId) throws Exception;
 
-	StringBuilder getApiResult(String url, String parameter, String format, String site) throws Exception;
-
-	List<?> apiJsonParser(StringBuilder stringBuilder) throws Exception;
-
-	JSONArray ecosApiJsonParser(StringBuilder stringBuilder, String statistic) throws Exception;
-
-	JSONObject apiXmlParser(StringBuilder stringBuilder) throws Exception;
 }
