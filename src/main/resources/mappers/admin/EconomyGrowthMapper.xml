@@ -72,6 +72,12 @@
             dy_dt = #{dy_dt}
     </insert>
 
+    <!--  기준금리 값 비교  -->
+    <insert id="compareIndexBaseRate" parameterType="hashMap">
+        SELECT CONCAT(yr_dt, mon_dt, dy_dt) AS period, val
+        FROM base_rate ORDER BY CONCAT(yr_dt, mon_dt, dy_dt) DESC
+    </insert>
+
     <!--  환율  -->
     <insert id="insertExchangeRate" parameterType="hashMap">
         INSERT INTO exchn_rate

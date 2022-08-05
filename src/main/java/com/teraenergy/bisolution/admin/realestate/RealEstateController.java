@@ -297,7 +297,7 @@ public class RealEstateController {
     @ResponseBody
     @GetMapping("/api/populationAge")
     public Object getPopulationAge(String url, String parameter) throws Exception {
-        url = "https://kosis.kr/openapi/Param/statisticsParameterData.do";
+//        url = "https://kosis.kr/openapi/Param/statisticsParameterData.do";
 //        parameter = "?method=getList&apiKey=&itmId=T3+T4+&objL1=00+50+50110+50130+&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=M&startPrdDe=2022&endPrdDe=2022&loadGubun=2&orgId=101&tblId=DT_1B04005N";
         Map<String, Object> result = new HashMap<>();
         List<Map<String, Object>> dataList = new ArrayList<>();
@@ -376,6 +376,45 @@ public class RealEstateController {
 
         result.put("data", dataList);
         result.put("success", "성공");
+        return result;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @ResponseBody
+    @GetMapping("/api/apartmentOwner")
+    public Object getApartmentOwner(String url, String parameter) throws Exception {
+        Map<String, Object> result = new HashMap<>();
+        List<Map<String, Object>> dataList = new ArrayList<>();
+        String message = "성공";
+
+        StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, FORMAT, SITE);
+        JSONArray jsonList = (JSONArray) apiParseService.apiJsonParser(stringBuilder);
+
+
+        for (Object jsonObject : jsonList) {
+                Map<String, Object> dataMap = new HashMap<>();
+                JSONObject jsonData = (JSONObject) jsonObject;
+
+            if ("Fail".equals(jsonData.get("RESULT"))) {
+                dataMap.put("err", jsonData.get("err"));
+                message = (String) jsonData.get("errMsg");
+            } else {
+                String year = (String) jsonData.get("PRD_DE");
+                dataMap.put("yrDt", year);
+                dataMap.put("age", jsonData.get("C3_NM"));
+                dataMap.put("ctyNm", jsonData.get("C1_NM"));
+                dataMap.put("gender", jsonData.get("C2_NM"));
+                dataMap.put("unit", jsonData.get("UNIT_NM"));
+                dataMap.put("val", jsonData.get("DT"));
+
+                dataList.add(dataMap);
+                commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertGenderAgeApt");
+
+            }
+        }
+
+        result.put("data", dataList);
+        result.put("success", message);
         return result;
     }
 }

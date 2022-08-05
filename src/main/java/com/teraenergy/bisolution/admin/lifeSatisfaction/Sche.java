@@ -633,7 +633,7 @@ public class Sche {
         //https://kosis.kr/openapi/Param/statisticsParameterData.do
         // ?method=getList&apiKey=MDE5NGY4NzM1YzIxMDJmY2FlNTJkMTg0NThiZDJmMjQ=
         // &itmId=T00+T10+T11+T12+T13+T14+T15+T16+T17+T18+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&newEstPrdCnt=1&loadGubun=2&orgId=101&tblId=DT_1SSCL060R
-        String parameter = "?method=getList&apiKey=&itmId=T00+T10+T11+T12+T13+T14+T15+T16+T17+T18+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&newEstPrdCnt=1&loadGubun=2&orgId=101&tblId=DT_1SSCL060R";
+        String parameter = "?method=getList&apiKey=&itmId=13103314009T01+&objL1=13102314009A.2+13102314009A.3+13102314009A.4+13102314009A.5+13102314009A.6+13102314009A.7+&objL2=&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=M&newEstPrdCnt=1&loadGubun=2&orgId=314&tblId=DT_AGE_DEP_AGG_MONTH";
         //DT_1JH20151
 
         String format = "json";
@@ -649,36 +649,24 @@ public class Sche {
         for (Object jsonObject : jsonList) {
             JSONObject jsonData = (JSONObject) jsonObject;
 
-            //년도
-            String prdde = (String) jsonData.get("PRD_DE");
-            String yrdt = prdde.substring(0, 4);
+            // 조사 년도
+            String yrDt = (String) jsonData.get("PRD_DE");
 
-            //시도
-            String ctynm = (String) jsonData.get("C1_NM");
+            // 연령대
+            String ages = (String) jsonData.get("C1_NM");
 
-            //대분류
-            String topgrp = (String) jsonData.get("C2_NM");
-
-            //소분류
-            String midgrp = (String) jsonData.get("ITM_NM");
-
-            //계는 통과
-            if("계".equals(midgrp)) {
-                continue;
-            }
-
-            //점수단위(%,회)
+            // 단위
             String unit = (String) jsonData.get("UNIT_NM");
 
-            //횟수
+            // 값
             String val = (String) jsonData.get("DT");
 
-            dataMap.put("yrdt", yrdt);
-            dataMap.put("ctynm", ctynm);
-            dataMap.put("topgrp", topgrp);
-            dataMap.put("midgrp", midgrp);
+
+            dataMap.put("yrDt", yrDt);
+            dataMap.put("ages", ages);
             dataMap.put("unit", unit);
             dataMap.put("val", val);
+
 
             commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertOvrsstrip");//LifeSatisfaction.insertMarriage
             cnt++;

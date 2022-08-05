@@ -2,6 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="bi.front.EconomicGrowth">
 
+    <!-- 경제성장률 Default -->
+    <select id="selectEconomicGrowthDefault" parameterType="hashMap" resultType="hashMap">
+        SELECT cty_nm, val
+        FROM enmc_grrt
+        WHERE yr_dt = (SELECT MAX(yr_dt) FROM enmc_grrt )
+    </select>
+
     <!-- 경제성장률 -->
     <select id="selectEconomicGrowth" parameterType="hashMap" resultType="hashMap">
         SELECT cty_nm, val

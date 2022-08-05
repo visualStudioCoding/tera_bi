@@ -65,18 +65,18 @@
             <div class="row">
                 <div class="col-inner-6">
                     <div class="title-wrap">
-                        <h6 class="tit">기준금리별 미분양주택</h6>
+                        <h6 class="tit">소비자물가별 미분양주택</h6>
                     </div>
                     <div class="cont">
                         <div
-                                id="brHousingGraph"
+                                id="cmHousingGraph"
                                 style="width: 100%; height: 224px"
                         ></div>
                     </div>
                 </div>
                 <div class="col-inner-6">
                     <div class="title-wrap">
-                        <h6 class="tit">소유자 비율</h6>
+                        <h6 class="tit">인구 비율</h6>
                     </div>
                     <div class="cont">
                         <p class="caption">

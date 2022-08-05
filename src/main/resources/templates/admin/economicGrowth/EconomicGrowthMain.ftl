@@ -1,5 +1,6 @@
 <#ftl encoding="utf-8"/>
 <#include "*/common/admin/navigation.ftl"/>
+<#assign nowDate = .now/>
 <body>
 <div class="container">
     <div class="row">

@@ -51,6 +51,10 @@ public class EconomicGrowthController {
         Map<String, Float> dataMapCmp = (Map<String, Float>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".selectExchangeRateCompare");
         Map<String, String> result = new HashMap<>();
 
+        System.out.println("----------------------------------------");
+        System.out.println(dataMap.get("val"));
+        System.out.println("----------------------------------------");
+
         Float data = dataMap.get("val");
         Float dataCmp = dataMapCmp.get("val");
         Float subtraction = null;
@@ -145,16 +149,23 @@ public class EconomicGrowthController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy");
         String currentYear = now.format(formatter);
 
-        if (parameter.contains("-")) {
-            parameter = parameter.replaceAll("[-]", "");
-            String[] periods = parameter.split("  ");
+        List<Map<String, Object>> dataList = new ArrayList<>();
 
-            params.put("searchDate", periods[0].substring(0,4));
-        } else {
-            params.put("searchDate", Integer.toString(Integer.parseInt(currentYear) - Integer.parseInt(parameter)));
+        if(parameter.equals("0")) {
+            dataList = (List<Map<String, Object>>) commonService.selectList(params, PAGE_ID + PROGRAM_ID + ".selectEconomicGrowthDefault");
+        }else{
+            if (parameter.contains("-")) {
+                parameter = parameter.replaceAll("[-]", "");
+                String[] periods = parameter.split("  ");
+
+                params.put("searchDate", periods[0].substring(0, 4));
+            } else {
+                params.put("searchDate", Integer.toString(Integer.parseInt(currentYear) - Integer.parseInt(parameter)));
+            }
+
+            dataList = (List<Map<String, Object>>) commonService.selectList(params, PAGE_ID + PROGRAM_ID + ".selectEconomicGrowthPeriod");
         }
 
-        List<Map<String, Object>> dataList = (List<Map<String, Object>>) commonService.selectList(params, PAGE_ID + PROGRAM_ID + ".selectEconomicGrowthPeriod");
 //        Map<String, String> EmncGrrt = (Map<String, String>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".selectEnmcGrrtOne");
 
         Map<String, List<Map<String, Object>>> result = new HashMap<>();
@@ -295,13 +306,17 @@ public class EconomicGrowthController {
     public Map<String, List<Map<String, Object>>> getStateDebt(String parameter) throws Exception {
         Map<String, String> dataMap = new HashMap<>();
 
-        if (parameter.contains("-")) {
-            parameter = parameter.replaceAll("[-]", "");
-            String[] periods = parameter.split("  ");
-            dataMap.put("searchStartDate", periods[0]);
-            dataMap.put("searchEndDate", periods[1]);
-        } else {
-            dataMap.put("searchPeriod", parameter);
+        if(parameter.equals("0")) {
+            dataMap.put("searchPeriod", "3");
+        }else{
+            if (parameter.contains("-")) {
+                parameter = parameter.replaceAll("[-]", "");
+                String[] periods = parameter.split("  ");
+                dataMap.put("searchStartDate", periods[0]);
+                dataMap.put("searchEndDate", periods[1]);
+            } else {
+                dataMap.put("searchPeriod", parameter);
+            }
         }
 
         List<Map<String, Object>> gdp = new ArrayList<>();

@@ -4,7 +4,7 @@ function fnParam(frm){
         "itmId": frm.itmId.value,
         "objL1": frm.objL1.value,
         "objL2": frm.objL2.value,
-        "objL3": "",
+        "objL3": frm.objL3.value,
         "objL4": "",
         "objL5": "",
         "objL6": "",
@@ -94,6 +94,17 @@ function fnGrp(){
     //공통모듈 ajax 함수 호출하기
     kosisApiAjax("/admin/realEstate/api/grp", callBackFn, 'get', param, errorMsg);
 }
-
+function fnApartmentOwner(){
+    const frm = document.forms['formApartmentOwner'];
+    let param = fnParam(frm);
+    // getIncome();
+    //ajax가 정상 호출 되었을때 실행 되는 함수
+    let callBackFn = function( data ) {
+        alert(data.success);
+        console.log(data.data)
+    }
+    //공통모듈 ajax 함수 호출하기
+    kosisApiAjax("/admin/realEstate/api/apartmentOwner", callBackFn, 'get', param, errorMsg);
+}
 
 
