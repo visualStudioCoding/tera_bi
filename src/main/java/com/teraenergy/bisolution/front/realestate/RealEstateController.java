@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.sql.Array;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class RealEstateController {
         return PAGE_ID + DIRECTORY + "Main";
     }
 
+    // 행정구역별 매매 거래
     @ResponseBody
     @GetMapping("/api/aptSalesStatus")
     public Map<String, List> getAptSalesStatus(String parameter) throws Exception {
@@ -56,8 +58,8 @@ public class RealEstateController {
             parameter = parameter.replaceAll("[-]", "");
             String[] periods = parameter.split("  ");
 
-            params.put("searchStartDate", periods[0].substring(0,6));
-            params.put("searchEndDate", periods[1].substring(0,6));
+            params.put("searchStartDate", periods[0].substring(0, 6));
+            params.put("searchEndDate", periods[1].substring(0, 6));
         } else {
             params.put("searchDate", Integer.toString(Integer.parseInt(currentYear) - Integer.parseInt(parameter)));
         }
@@ -80,11 +82,29 @@ public class RealEstateController {
         return result;
     }
 
+    // 연령대별 매매거래
     @ResponseBody
     @GetMapping("/api/ageAptSales")
-    public Map<String, List> getAgeAptSales() throws Exception {
+    public Map<String, List> getAgeAptSales(String parameter) throws Exception {
 
-        List<Map<String, Object>> dataList = (List<Map<String, Object>>) commonService.selectList(null, PAGE_ID + PROGRAM_ID + ".selectAgeAptSales");
+        Map<String, String> params = new HashMap<>();
+
+        LocalDate now = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy");
+        String currentYear = now.format(formatter);
+
+        if (parameter.contains("-")) {
+            parameter = parameter.replaceAll("[-]", "");
+            String[] periods = parameter.split("  ");
+
+            params.put("searchStartDate", periods[0].substring(0, 6));
+            params.put("searchEndDate", periods[1].substring(0, 6));
+        } else {
+            params.put("searchDate", Integer.toString(Integer.parseInt(currentYear) - Integer.parseInt(parameter)));
+        }
+
+
+        List<Map<String, Object>> dataList = (List<Map<String, Object>>) commonService.selectList(params, PAGE_ID + PROGRAM_ID + ".selectAgeAptSales");
         List<String> ages = new ArrayList<>();
         List<String> data = new ArrayList<>();
 
@@ -102,6 +122,7 @@ public class RealEstateController {
         return result;
     }
 
+    // 건축년수별 매매거래
     @ResponseBody
     @GetMapping("/api/builtYear")
     public Map<String, List> getBuiltYear(String parameter) throws Exception {
@@ -116,8 +137,8 @@ public class RealEstateController {
             parameter = parameter.replaceAll("[-]", "");
             String[] periods = parameter.split("  ");
 
-            params.put("searchStartDate", periods[0].substring(0,6));
-            params.put("searchEndDate", periods[1].substring(0,6));
+            params.put("searchStartDate", periods[0].substring(0, 6));
+            params.put("searchEndDate", periods[1].substring(0, 6));
         } else {
             params.put("searchDate", Integer.toString(Integer.parseInt(currentYear) - Integer.parseInt(parameter)));
         }
@@ -140,6 +161,7 @@ public class RealEstateController {
         return result;
     }
 
+    // 지역별 인구 수
     @ResponseBody
     @GetMapping("/api/regionPopulation")
     public Map<String, List> getRegionPopulation(String parameter) throws Exception {
@@ -154,8 +176,8 @@ public class RealEstateController {
             parameter = parameter.replaceAll("[-]", "");
             String[] periods = parameter.split("  ");
 
-            params.put("searchStartDate", periods[0].substring(0,6));
-            params.put("searchEndDate", periods[1].substring(0,6));
+            params.put("searchStartDate", periods[0].substring(0, 6));
+            params.put("searchEndDate", periods[1].substring(0, 6));
         } else {
             params.put("searchDate", Integer.toString(Integer.parseInt(currentYear) - Integer.parseInt(parameter)));
         }
@@ -178,9 +200,10 @@ public class RealEstateController {
         return result;
     }
 
+    // 소비자물가별 미분양주택
     @ResponseBody
     @GetMapping("/api/unsoldAndCnsmr")
-    public Map<String, List> getBaseRate(String parameter) throws Exception {
+    public Map<String, List> getUnsoldAndCnsmr(String parameter) throws Exception {
 
         Map<String, String> params = new HashMap<>();
 
@@ -192,12 +215,12 @@ public class RealEstateController {
             parameter = parameter.replaceAll("[-]", "");
             String[] periods = parameter.split("  ");
 
-            params.put("searchStartDate", periods[0].substring(0,6));
-            params.put("searchEndDate", periods[1].substring(0,6));
+            params.put("searchStartDate", periods[0].substring(0, 6));
+            params.put("searchEndDate", periods[1].substring(0, 6));
         } else {
             params.put("searchDate", Integer.toString(Integer.parseInt(currentYear) - Integer.parseInt(parameter)));
 
-            if("0".equals(parameter)){
+            if ("0".equals(parameter)) {
                 params.put("searchDate", Integer.toString(Integer.parseInt(currentYear) - 5));
             }
         }
@@ -214,13 +237,13 @@ public class RealEstateController {
             Map<String, Object> unsold = new HashMap<>();
             Map<String, Object> cnsmr = new HashMap<>();
 
-            if("unsold".equals(dataList.get(i).get("type"))){
+            if ("unsold".equals(dataList.get(i).get("type"))) {
 
                 unsold.put("period", dataList.get(i).get("period"));
                 unsold.put("val", dataList.get(i).get("val"));
 
                 unsoldData.add(unsold);
-            } else{
+            } else {
                 cnsmr.put("period", dataList.get(i).get("period"));
                 cnsmr.put("val", dataList.get(i).get("val"));
 
@@ -235,9 +258,10 @@ public class RealEstateController {
         return result;
     }
 
+    // 성별 부동산 소유자 비율
     @ResponseBody
-    @GetMapping("/api/populationByGender")
-    public List<Map<String, String>> getPopulationByGender(String parameter) throws Exception {
+    @GetMapping("/api/ownerByGender")
+    public List<Map<String, String>> getOwnerByGender(String parameter) throws Exception {
 
         Map<String, String> params = new HashMap<>();
 
@@ -249,27 +273,79 @@ public class RealEstateController {
             parameter = parameter.replaceAll("[-]", "");
             String[] periods = parameter.split("  ");
 
-            params.put("searchStartDate", periods[0].substring(0,6));
-            params.put("searchEndDate", periods[1].substring(0,6));
+            params.put("searchStartDate", periods[0].substring(0, 6));
+            params.put("searchEndDate", periods[1].substring(0, 6));
         } else {
             params.put("searchDate", Integer.toString(Integer.parseInt(currentYear) - Integer.parseInt(parameter)));
         }
 
-        List<Map<String, Object>> dataList = (List<Map<String, Object>>) commonService.selectList(params, PAGE_ID + PROGRAM_ID + ".selectGenderPopulation");
+        Map<String, Object> dataList = new HashMap<>();
+
+        if ("0".equals(parameter)) {
+            dataList = (Map<String, Object>) commonService.selectContents(params, PAGE_ID + PROGRAM_ID + ".selectOwnerByGender");
+        } else {
+            dataList = (Map<String, Object>) commonService.selectContents(params, PAGE_ID + PROGRAM_ID + ".selectOwnerByGenderPeriod");
+        }
 
         List<Map<String, String>> result = new ArrayList<>();
 
+        Map<String, String> manData = new HashMap<>();
+        Map<String, String> wmnData = new HashMap<>();
+
+        manData.put("name", "남성");
+        manData.put("value", dataList.get("man_cnt").toString());
+        wmnData.put("name", "여성");
+        wmnData.put("value", dataList.get("wmn_cnt").toString());
+
+        result.add(manData);
+        result.add(wmnData);
+
+
+        System.out.println(result);
+
+        return result;
+    }
+
+
+    // 연령대 별 부동산 소유자 비율
+    @ResponseBody
+    @GetMapping("/api/ownerByAge")
+    public List<Map<String, String>> getOwnerByAge(String parameter) throws Exception {
+
+        Map<String, String> params = new HashMap<>();
+
+        LocalDate now = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy");
+        String currentYear = now.format(formatter);
+
+        if (parameter.contains("-")) {
+            parameter = parameter.replaceAll("[-]", "");
+            String[] periods = parameter.split("  ");
+
+            params.put("searchStartDate", periods[0].substring(0, 6));
+            params.put("searchEndDate", periods[1].substring(0, 6));
+        } else {
+            params.put("searchDate", Integer.toString(Integer.parseInt(currentYear) - Integer.parseInt(parameter)));
+        }
+
+        List<Map<String, Object>> dataList = new ArrayList<>();
+
+        if ("0".equals(parameter)) {
+            dataList = (List<Map<String, Object>>) commonService.selectList(params, PAGE_ID + PROGRAM_ID + ".selectOwnerByAge");
+        } else {
+            dataList = (List<Map<String, Object>>) commonService.selectList(params, PAGE_ID + PROGRAM_ID + ".selectOwnerByAgePeriod");
+        }
+
+        List<Map<String, String>> result = new ArrayList<>();
 
         for (int i = 0; i < dataList.size(); i++) {
             Map<String, String> data = new HashMap<>();
 
-            data.put("name", dataList.get(i).get("gender").toString() + "성");
             data.put("value", dataList.get(i).get("val").toString());
-
+            data.put("name", dataList.get(i).get("age").toString());
 
             result.add(data);
         }
-
 
         System.out.println(result);
 

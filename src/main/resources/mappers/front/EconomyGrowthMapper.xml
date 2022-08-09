@@ -9,13 +9,6 @@
         WHERE yr_dt = (SELECT MAX(yr_dt) FROM enmc_grrt )
     </select>
 
-    <!-- 경제성장률 -->
-    <select id="selectEconomicGrowth" parameterType="hashMap" resultType="hashMap">
-        SELECT cty_nm, val
-        FROM enmc_grrt
-        WHERE yr_dt = #{yr_dt}
-    </select>
-
     <!-- 경제성장률 기간 상세 설정 -->
     <select id="selectEconomicGrowthPeriod" parameterType="hashMap" resultType="hashMap">
         SELECT cty_nm, val

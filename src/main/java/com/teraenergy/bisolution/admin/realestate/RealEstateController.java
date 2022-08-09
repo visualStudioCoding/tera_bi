@@ -392,8 +392,8 @@ public class RealEstateController {
 
 
         for (Object jsonObject : jsonList) {
-                Map<String, Object> dataMap = new HashMap<>();
-                JSONObject jsonData = (JSONObject) jsonObject;
+            Map<String, Object> dataMap = new HashMap<>();
+            JSONObject jsonData = (JSONObject) jsonObject;
 
             if ("Fail".equals(jsonData.get("RESULT"))) {
                 dataMap.put("err", jsonData.get("err"));
@@ -402,14 +402,31 @@ public class RealEstateController {
                 String year = (String) jsonData.get("PRD_DE");
                 dataMap.put("yrDt", year);
                 dataMap.put("age", jsonData.get("C3_NM"));
-                dataMap.put("ctyNm", jsonData.get("C1_NM"));
-                dataMap.put("gender", jsonData.get("C2_NM"));
+
+                String ctyName = AreaNameUtil.areaName((String) jsonData.get("C1"), "other");
+
+                dataMap.put("ctyNm", ctyName);
+
+                dataMap.put("dstNm", jsonData.get("C1_NM"));
                 dataMap.put("unit", jsonData.get("UNIT_NM"));
                 dataMap.put("val", jsonData.get("DT"));
 
-                dataList.add(dataMap);
-                commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertGenderAgeApt");
+                String areaCd = (String) jsonData.get("C1");
+                dataMap.put("areaCd", areaCd);
 
+                dataList.add(dataMap);
+
+                //                세종특별자치시 중복 제거
+                if (!"29010".equals(areaCd)) {
+
+                    if ("총계".equals(jsonData.get("C2_NM"))) {
+                        commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertGenderAgeApt");
+                    } else if ("남자".equals(jsonData.get("C2_NM"))) {
+                        commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".updateGenderAgeAptMan");
+                    } else {
+                        commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".updateGenderAgeAptWmn");
+                    }
+                }
             }
         }
 

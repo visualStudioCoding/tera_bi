@@ -237,6 +237,31 @@
                 <button type="button" class="btn btn-outline-secondary activator" onclick="getGrowthRateInternational()">실행</button>
             </div>
         </div>
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    국제 주요국 물가상승률
+                </div>
+                <form name="priceIncreaseInternational_opt">
+                    <div class="card-body">
+                        <div class="row" style="margin-top:15px; margin-bottom:0px; padding:5px">
+                            <span>시작 년도 선택</span>
+                            <input type="month" name="startDt">
+                        </div>
+                        <div class="row" style="margin-top:5px; margin-bottom:5px; padding:5px">
+                            <span>끝 년도 선택</span>
+                            <input type="month" name="endDt">
+                        </div>
+                        <#assign name_list = ["serviceNm", "resultType", "tableCode", "cycle","itmCode"]>
+                        <#assign val_list = ["StatisticSearch", "json", "902Y008", "M", "KR"]>
+                        <#list 0..4 as k>
+                            <input type="hidden" name=${name_list[k]} value=${val_list[k]}  />
+                        </#list>
+                    </div>
+                </form>
+                <button type="button" class="btn btn-outline-secondary activator" onclick="getPriceIncreaseInternational()">실행</button>
+            </div>
+        </div>
     </div>
 </div>
 

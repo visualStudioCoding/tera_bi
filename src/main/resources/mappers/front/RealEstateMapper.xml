@@ -15,7 +15,7 @@
     <select id="selectAgeAptSales" parameterType="hashMap" resultType="hashMap">
         SELECT age, SUM(val) AS val
         FROM age_apt
-        WHERE age != '매입자연령대' AND yr_dt = (SELECT yr_dt FROM age_apt ORDER BY yr_dt DESC LIMIT 1)
+        WHERE age != '매입자연령대' AND yr_dt = #{searchDate}
         GROUP BY age
     </select>
 
@@ -98,23 +98,45 @@
             LIMIT 1)
     </select>
 
-    <!--  성별 인구 비율  -->
-    <select id="selectGenderPopulation" parameterType="hashMap" resultType="hashMap">
-        SELECT gender, SUM(val) as val
-        FROM gender_population
-        WHERE CONCAT(yr_dt, mon_dt) =
-              (SELECT CONCAT(#{searchDate}, (SELECT mon_dt
-                                             FROM gender_population
-                                             WHERE yr_dt = #{searchDate}
-                                             ORDER BY mon_dt DESC LIMIT 1)))
-          AND cty_nm IN ('전국')
-        GROUP BY gender
+    <!--  셩별 소유자 비율  -->
+    <select id="selectOwnerByGender" parameterType="hashMap" resultType="hashMap">
+        SELECT yr_dt, man_cnt, wmn_cnt, ttl_cnt, unit
+        FROM gender_age_apt
+        WHERE yr_dt = (SELECT yr_dt FROM gender_age_apt ORDER BY yr_dt DESC LIMIT 1)
+          AND cty_nm = '전국'
+          AND dst_nm = '전국'
+          AND age = '총계'
     </select>
 
-    <!--  연령 별 인구 비율  -->
-    <select id="selectAgePopulation" parameterType="hashMap" resultType="hashMap">
-        SELECT age, SUM(manCnt, wmnCnt)
-        FROM view_population
-        WHERE ctyNm IN '전국' AND age NOT IN '계'
+    <!--  셩별 소유자 비율(기간설정)  -->
+    <select id="selectOwnerByGenderPeriod" parameterType="hashMap" resultType="hashMap">
+        SELECT yr_dt, man_cnt, wmn_cnt, ttl_cnt, unit
+        FROM gender_age_apt
+        WHERE yr_dt = #{searchDate}
+          AND cty_nm = '전국'
+          AND dst_nm = '전국'
+          AND age = '총계'
+    </select>
+
+    <!--  연령 별 소유자 비율  -->
+    <select id="selectOwnerByAge" parameterType="hashMap" resultType="hashMap">
+        SELECT yr_dt, age, SUM(ttl_cnt) AS val, unit
+        FROM gender_age_apt
+        WHERE yr_dt = (SELECT yr_dt FROM gender_age_apt ORDER BY yr_dt DESC LIMIT 1)
+          AND age NOT IN ('총계')
+          AND cty_nm NOT IN ('전국')
+          AND dst_nm NOT IN ('전국')
+        GROUP BY age
+    </select>
+
+    <!--  연령 별 소유자 비율(기간설정)  -->
+    <select id="selectOwnerByAgePeriod" parameterType="hashMap" resultType="hashMap">
+        SELECT yr_dt, age, SUM(ttl_cnt) AS val, unit
+        FROM gender_age_apt
+        WHERE yr_dt = #{searchDate}
+          AND age NOT IN ('총계')
+          AND cty_nm NOT IN ('전국')
+          AND dst_nm NOT IN ('전국')
+        GROUP BY age
     </select>
 </mapper>

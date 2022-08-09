@@ -87,7 +87,8 @@ function fnAdmDivTradeChart(data) {
         admDivTradeChart.setOption(admDivTradeGraphOp);
     }
 }
-    /* 차트 - 연령대별 매매거래 */
+
+/* 차트 - 연령대별 매매거래 */
 function fnAgeTradeGraphOp(data) {
     let ages = data.ages;
     let datas = data.datas;
@@ -182,7 +183,7 @@ function fnConstTradeGraphOp(data) {
     let chartData = [];
 
     for (let i = 0; i < builtYear.length; i++) {
-        if(i === 0) {
+        if (i === 0) {
             chartData.push(["amount", "years"])
         }
         chartData.push([datas[i], builtYear[i]])
@@ -257,6 +258,7 @@ function fnConstTradeGraphOp(data) {
         constTradeChart.setOption(constTradeGraphOp);
     }
 }
+
 function fnPopRegionGraphOp(data) {
     let region = data.region;
     let datas = data.datas;
@@ -655,71 +657,66 @@ function fnPopulationByGenderChartDom(data) {
 }
 
 /* 차트 - 소유자 비율 (연령별) */
-const ownerByAgeChartDom = document.getElementById("ownerByAgeGraph");
-if (ownerByAgeChartDom) {
-    const ownerByAgeChart = echarts.init(ownerByAgeChartDom);
-    let ownerByAgeGraphOp;
+function fnOwnerByAgeChartDom(data) {
+    const ownerByAgeChartDom = document.getElementById("ownerByAgeGraph");
+    if (ownerByAgeChartDom) {
+        const ownerByAgeChart = echarts.init(ownerByAgeChartDom);
+        let ownerByAgeGraphOp;
 
-    ownerByAgeGraphOp = {
-        title: {
-            text: "연령별",
-            left: "center",
-            textStyle: {
-                fontSize: 14,
-            },
-        },
-        tooltip: {
-            trigger: "item",
-            valueFormatter: function (value) {
-                return value.toLocaleString("ko-KR") + "명";
-            },
-        },
-        legend: {
-            top: "center",
-            left: "right",
-            orient: "vertical",
-        },
-        series: [
-            {
-                name: "",
-                type: "pie",
-                center: ["50%", "57%"],
-                radius: ["30%", "80%"],
-                avoidLabelOverlap: false,
-                itemStyle: {
-                    borderRadius: 4,
-                    borderColor: "#fff",
-                    borderWidth: 2,
+        ownerByAgeGraphOp = {
+            title: {
+                text: "연령별",
+                left: "center",
+                textStyle: {
+                    fontSize: 14,
                 },
-                label: {
-                    show: true,
-                    formatter: "{b}\n {d}%",
-                    position: "inside",
+            },
+            tooltip: {
+                trigger: "item",
+                valueFormatter: function (value) {
+                    return value.toLocaleString("ko-KR") + "명";
                 },
-                emphasis: {
+            },
+            legend: {
+                top: "center",
+                left: "right",
+                orient: "vertical",
+            },
+            series: [
+                {
+                    name: "",
+                    type: "pie",
+                    center: ["50%", "57%"],
+                    radius: ["30%", "80%"],
+                    avoidLabelOverlap: false,
+                    itemStyle: {
+                        borderRadius: 4,
+                        borderColor: "#fff",
+                        borderWidth: 2,
+                    },
                     label: {
                         show: true,
-                        fontSize: "16",
-                        fontWeight: "bold",
+                        formatter: "{b}\n {d}%",
+                        position: "inside",
                     },
+                    emphasis: {
+                        label: {
+                            show: true,
+                            fontSize: "16",
+                            fontWeight: "bold",
+                        },
+                    },
+                    labelLine: {
+                        show: false,
+                    },
+                    data: [],
                 },
-                labelLine: {
-                    show: false,
-                },
-                data: [
-                    {value: 186642, name: "30세 미만"},
-                    {value: 1254584, name: "30~39세"},
-                    {value: 2526153, name: "40~49세"},
-                    {value: 3057263, name: "50~59세"},
-                    {value: 2575380, name: "60~69세"},
-                    {value: 1520060, name: "70~79세"},
-                    {value: 610089, name: "80세 이상"},
-                ],
+            ],
+            textStyle: {
+                fontFamily: "NanumSquare",
             },
-        ],
-        textStyle: {
-            fontFamily: "NanumSquare",
-        },
-    };
-    ownerByAgeChart.setOption(ownerByAgeGraphOp);
+        };
+        ownerByAgeGraphOp.series[0].data = data;
+        ownerByAgeChart.setOption(ownerByAgeGraphOp);
+    }
 }

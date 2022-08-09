@@ -18,8 +18,7 @@
              , idx
              , layer
         FROM trade_real_apt
-        WHERE 1 = 1
-        LIMIT 0,10
+        WHERE 1 = 1 LIMIT 0,10
     </select>
     <insert id="insertGenderPopulation" parameterType="hashMap">
         INSERT INTO gender_population
@@ -38,12 +37,12 @@
                , #{ctyNm}
                , #{dstNm}
                , #{unit}
-               , #{val})
-        ON DUPLICATE KEY UPDATE yr_dt  = #{yrDt}
-                              , mon_dt = #{monDt}
-                              , gender = #{gender}
-                              , cty_nm = #{ctyNm}
-                              , dst_nm = #{dstNm}
+               , #{val}) ON DUPLICATE KEY
+        UPDATE yr_dt = #{yrDt}
+            , mon_dt = #{monDt}
+            , gender = #{gender}
+            , cty_nm = #{ctyNm}
+            , dst_nm = #{dstNm}
     </insert>
     <insert id="insertAptSalesStatus" parameterType="hashMap">
         INSERT INTO apt_account
@@ -58,11 +57,11 @@
                , #{ctyNm}
                , #{dstNm}
                , #{unit}
-               , #{val})
-        ON DUPLICATE KEY UPDATE yr_dt  = #{yrDt}
-                              , mon_dt = #{monDt}
-                              , cty_nm = #{ctyNm}
-                              , dst_nm = #{dstNm}
+               , #{val}) ON DUPLICATE KEY
+        UPDATE yr_dt = #{yrDt}
+            , mon_dt = #{monDt}
+            , cty_nm = #{ctyNm}
+            , dst_nm = #{dstNm}
     </insert>
     <insert id="insertUnsoldHouse" parameterType="hashMap">
         INSERT INTO unsold_house
@@ -77,11 +76,11 @@
                , #{ctyNm}
                , #{dstNm}
                , #{unit}
-               , #{val})
-        ON DUPLICATE KEY UPDATE yr_dt  = #{yrDt}
-                              , mon_dt = #{monDt}
-                              , cty_nm = #{ctyNm}
-                              , dst_nm = #{dstNm}
+               , #{val}) ON DUPLICATE KEY
+        UPDATE yr_dt = #{yrDt}
+            , mon_dt = #{monDt}
+            , cty_nm = #{ctyNm}
+            , dst_nm = #{dstNm}
     </insert>
     <insert id="insertAgeAptSales" parameterType="hashMap">
         INSERT INTO age_apt
@@ -98,12 +97,12 @@
                , #{ctyNm}
                , #{dstNm}
                , #{unit}
-               , #{val})
-        ON DUPLICATE KEY UPDATE yr_dt  = #{yrDt}
-                              , mon_dt = #{monDt}
-                              , age    = #{age}
-                              , cty_nm = #{ctyNm}
-                              , dst_nm = #{dstNm}
+               , #{val}) ON DUPLICATE KEY
+        UPDATE yr_dt = #{yrDt}
+            , mon_dt = #{monDt}
+            , age = #{age}
+            , cty_nm = #{ctyNm}
+            , dst_nm = #{dstNm}
     </insert>
     <insert id="insertPopulationAge" parameterType="hashMap">
         INSERT INTO population
@@ -145,9 +144,9 @@
         VALUES ( #{yrDt}
                , #{ctyNm}
                , #{unit}
-               , #{val})
-        ON DUPLICATE KEY UPDATE yr_dt  = #{yrDt}
-                              , cty_nm = #{ctyNm}
+               , #{val}) ON DUPLICATE KEY
+        UPDATE yr_dt = #{yrDt}
+            , cty_nm = #{ctyNm}
     </insert>
 
     <select id="genderMaxDate" resultType="hashMap">
@@ -188,23 +187,32 @@
         INSERT INTO gender_age_apt
         ( yr_dt
         , cty_nm
+        , dst_nm
         , age
-        , gender
-        , val
+        , ttl_cnt
         , unit)
         VALUES ( #{yrDt}
                , #{ctyNm}
+               , #{dstNm}
                , #{age}
-               , #{gender}
                , #{val}
-               , #{unit})
-            ON DUPLICATE KEY UPDATE yr_dt  = #{yrDt}
-                                 , cty_nm = #{ctyNm}
-                                 , age = #{age}
-                                 , gender = #{gender}
+               , #{unit}) ON DUPLICATE KEY
+          UPDATE yr_dt = #{yrDt}
+            , cty_nm = #{ctyNm}
+            , age = #{age}
     </insert>
-    <update id="updateGenderAgeApt" parameterType="hashMap">
-        UPDATE gender_age_apt SET max_cnt
+    <update id="updateGenderAgeAptMan" parameterType="hashMap">
+        UPDATE gender_age_apt
+        SET man_cnt = #{val}
+        WHERE yr_dt = #{yrDt}
+          AND cty_nm = #{ctyNm}
+          AND age = #{age}
     </update>
-
+    <update id="updateGenderAgeAptWmn" parameterType="hashMap">
+        UPDATE gender_age_apt
+        SET wmn_cnt = #{val}
+        WHERE yr_dt = #{yrDt}
+          AND cty_nm = #{ctyNm}
+          AND age = #{age}
+    </update>
 </mapper>
