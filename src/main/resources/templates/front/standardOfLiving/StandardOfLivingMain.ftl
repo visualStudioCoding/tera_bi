@@ -18,9 +18,6 @@
                         <h6 class="tit">생활수준지표</h6>
                     </div>
                     <div class="cont">
-                        <p class="caption">
-                            <i class="ri-information-fill"></i> 해당년도 자료입니다.
-                        </p>
                         <div class="wrapper">
                             <div class="left">
                                 <div class="card min-wage">
@@ -29,10 +26,25 @@
                                     </figure>
                                     <div class="txt-wrap">
                                         <h6 class="tit">최저임금</h6>
-                                        <b class="center-txt up count-ani-per" data-unit="원"
-                                        >9,610.87</b
-                                        >
-                                        <span class="sub-txt up">▲ 0.5%</span>
+                                        <#assign minPayCurrent = minPay.current?replace(",","")>
+                                        <#assign minPayPast = minPay.past?replace(",","")>
+                                        <#if minPayCurrent?number lt minPayPast?number>
+                                            <b class="center-txt count-ani-per" data-unit="${minPay.unit}">${minPay.current}</b>
+                                            <span class="sub-txt down">
+                                                ▼ ${minPay.subtraction} (${minPay.subRate}%)
+                                            </span>
+                                        <#elseif minPayCurrent?number == minPayPast?number>
+                                            <b class="center-txt count-ani-per" data-unit="${minPay.unit}">${minPay.current} %</b>
+                                            <span class="sub-txt">
+                                                변동없음
+                                            </span>
+                                        <#else>
+                                            <b class="center-txt count-ani-per" data-unit="${minPay.unit}">${minPay.current}</b>
+                                            <span class="sub-txt up">
+                                                ▲ ${minPay.subtraction} (${minPay.subRate}%)
+                                            </span>
+                                        </#if>
+                                        <p class="caption"><i class="ri-information-fill"></i> 기준일 : ${minPay.baseDate}</p>
                                     </div>
                                 </div>
                                 <div class="card cs-infl">
@@ -41,10 +53,25 @@
                                     </figure>
                                     <div class="txt-wrap">
                                         <h6 class="tit">경제성장률</h6>
-                                        <b class="center-txt down count-ani-per" data-unit="%"
-                                        >3.5</b
-                                        >
-                                        <span class="sub-txt down">▼ 0.25%</span>
+                                        <#assign economicGrowthCurrent = economicGrowth.current?replace(",","")>
+                                        <#assign economicGrowthPast = economicGrowth.past?replace(",","")>
+                                        <#if economicGrowthCurrent?number lt economicGrowthPast?number>
+                                            <b class="center-txt count-ani-per" data-unit="${economicGrowth.unit}">${economicGrowth.current}</b>
+                                            <span class="sub-txt down">
+                                                ▼ ${economicGrowth.subtraction} (${economicGrowth.subRate}%)
+                                            </span>
+                                        <#elseif economicGrowthCurrent?number == economicGrowthPast?number>
+                                            <b class="center-txt count-ani-per" data-unit="${economicGrowth.unit}">${economicGrowth.current} %</b>
+                                            <span class="sub-txt">
+                                                변동없음
+                                            </span>
+                                        <#else>
+                                            <b class="center-txt count-ani-per" data-unit="${economicGrowth.unit}">${economicGrowth.current}</b>
+                                            <span class="sub-txt up">
+                                                ▲ ${economicGrowth.subtraction} (${economicGrowth.subRate}%)
+                                            </span>
+                                        </#if>
+                                        <p class="caption"><i class="ri-information-fill"></i> 기준일 : ${economicGrowth.baseDate}</p>
                                     </div>
                                 </div>
                             </div>
@@ -55,10 +82,25 @@
                                     </figure>
                                     <div class="txt-wrap">
                                         <h6 class="tit">소비자 물가상승률</h6>
-                                        <b class="center-txt up" data-unit="%"
-                                        >6.0</b
-                                        >
-                                        <span class="sub-txt up">▲ 0.6%</span>
+                                        <#assign consumerInflationCurrent = consumerInflation.current?replace(",","")>
+                                        <#assign consumerInflationPast = consumerInflation.past?replace(",","")>
+                                        <#if consumerInflationCurrent?number lt consumerInflationPast?number>
+                                            <b class="center-txt count-ani-per" data-unit="${consumerInflation.unit}">${consumerInflation.current}</b>
+                                            <span class="sub-txt down">
+                                                ▼ ${consumerInflation.subtraction} (${consumerInflation.subRate}%)
+                                            </span>
+                                        <#elseif consumerInflationCurrent?number == consumerInflationPast?number>
+                                            <b class="center-txt count-ani-per" data-unit="${consumerInflation.unit}">${consumerInflation.current} %</b>
+                                            <span class="sub-txt">
+                                                변동없음
+                                            </span>
+                                        <#else>
+                                            <b class="center-txt count-ani-per" data-unit="${consumerInflation.unit}">${consumerInflation.current}</b>
+                                            <span class="sub-txt up">
+                                                ▲ ${consumerInflation.subtraction} (${consumerInflation.subRate}%)
+                                            </span>
+                                        </#if>
+                                        <p class="caption"><i class="ri-information-fill"></i> 기준일 : ${consumerInflation.baseDate}</p>
                                     </div>
                                 </div>
                                 <div class="card gni">
@@ -67,10 +109,25 @@
                                     </figure>
                                     <div class="txt-wrap">
                                         <h6 class="tit">1인당 국민총소득(GNI)</h6>
-                                        <b class="center-txt up count-ani" data-unit="만원"
-                                        >3,656</b
-                                        >
-                                        <span class="sub-txt up">▲ 0.25%</span>
+                                        <#assign gniCurrent = gni.current?replace(",","")>
+                                        <#assign gniPast = gni.past?replace(",","")>
+                                        <#if gniCurrent?number lt gniPast?number>
+                                            <b class="center-txt count-ani-per" data-unit="${gni.unit}">${gni.current}</b>
+                                            <span class="sub-txt down">
+                                                ▼ ${gni.subtraction} (${gni.subRate}%)
+                                            </span>
+                                        <#elseif gniCurrent?number == gniPast?number>
+                                            <b class="center-txt count-ani-per" data-unit="${gni.unit}">${gni.current} %</b>
+                                            <span class="sub-txt">
+                                                변동없음
+                                            </span>
+                                        <#else>
+                                            <b class="center-txt count-ani-per" data-unit="${gni.unit}">${gni.current}</b>
+                                            <span class="sub-txt up">
+                                                ▲ ${gni.subtraction} (${gni.subRate}%)
+                                            </span>
+                                        </#if>
+                                        <p class="caption"><i class="ri-information-fill"></i> 기준일 : ${gni.baseDate}</p>
                                     </div>
                                 </div>
                             </div>
@@ -83,12 +140,17 @@
                     </div>
                     <div class="cont">
                         <p class="info-txt">
-                            전년대비
-                            <span class="up"
-                            ><b class="emp count-ani-per" data-unit="%">5.4</b>
-                    <small>(▲ 2.2%)</small></span
-                            >
-                            상승했습니다.
+                            전년동월비
+                            <#if consumerInflationCurrent?number lt consumerInflationPast?number>
+                                <span class="down"><b class="emp count-ani-per" data-unit="%">${consumerInflation.current}</b></span>
+                                하락했습니다.
+                            <#elseif consumerInflationCurrent?number == consumerInflationPast?number>
+                                <span><b class="emp count-ani-per" data-unit="%">${consumerInflation.current}</b></span>
+                                변동없습니다.
+                            <#else>
+                                <span class="up"><b class="emp count-ani-per" data-unit="%">${consumerInflation.current}</b></span>
+                                상승했습니다.
+                            </#if>
                         </p>
                         <div class="wrapper">
                             <div class="left">

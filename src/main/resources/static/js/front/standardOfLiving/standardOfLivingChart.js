@@ -1,134 +1,49 @@
 /******************** 생활수준지표 *********************/
 /* 차트 - 연대별 물가상승률 */
-const yearsInflChartDom = document.getElementById("yearsInflGraph");
-if (yearsInflChartDom) {
-    const yearsInflChart = echarts.init(yearsInflChartDom);
-    let yearsInflGraphOp;
+function fnYearsInflChart(data) {
+    let year = [];
+    let inflation = [];
 
-    yearsInflGraphOp = {
-        grid: {
-            containLabel: true,
-            top: "25%",
-            bottom: 0,
-            left: "1%",
-            right: "8%",
-        },
-        title: {
-            text: "연대별 물가상승률",
-            left: "center",
-            textStyle: {
-                fontSize: 12,
-            },
-        },
-        tooltip: {
-            trigger: "axis",
-        },
-        xAxis: {
-            type: "category",
-            boundaryGap: ["50%", "20%"],
-            data: ["1960", "1970", "1980", "1990", "2000", "2010", "2020"],
-            axisLabel: {
-                fontSize: 10,
-            },
-            axisTick: {
-                alignWithLabel: true,
-            },
-        },
-        yAxis: {
-            type: "value",
-            name: "",
-            axisLabel: {
-                fontSize: 10,
-                formatter: "{value}%",
-            },
-        },
-        series: [
-            {
-                data: [11.3, 28.9, 17.6, 8.7, 5.2, 4.8, 6.2],
-                type: "line",
-                label: {
-                    show: true,
-                    fontSize: 10,
-                },
-                symbol: "circle",
-                symbolSize: 6,
-                smooth: true,
-                areaStyle: {
-                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                        {
-                            offset: 0,
-                            color: "rgba(30,112,231,1)",
-                        },
-                        {
-                            offset: 1,
-                            color: "rgba(255,255,255,0.5)",
-                        },
-                    ]),
-                },
-                lineStyle: {
-                    color: "#1e70e7",
-                },
-                itemStyle: {
-                    color: "#1e70e7",
-                    borderWidth: 1,
-                    borderColor: "#fff",
-                    shadowColor: "rgba(0, 0, 0, 0.2)",
-                    shadowBlur: 3,
-                },
-            },
-        ],
-        textStyle: {
-            fontFamily: "NanumSquare",
-        },
-    };
-    yearsInflChart.setOption(yearsInflGraphOp);
-}
+    for (let i = 0; i < data.inflationYearList.length; i++) {
+        inflation.push(data.inflationYearList[i].val);
+        year.push(data.inflationYearList[i].yrDt);
+    }
 
-/* 차트 - 대통령별 물가상승률 */
-const presInflChartDom = document.getElementById("presInflGraph");
-if (presInflChartDom) {
-    const presInflChart = echarts.init(presInflChartDom);
-    let presInflGraphOp;
-    let presInflData = [11.3, 25.2, 7.1, 9.3, 4.8, 3.4, 3.1, 2.5, 1.3, 1.7];
+    const yearsInflChartDom = document.getElementById("yearsInflGraph");
+    if (yearsInflChartDom) {
+        const yearsInflChart = echarts.init(yearsInflChartDom);
+        let yearsInflGraphOp;
 
-    presInflGraphOp = {
-        grid: {
-            containLabel: true,
-            top: "25%",
-            bottom: -5,
-            left: "1%",
-            right: 0,
-        },
-        title: {
-            text: "대통령별 물가상승률",
-            left: "center",
-            textStyle: {
-                fontSize: 12,
+        yearsInflGraphOp = {
+            grid: {
+                containLabel: true,
+                top: "25%",
+                bottom: 0,
+                left: "1%",
+                right: "8%",
             },
-        },
-        tooltip: {
-            trigger: "axis",
-            axisPointer: {
-                type: "line",
+            title: {
+                text: "연대별 물가상승률",
+                left: "center",
+                textStyle: {
+                    fontSize: 12,
+                },
             },
-        },
-        xAxis: [
-            {
+            tooltip: {
+                trigger: "axis",
+            },
+            xAxis: {
                 type: "category",
-                // prettier-ignore
-                data: ['이승만', '박정희', '전두환', '노태우', '김영삼', '김대중', '노무현', '이명박', '박근혜', '문재인'],
+                boundaryGap: ["50%", "20%"],
+                data: year,
                 axisLabel: {
-                    fontSize: 9,
-                    interval: 0,
-                    rotate: 30,
+                    fontSize: 10,
                 },
                 axisTick: {
                     alignWithLabel: true,
                 },
             },
-        ],
-        yAxis: [
-            {
+            yAxis: {
                 type: "value",
                 name: "",
                 axisLabel: {
@@ -136,144 +51,252 @@ if (presInflChartDom) {
                     formatter: "{value}%",
                 },
             },
-        ],
-        series: [
-            {
-                type: "bar",
-                data: presInflData,
-                label: {
-                    show: true,
-                    position: "top",
-                    fontSize: 10,
-                    formatter: function (params) {
-                        // 최소값, 최대값 label 숨김
-                        let maxVal = Math.max.apply(Math, presInflData);
-                        let minVal = Math.min.apply(Math, presInflData);
-                        if (params.data === maxVal || params.data === minVal) {
-                            return "";
-                        } else {
-                            return params.data;
-                        }
-                    },
-                },
-                // itemStyle: {
-                //   color: "#1e70e7",
-                // },
-                itemStyle: {
-                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                        { offset: 0, color: "#1e70e7" },
-                        { offset: 0.5, color: "#1e70e7" },
-                        { offset: 1, color: "#1e70e7" },
-                    ]),
-                },
-                barWidth: 10,
-                emphasis: {
-                    itemStyle: {
-                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                            { offset: 0, color: "#2378f7" },
-                            { offset: 0.7, color: "#2378f7" },
-                            { offset: 1, color: "#83bff6" },
-                        ]),
-                    },
-                },
-                markPoint: {
-                    // 최소값, 최대값 label 별도 스타일
-                    data: [
-                        { type: "max", name: "Max", itemStyle: { color: "#ff3c3c" } },
-                        { type: "min", name: "Min", itemStyle: { color: "#3ba272" } },
-                    ],
-                    symbolSize: 36,
+            series: [
+                {
+                    data: inflation,
+                    type: "line",
                     label: {
+                        show: true,
                         fontSize: 10,
                     },
+                    symbol: "circle",
+                    symbolSize: 6,
+                    smooth: true,
+                    areaStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            {
+                                offset: 0,
+                                color: "rgba(30,112,231,1)",
+                            },
+                            {
+                                offset: 1,
+                                color: "rgba(255,255,255,0.5)",
+                            },
+                        ]),
+                    },
+                    lineStyle: {
+                        color: "#1e70e7",
+                    },
+                    itemStyle: {
+                        color: "#1e70e7",
+                        borderWidth: 1,
+                        borderColor: "#fff",
+                        shadowColor: "rgba(0, 0, 0, 0.2)",
+                        shadowBlur: 3,
+                    },
+                },
+            ],
+            textStyle: {
+                fontFamily: "NanumSquare",
+            },
+        };
+        yearsInflChart.setOption(yearsInflGraphOp);
+    }
+}
+
+/* 차트 - 대통령별 물가상승률 */
+function fnPresInflChart(data) {
+
+    let category = [];
+    let inflation = [];
+
+    for (let i = 0; i < data.inflationPresidentList.length; i++) {
+        inflation.push(data.inflationPresidentList[i].val);
+        category.push(data.inflationPresidentList[i].category);
+    }
+
+    const presInflChartDom = document.getElementById("presInflGraph");
+    if (presInflChartDom) {
+        const presInflChart = echarts.init(presInflChartDom);
+        let presInflGraphOp;
+        let presInflData = inflation;
+
+        presInflGraphOp = {
+            grid: {
+                containLabel: true,
+                top: "25%",
+                bottom: -5,
+                left: "1%",
+                right: 0,
+            },
+            title: {
+                text: "대통령별 물가상승률",
+                left: "center",
+                textStyle: {
+                    fontSize: 12,
                 },
             },
-        ],
-        textStyle: {
-            fontFamily: "NanumSquare",
-        },
-    };
-    presInflChart.setOption(presInflGraphOp);
+            tooltip: {
+                trigger: "axis",
+                axisPointer: {
+                    type: "line",
+                },
+            },
+            xAxis: [
+                {
+                    type: "category",
+                    // prettier-ignore
+                    data: category,
+                    axisLabel: {
+                        fontSize: 9,
+                        interval: 0,
+                        rotate: 30,
+                    },
+                    axisTick: {
+                        alignWithLabel: true,
+                    },
+                },
+            ],
+            yAxis: [
+                {
+                    type: "value",
+                    name: "",
+                    axisLabel: {
+                        fontSize: 10,
+                        formatter: "{value}%",
+                    },
+                },
+            ],
+            series: [
+                {
+                    type: "bar",
+                    data: presInflData,
+                    label: {
+                        show: true,
+                        position: "top",
+                        fontSize: 10,
+                        formatter: function (params) {
+                            // 최소값, 최대값 label 숨김
+                            let maxVal = Math.max.apply(Math, presInflData);
+                            let minVal = Math.min.apply(Math, presInflData);
+                            if (params.data === maxVal || params.data === minVal) {
+                                return "";
+                            } else {
+                                return params.data;
+                            }
+                        },
+                    },
+                    // itemStyle: {
+                    //   color: "#1e70e7",
+                    // },
+                    itemStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            { offset: 0, color: "#1e70e7" },
+                            { offset: 0.5, color: "#1e70e7" },
+                            { offset: 1, color: "#1e70e7" },
+                        ]),
+                    },
+                    barWidth: 10,
+                    emphasis: {
+                        itemStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                { offset: 0, color: "#2378f7" },
+                                { offset: 0.7, color: "#2378f7" },
+                                { offset: 1, color: "#83bff6" },
+                            ]),
+                        },
+                    },
+                    markPoint: {
+                        // 최소값, 최대값 label 별도 스타일
+                        data: [
+                            { type: "max", name: "Max", itemStyle: { color: "#ff3c3c" } },
+                            { type: "min", name: "Min", itemStyle: { color: "#3ba272" } },
+                        ],
+                        symbolSize: 36,
+                        label: {
+                            fontSize: 10,
+                        },
+                    },
+                },
+            ],
+            textStyle: {
+                fontFamily: "NanumSquare",
+            },
+        };
+        presInflChart.setOption(presInflGraphOp);
+    }
 }
 
 /* 차트 - 지니계수 */
-const giniChartDom = document.getElementById("giniGraph");
-if (giniChartDom) {
-    const giniChart = echarts.init(giniChartDom);
-    let giniGraphOp;
+function fnGiniCoefficient(data) {
 
-    giniGraphOp = {
-        grid: {
-            containLabel: true,
-            top: 10,
-            bottom: 0,
-            left: "1%",
-            right: 0,
-        },
-        tooltip: {
-            trigger: "axis",
-            axisPointer: {
-                type: "shadow",
+    let year = [];
+    let gini = [];
+
+    let resultList = data.giniCoefficientList;
+    
+    for (let i = 0; i < resultList.length; i++) {
+        gini.push(resultList[i].val);
+        year.push(resultList[i].yrDt);
+    }
+    const giniChartDom = document.getElementById("giniGraph");
+    if (giniChartDom) {
+        const giniChart = echarts.init(giniChartDom);
+        let giniGraphOp;
+
+        giniGraphOp = {
+            grid: {
+                containLabel: true,
+                top: 10,
+                bottom: 0,
+                left: "1%",
+                right: 0,
             },
-        },
-        xAxis: {
-            type: "category",
-            data: [
-                "2012",
-                "2013",
-                "2014",
-                "2015",
-                "2016",
-                "2017",
-                "2018",
-                "2019",
-                "2020",
+            tooltip: {
+                trigger: "axis",
+                axisPointer: {
+                    type: "shadow",
+                },
+            },
+            xAxis: {
+                type: "category",
+                data: year,
+                axisTick: {
+                    alignWithLabel: true,
+                },
+            },
+            yAxis: {
+                type: "value",
+                name: "지니계수(비율)",
+                min: function (val) {
+                    return val.min - 0.01;
+                },
+            },
+            series: [
+                {
+                    data: gini,
+                    type: "line",
+                    name: "지니계수",
+                    symbol: "circle",
+                    symbolSize: 10,
+                    label: {
+                        show: true,
+                        fontSize: 10,
+                    },
+                    lineStyle: {
+                        color: "#1e70e7",
+                        width: 4,
+                        type: "solid",
+                        shadowColor: "rgba(0,0,0,0.3)",
+                        shadowBlur: 8,
+                        shadowOffsetY: 4,
+                        cap: "round",
+                    },
+                    itemStyle: {
+                        borderWidth: 3,
+                        borderColor: "#fff",
+                        color: "#1e70e7",
+                        shadowColor: "rgba(0, 0, 0, 0.2)",
+                        shadowBlur: 4,
+                    },
+                },
             ],
-            axisTick: {
-                alignWithLabel: true,
+            textStyle: {
+                fontFamily: "NanumSquare",
             },
-        },
-        yAxis: {
-            type: "value",
-            name: "지니계수(비율)",
-            min: function (val) {
-                return val.min - 0.01;
-            },
-        },
-        series: [
-            {
-                data: [0.385, 0.372, 0.363, 0.352, 0.355, 0.354, 0.345, 0.339, 0.331],
-                type: "line",
-                name: "지니계수",
-                symbol: "circle",
-                symbolSize: 10,
-                label: {
-                    show: true,
-                    fontSize: 10,
-                },
-                lineStyle: {
-                    color: "#1e70e7",
-                    width: 4,
-                    type: "solid",
-                    shadowColor: "rgba(0,0,0,0.3)",
-                    shadowBlur: 8,
-                    shadowOffsetY: 4,
-                    cap: "round",
-                },
-                itemStyle: {
-                    borderWidth: 3,
-                    borderColor: "#fff",
-                    color: "#1e70e7",
-                    shadowColor: "rgba(0, 0, 0, 0.2)",
-                    shadowBlur: 4,
-                },
-            },
-        ],
-        textStyle: {
-            fontFamily: "NanumSquare",
-        },
-    };
-    giniChart.setOption(giniGraphOp);
+        };
+        giniChart.setOption(giniGraphOp);
+    }
 }
 
 /* 차트 - 우크라이나 전쟁 이후 물가상승률 */
@@ -405,7 +428,7 @@ if (wageInflChartDom) {
         },
         xAxis: {
             type: "category",
-            data: ["2017", "2018", "2019", "2020", "2021"],
+            data: ["2017", "2018", "2019", "2020", "2021", "2022"],
             axisLabel: {
                 fontSize: 11,
             },
@@ -467,7 +490,7 @@ if (wageInflChartDom) {
                 },
             },
             {
-                data: [2.84, 3.12, 3.96, -1.1, 6.5],
+                data: [2.84, 3.12, 3.96, -1.1, 6.5, 2.0],
                 type: "line",
                 name: "임금상승률",
                 symbol: "circle",
@@ -510,7 +533,7 @@ if (wageInflChartDom) {
                 },
             },
             {
-                data: [1.9, 1.5, 0.4, 0.5, 2.5],
+                data: [1.9, 1.5, 0.4, 0.5, 2.5, 3.0],
                 type: "line",
                 name: "물가상승률",
                 symbol: "circle",

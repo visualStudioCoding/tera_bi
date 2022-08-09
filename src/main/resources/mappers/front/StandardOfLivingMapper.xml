@@ -2,21 +2,139 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="bi.front.StandardOfLiving">
 
-<!--    &lt;!&ndash;  1.인당 국민 총소득(실질, 명목)  &ndash;&gt;-->
-<!--    <select id="selectGrossNationalIncome" parameterType="hashMap" resultType="hashMap">-->
-<!--        SELECT yr_dt, unit, gdi_val, gni_val-->
-<!--        FROM gni_capita-->
-<!--        WHERE yr_dt BETWEEN (SELECT yr_dt FROM national_debt ORDER BY yr_dt DESC LIMIT 1) - #{searchPeriod} AND (-->
-<!--        SELECT yr_dt-->
-<!--        FROM national_debt-->
-<!--        ORDER BY yr_dt DESC LIMIT 1)-->
-<!--    </select>-->
+    <sql id="offsetWhere">
+        <if test='recent != null and recent != ""'>
+            LIMIT 1
+        </if>
+        <if test='offset != null and offset != ""'>
+            LIMIT 1 OFFSET 1
+        </if>
+    </sql>
 
-<!--    &lt;!&ndash;  1.인당 국민 총소득(실질, 명목) 기간 세부 설정  &ndash;&gt;-->
-<!--    <select id="selectGrossNationalIncomeDetail" parameterType="hashMap" resultType="hashMap">-->
-<!--        SELECT yr_dt, unit, gdi_val, gni_val-->
-<!--        FROM gni_capita-->
-<!--        WHERE yr_dt BETWEEN YEAR(#{searchStartDate}) AND YEAR(#{searchEndDate})-->
-<!--    </select>-->
+    <!-- 최저임금 변동성-->
+    <select id="selectMinPayVolatility" parameterType="hashMap" resultType="hashMap">
+        SELECT yr_dt AS baseDate
+             , unit
+             , val
+            FROM min_pay
+            WHERE yr_dt =
+                  (
+                  SELECT yr_dt
+                      FROM min_pay
+                      ORDER BY yr_dt DESC
+                      <include refid="offsetWhere"/>
+                  )
+    </select>
+    <!-- 소비자 물가상승률 변동성 -->
+    <select id="selectConsumerInflationVolatility" parameterType="hashMap" resultType="hashMap">
+        SELECT yr_dt AS yrDt
+             , mon_dt AS monDt
+             , CONCAT(yr_dt, '.', mon_dt) AS baseDate
+             , unit
+             , val
+            FROM cnsmr_inrt
+            WHERE CONCAT(yr_dt, mon_dt) =
+                  (
+                  SELECT CONCAT(yr_dt, mon_dt)
+                      FROM cnsmr_inrt
+                      ORDER BY CONCAT(yr_dt, mon_dt) DESC
+                      <include refid="offsetWhere"/>
+                  )
+    </select>
+    <!-- 경제성장률 변동성 -->
+    <select id="selectEconomicGrowthVolatility" parameterType="hashMap" resultType="hashMap">
+        SELECT yr_dt AS baseDate
+             , unit
+             , val
+            FROM enmc_grrt
+            WHERE yr_dt =
+                  (
+                  SELECT yr_dt
+                      FROM enmc_grrt
+                      WHERE cty_nm = '전국'
+                      ORDER BY yr_dt DESC
+                      <include refid="offsetWhere"/>
+                  )
+            AND cty_nm = '전국'
+    </select>
+    <!-- 1인당 국민 총소득 변동성 -->
+    <select id="selectGniVolatility" parameterType="hashMap" resultType="hashMap">
+        SELECT yr_dt AS baseDate
+             , unit
+             , gni_val AS val
+            FROM gni_capita
+            WHERE yr_dt =
+                  (
+                  SELECT yr_dt
+                      FROM gni_capita
+                      ORDER BY yr_dt DESC
+                      <include refid="offsetWhere"/>
+                  )
+    </select>
+
+    <!-- 연대별 물가상승률 -->
+    <select id="selectInflationYear" parameterType="hashMap" resultType="hashMap">
+        SELECT yr_dt AS yrDt, ROUND(val, 2) AS val
+            FROM cnsmr_inrt
+            WHERE IF(yr_dt = YEAR(NOW()), mon_dt = (
+                                                   SELECT MAX(mon_dt)
+                                                       FROM cnsmr_inrt
+                                                       WHERE yr_dt = YEAR(NOW())
+                                                   ), mon_dt = (
+                                                               SELECT MAX(mon_dt)
+                                                                   FROM cnsmr_inrt
+                                                               ))
+    </select>
+
+    <!-- 대통령별 물가상승률 -->
+    <select id="selectInflationPresident" parameterType="hashMap" resultType="hashMap">
+        SELECT MAX(val) AS val, '박정희' AS category
+            FROM cnsmr_inrt
+            WHERE CONCAT(yr_dt, mon_dt) BETWEEN '196312' AND '197912'
+        UNION ALL
+        SELECT MAX(val) AS val, '전두환' AS category
+            FROM cnsmr_inrt
+            WHERE CONCAT(yr_dt, mon_dt) BETWEEN '198001' AND '198802'
+        UNION ALL
+        SELECT MAX(val) AS val, '노태우' AS category
+            FROM cnsmr_inrt
+            WHERE CONCAT(yr_dt, mon_dt) BETWEEN '198803' AND '199302'
+        UNION ALL
+        SELECT MAX(val) AS val, '김영삼' AS category
+            FROM cnsmr_inrt
+            WHERE CONCAT(yr_dt, mon_dt) BETWEEN '199303' AND '199802'
+        UNION ALL
+        SELECT MAX(val) AS val, '김대중' AS category
+            FROM cnsmr_inrt
+            WHERE CONCAT(yr_dt, mon_dt) BETWEEN '199803' AND '200302'
+        UNION ALL
+        SELECT MAX(val) AS val, '노무현' AS category
+            FROM cnsmr_inrt
+            WHERE CONCAT(yr_dt, mon_dt) BETWEEN '200303' AND '200802'
+        UNION ALL
+        SELECT MAX(val) AS val, '이명박' AS category
+            FROM cnsmr_inrt
+            WHERE CONCAT(yr_dt, mon_dt) BETWEEN '200803' AND '201302'
+        UNION ALL
+        SELECT MAX(val) AS val, '박근혜' AS category
+            FROM cnsmr_inrt
+            WHERE CONCAT(yr_dt, mon_dt) BETWEEN '201303' AND '201703'
+        UNION ALL
+        SELECT MAX(val) AS val, '문재인' AS category
+            FROM cnsmr_inrt
+            WHERE CONCAT(yr_dt, mon_dt) BETWEEN '201705' AND '202205'
+        UNION ALL
+        SELECT MAX(val) AS val, '윤석열' AS category
+            FROM cnsmr_inrt
+            WHERE CONCAT(yr_dt, mon_dt) BETWEEN '202205' AND CONCAT(YEAR(NOW()),
+                                                                    IF(LENGTH(MONTH(NOW())) = 1, CONCAT(0, MONTH(NOW())),
+                                                                       MONTH(NOW())))
+    </select>
+
+    <!-- 지니계수 -->
+    <select id="selectGiniCoefficientList" parameterType="hashMap" resultType="hashMap">
+        SELECT yr_dt AS yrDt, val
+            FROM gini_cfcnt
+    </select>
 
 </mapper>
