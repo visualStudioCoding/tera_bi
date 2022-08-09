@@ -71,7 +71,57 @@
                       <include refid="offsetWhere"/>
                   )
     </select>
+    <!--  임금 대비 물가상승률  -->
+    <select id="selectIncomePriceRate" parameterType="hashMap" resultType="hashMap">
+        SELECT yr_dt, ROUND(val, 2) AS val, '물가상승률' AS type
+        FROM cnsmr_inrt
+        WHERE yr_dt BETWEEN #{searchDate} AND (SELECT MAX(yr_dt) FROM cnsmr_inrt)
+          AND IF(yr_dt = YEAR (NOW()), mon_dt = (SELECT MAX(mon_dt) FROM cnsmr_inrt WHERE yr_dt = YEAR(NOW())), mon_dt = (SELECT MAX(mon_dt) FROM cnsmr_inrt))
+        UNION ALL
+        SELECT yr_dt, inrt AS val, '최저임금상승률' AS type
+        FROM min_pay_inrt
+        WHERE yr_dt BETWEEN #{searchDate} AND (SELECT MAX(yr_dt) FROM min_pay_inrt)
+        UNION ALL
+        SELECT yr_dt, rate AS val, '평균임금상승' AS type
+        FROM wage_inrt
+        WHERE yr_dt BETWEEN #{searchDate} AND (SELECT MAX(yr_dt) FROM wage_inrt)
+          AND cty_nm = '전국'
+    </select>
 
+    <!-- 경제성장률 -->
+    <select id="selectEconomicGrowth" parameterType="hashMap" resultType="hashMap">
+        SELECT cty_nm, val
+        FROM enmc_grrt
+        WHERE yr_dt = #{searchDate}
+          AND cty_nm NOT IN ('전국')
+        ORDER BY val
+    </select>
+
+    <!--  지역별 경제성장률 기본  -->
+    <select id="selectEconomicGrowthDefault" parameterType="hashMap" resultType="hashMap">
+        SELECT cty_nm, val
+        FROM enmc_grrt
+        WHERE yr_dt = (SELECT MAX(yr_dt) FROM enmc_grrt)
+          AND cty_nm NOT IN ('전국')
+        ORDER BY val
+    </select>
+
+    <!--  우크라이나 전쟁 이후 물가지수  -->
+    <select id="selectPriceIncreaseInternational" parameterType="hashMap" resultType="hashMap">
+        SELECT CONCAT(yr_dt, mon_dt) as period, cntry_nm, val
+        FROM intrn_cnsmr_inrt
+        WHERE CONCAT(yr_dt, mon_dt) = 202111
+           OR CONCAT(yr_dt, mon_dt) =
+              (SELECT CONCAT(yr_dt, mon_dt) FROM intrn_cnsmr_inrt ORDER BY CONCAT(yr_dt, mon_dt) DESC
+            LIMIT 1)
+    </select>
+
+    <!--  연령별 해외여행 통계  -->
+    <select id="selectOverseaTrip" parameterType="hashMap" resultType="hashMap">
+        SELECT yr_dt, ages, val
+        FROM ovrss_trip
+        WHERE yr_dt BETWEEN #{searchDate} AND (SELECT yr_dt FROM ovrss_trip ORDER BY yr_dt DESC LIMIT 1)
+    </select>
     <!-- 연대별 물가상승률 -->
     <select id="selectInflationYear" parameterType="hashMap" resultType="hashMap">
         SELECT yr_dt AS yrDt, ROUND(val, 2) AS val

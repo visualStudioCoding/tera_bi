@@ -130,6 +130,17 @@
             mon_dt = #{mon_dt}
     </insert>
 
+    <!--  국제 물가상승률  -->
+    <insert id="insertPriceIncreaseInternational" parameterType="hashMap">
+        INSERT INTO intrn_cnsmr_inrt
+            (yr_dt, mon_dt, cntry_nm, val, unit)
+        VALUES (#{yrDt}, #{monDt}, #{cntryNm}, #{val}, #{unit}) ON DUPLICATE KEY
+        UPDATE
+            yr_dt = #{yrDt},
+            mon_dt = #{monDt},
+            cntry_nm = #{cntryNm}
+    </insert>
+
     <select id="compareExchangeRate" parameterType="hashMap" resultType="hashMap">
         SELECT MAX(yr_dt) AS yr_dt, MAX(mon_dt) AS mon_dt, MAX(dy_dt) AS dy_dt
         FROM exchn_rate

@@ -7,7 +7,8 @@ window.onload = function(){
     fnBuiltYear();
     fnRegionPopulation();
     fnUnsoldCnsmr();
-    fnPopulationByGender();
+    fnOwnerByGender();
+    fnOwnerByAge();
 }
 
 $("#termSetting").click(function(){
@@ -16,7 +17,8 @@ $("#termSetting").click(function(){
     fnBuiltYear();
     fnRegionPopulation();
     fnUnsoldCnsmr();
-    fnPopulationByGender();
+    fnOwnerByGender();
+    fnOwnerByAge();
 });
 
 
@@ -38,10 +40,18 @@ function fnAptSalesStatus(){
 
 // 연령대별 매매거래
 function fnAgeTrade(){
+
+    let period =  $("input[name=term]:checked").val();
+
+    if(period === 'on'){
+        period =  $("input[name=termDatePicker]").val();
+    }
+    let param = {parameter: period}
+
     let callBackFn = function (data) {
         fnAgeTradeGraphOp(data);
     }
-    commonAjax("/front/realEstate/api/ageAptSales", callBackFn, "get", null, errorMsg);
+    commonAjax("/front/realEstate/api/ageAptSales", callBackFn, "get", param, errorMsg);
 
 }
 
@@ -94,8 +104,8 @@ function fnUnsoldCnsmr(){
 
 }
 
-// 소비자 물가 상승률 및 미분양 주택 수
-function fnPopulationByGender(){
+// 성별 부동산 소유자 수
+function fnOwnerByGender(){
     let period =  $("input[name=term]:checked").val();
 
     if(period === 'on'){
@@ -107,6 +117,23 @@ function fnPopulationByGender(){
         console.log(data)
         fnPopulationByGenderChartDom(data);
     }
-    commonAjax("/front/realEstate/api/populationByGender", callBackFn, "get", param, errorMsg);
+    commonAjax("/front/realEstate/api/ownerByGender", callBackFn, "get", param, errorMsg);
+
+}
+
+// 연령대별 부동산 소유자 수
+function fnOwnerByAge(){
+    let period =  $("input[name=term]:checked").val();
+
+    if(period === 'on'){
+        period =  $("input[name=termDatePicker]").val();
+    }
+    let param = {parameter: period}
+
+    let callBackFn = function (data) {
+        console.log(data)
+        fnOwnerByAgeChartDom(data);
+    }
+    commonAjax("/front/realEstate/api/ownerByAge", callBackFn, "get", param, errorMsg);
 
 }

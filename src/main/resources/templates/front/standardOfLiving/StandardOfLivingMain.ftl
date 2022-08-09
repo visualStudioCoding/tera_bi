@@ -180,7 +180,8 @@
             <div class="row">
                 <div class="col-inner-3">
                     <div class="title-wrap">
-                        <h6 class="tit">우크라이나 전쟁 이후 물가상승률</h6>
+<#--                        <h6 class="tit">우크라이나 전쟁 이후 물가상승률</h6>-->
+                        <h6 class="tit">우크라이나 전쟁 이후 물가상승지수</h6>
                     </div>
                     <div class="cont">
                         <p class="caption">

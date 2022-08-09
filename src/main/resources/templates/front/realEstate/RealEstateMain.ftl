@@ -76,7 +76,7 @@
                 </div>
                 <div class="col-inner-6">
                     <div class="title-wrap">
-                        <h6 class="tit">인구 비율</h6>
+                        <h6 class="tit">소유자 비율</h6>
                     </div>
                     <div class="cont">
                         <p class="caption">
