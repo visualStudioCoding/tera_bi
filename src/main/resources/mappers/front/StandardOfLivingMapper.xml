@@ -184,7 +184,13 @@
     <!-- 지니계수 -->
     <select id="selectGiniCoefficientList" parameterType="hashMap" resultType="hashMap">
         SELECT yr_dt AS yrDt, val
-            FROM gini_cfcnt
+            FROM gini_cfcnt WHERE yr_dt BETWEEN #{searchDate} AND (SELECT yr_dt FROM gini_cfcnt ORDER BY yr_dt DESC LIMIT 1)
+    </select>
+
+    <!-- 지니계수 기간 상세 설정 -->
+    <select id="selectGiniCoefficientListDetail" parameterType="hashMap" resultType="hashMap">
+        SELECT yr_dt AS yrDt, val
+            FROM gini_cfcnt WHERE yr_dt BETWEEN #{searchStartDate} AND #{searchEndDate}
     </select>
 
 </mapper>

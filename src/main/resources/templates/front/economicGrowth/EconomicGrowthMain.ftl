@@ -19,6 +19,9 @@
                         <h6 class="tit">전국 경제 성장률</h6>
                     </div>
                     <div class="cont">
+                        <p class="caption">
+                            <i class="ri-information-fill"></i> 해당년도의 자료입니다.
+                        </p>
                         <div class="circle-wrap">
                             <div class="circle">
                                 <span class="txt" id="wholeRegion">3.5%</span>
@@ -51,6 +54,7 @@
                                         ▲ ${exchangeRate.subtraction} (${exchangeRate.differ?number}%)
                                     </span>
                                 </#if>
+                                <p class="caption"><i class="ri-information-fill"></i> 기준일 : ${exchangeRate.dataDate}</p>
 <#--                            <b class="center-txt down" id="currentExChange">1314.50</b>-->
 <#--                            <span class="sub-txt down" id="diffExchange">▼ 10.50 (-0.79%)</span>-->
                             </div>
@@ -64,9 +68,9 @@
                                 <#assign current = baseRate.current?number>
                                 <#assign past = baseRate.past?number>
                                 <#if current lt past>
-                                    <b class="center-txt up count-ani-per" data-unit="%">${baseRate.current}</b>
-                                    <span class="sub-txt up">
-                                    ▼ ${baseRate.differ?number}
+                                    <b class="center-txt down count-ani-per" data-unit="%">${baseRate.current}</b>
+                                    <span class="sub-txt down">
+                                    ▼ ${baseRate.differ} (${baseRate.subRate}%)
                                 </span>
                                 <#elseif current == past>
                                     <b class="center-txt count-ani-per" data-unit="%">${baseRate.current}</b>
@@ -74,12 +78,13 @@
                                     변동없음
                                 </span>
                                 <#else>
-                                    <b class="center-txt down count-ani-per">${baseRate.current} %</b>
-                                    <span class="sub-txt down">
-                                    ▲ ${baseRate.differ?number}
+                                    <b class="center-txt up count-ani-per" data-unit="%">${baseRate.current}</b>
+                                    <span class="sub-txt up">
+                                    ▲ ${baseRate.differ} (${baseRate.subRate}%)
                                 </span>
                                 </#if>
-<#--                                <b class="center-txt">${baseRate.current} %</b>-->
+                                <p class="caption"><i class="ri-information-fill"></i> 기준일 : ${baseRate.date}</p>
+                                <#--                                <b class="center-txt">${baseRate.current} %</b>-->
 <#--                            <span class="sub-txt up">▲ 0.25▲ 0.25</span>-->
                             </div>
                         </div>
@@ -96,8 +101,9 @@
                             </figure>
                             <div class="txt-wrap">
                                 <h6 class="tit">GDP</h6>
-                                <b class="center-txt">${gdpGni.GDP.val}</b>
+                                <b class="center-txt" data-unit=" ${gdpGni.GDP.unit}">${gdpGni.GDP.val}</b>
                                 <span class="sub-txt">단위: ${gdpGni.GDP.unit}</span>
+                                <p class="caption"><i class="ri-information-fill"></i> 기준년도 : ${gdpGni.GDP.date}</p>
                             </div>
                         </div>
                         <div id="gniCard" class="card">
@@ -106,8 +112,8 @@
                             </figure>
                             <div class="txt-wrap">
                                 <h6 class="tit">GNI</h6>
-                                <b class="center-txt">${gdpGni.GNI.val}</b>
-                                <span class="sub-txt">단위: ${gdpGni.GNI.unit}</span>
+                                <b class="center-txt" data-unit="${gdpGni.GNI.unit}">${gdpGni.GNI.val}</b>
+                                <p class="caption"><i class="ri-information-fill"></i> 기준년도 : ${gdpGni.GNI.date}</p>
                             </div>
                         </div>
                     </div>
@@ -116,7 +122,7 @@
                     <div class="title-wrap">
                         <h6 class="tit">GDP 대비 국가채무</h6>
                     </div>
-                    <div class="cont">
+                    <div id="deptGraph" class="cont">
                         <div id="gdpDeptGraph" style="width:100%; height:200px;"></div>
                     </div>
                 </div>
@@ -127,6 +133,9 @@
                         <h6 class="tit">지역별 경제 성장률</h6>
                     </div>
                     <div class="cont">
+                        <p class="caption">
+                            <i class="ri-information-fill"></i> 해당년도의 자료입니다.
+                        </p>
                         <div id="regionGrowthGraph" style="width:100%; height:334px"></div>
                     </div>
                 </div>

@@ -51,10 +51,7 @@ public class EconomicGrowthController {
         Map<String, Float> dataMapCmp = (Map<String, Float>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".selectExchangeRateCompare");
         Map<String, String> result = new HashMap<>();
 
-        System.out.println("----------------------------------------");
-        System.out.println(dataMap.get("val"));
-        System.out.println("----------------------------------------");
-
+        String period = String.valueOf(dataMap.get("baseDate"));
         Float data = dataMap.get("val");
         Float dataCmp = dataMapCmp.get("val");
         Float subtraction = null;
@@ -71,6 +68,7 @@ public class EconomicGrowthController {
         String tmpResult = String.format("%.2f", cmpResult);
         String tmpSubtraction = String.format("%.2f", subtraction);
 
+        result.put("dataDate", period);
         result.put("current", Float.toString(data));
         result.put("past", Float.toString(dataCmp));
         result.put("differ", tmpResult);
@@ -89,19 +87,26 @@ public class EconomicGrowthController {
         Map<String, Float> dataMapCmp = (Map<String, Float>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".selectBaseRateCompare");
         Float data = dataMap.get("val");
         Float dataCmp = dataMapCmp.get("val");
-        String cmpResult = null;
+        Float cmpResult = null;
+        Float substitude = null;
+        String dataDate = String.valueOf(dataMap.get("baseDate"));
 
         if (data < dataCmp) {
-            cmpResult = Float.toString((dataCmp - data) / data * 100);
+            cmpResult = (dataCmp - data) / data * 100;
+            substitude = dataCmp - data;
         } else {
-            cmpResult = Float.toString((data - dataCmp) / data * 100);
+            cmpResult = (data - dataCmp) / data * 100;
+            substitude = data - dataCmp;
         }
 
         Map<String, String> result = new HashMap<>();
 
+        result.put("date", dataDate);
         result.put("current", Float.toString(data));
         result.put("past", Float.toString(dataCmp));
-        result.put("differ", cmpResult);
+        result.put("subRate", String.format("%.2f",cmpResult));
+        result.put("differ", String.format("%.1f",substitude));
+
 
 
         return result;
@@ -120,12 +125,16 @@ public class EconomicGrowthController {
 
 
         String dataGDP = Float.toString((Float) dataMapGDP.get("real_val"));
+        String gdpDate = (String) dataMapGDP.get("yr_dt");
         dataGDP = dataGDP.replaceAll("\\B(?=(\\d{3})+(?!\\d))", ",");
+        GDP.put("date", gdpDate);
         GDP.put("val", dataGDP);
         GDP.put("unit", dataMapGDP.get("unit"));
 
         String dataGNI = Float.toString((Float) dataMapGNI.get("val"));
+        String gniDate = (String) dataMapGNI.get("yr_dt");
         dataGNI = dataGNI.replaceAll("\\B(?=(\\d{3})+(?!\\d))", ",");
+        GNI.put("date", gniDate);
         GNI.put("val", dataGNI);
         GNI.put("unit", dataMapGNI.get("unit"));
 
@@ -141,7 +150,7 @@ public class EconomicGrowthController {
     //    경제성장률 SELECT
     @ResponseBody
     @GetMapping("/api/getEconomicGrowth")
-    public Map<String, List<Map<String, Object>>> getEconomicGrowth(String parameter) throws Exception {
+    public Map<String, Object> getEconomicGrowth(String parameter) throws Exception {
 
         Map<String, String> params = new HashMap<>();
 
@@ -168,10 +177,15 @@ public class EconomicGrowthController {
 
 //        Map<String, String> EmncGrrt = (Map<String, String>) commonService.selectContents(null, PAGE_ID + PROGRAM_ID + ".selectEnmcGrrtOne");
 
-        Map<String, List<Map<String, Object>>> result = new HashMap<>();
+        Map<String, Object> result = new HashMap<>();
 
-        result.put("emncGrrt", dataList);
-
+        if(dataList.size() == 0) {
+            result.put("emncGrrt", dataList);
+            result.put("result", "Fail");
+        }else{
+            result.put("emncGrrt", dataList);
+            result.put("result", "Success");
+        }
         return result;
     }
 
@@ -266,9 +280,17 @@ public class EconomicGrowthController {
         }
         List<String> guid = new ArrayList<>();
 
-        guid.add("inflPer");
-        guid.add("Category");
-        guid.add("Year");
+        System.out.println(consume);
+        System.out.println(source);
+        System.out.println(living);
+
+        if(consume.size() == 0 || source.size() == 0 || living.size() == 0) {
+            guid.add("Fail");
+        }else{
+            guid.add("inflPer");
+            guid.add("Category");
+            guid.add("Year");
+        }
 
         totalItm.add(0, guid);
 
@@ -303,7 +325,7 @@ public class EconomicGrowthController {
     // 1인당 국민 총 소득 및 국가 채무 현황 Chart
     @ResponseBody
     @GetMapping("/api/getStateDebt")
-    public Map<String, List<Map<String, Object>>> getStateDebt(String parameter) throws Exception {
+    public Map<String, Object> getStateDebt(String parameter) throws Exception {
         Map<String, String> dataMap = new HashMap<>();
 
         if(parameter.equals("0")) {
@@ -330,10 +352,17 @@ public class EconomicGrowthController {
             debt = (List<Map<String, Object>>) commonService.selectList(dataMap, PAGE_ID + PROGRAM_ID + ".selectStateDebtDetail");
         }
 
-        Map<String, List<Map<String, Object>>> result = new HashMap<>();
+        Map<String, Object> result = new HashMap<>();
 
-        result.put("gdp", gdp);
-        result.put("debt", debt);
+        if(gdp.size() == 0 || debt.size() == 0) {
+            result.put("gdp", gdp);
+            result.put("debt", debt);
+            result.put("result", "Fail");
+        } else {
+            result.put("gdp", gdp);
+            result.put("debt", debt);
+            result.put("result", "Success");
+        }
 
         return result;
     }
