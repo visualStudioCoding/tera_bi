@@ -15,7 +15,7 @@
   --gray-40: #ced4da;
   --gray-50: #7a8489;
   --gray-60: #677381;
-  --gray-70: #4f5354;
+  --gray-70: #424a54;
   --gray-80: #373a3c;
   --gray-90: #292b2c;
   --gray-100: #121212;
@@ -65,6 +65,9 @@ div[class*="col-inner"] > div {
 .col-inner-6 {
   width: calc(50% - var(--gap));
 }
+.col-inner-8 {
+  width: calc(75% - var(--gap));
+}
 .col-inner-9 {
   width: 78.5%;
 }
@@ -113,7 +116,7 @@ div[class*="col-inner"].col-inners {
 }
 .cont .caption {
   margin-bottom: 1rem;
-  font-size: 0.75rem !important;
+  font-size: 0.75rem;
   color: var(--gray-50);
 }
 .cont .caption i {
@@ -149,6 +152,14 @@ h6 {
   font-weight: 700;
   color: var(--secondary-color);
   line-height: 1;
+}
+
+/******************** text *********************/
+.txt-xs {
+  font-size: 0.75rem !important;
+}
+.txt-sm {
+  font-size: 0.875rem !important;
 }
 
 /******************** input *********************/
@@ -387,7 +398,7 @@ header {
   background-color: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(10px);
   box-shadow: rgb(20 20 20/ 6%) 0px 0px 0px 1px,
-  rgb(20 20 20/ 8%) 0px 2px 4px 0px;
+    rgb(20 20 20/ 8%) 0px 2px 4px 0px;
   z-index: 99;
   transition: all 0.3s;
 }
@@ -504,22 +515,65 @@ header .indicator {
 .contents .col + .col {
   margin-left: 0.5rem;
 }
-.contents .side-bar {
+
+.side-bar {
   position: fixed;
   top: 5.375rem;
+  /*left: -15%;*/
   left: 0;
   width: 15%;
   height: 100%;
-  border-radius: 0;
+  border-radius: 0 !important;
+  overflow: visible !important;
+  z-index: 1;
+}
+.side-bar.on {
+  left: 0;
+}
+.side-toggle-btn {
+  position: absolute;
+  left: 100%;
+  top: 15%;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  color: var(--secondary-color);
+  box-shadow: 4px 0 8px 0 rgb(0 0 0 / 10%);
+  border-radius: 0 0.5rem 0.5rem 0;
+  border-color: transparent;
+  z-index: 1;
+  transition: 0.3s;
+}
+.side-toggle-btn:hover {
+  background: var(--primary-color);
+  color: #fff;
+}
+.side-bar.on .side-toggle-btn {
+  left: calc(100% - 2rem);
+  border-radius: 0.5rem 0 0 0.5rem;
+  box-shadow: -4px 0 8px 0 rgb(0 0 0 / 10%);
+}
+.side-toggle-btn > i {
+  margin: 0;
+}
+.side-bar.on .side-toggle-btn > i {
+  transform: rotate(180deg);
 }
 .contents .side-bar + .container {
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  padding: 0.75rem 0.75rem 1.5rem;
+  /*margin-left: 0;*/
   margin-left: 15%;
+  padding: 0.75rem 0.75rem 1.5rem;
   background: transparent;
   box-shadow: none;
+}
+.contents .side-bar.on + .container {
+  margin-left: 15%;
 }
 
 .inner-title {
@@ -579,6 +633,12 @@ header .indicator {
   margin: 1rem 0;
   font-size: 0.875rem;
 }
+.cont .wrapper .sub-tit {
+  margin: 0;
+}
+.cont .box .sub-tit {
+  margin-bottom: 1rem;
+}
 
 .col .box {
   margin-bottom: 2rem;
@@ -612,6 +672,18 @@ header .indicator {
 .up {
   color: #ff3c3c !important;
 }
+.up.plus:before {
+  content: "+";
+  font-size: 1.25rem;
+  vertical-align: middle;
+  margin-right: 0.25rem;
+}
+.down.minus:before {
+  content: "-";
+  font-size: 1.25rem;
+  vertical-align: middle;
+  margin-right: 0.25rem;
+}
 
 /* card (flex 형식, default) */
 .cont .card {
@@ -630,6 +702,9 @@ header .indicator {
 .card + .card {
   margin-top: 1.5rem;
 }
+.diagrams .card {
+  align-items: center;
+}
 .card .icon {
   flex-shrink: 0;
   display: flex;
@@ -642,10 +717,16 @@ header .indicator {
   border-radius: 50%;
   background: linear-gradient(135deg, var(--gray-10) 10%, var(--gray-30) 100%);
 }
+.diagrams .card .icon {
+  margin-top: 0;
+}
 .card .txt-wrap {
   width: calc(100% - 3.5rem);
   height: 5.625rem;
   margin-left: 1.5rem;
+}
+.diagrams .card .txt-wrap {
+  height: auto;
 }
 .card .txt-wrap > * {
   display: block;
@@ -656,6 +737,9 @@ header .indicator {
   font-size: 1.75rem;
   line-height: 1;
   color: var(--secondary-color);
+}
+.diagrams .card .txt-wrap .center-txt {
+  margin-bottom: 0;
 }
 .card .txt-wrap .sub-txt {
   display: block;
@@ -682,6 +766,11 @@ header .indicator {
 }
 
 /* graphs */
+.graph-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 .graph-wrap > div + div {
   margin-top: 1.5rem;
 }
@@ -813,6 +902,31 @@ header .indicator {
   vertical-align: middle;
 }
 
+/* text box */
+.text-boxes {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.text-boxes.row .text-box .tit {
+  margin-top: 0;
+}
+.text-box {
+  width: 100%;
+  text-align: center;
+}
+.text-box .tit {
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+.text-box .txt {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+.wrapper .text-box .tit {
+  margin-top: 1rem;
+}
+
 /* diagrams */
 .diagrams {
   display: flex;
@@ -820,18 +934,16 @@ header .indicator {
 }
 
 /* counter */
-.count-ani,
-.count-ani-per {
+[class*="count"] {
   position: relative;
 }
-.count-ani:after,
-.count-ani-per:after {
+[class*="count"]:after {
   content: attr(data-unit);
   font-size: 0.75rem;
   vertical-align: 2px;
   margin-left: 0.15rem;
 }
-.emp.count-ani-per:after {
+.emp[class*="count-ani-per"]:after {
   vertical-align: middle;
 }
 
@@ -886,6 +998,12 @@ header .indicator {
   background-size: cover;
 }
 
+/* 경영지표분석 */
+.manage-analysis .inner-title {
+  background: url(../img/bg05.png) no-repeat center;
+  background-size: cover;
+}
+
 /******************** contents (다크모드) *********************/
 /* 공통 */
 .dark .chart-box {
@@ -901,7 +1019,7 @@ header .indicator {
   border-bottom: 1px solid #fff;
   color: #fff;
   background: url(../img/arrow-down-s-line-white.svg) center right 0.375rem
-  no-repeat;
+    no-repeat;
   background-size: 1.125rem;
 }
 
@@ -914,4 +1032,8 @@ footer {
   font-size: 0.75rem;
   color: var(--gray-60);
   border-top: 1px solid var(--border-color);
+}
+footer.w-100 {
+  width: calc(100% - 1.5rem);
+  margin: 0 auto;
 }
