@@ -46,7 +46,7 @@ public class RealEstateController {
     // 행정구역별 매매 거래
     @ResponseBody
     @GetMapping("/api/aptSalesStatus")
-    public Map<String, List> getAptSalesStatus(String parameter) throws Exception {
+    public Map<String, Object> getAptSalesStatus(String parameter) throws Exception {
 
         Map<String, String> params = new HashMap<>();
 
@@ -66,18 +66,23 @@ public class RealEstateController {
 
         List<Map<String, Object>> dataList = (List<Map<String, Object>>) commonService.selectList(params, PAGE_ID + PROGRAM_ID + ".selectAptSalesStatus");
         List<String> region = new ArrayList<>();
-        List<String> data = new ArrayList<>();
+        List<Object> data = new ArrayList<>();
 
-        Map<String, List> result = new HashMap<>();
+        Map<String, Object> result = new HashMap<>();
 
+        if(dataList.size() == 0){
+            result.put("result", "Fail");
 
-        for (int i = 0; i < dataList.size(); i++) {
-            region.add((String) dataList.get(i).get("cty_nm"));
-            data.add(dataList.get(i).get("val").toString());
+        }else{
+            for (int i = 0; i < dataList.size(); i++) {
+                region.add((String) dataList.get(i).get("cty_nm"));
+                data.add(dataList.get(i).get("val"));
+            }
+
+            result.put("region", region);
+            result.put("datas", data);
+            result.put("result", "Success");
         }
-
-        result.put("region", region);
-        result.put("datas", data);
 
         return result;
     }
@@ -85,7 +90,7 @@ public class RealEstateController {
     // 연령대별 매매거래
     @ResponseBody
     @GetMapping("/api/ageAptSales")
-    public Map<String, List> getAgeAptSales(String parameter) throws Exception {
+    public Map<String, Object> getAgeAptSales(String parameter) throws Exception {
 
         Map<String, String> params = new HashMap<>();
 
@@ -106,18 +111,23 @@ public class RealEstateController {
 
         List<Map<String, Object>> dataList = (List<Map<String, Object>>) commonService.selectList(params, PAGE_ID + PROGRAM_ID + ".selectAgeAptSales");
         List<String> ages = new ArrayList<>();
-        List<String> data = new ArrayList<>();
+        List<Object> data = new ArrayList<>();
 
-        Map<String, List> result = new HashMap<>();
+        Map<String, Object> result = new HashMap<>();
 
+        if(dataList.size() == 0){
+            result.put("result", "Fail");
 
-        for (int i = 0; i < dataList.size(); i++) {
-            ages.add((String) dataList.get(i).get("age"));
-            data.add(dataList.get(i).get("val").toString());
+        }else{
+            for (int i = 0; i < dataList.size(); i++) {
+                ages.add((String) dataList.get(i).get("age"));
+                data.add(dataList.get(i).get("val"));
+            }
+
+            result.put("ages", ages);
+            result.put("datas", data);
+            result.put("result", "Success");
         }
-
-        result.put("ages", ages);
-        result.put("datas", data);
 
         return result;
     }
@@ -125,7 +135,7 @@ public class RealEstateController {
     // 건축년수별 매매거래
     @ResponseBody
     @GetMapping("/api/builtYear")
-    public Map<String, List> getBuiltYear(String parameter) throws Exception {
+    public Map<String, Object> getBuiltYear(String parameter) throws Exception {
 
         Map<String, String> params = new HashMap<>();
 
@@ -145,18 +155,24 @@ public class RealEstateController {
 
         List<Map<String, Object>> dataList = (List<Map<String, Object>>) commonService.selectList(params, PAGE_ID + PROGRAM_ID + ".selectBuiltYear");
         List<String> years = new ArrayList<>();
-        List<String> data = new ArrayList<>();
+        List<Object> data = new ArrayList<>();
 
-        Map<String, List> result = new HashMap<>();
+        Map<String, Object> result = new HashMap<>();
 
+        if(dataList.size() == 0){
+            result.put("result", "Fail");
 
-        for (int i = 0; i < dataList.size(); i++) {
-            years.add((String) dataList.get(i).get("term"));
-            data.add(dataList.get(i).get("val").toString());
+        }else{
+            for (int i = 0; i < dataList.size(); i++) {
+                years.add((String) dataList.get(i).get("term"));
+                data.add(dataList.get(i).get("val"));
+            }
+
+            result.put("years", years);
+            result.put("datas", data);
+            result.put("result", "Success");
+
         }
-
-        result.put("years", years);
-        result.put("datas", data);
 
         return result;
     }
@@ -164,7 +180,7 @@ public class RealEstateController {
     // 지역별 인구 수
     @ResponseBody
     @GetMapping("/api/regionPopulation")
-    public Map<String, List> getRegionPopulation(String parameter) throws Exception {
+    public Map<String, Object> getRegionPopulation(String parameter) throws Exception {
 
         Map<String, String> params = new HashMap<>();
 
@@ -184,18 +200,25 @@ public class RealEstateController {
 
         List<Map<String, Object>> dataList = (List<Map<String, Object>>) commonService.selectList(params, PAGE_ID + PROGRAM_ID + ".selectRegionPopulation");
         List<String> region = new ArrayList<>();
-        List<String> data = new ArrayList<>();
+        List<Object> data = new ArrayList<>();
 
-        Map<String, List> result = new HashMap<>();
+        Map<String, Object> result = new HashMap<>();
 
 
         for (int i = 0; i < dataList.size(); i++) {
             region.add((String) dataList.get(i).get("cty_nm"));
-            data.add(dataList.get(i).get("val").toString());
+            data.add(dataList.get(i).get("val"));
         }
 
-        result.put("region", region);
-        result.put("datas", data);
+        if(dataList.size() == 0) {
+            result.put("region", region);
+            result.put("datas", data);
+            result.put("result", "Fail");
+        } else{
+            result.put("region", region);
+            result.put("datas", data);
+            result.put("result", "Success");
+        }
 
         return result;
     }
@@ -203,7 +226,7 @@ public class RealEstateController {
     // 소비자물가별 미분양주택
     @ResponseBody
     @GetMapping("/api/unsoldAndCnsmr")
-    public Map<String, List> getUnsoldAndCnsmr(String parameter) throws Exception {
+    public Map<String, Object> getUnsoldAndCnsmr(String parameter) throws Exception {
 
         Map<String, String> params = new HashMap<>();
 
@@ -230,7 +253,7 @@ public class RealEstateController {
         List<Map<String, Object>> unsoldData = new ArrayList<>();
         List<Map<String, Object>> cnsmrData = new ArrayList<>();
 
-        Map<String, List> result = new HashMap<>();
+        Map<String, Object> result = new HashMap<>();
 
 
         for (int i = 0; i < dataList.size(); i++) {
@@ -251,9 +274,16 @@ public class RealEstateController {
             }
 
         }
+        if(dataList.size() == 0){
+            result.put("unsold", unsoldData);
+            result.put("cnsmr", cnsmrData);
+            result.put("result", "Fail");
+        }else{
+            result.put("unsold", unsoldData);
+            result.put("cnsmr", cnsmrData);
+            result.put("result", "Success");
 
-        result.put("unsold", unsoldData);
-        result.put("cnsmr", cnsmrData);
+        }
 
         return result;
     }
@@ -261,7 +291,7 @@ public class RealEstateController {
     // 성별 부동산 소유자 비율
     @ResponseBody
     @GetMapping("/api/ownerByGender")
-    public List<Map<String, String>> getOwnerByGender(String parameter) throws Exception {
+    public List<Object> getOwnerByGender(String parameter) throws Exception {
 
         Map<String, String> params = new HashMap<>();
 
@@ -287,21 +317,22 @@ public class RealEstateController {
             dataList = (Map<String, Object>) commonService.selectContents(params, PAGE_ID + PROGRAM_ID + ".selectOwnerByGenderPeriod");
         }
 
-        List<Map<String, String>> result = new ArrayList<>();
+        List<Object> result = new ArrayList<>();
+        Map<String, Object> manData = new HashMap<>();
+        Map<String, Object> wmnData = new HashMap<>();
 
-        Map<String, String> manData = new HashMap<>();
-        Map<String, String> wmnData = new HashMap<>();
+        if(dataList.size() == 0){
+            result.add("Fail");
+        }else{
 
-        manData.put("name", "남성");
-        manData.put("value", dataList.get("man_cnt").toString());
-        wmnData.put("name", "여성");
-        wmnData.put("value", dataList.get("wmn_cnt").toString());
+            manData.put("name", "남성");
+            manData.put("value", dataList.get("man_cnt"));
+            wmnData.put("name", "여성");
+            wmnData.put("value", dataList.get("wmn_cnt"));
 
-        result.add(manData);
-        result.add(wmnData);
-
-
-        System.out.println(result);
+            result.add(manData);
+            result.add(wmnData);
+        }
 
         return result;
     }
@@ -310,7 +341,7 @@ public class RealEstateController {
     // 연령대 별 부동산 소유자 비율
     @ResponseBody
     @GetMapping("/api/ownerByAge")
-    public List<Map<String, String>> getOwnerByAge(String parameter) throws Exception {
+    public List<Object> getOwnerByAge(String parameter) throws Exception {
 
         Map<String, String> params = new HashMap<>();
 
@@ -336,18 +367,21 @@ public class RealEstateController {
             dataList = (List<Map<String, Object>>) commonService.selectList(params, PAGE_ID + PROGRAM_ID + ".selectOwnerByAgePeriod");
         }
 
-        List<Map<String, String>> result = new ArrayList<>();
+        List<Object> result = new ArrayList<>();
 
-        for (int i = 0; i < dataList.size(); i++) {
-            Map<String, String> data = new HashMap<>();
+        if(dataList.size() == 0) {
+            result.add("Fail");
 
-            data.put("value", dataList.get(i).get("val").toString());
-            data.put("name", dataList.get(i).get("age").toString());
+        }else{
+            for (int i = 0; i < dataList.size(); i++) {
+                Map<String, Object> data = new HashMap<>();
 
-            result.add(data);
+                data.put("value", dataList.get(i).get("val"));
+                data.put("name", dataList.get(i).get("age").toString());
+
+                result.add(data);
+            }
         }
-
-        System.out.println(result);
 
         return result;
     }

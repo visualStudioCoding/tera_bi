@@ -1,12 +1,12 @@
 /******************** 경제성장지표 *********************/
 let errorMsg = "데이터 호출 에러";
 
-function getExchangeRate(){
+function getExchangeRate() {
     let current;
     let past;
     let diff;
 
-    let callBackFn = function( data ) {
+    let callBackFn = function (data) {
         console.log(data.current)
         console.log(data.past)
         console.log(data.differ)
@@ -21,7 +21,7 @@ function getExchangeRate(){
         // $("#currentExChange").innerHTML+='<h1>TEST TEST</h1>'
     }
 
-    getApiResult("/front/economicGrowth/api/getExchangeRate",callBackFn, "get", null, errorMsg);
+    getApiResult("/front/economicGrowth/api/getExchangeRate", callBackFn, "get", null, errorMsg);
 
 }
 
@@ -34,7 +34,7 @@ window.onload = function () {
     countAnimation();
 }
 
-$("#termSetting").click(function(){
+$("#termSetting").click(function () {
     getStateDebtSetPeriod();
     getInflChart();
     getEnmcGrrt();
@@ -44,15 +44,23 @@ $("#termSetting").click(function(){
 // 경제성장률 AJAX
 function getEnmcGrrt() {
 
-    let period =  $("input[name=term]:checked").val();
+    let period = $("input[name=term]:checked").val();
 
-    if(period === 'on'){
-        period =  $("input[name=termDatePicker]").val();
+    if (period === 'on') {
+        period = $("input[name=termDatePicker]").val();
     }
 
     let param = {parameter: period}
     let callBackFn = function (data) {
-        fnRegionChartOp(data);
+
+        if (data.result === "Success") {
+            fnRegionChartOp(data);
+        } else {
+            if($("#nullCkEconomyGrrt").length <= 0) {
+                echarts.dispose(document.getElementById("regionGrowthGraph"));
+                $("#regionGrowthGraph").append("<p id='nullCkEconomyGrrt'>해당하는 기간에 데이터가 존재하지 않습니다.<br><p>기간을 다시 설정해주세요</p></p>")
+            }
+        }
     }
     commonAjax("/front/economicGrowth/api/getEconomicGrowth", callBackFn, "get", param, errorMsg);
 }
@@ -69,15 +77,24 @@ function getCovidEconomicGrowth() {
 // 1인당 국민 총 소득 및 국가 채무 현황 기간설정 AJAX
 function getStateDebtSetPeriod() {
 
-    let period =  $("input[name=term]:checked").val();
+    let period = $("input[name=term]:checked").val();
 
-    if(period === 'on'){
-        period =  $("input[name=termDatePicker]").val();
+    if (period === 'on') {
+        period = $("input[name=termDatePicker]").val();
     }
     let param = {parameter: period}
 
     let callBackFn = function (data) {
-        fngdpDeptGraphOp(data);
+        console.log(data)
+        if (data.result === "Success") {
+            fngdpDeptGraphOp(data);
+        } else {
+            if($("#nullCkStateDebt").length <= 0) {
+                echarts.dispose(document.getElementById("gdpDeptGraph"));
+                $("#gdpDeptGraph").append("<p id='nullCkStateDebt'>해당하는 기간에 데이터가 존재하지 않습니다.<br><p>기간을 다시 설정해주세요</p></p>")
+            }
+        }
+
     }
     commonAjax("/front/economicGrowth/api/getStateDebt", callBackFn, "get", param, errorMsg);
 }
@@ -85,14 +102,21 @@ function getStateDebtSetPeriod() {
 // 물가상승률 AJAX
 function getInflChart() {
 
-    let period =  $("input[name=term]:checked").val();
+    let period = $("input[name=term]:checked").val();
 
-    if(period === 'on'){
-        period =  $("input[name=termDatePicker]").val();
+    if (period === 'on') {
+        period = $("input[name=termDatePicker]").val();
     }
     let param = {parameter: period}
     let callBackFn = function (data) {
-        run(data);
+        if(data[0][0] === "Fail"){
+            if($("#nullCkInfl").length <= 0) {
+                echarts.dispose(document.getElementById("inflationGraph"));
+                $("#inflationGraph").append("<p id='nullCkInfl'>해당하는 기간에 데이터가 존재하지 않습니다.<br><p>기간을 다시 설정해주세요</p></p>")
+            }
+        }else {
+            run(data);
+        }
     }
     commonAjax("/front/economicGrowth/api/getInflationRatePeriod", callBackFn, "get", param, errorMsg);
 }

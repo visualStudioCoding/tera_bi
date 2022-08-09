@@ -82,13 +82,45 @@ public class StandardOfLivingController {
     // 지니계수
     @ResponseBody
     @GetMapping("/api/getGiniCoefficient")
-    public Map<String, List<Map<String, Object>>> giniCoefficient() throws Exception {
+    public Map<String, Object> giniCoefficient(String parameter) throws Exception {
 
-        List<Map<String, Object>> giniCoefficientList = (List<Map<String, Object>>) commonService.selectList(null, PAGE_ID + PROGRAM_ID + ".selectGiniCoefficientList");
+        Map<String, String> params = new HashMap<>();
 
-        Map<String, List<Map<String, Object>>> result = new HashMap<>();
+        LocalDate now = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy");
+        String currentYear = now.format(formatter);
 
-        result.put("giniCoefficientList", giniCoefficientList);
+        if (parameter.contains("-")) {
+            parameter = parameter.replaceAll("[-]", "");
+            String[] periods = parameter.split("  ");
+
+            params.put("searchStartDate", periods[0].substring(0, 4));
+            params.put("searchEndDate", periods[1].substring(0, 4));
+        } else {
+            params.put("searchDate", Integer.toString(Integer.parseInt(currentYear) - Integer.parseInt(parameter)));
+
+            if ("0".equals(parameter)) {
+                params.put("searchDate", Integer.toString(Integer.parseInt(currentYear) - 5));
+            }
+        }
+        List<Map<String, Object>> dataList = new ArrayList<>();
+
+        if(params.size() <= 1) {
+            dataList = (List<Map<String, Object>>) commonService.selectList(params, PAGE_ID + PROGRAM_ID + ".selectGiniCoefficientList");
+        }else{
+            dataList = (List<Map<String, Object>>) commonService.selectList(params, PAGE_ID + PROGRAM_ID + ".selectGiniCoefficientListDetail");
+
+        }
+
+        Map<String, Object> result = new HashMap<>();
+
+        if(dataList.size() == 0) {
+            result.put("giniCoefficientList", dataList);
+            result.put("result", "Fail");
+        }else{
+            result.put("giniCoefficientList", dataList);
+            result.put("result", "Success");
+        }
 
         return result;
     }
@@ -96,7 +128,7 @@ public class StandardOfLivingController {
     // 임금 대비 물가상승률
     @ResponseBody
     @GetMapping("/api/getIncomePriceRate")
-    public Map<String, List> getIncomePriceRate(String parameter) throws Exception {
+    public Map<String, Object> getIncomePriceRate(String parameter) throws Exception {
 
         Map<String, String> params = new HashMap<>();
 
@@ -124,7 +156,7 @@ public class StandardOfLivingController {
         List<Map<String, Object>> priceRate = new ArrayList<>();
         List<Map<String, Object>> wageRate = new ArrayList<>();
 
-        Map<String, List> result = new HashMap<>();
+        Map<String, Object> result = new HashMap<>();
 
 
         for (int i = 0; i < dataList.size(); i++) {
@@ -150,9 +182,18 @@ public class StandardOfLivingController {
 
         }
 
-        result.put("minPayRate", minPayRate);
-        result.put("priceRate", priceRate);
-        result.put("wageRate", wageRate);
+        if(dataList.size() == 0){
+            result.put("minPayRate", minPayRate);
+            result.put("priceRate", priceRate);
+            result.put("wageRate", wageRate);
+            result.put("result", "Fail");
+        }else{
+            result.put("minPayRate", minPayRate);
+            result.put("priceRate", priceRate);
+            result.put("wageRate", wageRate);
+            result.put("result", "Success");
+        }
+
 
         return result;
     }
@@ -160,7 +201,7 @@ public class StandardOfLivingController {
     //    경제성장률 SELECT
     @ResponseBody
     @GetMapping("/api/getEconomicGrowth")
-    public Map<String, List<List>> getEconomicGrowth(String parameter) throws Exception {
+    public Map<String, Object> getEconomicGrowth(String parameter) throws Exception {
 
         Map<String, String> params = new HashMap<>();
 
@@ -186,7 +227,7 @@ public class StandardOfLivingController {
         }
 
         List<List> datas = new ArrayList<>();
-        Map<String, List<List>> result = new HashMap<>();
+        Map<String, Object> result = new HashMap<>();
 
         for (int i = 0; i < dataList.size(); i++) {
             List<String> data = new ArrayList<>();
@@ -197,7 +238,14 @@ public class StandardOfLivingController {
             datas.add(data);
         }
 
-        result.put("emncGrrt", datas);
+        if(dataList.size() == 0 ){
+            result.put("emncGrrt", datas);
+            result.put("result", "Fail");
+
+        }else{
+            result.put("emncGrrt", datas);
+            result.put("result", "Success");
+        }
 
         return result;
     }
@@ -235,7 +283,7 @@ public class StandardOfLivingController {
     // 연령별 해외여행 통계
     @ResponseBody
     @GetMapping("api/getOverseaTrip")
-    public Map<String, List> getOverseaTrip(String parameter) throws Exception {
+    public Map<String, Object> getOverseaTrip(String parameter) throws Exception {
         Map<String, String> params = new HashMap<>();
 
         LocalDate now = LocalDate.now();
@@ -258,14 +306,14 @@ public class StandardOfLivingController {
         List<Map<String, Object>> dataList = (List<Map<String, Object>>) commonService.selectList(params, PAGE_ID + PROGRAM_ID + ".selectOverseaTrip");
 
 
-        List<String> period = new ArrayList<>();
+        List<Object> period = new ArrayList<>();
 
-        List<String> setOne = new ArrayList<>();
-        List<String> setTwo = new ArrayList<>();
-        List<String> setThree = new ArrayList<>();
-        List<String> setFour = new ArrayList<>();
-        List<String> setFive = new ArrayList<>();
-        List<String> setSix = new ArrayList<>();
+        List<Object> setOne = new ArrayList<>();
+        List<Object> setTwo = new ArrayList<>();
+        List<Object> setThree = new ArrayList<>();
+        List<Object> setFour = new ArrayList<>();
+        List<Object> setFive = new ArrayList<>();
+        List<Object> setSix = new ArrayList<>();
 
         for (int i = 0; i < dataList.size(); i++) {
 
@@ -273,46 +321,61 @@ public class StandardOfLivingController {
                 if (setOne.size() == 0) {
                     setOne.add(dataList.get(i).get("ages").toString());
                 }
-                setOne.add(dataList.get(i).get("val").toString());
+                setOne.add(dataList.get(i).get("val"));
                 period.add(dataList.get(i).get("yr_dt").toString());
 
             } else if ("21-30세".equals(dataList.get(i).get("ages"))) {
                 if (setTwo.size() == 0) {
                     setTwo.add(dataList.get(i).get("ages").toString());
                 }
-                setTwo.add(dataList.get(i).get("val").toString());
+                setTwo.add(dataList.get(i).get("val"));
             } else if ("31-40세".equals(dataList.get(i).get("ages"))) {
                 if (setThree.size() == 0) {
                     setThree.add(dataList.get(i).get("ages").toString());
                 }
-                setThree.add(dataList.get(i).get("val").toString());
+                setThree.add(dataList.get(i).get("val"));
             } else if ("41-50세".equals(dataList.get(i).get("ages"))) {
                 if (setFour.size() == 0) {
                     setFour.add(dataList.get(i).get("ages").toString());
                 }
-                setFour.add(dataList.get(i).get("val").toString());
+                setFour.add(dataList.get(i).get("val"));
             } else if ("51-60세".equals(dataList.get(i).get("ages"))) {
                 if (setFive.size() == 0) {
                     setFive.add(dataList.get(i).get("ages").toString());
                 }
-                setFive.add(dataList.get(i).get("val").toString());
+                setFive.add(dataList.get(i).get("val"));
             } else if ("61세 이상".equals(dataList.get(i).get("ages"))) {
                 if (setSix.size() == 0) {
                     setSix.add(dataList.get(i).get("ages").toString());
                 }
-                setSix.add(dataList.get(i).get("val").toString());
+                setSix.add(dataList.get(i).get("val"));
             }
         }
 
-        Map<String, List> result = new HashMap<>();
+        Map<String, Object> result = new HashMap<>();
 
-        result.put("period", period);
-        result.put("twenty", setOne);
-        result.put("thirty", setTwo);
-        result.put("fourty", setThree);
-        result.put("fifty", setFour);
-        result.put("sixty", setFive);
-        result.put("seventy", setSix);
+        if(period.size() == 0) {
+            result.put("period", period);
+            result.put("twenty", setOne);
+            result.put("thirty", setTwo);
+            result.put("fourty", setThree);
+            result.put("fifty", setFour);
+            result.put("sixty", setFive);
+            result.put("seventy", setSix);
+            result.put("result", "Fail");
+        } else{
+            result.put("period", period);
+            result.put("twenty", setOne);
+            result.put("thirty", setTwo);
+            result.put("fourty", setThree);
+            result.put("fifty", setFour);
+            result.put("sixty", setFive);
+            result.put("seventy", setSix);
+            result.put("result", "Success");
+
+        }
+
+        System.out.println(result);
 
         return result;
     }
