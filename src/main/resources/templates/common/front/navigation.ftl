@@ -31,11 +31,13 @@
                         <span><i class="ri-file-list-3-fill"></i>경영지표분석</span>
                     </a>
                 </li>
+                <!--
                 <li>
                     <a href="/" class="nav-link"
                     ><span><i class="ri-flashlight-fill"></i>전력수급현황</span>
                     </a>
                 </li>
+                -->
                 <li>
                     <a href="/admin" class="nav-link"
                     ><span><i class="ri-dashboard-2-fill"></i>API 호출</span>
