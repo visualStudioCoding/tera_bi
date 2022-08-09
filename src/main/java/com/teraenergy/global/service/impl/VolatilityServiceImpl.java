@@ -3,6 +3,7 @@ package com.teraenergy.global.service.impl;
 import com.teraenergy.global.mapper.CommonMapper;
 import com.teraenergy.global.service.VolatilityService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -33,8 +34,16 @@ public class VolatilityServiceImpl implements VolatilityService {
 		@SuppressWarnings("unchecked")
 		Map<String, Object> dataOffset = (Map<String, Object>) commonMapper.selectContents(offset, pageId + programId + queryId);
 
-		float dataFloat = (Float) data.get("val");
-		float dataFloatOffset = (Float) dataOffset.get("val");
+		float dataFloat;
+		float dataFloatOffset;
+		if(StringUtils.containsAny(queryId, "GniVolatility", "MinPayVolatility")){
+			dataFloat = (Integer) data.get("val");
+			dataFloatOffset = (Integer) dataOffset.get("val");
+		} else {
+			dataFloat = (float) data.get("val");
+			dataFloatOffset = (float) dataOffset.get("val");
+		}
+
 		String unit = (String) data.get("unit");
 		String baseDate = (String) data.get("baseDate");
 

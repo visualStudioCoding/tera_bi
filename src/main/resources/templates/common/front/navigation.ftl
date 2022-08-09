@@ -27,7 +27,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/front/lifeSatisfaction/main?menuCode=005" class="nav-link <#if menuCode = '005'>on</#if>">
+                    <a href="/front/managementAnalysis/main?menuCode=005" class="nav-link <#if menuCode = '005'>on</#if>">
                         <span><i class="ri-file-list-3-fill"></i>경영지표분석</span>
                     </a>
                 </li>
