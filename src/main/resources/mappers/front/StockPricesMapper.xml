@@ -127,4 +127,8 @@
             WHERE CONCAT(br.yr_dt, br.mon_dt, br.dy_dt) BETWEEN #{searchStartDate} AND #{searchEndDate}
         ORDER BY date
     </select>
+
+    <select id="selectEmplyList" resultType="hashmap">
+        SELECT * FROM v_user_info
+    </select>
 </mapper>
