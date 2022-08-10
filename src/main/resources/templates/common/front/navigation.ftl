@@ -54,6 +54,59 @@
                 <span class="ball"></span>
             </label>
         </div>
+        <button type="button" class="btn mobile-btn">
+          <i class="ri-menu-3-line"></i>
+        </button>
     </div>
 </header>
+
+<div class="mobile-gnb">
+  <button type="button" class="btn mobile-btn close">
+    <i class="ri-close-line"></i>
+  </button>
+  <ul class="mobile-gnb-ul">
+    <li>
+      <a href="/front/economicGrowth/main?menuCode=001" class="nav-link <#if menuCode = '001'>on</#if>">
+        <span>
+          <i class="ri-funds-box-fill"></i>경제성장지표
+        </span>
+      </a>
+    </li>
+    <li>
+      <a href="/front/standardOfLiving/main?menuCode=002" class="nav-link <#if menuCode = '002'>on</#if>">
+        <span>
+          <i class="ri-pie-chart-2-fill"></i>생활수준지표
+        </span>
+      </a>
+    </li>
+    <li>
+      <a href="/front/stockPrices/main?menuCode=003" class="nav-link <#if menuCode = '003'>on</#if>">
+        <span>
+          <i class="ri-line-chart-fill"></i>종합주가지수
+        </span>
+      </a>
+    </li>
+    <li>
+      <a href="/front/realEstate/main?menuCode=004" class="nav-link <#if menuCode = '004'>on</#if>">
+        <span>
+          <i class="ri-building-fill"></i>부동산시장동향
+        </span>
+      </a>
+    </li>
+    <li>
+      <a href="/front/managementAnalysis/main?menuCode=005" class="nav-link <#if menuCode = '005'>on</#if>">
+        <span>
+          <i class="ri-file-list-3-fill"></i>경영지표분석
+        </span>
+      </a>
+    </li>
+    <li>
+      <a href="/admin" class="nav-link">
+        <span>
+          <i class="ri-dashboard-2-fill"></i>API 호출
+        </span>
+      </a>
+    </li>
+  </ul>
+</div>
 <!-- /헤더 끝 -->
