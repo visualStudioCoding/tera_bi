@@ -16,6 +16,27 @@ navLis.forEach((li, idx) => {
         indicator.style.transform = "translateX(" + activedNav.offsetLeft + "px)";
     });
 });
+
+function acyncMovePage(url){
+    // ajax option
+    let ajaxOption = {
+        url : url,
+        async : true,
+        type : "GET",
+        dataType : "html",
+        cache : false
+    };
+
+    $.ajax(ajaxOption).done(function(data){
+        // Contents 영역 삭제
+        $('.contents').children().remove();
+        // Contents 영역 교체
+        $('.contents').html(data);
+    });
+}
+function getContents(url){
+    $(".contents").load(url);
+}
 /******************** 본문 공통 *********************/
 // function countAnimation() {
 /* 초기 화면 진입 시, 숫자 카운트 애니메이션 (0 이상의 정수) */
