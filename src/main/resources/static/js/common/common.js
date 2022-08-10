@@ -24,8 +24,26 @@ window.addEventListener("load", function() {
     moveIndicator();
   })
 
-  /* 스크롤 시 헤더 크기 축소 */
+  function acyncMovePage(url){
+      // ajax option
+      let ajaxOption = {
+          url : url,
+          async : true,
+          type : "GET",
+          dataType : "html",
+          cache : false
+      };
 
+      $.ajax(ajaxOption).done(function(data){
+          // Contents 영역 삭제
+          $('.contents').children().remove();
+          // Contents 영역 교체
+          $('.contents').html(data);
+      });
+  }
+  function getContents(url){
+      $(".contents").load(url);
+  }
 
   /******************** 공통 *********************/
   // function countAnimation() {
