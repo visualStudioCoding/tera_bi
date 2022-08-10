@@ -34,9 +34,7 @@ public class DatabaseConfiguration {
 	@Bean(name = "biDataSource")
 	@ConfigurationProperties(prefix = "spring.datasource.bi")
 	public DataSource biDataSource() {
-		DataSource dataSource = DataSourceBuilder.create().build();
-		log.info("Datasource : {}", dataSource);
-		return dataSource;
+		return DataSourceBuilder.create().build();
 	}
 
 //	@Bean
@@ -55,9 +53,7 @@ public class DatabaseConfiguration {
 	@Bean(name = "groupwareDataSource")
 	@ConfigurationProperties(prefix = "spring.datasource.groupware")
 	public DataSource groupwareDataSource() {
-		DataSource dataSource = DataSourceBuilder.create().build();
-		log.info("Datasource : {}", dataSource);
-		return dataSource;
+		return DataSourceBuilder.create().build();
 	}
 
 }

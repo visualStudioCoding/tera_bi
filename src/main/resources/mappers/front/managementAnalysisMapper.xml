@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bi.front.ManagementAnalysis">
+    <select id="selectEmployeeCount" resultType="hashmap">
+        SELECT COUNT(*) AS totalCnt
+             , (
+               SELECT COUNT(*)
+                   FROM v_user_info
+                   WHERE wrk_plc = '010301'
+                     AND wrk_type IN ('010402', '010403')
+                     AND NOT id = '10100000001'
+                     AND NOT dept_id = '10200000011'
+               )        AS hdqrtCnt
+             , (
+               SELECT COUNT(*)
+                   FROM v_user_info
+                   WHERE wrk_plc = '010302'
+                     AND wrk_type IN ('010402', '010403')
+                     AND NOT id = '10100000001'
+                     AND NOT dept_id = '10200000011'
+               )        AS brnchCnt
+             , (
+               SELECT COUNT(*)
+                   FROM v_user_info
+                   WHERE wrk_plc = '010303'
+                     AND wrk_type IN ('010402', '010403')
+                     AND NOT id = '10100000001'
+                     AND NOT dept_id = '10200000011'
+               )        AS dsptcCnt
+             , (
+               SELECT COUNT(*)
+                   FROM v_user_info
+                   WHERE wrk_plc = '010304'
+                     AND wrk_type IN ('010402', '010403')
+                     AND NOT id = '10100000001'
+                     AND NOT dept_id = '10200000011'
+               )        AS homejobCnt
+             , (
+               SELECT COUNT(*)
+                   FROM v_user_info
+                   WHERE wrk_plc IN ('010301', '010302', '010303', '010304')
+                     AND wrk_type = '010403'
+                     AND NOT id = '10100000001'
+               )        AS freeCnt
+             , (
+               SELECT COUNT(*)
+                   FROM v_user_info
+                   WHERE wrk_plc IN ('010301', '010302', '010303', '010304')
+                     AND wrk_type = '010402'
+                     AND NOT id = '10100000001'
+                     AND dept_id = '10200000006'
+               )        AS dsgnrCnt
+             , (
+               SELECT COUNT(*)
+                   FROM v_user_info
+                   WHERE wrk_plc IN ('010301', '010302', '010303', '010304')
+                     AND wrk_type = '010402'
+                     AND NOT id = '10100000001'
+                     AND dept_id IN ('10200000007', '10200000005', '10200000008', '10200000009')
+               )        AS dvlprCnt
+             , (
+               SELECT COUNT(*)
+                   FROM v_user_info
+                   WHERE wrk_plc IN ('010301', '010302', '010303', '010304')
+                     AND wrk_type = '010402'
+                     AND NOT id = '10100000001'
+                     AND dept_id IN ('10200000002', '10200000003', '10200000004')
+               )        AS gnrlJobCnt
+            FROM v_user_info
+            WHERE wrk_type IN ('010402', '010403') AND NOT id = '10100000001' AND NOT dept_id = '10200000011'
+    </select>
+    <select id="selectEmployeeStatusList" resultType="hashmap">
+        SELECT COUNT(*) AS value, '본사' AS name
+            FROM v_user_info
+            WHERE wrk_plc = '010301'
+              AND wrk_type IN ('010402', '010403')
+              AND NOT id = '10100000001'
+              AND NOT dept_id = '10200000011'
+        UNION ALL
+        SELECT COUNT(*) AS value, '재택' AS name
+            FROM v_user_info
+            WHERE wrk_plc = '010304'
+              AND wrk_type IN ('010402', '010403')
+              AND NOT id = '10100000001'
+              AND NOT dept_id = '10200000011'
+        UNION ALL
+        SELECT COUNT(*) AS value, '한전KDN' AS name
+            FROM v_user_info
+            WHERE wrk_plc IN ('010303', '010302')
+              AND wrk_type IN ('010402', '010403')
+              AND NOT id = '10100000001'
+              AND NOT dept_id = '10200000011'
+              AND dept_id = '10200000007'
+        UNION ALL
+        SELECT COUNT(*) AS value, '대전KDN' AS name
+            FROM v_user_info
+            WHERE wrk_plc IN ('010303', '010302')
+              AND wrk_type IN ('010402', '010403')
+              AND NOT id = '10100000001'
+              AND NOT dept_id = '10200000011'
+              AND dept_id = '10200000009'
+        UNION ALL
+        SELECT COUNT(*) AS value, '우정사업정보센터' AS name
+            FROM v_user_info
+            WHERE wrk_plc IN ('010303', '010302')
+              AND wrk_type IN ('010402', '010403')
+              AND NOT id = '10100000001'
+              AND NOT dept_id = '10200000011'
+              AND dept_id = '10200000005'
+        UNION ALL
+        SELECT COUNT(*) AS value, 'KPX' AS name
+            FROM v_user_info
+            WHERE wrk_plc IN ('010303', '010302')
+              AND wrk_type IN ('010402', '010403')
+              AND NOT id = '10100000001'
+              AND NOT dept_id = '10200000011'
+              AND dept_id = '10200000008'
+        UNION ALL
+        SELECT COUNT(*) AS value, '프리랜서' AS name
+            FROM v_user_info
+            WHERE wrk_plc IN ('010301', '010302', '010303', '010304')
+              AND wrk_type = '010403'
+              AND NOT id = '10100000001'
+        UNION ALL
+        SELECT COUNT(*) AS value, '디자인' AS name
+            FROM v_user_info
+            WHERE wrk_plc IN ('010301', '010302', '010303', '010304')
+              AND wrk_type = '010402'
+              AND NOT id = '10100000001'
+              AND dept_id = '10200000006'
+        UNION ALL
+        SELECT COUNT(*) AS value, '개발' AS name
+            FROM v_user_info
+            WHERE wrk_plc IN ('010301', '010302', '010303', '010304')
+              AND wrk_type = '010402'
+              AND NOT id = '10100000001'
+              AND dept_id IN ('10200000007', '10200000005', '10200000008', '10200000009')
+        UNION ALL
+        SELECT COUNT(*) AS value, '경영' AS name
+            FROM v_user_info
+            WHERE wrk_plc IN ('010301', '010302', '010303', '010304')
+              AND wrk_type = '010402'
+              AND NOT id = '10100000001'
+              AND dept_id IN ('10200000002', '10200000003', '10200000004')
+    </select>
+</mapper>
