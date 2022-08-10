@@ -2,7 +2,7 @@
 
 <body>
 <#include "*/common/front/navigation.ftl">
-<!-- 본문 시작 -->
+<!--- 본문 시작 -->
 <div class="contents">
     <div class="inner stock-index">
         <div class="col side-bar">

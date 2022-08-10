@@ -25,7 +25,7 @@
         ORDER BY kospiDate
     </select>
 
-    <!-- kospi 예측 - kospi_index 테이블조회해서 이외의 데이터만 가져온다 -->
+    <!--- kospi 예측 - kospi_index 테이블조회해서 이외의 데이터만 가져온다 -->
     <delete id="deleteInsightKospi" parameterType="hashMap">
         DELETE FROM insight_kospi_index
     </delete>

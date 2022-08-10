@@ -3,7 +3,7 @@ const errorMsg = "데이터 호출 실패";
 // 데이터 호출 함수
 window.onload = function () {
     getInsightKospi();
-    //getTemp();
+    ///getTemp();
 }
 
 //kospi 차트

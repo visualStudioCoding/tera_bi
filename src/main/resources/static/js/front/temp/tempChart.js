@@ -10,7 +10,7 @@ function fnInsightKospiChart(data) {
             if(i == data.covidKospi.length-1)  { covidKospi2.push(data.covidKospi[i].val);  }
         kospiDate.push(data.covidKospi[i].kospiDate);
     }
-//console.log(covidKospi2)
+///console.log(covidKospi2)
     for (let i = 0; i < data.insightKospi.length; i++) {
         covidKospi2.push(data.insightKospi[i].val);
         kospiDate.push(data.insightKospi[i].kospiDate);

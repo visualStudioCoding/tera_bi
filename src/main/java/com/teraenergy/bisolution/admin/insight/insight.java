@@ -52,7 +52,7 @@ public class insight {
         return result;
     }
 
-    //스케쥴 - kospi 예측해서 db입력
+    ///스케쥴 - kospi 예측해서 db입력
     //@Scheduled(cron = "* * 4 * * *")
     //@Scheduled(cron = "0 * * * * *")
     @Scheduled(cron = "* * 4 * * *")
