@@ -6,14 +6,7 @@
     <select id="selectEconomicGrowthDefault" parameterType="hashMap" resultType="hashMap">
         SELECT cty_nm, val
         FROM enmc_grrt
-        WHERE yr_dt = (SELECT MAX(yr_dt) FROM enmc_grrt )
-    </select>
-
-    <!-- 경제성장률 -->
-    <select id="selectEconomicGrowth" parameterType="hashMap" resultType="hashMap">
-        SELECT cty_nm, val
-        FROM enmc_grrt
-        WHERE yr_dt = #{yr_dt}
+        WHERE yr_dt = (SELECT MAX(yr_dt) FROM enmc_grrt)
     </select>
 
     <!-- 경제성장률 기간 상세 설정 -->
@@ -62,22 +55,20 @@
     <select id="selectBaseRateCompare" parameterType="hashMap" resultType="hashMap">
         SELECT yr_dt, mon_dt, dy_dt, unit, val, CONCAT(yr_dt, '.', mon_dt, '.', dy_dt) AS baseDate
         FROM base_rate
-        WHERE yr_dt = (SELECT MAX(yr_dt) FROM base_rate)
-          AND mon_dt = (SELECT MAX(mon_dt) FROM base_rate WHERE yr_dt = (SELECT MAX(yr_dt) FROM base_rate))
-        ORDER BY dy_dt DESC LIMIT 1
-        OFFSET 1
+        WHERE val != (SELECT val FROM base_rate ORDER BY CONCAT(yr_dt, mon_dt, dy_dt) DESC LIMIT 1)
+        ORDER BY CONCAT(yr_dt, mon_dt, dy_dt) DESC LIMIT 1
     </select>
 
     <!--  GDP  -->
     <select id="selectGDP" parameterType="hashMap" resultType="hashMap">
-        SELECT real_val, unit
+        SELECT yr_dt, real_val, unit
         FROM gdp
         ORDER BY yr_dt DESC LIMIT 1
     </select>
 
     <!--  GNI  -->
     <select id="selectGNI" parameterType="hashMap" resultType="hashMap">
-        SELECT val, unit
+        SELECT yr_dt, val, unit
         FROM gni
         ORDER BY yr_dt DESC LIMIT 1
     </select>
@@ -209,7 +200,7 @@
         SELECT yr_dt AS yrDt, unit, val
         FROM enmc_grrt
         WHERE cty_nm LIKE '전국%'
-        AND yr_dt BETWEEN (SELECT yr_dt FROM enmc_grrt ORDER BY yr_dt DESC LIMIT 1) - #{searchPeriod}
+          AND yr_dt BETWEEN (SELECT yr_dt FROM enmc_grrt ORDER BY yr_dt DESC LIMIT 1) - #{searchPeriod}
           AND (
         SELECT yr_dt
         FROM enmc_grrt
@@ -221,7 +212,7 @@
         SELECT yr_dt AS yrDt, unit, val
         FROM enmc_grrt
         WHERE cty_nm LIKE '전국%'
-        AND yr_dt BETWEEN YEAR (#{searchStartDate}) AND YEAR (#{searchEndDate})
+                  AND yr_dt BETWEEN YEAR (#{searchStartDate}) AND YEAR (#{searchEndDate})
     </select>
 
 </mapper>

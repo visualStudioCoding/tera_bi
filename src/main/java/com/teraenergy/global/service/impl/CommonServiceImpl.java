@@ -1,21 +1,11 @@
 package com.teraenergy.global.service.impl;
 
-import com.teraenergy.global.configuration.ApiKeyConfiguration;
 import com.teraenergy.global.mapper.CommonMapper;
 import com.teraenergy.global.service.CommonService;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
-import org.json.XML;
-import org.json.simple.JSONArray;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
@@ -63,6 +53,20 @@ public class CommonServiceImpl implements CommonService {
     @Override
     public int deleteContents(final Object paramDTO, final String queryId) throws Exception {
         return commonMapper.deleteContents(paramDTO, queryId);
+    }
+
+    @Override
+    public List<?> selectEmplyList(final Object paramDTO, final String queryId) throws Exception {
+        return commonMapper.selectEmplyList(paramDTO, queryId);
+    }
+    @Override
+    public int selectEmplyCount(final Object paramDTO, final String queryId) throws Exception {
+        return commonMapper.selectEmplyCount(paramDTO, queryId);
+    }
+
+    @Override
+    public Object selectEmplyContents(final Object paramDTO, final String queryId) throws Exception {
+        return commonMapper.selectEmplyContents(paramDTO, queryId);
     }
 
 }

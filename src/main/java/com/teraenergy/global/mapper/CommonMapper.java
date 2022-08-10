@@ -1,21 +1,27 @@
 package com.teraenergy.global.mapper;
 
+import lombok.extern.slf4j.Slf4j;
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-import org.mybatis.spring.SqlSessionTemplate;
-
+@Slf4j
 @Repository("commonMapper")
 public class CommonMapper {
 
-    @Autowired
+	@Autowired
     private SqlSessionTemplate template;
+
+	@Autowired @Qualifier("groupwareSqlSessionTemplate")
+	private SqlSessionTemplate groupwareTemplate;
     
     private static final String PACKAGE_NAME = "bi.";
 
-    /* 목록 조회 */
+	/* 목록 조회 */
     public List<?> selectList(final Object paramDTO, final String queryId) throws Exception {
         String mQueryId = "";
         if (queryId != null && (queryId.equals("") || !queryId.contains("."))) {
@@ -104,12 +110,36 @@ public class CommonMapper {
 		return paramDTO;
 	}
 
-	/**
-	 * Execute Batch 만들기. ( 배열필요)
-	 *
-	 * @param queryId - 수정 처리 SQL mapping 쿼리 ID
-	 * @param parameterObject - 수정 처리 SQL mapping 입력 데이터(key 조건 및 변경 데이터)를 세팅한
-	 *        파라메터 객체(보통 VO 또는 Map)
-	 * @return DBMS가 지원하는 경우 update 적용 결과 count
-	 */
+	/* 직원 목록 조회 */
+	public List<?> selectEmplyList(final Object paramDTO, final String queryId) throws Exception {
+		String mQueryId = "";
+		if (queryId != null && (queryId.equals("") || !queryId.contains("."))) {
+			mQueryId = queryId + ".selectList";
+		} else {
+			mQueryId = queryId;
+		}
+		return groupwareTemplate.selectList(PACKAGE_NAME + mQueryId, paramDTO);
+	}
+
+	/* 직원 레코드 카운트 조회 */
+	public int selectEmplyCount(final Object paramDTO, final String queryId) throws Exception {
+		String mQueryId = "";
+		if (queryId != null && (queryId.equals("") || !queryId.contains("."))) {
+			mQueryId = queryId + ".selectCount";
+		} else {
+			mQueryId = queryId;
+		}
+		return (Integer) groupwareTemplate.selectOne(PACKAGE_NAME + mQueryId, paramDTO);
+	}
+
+	/* 직원 상세 조회 */
+	public Object selectEmplyContents(final Object paramDTO, final String queryId) throws Exception {
+		String mQueryId = "";
+		if (queryId != null && (queryId.equals("") || !queryId.contains("."))) {
+			mQueryId = queryId + ".selectContents";
+		} else {
+			mQueryId = queryId;
+		}
+		return groupwareTemplate.selectOne(PACKAGE_NAME + mQueryId, paramDTO);
+	}
 }

@@ -144,11 +144,12 @@ function fnCovidChartOp(data){
 }
 
 /* 차트 - 물가 상승 추이 */
+function run(_rawData) {
+
 const inflChartDom = document.getElementById("inflationGraph");
 const inflChart = echarts.init(inflChartDom);
 let inflChartOp;
 
-function run(_rawData) {
     console.log(_rawData);
     const category = ["소비", "근원", "생활"];
     const datasetWithFilters = [];
@@ -230,12 +231,11 @@ function run(_rawData) {
     inflChart.setOption(inflChartOp);
 }
 
+function fngdpDeptGraphOp(data) {
 /* 차트 - GDP 대비 국가채무 */
 const gdpDeptChartDom = document.getElementById("gdpDeptGraph");
 const gdpDeptChart = echarts.init(gdpDeptChartDom);
 let gdpDeptGraphOp;
-
-function fngdpDeptGraphOp(data) {
 
     let period = [];
     let realGDP = [];

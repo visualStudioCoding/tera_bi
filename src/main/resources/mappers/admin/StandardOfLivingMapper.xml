@@ -39,6 +39,23 @@
             yr_dt = #{yr_dt}
     </insert>
 
+    <!--  임금상승률(평균임금)  -->
+    <insert id="insertWageIncrease" parameterType="hashMap">
+        INSERT INTO wage_inrt
+            (yr_dt, cty_nm, wage, unit)
+        VALUES (#{yrDt}, #{ctyNm}, #{val}, #{unit}) ON DUPLICATE KEY
+        UPDATE
+            yr_dt = #{yr_dt},
+            cty_nm = #{cty_nm}
+    </insert>
+
+    <!--  임금상승률(상승률)  -->
+    <insert id="updateWageIncrease" parameterType="hashMap">
+        UPDATE wage_inrt
+            set rate = #{val}, unit = #{unit}
+        WHERE yr_dt = #{yrDt} AND cty_nm = #{ctyNm}
+    </insert>
+
     <select id="compareCapitalPersonal" parameterType="hashMap" resultType="hashMap">
         SELECT MAX(yr_dt) AS yr_dt
         FROM capita_income

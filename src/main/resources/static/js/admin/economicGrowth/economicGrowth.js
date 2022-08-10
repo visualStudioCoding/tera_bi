@@ -191,6 +191,20 @@ function getGrowthRateInternational() {
     ecosApiAjax("/admin/economicGrowth/api/getGrowthRateInternational", callBackFn, 'get', params, errorMsg);
 }
 
+function getPriceIncreaseInternational() {
+    let formData = document.forms["priceIncreaseInternational_opt"];
+
+    let params = getEcosParam(formData);
+
+    //ajax가 정상 호출 되었을때 실행 되는 함수
+    let callBackFn = function( data ) {
+        alert(data.success);
+        console.log(data.data)
+    }
+    //공통모듈 ajax 함수 호출하기
+    ecosApiAjax("/admin/economicGrowth/api/getPriceIncreaseInternational", callBackFn, 'get', params, errorMsg);
+}
+
 function getGrowthRate(){
     let formData = document.forms["growthRate_opt"]
 

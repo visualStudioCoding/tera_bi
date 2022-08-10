@@ -52,6 +52,7 @@ function getKosisParams(form, years) {
     return kosisParam;
 }
 
+// 1인당 개인소득
 function getCapitaPersonal(){
 
     let formData = document.forms["capitalPersonal_opt"]
@@ -67,6 +68,7 @@ function getCapitaPersonal(){
 
 }
 
+// 1인당 국민총소득
 function getGrossNationalIncome(){
 
     let formData = document.forms["getGrossNationalIncome_opt"]
@@ -80,6 +82,7 @@ function getGrossNationalIncome(){
     enaraApiAjax("/admin/standardOfLiving/api/getGrossNationalIncome", callBackFn, 'get', params, errorMsg)
 }
 
+// 소득분배지표
 function getIncomeDistributionIndex(){
 
     let formData = document.forms["getIncomeDistributionIndex_opt"]
@@ -93,6 +96,35 @@ function getIncomeDistributionIndex(){
     kosisApiAjax("/admin/standardOfLiving/api/getIncomeDistributionIndex", callBackFn, 'get', params, errorMsg)
 }
 
+// 최저임금
+function fnMinPay(){
+
+    let formData = document.forms["formMinPay"]
+
+    let params = getEnaraParam(formData)
+
+    let callBackFn = function(data){
+        alert(data.success);
+        console.log(data.data)
+    }
+    enaraApiAjax("/admin/standardOfLiving/api/minPay", callBackFn, 'get', params, errorMsg)
+}
+
+// 임금상승률
+function getIncomeIncreaseRate(){
+
+    let formData = document.forms["formIncomeIncreaseRate_opt"]
+
+    let params = getKosisParam(formData)
+
+    let callBackFn = function(data){
+        alert(data.success);
+        console.log(data.data)
+    }
+    kosisApiAjax("/admin/standardOfLiving/api/getIncomeIncreaseRate", callBackFn, 'get', params, errorMsg)
+}
+
+// 데이터 대량으로 가져오기
 function getLargeData(){
     let years = [];
     let formData = document.forms["capitalPersonal_opt"]
@@ -115,17 +147,4 @@ function getLargeData(){
     }
 
 
-}
-
-function fnMinPay(){
-
-    let formData = document.forms["formMinPay"]
-
-    let params = getEnaraParam(formData)
-
-    let callBackFn = function(data){
-        alert(data.success);
-        console.log(data.data)
-    }
-    enaraApiAjax("/admin/standardOfLiving/api/minPay", callBackFn, 'get', params, errorMsg)
 }

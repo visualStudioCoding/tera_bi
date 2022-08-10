@@ -70,12 +70,12 @@ public class StandardOfLivingController {
                 message = (String) jsonData.get("MESSAGE");
             } else {
 
-                String yr_dt = (String) jsonData.get("PRD_DE");
+                String yrDt = (String) jsonData.get("PRD_DE");
                 String cty_nm = (String) jsonData.get("C1_NM");
                 String unit = (String) jsonData.get("UNIT_NM");
                 String val = (String) jsonData.get("DT");
 
-                dataMap.put("yr_dt", yr_dt);
+                dataMap.put("yr_dt", yrDt);
                 dataMap.put("cty_nm", cty_nm);
                 dataMap.put("unit", unit);
                 dataMap.put("val", val);
@@ -138,12 +138,12 @@ public class StandardOfLivingController {
 
             org.json.JSONObject jsonData = (org.json.JSONObject) jsonObject;
 
-            String yr_dt =  Integer.toString((Integer) jsonData.get("date"));
+            String yrDt =  Integer.toString((Integer) jsonData.get("date"));
             String gdiVal =  Integer.toString((Integer) jsonData.get("gdiVal"));
             String gniVal =  Integer.toString((Integer) jsonData.get("gniVal"));
             String getUnit = (String) jsonData.get("unit");
 
-            dataMap.put("yr_dt", yr_dt);
+            dataMap.put("yr_dt", yrDt);
             dataMap.put("unit", getUnit);
             dataMap.put("gdi_val", gdiVal);
             dataMap.put("gni_val", gniVal);
@@ -185,10 +185,10 @@ public class StandardOfLivingController {
                 message = (String) jsonData.get("MESSAGE");
             } else {
 
-                String yr_dt = (String) jsonData.get("PRD_DE");
+                String yrDt = (String) jsonData.get("PRD_DE");
                 String val = (String) jsonData.get("DT");
 
-                dataMap.put("yr_dt", yr_dt);
+                dataMap.put("yr_dt", yrDt);
                 dataMap.put("val", val);
                 System.out.println(dataMap);
                 commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertIncomeDistributionIndex");
@@ -200,6 +200,7 @@ public class StandardOfLivingController {
         return result;
     }
 
+    // 최저임금
     @Transactional(rollbackFor = Exception.class)
     @ResponseBody
     @GetMapping("/api/minPay")
@@ -241,6 +242,55 @@ public class StandardOfLivingController {
         return result;
     }
 
+    //   평균 임금
+    @Transactional(rollbackFor = Exception.class)
+    @ResponseBody
+    @GetMapping("/api/getIncomeIncreaseRate")
+    public Object getIncomeIncreaseRate(String url, String parameter) throws Exception {
 
+        System.out.println(url);
+        System.out.println(parameter);
+
+        String format = "json";
+        String site = "kosis";
+        String message = "성공";
+
+        StringBuilder stringBuilder = apiParseService.getApiResult(url, parameter, format, site);
+
+        Map<String, Object> dataMap = new HashMap<>();
+        Map<String, Object> result = new HashMap<>();
+
+        JSONArray jsonList = (JSONArray) apiParseService.apiJsonParser(stringBuilder);
+
+        for(Object jsonObject : jsonList) {
+            JSONObject jsonData = (JSONObject) jsonObject;
+            if ("Fail".equals(jsonData.get("RESULT"))) {
+                dataMap.put("err", jsonData.get("CODE"));
+                message = (String) jsonData.get("MESSAGE");
+            } else {
+
+                String yrDt = (String) jsonData.get("PRD_DE");
+                String ctyNm = (String) jsonData.get("C1_NM");
+                String val = (String) jsonData.get("DT");
+                String unit = (String) jsonData.get("UNIT_NM");
+
+                dataMap.put("yrDt", yrDt);
+                dataMap.put("ctyNm", ctyNm);
+                dataMap.put("val", val);
+                dataMap.put("unit", unit);
+                System.out.println(dataMap);
+
+                if("원".equals(jsonData.get("UNIT_NM"))){
+                    commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".insertWageIncrease");
+                }else {
+                    commonService.insertContents(dataMap, PAGE_ID + PROGRAM_ID + ".updateWageIncrease");
+                }
+            }
+        }
+        result.put("data", dataMap);
+        result.put("success", message);
+
+        return result;
+    }
 
 }

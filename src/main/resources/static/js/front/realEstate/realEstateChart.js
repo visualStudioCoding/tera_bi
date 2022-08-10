@@ -3,7 +3,25 @@ function fnAdmDivTradeChart(data) {
 
     let region = data.region;
     let datas = data.datas;
-    let graphColors = ["rgba(66, 104, 79, 1)", "rgba(45, 91, 127, 1)", "rgba(111, 20, 53, 1)", "rgba(28, 36, 108, 1)", "rgba(229, 173, 54, 1)", "rgba(218, 218, 218, 1)", "rgba(222, 52, 8, 1)", "rgba(1, 160, 198, 1)", "rgba(14, 65, 148, 1)", "rgba(175, 184, 76, 1)", "rgba(187, 37, 73, 1)", "rgba(169, 28, 158, 1)", "rgba(136, 77, 61, 1)", "rgba(234, 219, 129, 1)", "rgba(48, 50, 101, 1)", "rgba(169, 123, 89, 1)", "rgba(75, 74, 69, 1)"]
+    let graphColors = [
+      "#1e70e7",
+      "#3ba272",
+      "#fac858",
+      "#ee6666",
+      "#5aa7de",
+      "#fc8452",
+      "#7780e4",
+      "#eb9ac9",
+      "#e6838b",
+      "#dd8d54",
+      "#e0d666",
+      "#b2e26e",
+      "#007a70",
+      "#00b3a4",
+      "#7a8489",
+      "#bfc5c9",
+      "#294700",
+    ].reverse();
     let barData = [];
 
     const admDivTradeChartDom = document.getElementById("admDivTradeGraph");
@@ -34,7 +52,7 @@ function fnAdmDivTradeChart(data) {
                     name: data[idx][0],
                     value: data[idx][1],
                     itemStyle: {
-                        color: data[idx][2],
+                        color: graphColors[idx],
                     },
                 };
             });
@@ -72,7 +90,7 @@ function fnAdmDivTradeChart(data) {
                     label: {
                         show: true,
                         position: "right",
-                        distance: 16,
+                        distance: 20,
                         align: "center",
                         verticalAlign: "middle",
                         fontSize: 10,
@@ -87,7 +105,8 @@ function fnAdmDivTradeChart(data) {
         admDivTradeChart.setOption(admDivTradeGraphOp);
     }
 }
-    /* 차트 - 연령대별 매매거래 */
+
+/* 차트 - 연령대별 매매거래 */
 function fnAgeTradeGraphOp(data) {
     let ages = data.ages;
     let datas = data.datas;
@@ -120,7 +139,7 @@ function fnAgeTradeGraphOp(data) {
                 left: "center",
                 padding: 0,
                 textStyle: {
-                    fontSize: 14,
+                    fontSize: 13,
                 },
             },
             grid: {
@@ -133,13 +152,16 @@ function fnAgeTradeGraphOp(data) {
             legend: {
                 data: ["아파트"],
                 // data: ["아파트", "주택"],
-                padding: 30,
+                padding: 25,
+                itemWidth: 18,
+                itemHeight: 10,
             },
             xAxis: [
                 {
                     type: "category",
                     axisTick: {show: false},
                     data: [],
+                    axisLabel: { fontSize: 11 },
                 },
             ],
             yAxis: [
@@ -147,6 +169,7 @@ function fnAgeTradeGraphOp(data) {
                     type: "value",
                     name: "동(호)",
                     splitNumber: 3,
+                    axisLabel: { fontSize: 11 },
                 },
             ],
             series: [
@@ -154,8 +177,12 @@ function fnAgeTradeGraphOp(data) {
                     name: "아파트",
                     type: "bar",
                     barGap: 0,
+                    barWidth: 16,
                     label: labelOption,
                     data: [],
+                    itemStyle: {
+                      color: "#1e70e7",
+                    },
                 }
                 // {
                 //     name: "주택",
@@ -180,14 +207,20 @@ function fnConstTradeGraphOp(data) {
     let builtYear = data.years;
     let datas = data.datas;
     let chartData = [];
+    let dataMax = [];
+    let dataMin = [];
 
     for (let i = 0; i < builtYear.length; i++) {
-        if(i === 0) {
+        if (i === 0) {
             chartData.push(["amount", "years"])
         }
         chartData.push([datas[i], builtYear[i]])
+        dataMax.push(datas[i])
+        dataMin.push(datas[i])
     }
     console.log(chartData)
+    dataMax = Math.max.apply(null, dataMax);
+    dataMin = Math.min.apply(null, dataMin);
 
     /* 차트 - 건축년수별 매매거래 */
     const constTradeChartDom = document.getElementById("constTradeGraph");
@@ -210,31 +243,39 @@ function fnConstTradeGraphOp(data) {
                 left: "center",
                 padding: 0,
                 textStyle: {
-                    fontSize: 14,
+                    fontSize: 13,
                 },
             },
             dataset: {
                 source: [],
             },
-            grid: {containLabel: true, left: 2, right: 10, bottom: 0, top: 30},
-            yAxis: {name: "동수(동)", splitNumber: 4},
-            xAxis: {type: "category"},
+            grid: {containLabel: true, left: "1%", right: 10, bottom: 0, top:"45%"},
+            yAxis: {name: "동수(동)", splitNumber: 2, axisLabel: { fontSize: 11 } },
+            xAxis: {type: "category", axisTick: { alignWithLabel: true },  axisLabel: { fontSize: 11 } },
             visualMap: {
-                show: false,
+                show: true,
+                type: "continuous",
                 orient: "horizontal",
+                top: "15%",
                 left: "center",
                 bottom: 0,
-                min: 100,
-                max: 1200,
-                text: ["5년 미만", "60년 이상"],
+                min: dataMin,
+                max: dataMax,
+                text: ["최대", "최소"],
+                itemHeight: "80%",
+                itemWidth: 11,
                 dimension: 0,
+                textStyle: {
+                  fontSize: 11,
+                },
                 inRange: {
-                    color: ["#65B581", "#FFCE34", "#FD665F"],
+                  color: ["#626d7c", "#8ab5f2", "#1e70e7"],
                 },
             },
             series: [
                 {
                     type: "bar",
+                    barWidth: 16,
                     encode: {
                         x: "years",
                         y: "amount",
@@ -257,6 +298,7 @@ function fnConstTradeGraphOp(data) {
         constTradeChart.setOption(constTradeGraphOp);
     }
 }
+
 function fnPopRegionGraphOp(data) {
     let region = data.region;
     let datas = data.datas;
@@ -279,6 +321,7 @@ function fnPopRegionGraphOp(data) {
         let popRegionGraphOp;
 
         popRegionGraphOp = {
+            color: ["#bcd5f8", "#6aa2ef", "#1e70e7"],
             textStyle: {
                 fontFamily: "NanumSquare",
             },
@@ -298,127 +341,23 @@ function fnPopRegionGraphOp(data) {
                     label: {
                         fontSize: 10,
                         position: "inside",
-                        formatter: function (params) {
-                            let arr = [params.name, params.value.toLocaleString("ko-KR")];
-                            return arr.join("\n");
-                        },
+                        formatter: "{b}\n{c}",
                         lineHeight: 11,
                     },
                     breadcrumb: {
                         itemStyle: {},
                     },
-                    levels: [
-                        {
-                            itemStyle: {
-                                // borderWidth: 3,
-                                // borderColor: "#333",
-                                gapWidth: 3,
-                            },
-                        },
-                    ],
-                    itemStyle: {
-                        gapWidth: 5,
-                    },
-                    data: [
-                        // {
-                        //     name: "경기도",
-                        //     value: 13571450,
-                        // },
-                        // {
-                        //     name: "충청도",
-                        //     value: 3715735,
-                        //     itemStyle: {
-                        //         borderWidth: 0,
-                        //         gapWidth: 0,
-                        //     },
-                        //     children: [
-                        //         {
-                        //             name: "충청북도",
-                        //             value: 1597097,
-                        //         },
-                        //         {
-                        //             name: "충청북도",
-                        //             value: 2118638,
-                        //         },
-                        //     ],
-                        // },
-                        // {
-                        //     name: "전라도",
-                        //     value: 3617996,
-                        //     itemStyle: {
-                        //         borderWidth: 0,
-                        //         gapWidth: 0,
-                        //     },
-                        //     children: [
-                        //         {
-                        //             name: "전라북도",
-                        //             value: 1785392,
-                        //         },
-                        //         {
-                        //             name: "전라남도",
-                        //             value: 1832604,
-                        //         },
-                        //     ],
-                        // },
-                        // {
-                        //     name: "경상도",
-                        //     value: 5935748,
-                        //     itemStyle: {
-                        //         borderWidth: 0,
-                        //         gapWidth: 0,
-                        //     },
-                        //     children: [
-                        //         {
-                        //             name: "경상북도",
-                        //             value: 2624310,
-                        //         },
-                        //         {
-                        //             name: "경상남도",
-                        //             value: 3311438,
-                        //         },
-                        //     ],
-                        // },
-                        // {
-                        //     name: "강원도",
-                        //     value: 1538660,
-                        // },
-                        // {
-                        //     name: "제주특별자치도",
-                        //     value: 676691,
-                        // },
-                        // {
-                        //     name: "서울특별시",
-                        //     value: 9505926,
-                        // },
-                        // {
-                        //     name: "부산광역시",
-                        //     value: 3348874,
-                        // },
-                        // {
-                        //     name: "대구광역시",
-                        //     value: 2383858,
-                        // },
-                        // {
-                        //     name: "인천광역시",
-                        //     value: 2949150,
-                        // },
-                        // {
-                        //     name: "광주광역시",
-                        //     value: 1441636,
-                        // },
-                        // {
-                        //     name: "대전광역시",
-                        //     value: 1451272,
-                        // },
-                        // {
-                        //     name: "울산광역시",
-                        //     value: 1121100,
-                        // },
-                        // {
-                        //     name: "세종특별자치시",
-                        //     value: 374377,
-                        // },
-                    ],
+//                    levels: [
+//                        {
+//                            itemStyle: {
+//                                gapWidth: 3,
+//                            },
+//                        },
+//                    ],
+//                    itemStyle: {
+//                        gapWidth: 5,
+//                    },
+                    colorMappingBy: "value",
                 },
             ],
         };
@@ -455,9 +394,12 @@ function fnCMHousingChartDom(data) {
                 trigger: "axis",
             },
             legend: {
-                data: ["소미자물가", "미분양주택(호)"],
-                center: "center",
-                padding: 0,
+              padding: 0,
+              itemWidth: 18,
+              itemHeight: 11,
+              itemStyle: {
+                borderWidth: 0,
+              },
             },
             axisPointer: {
                 link: [
@@ -471,80 +413,119 @@ function fnCMHousingChartDom(data) {
                     show: true,
                     realtime: true,
                     xAxisIndex: [0, 1],
-                    height: "86%",
+                    height: "85%",
                     bottom: 5,
                     right: 20,
                     orient: "vertical",
                 },
             ],
             grid: [
-                {
-                    containLabel: true,
-                    top: 30,
-                    left: 35,
-                    right: "12%",
-                    height: "38%",
-                },
-                {
-                    containLabel: true,
-                    left: 5,
-                    right: "12%",
-                    top: "60%",
-                    height: "38%",
-                },
+              {
+                containLabel: true,
+                top: 34,
+                left: 27,
+                right: "12%",
+                height: "34%",
+              },
+              {
+                containLabel: true,
+                left: 5,
+                right: "12%",
+                top: "55%",
+                height: "34%",
+              },
             ],
             xAxis: [
-                {
-                    type: "category",
-                    boundaryGap: false,
-                    axisLine: {onZero: true},
-                    data: timeData,
+              {
+                type: "category",
+                boundaryGap: false,
+                axisLine: { onZero: true },
+                data: timeData,
+                axisLabel: {
+                  fontSize: 11,
                 },
-                {
-                    gridIndex: 1,
-                    type: "category",
-                    boundaryGap: false,
-                    axisLine: {onZero: true},
-                    data: timeData,
-                    position: "top",
+              },
+              {
+                gridIndex: 1,
+                type: "category",
+                boundaryGap: false,
+                axisLine: { onZero: true },
+                data: timeData,
+                position: "top",
+                axisLabel: {
+                  fontSize: 11,
                 },
+              },
             ],
             yAxis: [
-                {
-                    name: "",
-                    type: "value",
-                    splitNumber: 4,
+              {
+                name: "",
+                type: "value",
+                splitNumber: 4,
+                axisLabel: {
+                  fontSize: 11,
                 },
-                {
-                    gridIndex: 1,
-                    name: "",
-                    type: "value",
-                    inverse: true,
-                    splitNumber: 3,
+              },
+              {
+                gridIndex: 1,
+                name: "",
+                type: "value",
+                inverse: true,
+                splitNumber: 3,
+                axisLabel: {
+                  fontSize: 11,
                 },
+              },
             ],
             series: [
                 {
                     name: "소비자물가",
                     type: "line",
-                    symbolSize: 0,
+                    showSymbol: false,
+                    symbol: "circle",
+                    symbolSize: 8,
                     lineStyle: {
-                        width: 2,
-                        shadowColor: "rgba(0,0,0,0.3)",
-                        shadowBlur: 8,
-                        shadowOffsetY: 4,
+                      width: 2,
+                      color: "#1e70e7",
+                      shadowColor: "rgba(0,0,0,0.3)",
+                      shadowBlur: 8,
+                      shadowOffsetY: 4,
+                    },
+                    itemStyle: {
+                      color: "rgba(30,112,231,1)",
+                      borderWidth: 2,
+                      borderColor: "#fff",
                     },
                     areaStyle: {
-                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                            {
-                                offset: 1,
-                                color: "rgb(67,203,255)",
+                      color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        {
+                          offset: 0,
+                          color: "rgba(30,112,231,1)",
+                        },
+                        {
+                          offset: 1,
+                          color: "rgba(255,255,255,0.5)",
+                        },
+                      ]),
+                    },
+                    markPoint: {
+                      // 최소값, 최대값 label 별도 스타일
+                      data: [
+                        {
+                          type: "max",
+                          name: "Max",
+                          itemStyle: { color: "#1e70e7" },
+                          symbolSize: 36,
+                          label: {
+                            formatter: (params) => {
+                              return params.value.toFixed(2);
                             },
-                            {
-                                offset: 0,
-                                color: "rgb(115,110,254)",
-                            },
-                        ]),
+                            color: "#fff",
+                            fontSize: 8,
+                            fontWeight: 300,
+                          },
+                        },
+                      ],
                     },
                     // prettier-ignore
                     data: [],
@@ -554,26 +535,49 @@ function fnCMHousingChartDom(data) {
                     type: "line",
                     xAxisIndex: 1,
                     yAxisIndex: 1,
-                    symbolSize: 0,
-                    color: "#ff6629",
+                    showSymbol: false,
+                    symbol: "circle",
+                    symbolSize: 8,
                     lineStyle: {
-                        color: "#ff6629",
-                        width: 2,
-                        shadowColor: "rgba(0,0,0,0.1)",
-                        shadowBlur: 8,
-                        shadowOffsetY: -4,
+                      width: 2,
+                      color: "#fac858",
+                      shadowColor: "rgba(0,0,0,0.3)",
+                      shadowBlur: 8,
+                      shadowOffsetY: 4,
+                    },
+                    itemStyle: {
+                      color: "#fac858",
+                      borderWidth: 2,
+                      borderColor: "#fff",
                     },
                     areaStyle: {
-                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                            {
-                                offset: 0,
-                                color: "#FCCF31",
-                            },
-                            {
-                                offset: 1,
-                                color: "#F55555",
-                            },
-                        ]),
+                      color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        {
+                          offset: 0,
+                          color: "rgba(255,255,255,0.5)",
+                        },
+                        {
+                          offset: 1,
+                          color: "rgba(250,200,88,0.5)",
+                        },
+                      ]),
+                    },
+                    markPoint: {
+                      // 최소값, 최대값 label 별도 스타일
+                      data: [
+                        {
+                          type: "max",
+                          name: "Max",
+                          itemStyle: { color: "#fac858" },
+                          symbolRotate: 180,
+                          symbolSize: 36,
+                          label: {
+                            position: ["-8%", "50%"],
+                            color: "#424a54",
+                            fontSize: 8,
+                          },
+                        },
+                      ],
                     },
                     // prettier-ignore
                     data: [],
@@ -597,11 +601,15 @@ function fnPopulationByGenderChartDom(data) {
         let ownerByGenderGraphOp;
 
         ownerByGenderGraphOp = {
+            color: [
+              "#1e70e7",
+              "#3ba272",
+            ],
             title: {
                 text: "성별",
                 left: "center",
                 textStyle: {
-                    fontSize: 14,
+                    fontSize: 13,
                 },
             },
             tooltip: {
@@ -655,71 +663,83 @@ function fnPopulationByGenderChartDom(data) {
 }
 
 /* 차트 - 소유자 비율 (연령별) */
-const ownerByAgeChartDom = document.getElementById("ownerByAgeGraph");
-if (ownerByAgeChartDom) {
-    const ownerByAgeChart = echarts.init(ownerByAgeChartDom);
-    let ownerByAgeGraphOp;
+function fnOwnerByAgeChartDom(data) {
+    const ownerByAgeChartDom = document.getElementById("ownerByAgeGraph");
+    if (ownerByAgeChartDom) {
+        const ownerByAgeChart = echarts.init(ownerByAgeChartDom);
+        let ownerByAgeGraphOp;
 
-    ownerByAgeGraphOp = {
-        title: {
-            text: "연령별",
-            left: "center",
-            textStyle: {
-                fontSize: 14,
-            },
-        },
-        tooltip: {
-            trigger: "item",
-            valueFormatter: function (value) {
-                return value.toLocaleString("ko-KR") + "명";
-            },
-        },
-        legend: {
-            top: "center",
-            left: "right",
-            orient: "vertical",
-        },
-        series: [
-            {
-                name: "",
-                type: "pie",
-                center: ["50%", "57%"],
-                radius: ["30%", "80%"],
-                avoidLabelOverlap: false,
-                itemStyle: {
-                    borderRadius: 4,
-                    borderColor: "#fff",
-                    borderWidth: 2,
+        ownerByAgeGraphOp = {
+            color: [
+              "#1e70e7",
+              "#3ba272",
+              "#fac858",
+              "#ee6666",
+              "#fc8452",
+              "#5aa7de",
+              "#007a70",
+              "#7a8489",
+            ],
+            title: {
+                text: "연령별",
+                left: "center",
+                textStyle: {
+                    fontSize: 13,
                 },
-                label: {
-                    show: true,
-                    formatter: "{b}\n {d}%",
-                    position: "inside",
+            },
+            tooltip: {
+                trigger: "item",
+                valueFormatter: function (value) {
+                    return value.toLocaleString("ko-KR") + "명";
                 },
-                emphasis: {
+            },
+            legend: {
+                top: "center",
+                left: "right",
+                orient: "vertical",
+                textStyle: {
+                  fontSize: 11,
+                },
+                itemGap: 4,
+            },
+            series: [
+                {
+                    name: "",
+                    type: "pie",
+                    center: ["50%", "57%"],
+                    radius: ["30%", "80%"],
+                    avoidLabelOverlap: false,
+                    itemStyle: {
+                        borderRadius: 4,
+                        borderColor: "#fff",
+                        borderWidth: 2,
+                    },
                     label: {
                         show: true,
-                        fontSize: "16",
-                        fontWeight: "bold",
+                        formatter: "{b}\n {d}%",
+                        position: "inside",
+                        textStyle: {
+                          fontSize: 11,
+                        },
                     },
+                    emphasis: {
+                        label: {
+                            show: true,
+                            fontSize: "14",
+                            fontWeight: "bold",
+                        },
+                    },
+                    labelLine: {
+                        show: false,
+                    },
+                    data: [],
                 },
-                labelLine: {
-                    show: false,
-                },
-                data: [
-                    {value: 186642, name: "30세 미만"},
-                    {value: 1254584, name: "30~39세"},
-                    {value: 2526153, name: "40~49세"},
-                    {value: 3057263, name: "50~59세"},
-                    {value: 2575380, name: "60~69세"},
-                    {value: 1520060, name: "70~79세"},
-                    {value: 610089, name: "80세 이상"},
-                ],
+            ],
+            textStyle: {
+                fontFamily: "NanumSquare",
             },
-        ],
-        textStyle: {
-            fontFamily: "NanumSquare",
-        },
-    };
-    ownerByAgeChart.setOption(ownerByAgeGraphOp);
+        };
+        ownerByAgeGraphOp.series[0].data = data;
+        ownerByAgeChart.setOption(ownerByAgeGraphOp);
+    }
 }
