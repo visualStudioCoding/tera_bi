@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bi.front.temp">
+    <!-- kospi  -->
+    <select id="selectKospi" parameterType="hashMap" resultType="hashMap">
+        SELECT CONCAT(yr_dt, '/', mon_dt, '/', dy_dt)  AS kospiDate
+             , val
+        FROM kospi_index
+        ORDER BY yr_dt ,mon_dt ,dy_dt
+    </select>
+
+    <!-- kospi 예측 - kospi_index 테이블조회해서 이외의 데이터만 가져온다 -->
+    <select id="selectInsightKospi" parameterType="hashMap" resultType="hashMap">
+        SELECT A.* FROM (
+                            SELECT REPLACE(SUBSTR(ds,3,10),"-","/") AS kospiDate
+                                 , SUBSTR(val,2,6) AS val
+                            FROM insight_kospi_index
+                            ORDER BY id DESC
+                            LIMIT #{days}
+                        ) A
+        WHERE A.kospiDate > (SELECT CONCAT(yr_dt, '/', mon_dt, '/', dy_dt)  AS kospiDate
+                             FROM kospi_index
+                             ORDER BY yr_dt DESC ,mon_dt DESC ,dy_dt DESC LIMIT 1)
+        GROUP BY kospiDate
+        ORDER BY kospiDate
+    </select>
+
+    <!--- kospi 예측 - kospi_index 테이블조회해서 이외의 데이터만 가져온다 -->
+    <delete id="deleteInsightKospi" parameterType="hashMap">
+        DELETE FROM insight_kospi_index
+    </delete>
+
+</mapper>

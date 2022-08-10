@@ -1,7 +1,5 @@
 package com.teraenergy.global.service;
 
-import org.json.JSONObject;
-import org.json.simple.JSONArray;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -33,5 +31,14 @@ public interface CommonService {
 
 	/* 삭제 */
 	int deleteContents(Object paramDTO, String queryId) throws Exception;
+
+	/* 직원 목록조회 */
+	List<?> selectEmplyList(Object paramDTO, String queryId) throws Exception;
+
+	/* 직원 레코드 카운트 조회 */
+	int selectEmplyCount(Object paramDTO, String queryId) throws Exception;
+
+	/* 직원 상세정보 조회 */
+	Object selectEmplyContents(Object paramDTO, String queryId) throws Exception;
 
 }

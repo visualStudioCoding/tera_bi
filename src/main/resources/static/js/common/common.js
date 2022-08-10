@@ -112,6 +112,7 @@ window.addEventListener("load", function() {
     mobileNav.classList.add("on");
   })
   mbNavCloseBtn.addEventListener("click", function() {
+//    this.style.transform = "translateX(-110%)";
     mobileNav.classList.remove("on");
   })
 

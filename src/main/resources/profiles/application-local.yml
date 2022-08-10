@@ -8,10 +8,16 @@ spring:
     # driver-class-name: org.mariadb.jdbc.Driver
     #driver-class-name: com.mysql.cj.jdbc.Driver
     # url: jdbc:log4jdbc:mariadb://14.49.44.142:3308/bi_solution?characterEncoding=UTF-8&serverTimezone=UTC
-    hikari:
+    # url: jdbc:log4jdbc:mariadb://118.67.143.234:3306/groupware?characterEncoding=UTF-8&serverTimezone=UTC
+    bi:
       jdbc-url: ENC(CF/rQG/4gR9RE777ApayudxaOLyxu3BfKv06ZtIkrE86dCz71stiiZJKoGUEWmNpbBME3pXViZf+A/+3gxSwHSpHfsK6yhKRrMcCUT0oW+F3+LWMK8aauwWR5a7EM9tVDbokprRT/eYNGxPfmj4zGQ==)
       username: ENC(XZPgJxY36iY857nLYH66bQ==)
       password: ENC(LovkE7rMb7CjfIwu/YbV57fA3r810HIP)
+      connection-test-query: SELECT 1
+    groupware:
+      jdbc-url: ENC(CyQEs0yQelDQIGKJiUdgaCow4FtIa+oIsfVQgQRp324vAyCQS2P3D/pYAj8Ntn+84uBra1yXAy81AkWULzk7x/XAP9WawySjcgFbRrGIklj1ojWXJlT1mQB39If20mDtM9K9VrdYtlSoWtKU7vFVow==)
+      username: ENC(bedAHJCwifx+u+Qjb8LukgUaI3ud9s1R)
+      password: ENC(v6aRD/xW1dGLYkHadbJXUCIu+aEvqRGsTolKeCVvEuU=)
       connection-test-query: SELECT 1
 
 open-api:
