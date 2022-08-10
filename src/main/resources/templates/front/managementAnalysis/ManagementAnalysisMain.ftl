@@ -15,103 +15,7 @@
       <div class="inner-title">
         <h3>경영지표분석</h3>
       </div>
-      <form class="box">
-        <div class="tit">기간설정</div>
-        <div class="input-group">
-          <input
-            type="radio"
-            name="ecGrowthTerm"
-            id="ecGrowthTerm1"
-            checked
-          />
-          <label for="ecGrowthTerm1">5년</label>
-          <input type="radio" name="ecGrowthTerm" id="ecGrowthTerm2" />
-          <label for="ecGrowthTerm2">10년</label>
-          <input type="radio" name="ecGrowthTerm" id="ecGrowthDatePick" />
-          <label for="ecGrowthDatePick">기간선택</label>
-        </div>
-        <div class="date-picker-group">
-          <input
-            type="text"
-            name="ecGrowthDatePicker"
-            class="w-100"
-            disabled
-          />
-          <i class="ri-calendar-line"></i>
-        </div>
-        <button type="button" class="btn-primary w-100">
-          <i class="ri-check-line"></i>적용
-        </button>
-      </form>
-      <form class="box">
-        <div class="tit">지역설정</div>
-        <div class="input-group">
-          <input type="radio" name="ecLoc" id="ecLocAll" checked />
-          <label for="ecLocAll">전국</label>
-          <input type="radio" name="ecLoc" id="ecLocSlcts" />
-          <label for="ecLocSlcts">지역선택</label>
-        </div>
-        <div class="select-group">
-          <label for="ecLocSlct1">시/도</label>
-          <select name="ecLocSlct" id="ecLocSlct1" disabled>
-            <option value="">서울특별시</option>
-            <option value="">부산광역시</option>
-            <option value="">대구광역시</option>
-            <option value="">인천광역시</option>
-            <option value="">광주광역시</option>
-            <option value="">대전광역시</option>
-            <option value="">울산광역시</option>
-            <option value="">세종특별자치시</option>
-            <option value="">경기도</option>
-            <option value="">강원도</option>
-            <option value="">충청북도</option>
-            <option value="">충청남도</option>
-            <option value="">전라북도</option>
-            <option value="">전라남도</option>
-            <option value="">경상북도</option>
-            <option value="">경상남도</option>
-            <option value="">제주특별자치도</option>
-          </select>
-        </div>
-        <div class="select-group">
-          <label for="ecLocSlct2">시/군/구</label>
-          <select name="ecLocSlct" id="ecLocSlct2" disabled>
-            <option value="">강남구</option>
-            <option value="">강동구</option>
-            <option value="">강북구</option>
-            <option value="">강서구</option>
-            <option value="">관악구</option>
-            <option value="">광진구</option>
-            <option value="">구로구</option>
-            <option value="">금천구</option>
-          </select>
-        </div>
-        <div class="select-group">
-          <label for="ecLocSlct3">읍/면/동</label>
-          <select name="ecLocSlct" id="ecLocSlct3" disabled>
-            <option value="">신사동</option>
-            <option value="">논현동</option>
-            <option value="">압구정동</option>
-            <option value="">청담동</option>
-            <option value="">삼성동</option>
-            <option value="">대치동</option>
-            <option value="">역삼동</option>
-            <option value="">도곡동</option>
-            <option value="">개포동</option>
-          </select>
-        </div>
-        <button type="button" class="btn-primary w-100">
-          <i class="ri-check-line"></i>적용
-        </button>
-      </form>
-      <div class="btn-wrap">
-        <button type="button" class="btn-secondary w-100">
-          AI Display
-        </button>
-        <button type="button" class="btn-secondary w-100">
-          File Report
-        </button>
-      </div>
+      <#include "*/common/front/left.ftl" />
     </div>
     <div class="col container">
       <div class="row">
@@ -119,39 +23,39 @@
           <div class="wrapper text-boxes row">
             <div class="text-box">
               <h6 class="tit">인원수</h6>
-              <span class="txt count-ani">58</span>
-            </div>
-            <div class="text-box">
-              <h6 class="tit">임원수</h6>
-              <span class="txt count-ani">2</span>
-            </div>
-            <div class="text-box">
-              <h6 class="tit">여성인원수</h6>
-              <span class="txt count-ani">20</span>
-            </div>
-            <div class="text-box">
-              <h6 class="tit">일반직</h6>
-              <span class="txt count-ani">4</span>
-            </div>
-            <div class="text-box">
-              <h6 class="tit">디자인</h6>
-              <span class="txt count-ani">5</span>
-            </div>
-            <div class="text-box">
-              <h6 class="tit">개발자</h6>
-              <span class="txt count-ani">30</span>
-            </div>
-            <div class="text-box">
-              <h6 class="tit">파견직</h6>
-              <span class="txt count-ani">32</span>
+              <span class="txt count-ani">${emplyCnt.totalCnt}</span>
             </div>
             <div class="text-box">
               <h6 class="tit">본사</h6>
-              <span class="txt count-ani">26</span>
+              <span class="txt count-ani">${emplyCnt.hdqrtCnt}</span>
+            </div>
+            <div class="text-box">
+              <h6 class="tit">파견</h6>
+              <span class="txt count-ani">${emplyCnt.dsptcCnt}</span>
+            </div>
+            <div class="text-box">
+              <h6 class="tit">지사</h6>
+              <span class="txt count-ani">${emplyCnt.brnchCnt}</span>
+            </div>
+            <div class="text-box">
+              <h6 class="tit">재택</h6>
+              <span class="txt count-ani">${emplyCnt.homejobCnt}</span>
+            </div>
+            <div class="text-box">
+              <h6 class="tit">경영</h6>
+              <span class="txt count-ani">${emplyCnt.gnrlJobCnt}</span>
+            </div>
+            <div class="text-box">
+              <h6 class="tit">디자인</h6>
+              <span class="txt count-ani">${emplyCnt.dsgnrCnt}</span>
+            </div>
+            <div class="text-box">
+              <h6 class="tit">개발자</h6>
+              <span class="txt count-ani">${emplyCnt.dvlprCnt}</span>
             </div>
             <div class="text-box">
               <h6 class="tit">프리랜서</h6>
-              <span class="txt count-ani">3</span>
+              <span class="txt count-ani">${emplyCnt.freeCnt}</span>
             </div>
           </div>
         </div>
@@ -226,7 +130,28 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-inner-3">
+        <div class="col-inner-6">
+          <div class="title-wrap">
+            <h6 class="tit">사원 & 기술자 보유 현황</h6>
+          </div>
+          <div class="cont">
+            <div class="wrapper">
+              <div class="left">
+                <div
+                        id="manPowerGraph"
+                        style="width: 100%; height: 192px"
+                ></div>
+              </div>
+              <div class="right">
+                <div
+                        id="techHoldGraph"
+                        style="width: 100%; height: 192px"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <#--<div class="col-inner-3">
           <div class="title-wrap">
             <h6 class="tit">사원 현황</h6>
           </div>
@@ -251,7 +176,7 @@
               ></div>
             </div>
           </div>
-        </div>
+        </div>-->
         <div class="col-inner-3">
           <div class="title-wrap">
             <h6 class="tit">부서별 인원 현황</h6>

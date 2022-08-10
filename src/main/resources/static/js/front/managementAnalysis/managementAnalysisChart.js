@@ -554,63 +554,108 @@ if (techHoldChartDom) {
   let techHoldGraphOp;
 
   techHoldGraphOp = {
+    title: {
+      subtext: "단위: 명",
+      left: "center",
+      top: "bottom",
+      padding: 10,
+    },
     tooltip: {
-      trigger: "axis",
-      axisPointer: {
-        type: "shadow",
-      },
+      trigger: "item",
+      formatter: "{a} <br/>{b}: {c} ({d}%)",
     },
-    legend: {
-      padding: 0,
-    },
-    grid: {
-      left: 0,
-      top: "30%",
-      right: 0,
-      bottom: 0,
-      containLabel: true,
-    },
-    xAxis: {
-      type: "category",
-      data: ["기술사", "특급기술자", "고급기술자", "중급기술자", "초급기술자"],
-      axisLabel: {
-        interval: 0,
-        fontSize: 11,
-      },
-    },
-    yAxis: {
-      type: "value",
-      name: "단위: 명",
-    },
-    label: {
-      show: true,
-      position: "top",
-      fontSize: 10,
-    },
+    color: [
+      "#1e70e7",
+      "#3ba272",
+      "#fac858",
+      "#ee6666",
+      "#5aa7de",
+      "#fc8452",
+      "#7780e4",
+      "#eb9ac9",
+      "#b2e26e",
+      "#007a70",
+      "#00b3a4",
+      "#7a8489",
+      "#bfc5c9",
+      "#294700",
+    ],
     series: [
       {
-        name: "남성",
-        type: "bar",
-        data: [0, 2, 9, 10, 18],
-        barWidth: 16,
-        itemStyle: {
-          color: "#1e70e7",
+        name: "등급",
+        type: "pie",
+        selectedMode: "single",
+        radius: "80%",
+        center: ["50%", "45%"],
+        label: {
+          position: "inner",
+          fontSize: 10,
+          color: "#fff",
         },
-      },
-      {
-        name: "여성",
-        type: "bar",
-        data: [0, 0, 1, 5, 8],
-        barWidth: 16,
-        itemStyle: {
-          color: "#3ba272",
+        labelLine: {
+          show: false,
         },
+        data: [
+          { value: 20, name: "초급기술자" },
+          { value: 3, name: "중급기술자" },
+          { value: 11, name: "고급기술자" },
+          { value: 7, name: "특급기술자" },
+        ],
       },
     ],
     textStyle: {
       fontFamily: "NanumSquare",
     },
   };
+  // techHoldGraphOp = {
+  //   tooltip: {
+  //     trigger: "axis",
+  //     axisPointer: {
+  //       type: "shadow",
+  //     },
+  //   },
+  //   legend: {
+  //     padding: 0,
+  //   },
+  //   grid: {
+  //     left: 0,
+  //     top: "30%",
+  //     right: 0,
+  //     bottom: 0,
+  //     containLabel: true,
+  //   },
+  //   xAxis: {
+  //     type: "category",
+  //     data: ["특급기술자", "고급기술자", "중급기술자", "초급기술자"],
+  //     axisLabel: {
+  //       interval: 0,
+  //       fontSize: 11,
+  //     },
+  //   },
+  //   yAxis: {
+  //     type: "value",
+  //     name: "단위: 명",
+  //   },
+  //   label: {
+  //     show: true,
+  //     position: "top",
+  //     fontSize: 10,
+  //   },
+  //   series: [
+  //     {
+  //       name: "기술자",
+  //       type: "bar",
+  //       data: [0, 2, 9, 10, 18],
+  //       barWidth: 16,
+  //       itemStyle: {
+  //         color: "#1e70e7",
+  //       },
+  //     },
+  //   ],
+  //   textStyle: {
+  //     fontFamily: "NanumSquare",
+  //   },
+  // };
   techHoldChart.setOption(techHoldGraphOp);
 }
 
