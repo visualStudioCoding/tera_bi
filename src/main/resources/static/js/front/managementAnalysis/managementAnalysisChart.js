@@ -3,49 +3,71 @@ const plAchvRateChartDom = document.getElementById("plAchvRateGraph");
 if (plAchvRateChartDom) {
   const plAchvRateChart = echarts.init(plAchvRateChartDom);
   let plAchvRateGraphOp;
-  let achvRate = 73;
-  let notAchv = 100 - achvRate;
+  let gaugeData = [
+    {
+      value: 73,
+      name: '달성률',
+      title: {
+        offsetCenter: ['0%', '-15%'],
+        fontSize: 11,
+      },
+      detail: {
+        valueAnimation: true,
+        offsetCenter: ['0%', '20%']
+      }
+    }
+  ];
 
   plAchvRateGraphOp = {
-    title: {
-      text: "달성률",
-      left: "center",
-      textStyle: {
-        fontSize: 12,
-      },
-      padding: 10,
-    },
     series: [
       {
-        type: "pie",
-        radius: ["45%", "70%"],
-        center: ["50%", "65%"],
-        avoidLabelOverlap: false,
-        showEmptyCircle: true,
-        stillShowZeroSum: true,
-        label: {
-          show: true,
-          position: "center",
-          formatter: "{c}%",
-          fontSize: 14,
-          fontWeight: 600,
-        },
+        type: 'gauge',
         clockwise: false,
-        labelLine: {
-          show: false,
+        startAngle: 90,
+        endAngle: -270,
+        radius: "85%",
+        center: ["50%", "55%"],
+        pointer: {
+          show: false
         },
-        silent: true,
-        data: [
-          {
-            value: achvRate,
-            name: "달성률",
-            itemStyle: {
-              color: "rgba(30,112,231,1)",
-            },
-          },
-          { value: notAchv, name: "", itemStyle: { color: "#eeeeee" } },
-        ],
-      },
+        progress: {
+          show: true,
+          overlap: false,
+          roundCap: true,
+          clip: false,
+          itemStyle: {
+            color: "#1e70e7"
+          }
+        },
+        axisLine: {
+          lineStyle: {
+            width: 15
+          }
+        },
+        splitLine: {
+          show: false,
+          distance: 0,
+          length: 10
+        },
+        axisTick: {
+          show: false
+        },
+        axisLabel: {
+          show: false,
+          distance: 50
+        },
+        data: gaugeData,
+        title: {
+          fontSize: 12,
+        },
+        detail: {
+          width: 50,
+          height: 14,
+          fontSize: 14,
+          color: '#1e70e7',
+          formatter: '{value}%'
+        }
+      }
     ],
     textStyle: {
       fontFamily: "NanumSquare",
@@ -59,54 +81,71 @@ const slAchvRateChartDom = document.getElementById("slAchvRateGraph");
 if (slAchvRateChartDom) {
   const slAchvRateChart = echarts.init(slAchvRateChartDom);
   let slAchvRateGraphOp;
-  let achvRate = 78;
-  let notAchv = 100 - achvRate;
+  let gaugeData = [
+    {
+      value: 88,
+      name: '달성률',
+      title: {
+        offsetCenter: ['0%', '-15%'],
+        fontSize: 11,
+      },
+      detail: {
+        valueAnimation: true,
+        offsetCenter: ['0%', '20%']
+      }
+    }
+  ];
 
   slAchvRateGraphOp = {
-    title: {
-      text: "달성률",
-      left: "center",
-      textStyle: {
-        fontSize: 12,
-      },
-      padding: 10,
-    },
-    grid: {
-      containLabel: true,
-      top: 0,
-      left: 0,
-    },
     series: [
       {
-        type: "pie",
-        radius: ["45%", "70%"],
-        center: ["50%", "65%"],
-        avoidLabelOverlap: false,
-        showEmptyCircle: true,
-        stillShowZeroSum: true,
-        label: {
-          show: true,
-          position: "center",
-          formatter: "{c}%",
-          fontSize: 14,
-          fontWeight: 600,
-        },
+        type: 'gauge',
         clockwise: false,
-        labelLine: {
-          show: false,
+        startAngle: 90,
+        endAngle: -270,
+        radius: "85%",
+        center: ["50%", "55%"],
+        pointer: {
+          show: false
         },
-        silent: true,
-        data: [
-          {
-            value: achvRate,
-            name: "달성률",
-            itemStyle: {
-              color: "rgba(30,112,231,1)",
-            },
-          },
-          { value: notAchv, name: "", itemStyle: { color: "#eeeeee" } },
-        ],
-      },
+        progress: {
+          show: true,
+          overlap: false,
+          roundCap: true,
+          clip: false,
+          itemStyle: {
+            color: "#1e70e7"
+          }
+        },
+        axisLine: {
+          lineStyle: {
+            width: 15
+          }
+        },
+        splitLine: {
+          show: false,
+          distance: 0,
+          length: 10
+        },
+        axisTick: {
+          show: false
+        },
+        axisLabel: {
+          show: false,
+          distance: 50
+        },
+        data: gaugeData,
+        title: {
+          fontSize: 12,
+        },
+        detail: {
+          width: 50,
+          height: 14,
+          fontSize: 14,
+          color: '#1e70e7',
+          formatter: '{value}%'
+        }
+      }
     ],
     textStyle: {
       fontFamily: "NanumSquare",
