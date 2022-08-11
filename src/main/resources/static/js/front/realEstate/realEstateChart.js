@@ -78,6 +78,7 @@ function fnAdmDivTradeChart(data) {
             xAxis: {
                 type: "value",
                 name: "건수(건)",
+                splitNumber: 4,
             },
             yAxis: {
                 type: "category",
@@ -97,6 +98,37 @@ function fnAdmDivTradeChart(data) {
                     },
                     data: chartData,
                 },
+            ],
+            media: [
+              {
+                query: {
+                  minWidth: 315,
+                },
+                option: {
+                  xAxis: {
+                      type: "value",
+                      name: "건수(건)",
+                      splitNumber: 4,
+                  },
+                },
+              },
+              {
+                query: {
+                  maxWidth: 360,
+                },
+                option: {
+                  xAxis: {
+                      type: "value",
+                      name: "",
+                      splitNumber: 2,
+                  },
+                  grid: {
+                    containLabel: true,
+                    left: "1%",
+                    right: "8%",
+                  },
+                },
+              }
             ],
             textStyle: {
                 fontFamily: "NanumSquare",
@@ -136,6 +168,10 @@ function fnAgeTradeGraphOp(data) {
             },
             title: {
                 text: "연령대별 매매거래",
+                subtext: datas.length < 1 ? "no data" : "",
+                subtextStyle: {
+                  lineHeight: 100,
+                },
                 left: "center",
                 padding: 0,
                 textStyle: {
@@ -168,6 +204,7 @@ function fnAgeTradeGraphOp(data) {
                 {
                     type: "value",
                     name: "동(호)",
+                    show: datas.length < 1 ? false : true,
                     splitNumber: 3,
                     axisLabel: { fontSize: 11 },
                 },
@@ -194,7 +231,38 @@ function fnAgeTradeGraphOp(data) {
             textStyle: {
                 fontFamily: "NanumSquare",
             },
-
+            media: [
+              // pc (xl)
+              {
+                query: {
+                  minWidth: 455,  // chart's parent container width, not window innerWidth
+                },
+                option: {
+                  series: [
+                    {
+                        label: {
+                          show: true,
+                        },
+                    }
+                  ],
+                },
+              },
+              // mobile (sm)
+              {
+                query: {
+                  maxWidth: 454,
+                },
+                option: {
+                  series: [
+                    {
+                        label: {
+                          show: false,
+                        },
+                    }
+                  ],
+                }
+              },
+            ],
         };
         ageTradeGraphOp.xAxis[0].data = ages;
         ageTradeGraphOp.series[0].data = datas;
@@ -293,6 +361,38 @@ function fnConstTradeGraphOp(data) {
             textStyle: {
                 fontFamily: "NanumSquare",
             },
+            media: [
+              // pc (xl)
+              {
+                query: {
+                  minWidth: 455,  // chart's parent container width, not window innerWidth
+                },
+                option: {
+                  series: [
+                    {
+                        label: {
+                          show: true,
+                        },
+                    }
+                  ],
+                },
+              },
+              // mobile (sm)
+              {
+                query: {
+                  maxWidth: 454,
+                },
+                option: {
+                  series: [
+                    {
+                        label: {
+                          show: false,
+                        },
+                    }
+                  ],
+                }
+              },
+            ],
         };
         constTradeGraphOp.dataset.source = chartData;
         constTradeChart.setOption(constTradeGraphOp);
@@ -309,7 +409,7 @@ function fnPopRegionGraphOp(data) {
         let chartData = {};
 
         chartData.name = region[i];
-        chartData.value = datas[i];
+        chartData.value = parseInt(datas[i]);
         dataList.push(chartData);
     }
     console.log(dataList)
@@ -341,7 +441,9 @@ function fnPopRegionGraphOp(data) {
                     label: {
                         fontSize: 10,
                         position: "inside",
-                        formatter: "{b}\n{c}",
+                        formatter: (params) => {
+                          return `${params.data.name}\n${params.data.value.toLocaleString("ko-KR")}`;
+                        },
                         lineHeight: 11,
                     },
                     breadcrumb: {
@@ -354,9 +456,9 @@ function fnPopRegionGraphOp(data) {
 //                            },
 //                        },
 //                    ],
-//                    itemStyle: {
-//                        gapWidth: 5,
-//                    },
+                    itemStyle: {
+                        gapWidth: 3,
+                    },
                     colorMappingBy: "value",
                 },
             ],
@@ -383,7 +485,7 @@ function fnCMHousingChartDom(data) {
     /* 차트 - 기준금리별 미분양주택 */
     const cmHousingChartDom = document.getElementById("cmHousingGraph");
     if (cmHousingChartDom) {
-        const cmHousingChart = echarts.init(cmHousingChartDom);
+        let cmHousingChart = echarts.init(cmHousingChartDom);
         let cmHousingGraphOp;
 
         // prettier-ignore
@@ -408,33 +510,13 @@ function fnCMHousingChartDom(data) {
                     },
                 ],
             },
-            dataZoom: [
-                {
-                    show: true,
-                    realtime: true,
-                    xAxisIndex: [0, 1],
-                    height: "85%",
-                    bottom: 5,
-                    right: 20,
-                    orient: "vertical",
-                },
-            ],
-            grid: [
-              {
-                containLabel: true,
-                top: 34,
-                left: 27,
-                right: "12%",
-                height: "34%",
-              },
-              {
-                containLabel: true,
-                left: 5,
-                right: "12%",
-                top: "55%",
-                height: "34%",
-              },
-            ],
+//            dataZoom: [
+//                {
+//                    show: true,
+//                    realtime: true,
+//                    xAxisIndex: [0, 1],
+//                },
+//            ],
             xAxis: [
               {
                 type: "category",
@@ -586,10 +668,140 @@ function fnCMHousingChartDom(data) {
             textStyle: {
                 fontFamily: "NanumSquare",
             },
+            media: [
+              // pc (xl)
+              {
+                query: {
+                  minWidth: 578.5,  // chart's parent container width, not window innerWidth
+                  minAspectRatio: 1,
+                },
+                option: {
+                  dataZoom: [
+                      {
+                        show: true,
+                        realtime: true,
+                        xAxisIndex: [0, 1],
+                        height: "85%",
+                        top: "middle",
+                        right: 10,
+                        orient: "vertical",
+                      },
+                  ],
+                  grid: [
+                    {
+                      containLabel: true,
+                      top: 34,
+                      left: 27,
+                      right: "12%",
+                      height: "34%",
+                    },
+                    {
+                      containLabel: true,
+                      left: 5,
+                      right: "12%",
+                      top: "55%",
+                      height: "34%",
+                    },
+                  ],
+                },
+              },
+              // laptop (lg)
+              {
+                query: {
+                  maxWidth: 578,
+                },
+                option: {
+                  dataZoom: [
+                      {
+                        show: true,
+                        realtime: true,
+                        xAxisIndex: [0, 1],
+                        width: "90%",
+                        top: "auto",
+                        bottom: 5,
+                        left: "center",
+                        orient: "horizontal",
+                      },
+                  ],
+                  grid: [
+                    {
+                      containLabel: true,
+                      top: 34,
+                      left: 27,
+                      right: "3%",
+                      height: "32%",
+                    },
+                    {
+                      containLabel: true,
+                      left: 5,
+                      right: "3%",
+                      top: "48%",
+                      height: "32%",
+                    },
+                  ],
+                }
+              },
+              // mobile (sm)
+              {
+                query: {
+                  maxWidth: 352,
+                },
+                option: {
+                  dataZoom: [
+                      {
+                        show: true,
+                        realtime: true,
+                        xAxisIndex: [0, 1],
+                        width: "100%",
+                        top: "auto",
+                        bottom: 5,
+                        left: "center",
+                        orient: "horizontal",
+                        height: 25,
+                      },
+                  ],
+                  grid: [
+                    {
+                      containLabel: true,
+                      top: 34,
+                      left: 27,
+                      right: "3%",
+                      height: "32%",
+                    },
+                    {
+                      containLabel: true,
+                      left: 5,
+                      right: "3%",
+                      top: "48%",
+                      height: "32%",
+                    },
+                  ],
+                }
+              },
+            ],
         };
         cmHousingGraphOp.series[0].data = cnsmrList;
         cmHousingGraphOp.series[1].data = unsoldList;
         cmHousingChart.setOption(cmHousingGraphOp);
+
+        /* 반응형 */
+        function cmHousingRpsv(height) {
+          echarts.dispose(cmHousingChart);
+          cmHousingChart = echarts.init(cmHousingChartDom, null, {height: height});
+          cmHousingChart.setOption(cmHousingGraphOp);
+        }
+        if (window.innerWidth <= 1280 && window.innerWidth > 650) {
+          cmHousingRpsv(304);
+        } else {
+          cmHousingRpsv(224);
+        }
+        window.addEventListener("resize", function(){
+          if (window.innerWidth <= 1280 && window.innerWidth > 650) {
+            cmHousingRpsv(304);
+          } else {
+            cmHousingRpsv(224);
+          }
+        })
     }
 }
 
@@ -618,11 +830,6 @@ function fnPopulationByGenderChartDom(data) {
                     return value.toLocaleString("ko-KR") + "명";
                 },
             },
-            legend: {
-                top: "center",
-                left: "right",
-                orient: "vertical",
-            },
             series: [
                 {
                     name: "",
@@ -639,6 +846,7 @@ function fnPopulationByGenderChartDom(data) {
                         formatter: "{b}\n {d}%",
                         position: "inside",
                         lineHeight: 16,
+                        color: "#fff",
                     },
                     emphasis: {
                         label: {
@@ -656,6 +864,63 @@ function fnPopulationByGenderChartDom(data) {
             textStyle: {
                 fontFamily: "NanumSquare",
             },
+            media: [
+              {
+                query: {
+                  minWidth: 347,
+                },
+                option: {
+                  series: [
+                    {
+                      center: ["50%", "57%"],
+                      radius: ["30%", "80%"],
+                    }
+                  ],
+                  legend: {
+                      top: "center",
+                      left: "right",
+                      orient: "vertical",
+                  },
+                }
+              },
+              {
+                query: {
+                  maxWidth: 346,
+                },
+                option: {
+                  series: [
+                    {
+                      center: ["50%", "55%"],
+                      radius: ["30%", "75%"],
+                    }
+                  ],
+                  legend: {
+                      top: "center",
+                      left: "right",
+                      orient: "vertical",
+                  },
+                }
+              },
+              {
+                query: {
+                  maxWidth: 320,
+                },
+                option: {
+                  series: [
+                    {
+                      center: ["50%", "50%"],
+                      radius: ["25%", "65%"],
+                    }
+                  ],
+                  legend: {
+                    orient: "horizontal",
+                    left: "center",
+                    bottom: 0,
+                    top: "auto",
+                  }
+                }
+              },
+            ],
         };
         ownerByGenderGraphOp.series[0].data = data
         ownerByGenderChart.setOption(ownerByGenderGraphOp);
@@ -665,81 +930,151 @@ function fnPopulationByGenderChartDom(data) {
 /* 차트 - 소유자 비율 (연령별) */
 function fnOwnerByAgeChartDom(data) {
     const ownerByAgeChartDom = document.getElementById("ownerByAgeGraph");
-    if (ownerByAgeChartDom) {
-        const ownerByAgeChart = echarts.init(ownerByAgeChartDom);
-        let ownerByAgeGraphOp;
+    const ownerByAgeChart = echarts.init(ownerByAgeChartDom);
+    let ownerByAgeGraphOp;
 
-        ownerByAgeGraphOp = {
-            color: [
-              "#1e70e7",
-              "#3ba272",
-              "#fac858",
-              "#ee6666",
-              "#fc8452",
-              "#5aa7de",
-              "#007a70",
-              "#7a8489",
-            ],
-            title: {
-                text: "연령별",
-                left: "center",
-                textStyle: {
-                    fontSize: 13,
-                },
+    ownerByAgeGraphOp = {
+        color: [
+          "#1e70e7",
+          "#3ba272",
+          "#fac858",
+          "#ee6666",
+          "#fc8452",
+          "#5aa7de",
+          "#007a70",
+          "#7a8489",
+        ],
+        title: {
+            text: "연령별",
+            left: "center",
+            textStyle: {
+                fontSize: 13,
             },
-            tooltip: {
-                trigger: "item",
-                valueFormatter: function (value) {
-                    return value.toLocaleString("ko-KR") + "명";
-                },
+        },
+        tooltip: {
+            trigger: "item",
+            valueFormatter: function (value) {
+                return value.toLocaleString("ko-KR") + "명";
             },
-            legend: {
-                top: "center",
-                left: "right",
-                orient: "vertical",
-                textStyle: {
-                  fontSize: 11,
-                },
-                itemGap: 4,
+        },
+        legend: {
+            top: "center",
+            left: "right",
+            orient: "vertical",
+            textStyle: {
+              fontSize: 11,
             },
-            series: [
-                {
-                    name: "",
-                    type: "pie",
-                    center: ["50%", "57%"],
-                    radius: ["30%", "80%"],
-                    avoidLabelOverlap: false,
-                    itemStyle: {
-                        borderRadius: 4,
-                        borderColor: "#fff",
-                        borderWidth: 2,
+            itemGap: 4,
+        },
+        series: [
+            {
+                name: "",
+                type: "pie",
+                center: ["50%", "57%"],
+                radius: ["30%", "80%"],
+                avoidLabelOverlap: false,
+                itemStyle: {
+                    borderRadius: 4,
+                    borderColor: "#fff",
+                    borderWidth: 2,
+                },
+                label: {
+                    show: true,
+                    formatter: "{b}\n {d}%",
+                    position: "inside",
+                    textStyle: {
+                      fontSize: 11,
                     },
+                    color: "#fff",
+                },
+                emphasis: {
                     label: {
                         show: true,
-                        formatter: "{b}\n {d}%",
-                        position: "inside",
-                        textStyle: {
-                          fontSize: 11,
-                        },
+                        fontSize: "14",
+                        fontWeight: "bold",
                     },
-                    emphasis: {
-                        label: {
-                            show: true,
-                            fontSize: "14",
-                            fontWeight: "bold",
-                        },
-                    },
-                    labelLine: {
-                        show: false,
-                    },
-                    data: [],
                 },
-            ],
-            textStyle: {
-                fontFamily: "NanumSquare",
+                labelLine: {
+                    show: false,
+                },
+                data: [],
             },
-        };
-        ownerByAgeGraphOp.series[0].data = data;
-        ownerByAgeChart.setOption(ownerByAgeGraphOp);
-    }
+        ],
+        textStyle: {
+            fontFamily: "NanumSquare",
+        },
+        media: [
+          {
+            query: {
+              minWidth: 347,
+            },
+            option: {
+              series: [
+                {
+                  center: ["50%", "57%"],
+                  radius: ["30%", "80%"],
+                  label: {
+                    formatter: "{b}\n {d}%",
+                    textStyle: {
+                      fontSize: 11,
+                    },
+                  },
+                }
+              ],
+            }
+          },
+          {
+            query: {
+              maxWidth: 346,
+            },
+            option: {
+              series: [
+                {
+                  center: ["50%", "55%"],
+                  radius: ["30%", "75%"],
+                }
+              ],
+              legend: {
+                  top: "center",
+                  left: "right",
+                  orient: "vertical",
+                  itemWidth: 26,
+                  itemHeight: 14,
+              },
+            }
+          },
+          {
+            query: {
+              maxWidth: 320,
+            },
+            option: {
+              title: {
+                padding: 0,
+              },
+              series: [
+                {
+                  center: ["50%", "45%"],
+                  radius: ["25%", "65%"],
+                  label: {
+                    formatter: "{d}%",
+                    textStyle: {
+                      fontSize: 10,
+                    },
+                  }
+                }
+              ],
+              legend: {
+                orient: "horizontal",
+                left: "center",
+                bottom: 0,
+                top: "auto",
+                itemWidth: 12,
+                itemHeight: 8,
+              },
+            }
+          },
+        ],
+    };
+    ownerByAgeGraphOp.series[0].data = data;
+    ownerByAgeChart.setOption(ownerByAgeGraphOp);
 }
