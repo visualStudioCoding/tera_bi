@@ -55,7 +55,7 @@ public class insight {
     ///스케쥴 - kospi 예측해서 db입력
     //@Scheduled(cron = "* * 4 * * *")
     //@Scheduled(cron = "0 * * * * *")
-    @Scheduled(cron = "* * 4 * * *")
+    //@Scheduled(cron = "* * 4 * * *")
     @GetMapping("/schedule/Kospi")
     public void insertKospi() throws Exception {
         try {
@@ -63,7 +63,8 @@ public class insight {
             commonService.deleteContents(null, PAGE_ID + PROGRAM_ID + ".deleteInsightKospi");
             //예측 실행 후 DB저장
             //ProcessBuilder pb = new ProcessBuilder("python","C:\\Users\\tera\\IdeaProjects\\tera_bi\\src\\main\\resources\\templates\\admin\\insight\\kospi.py");
-            ProcessBuilder pb = new ProcessBuilder("python","/home/terabi/py/kospi.py");
+            ProcessBuilder pb = new ProcessBuilder("python","C:\\Users\\tera\\IdeaProjects\\tera_bi\\src\\main\\java\\com\\teraenergy\\bisolution\\admin\\insight\\kospi.py");
+            //ProcessBuilder pb = new ProcessBuilder("python","/home/terabi/py/kospi.py");
             Process p = pb.start();
             BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream(), "utf-8"));
 
