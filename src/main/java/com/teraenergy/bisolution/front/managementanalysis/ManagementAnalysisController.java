@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -96,5 +98,209 @@ public class ManagementAnalysisController {
 
         return result;
     }
+    //      거래처별 매출 현황 Chart
+    @ResponseBody
+    @GetMapping("/api/getClientSales")
+    public Map<String, List<Map<String, Object>>> getClientSales(String parameter) throws Exception {
 
+        Map<String, String> params = new HashMap<>();
+
+        LocalDate now = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy");
+        String currentYear = now.format(formatter);
+
+        if (parameter.equals("0")) {
+            params.put("searchDate", "5");
+        } else {
+            if (parameter.contains("-")) {
+                parameter = parameter.replaceAll("[-]", "");
+                String[] periods = parameter.split("  ");
+
+                params.put("searchDate", periods[0].substring(0, 4));
+            } else {
+                params.put("searchDate", Integer.toString(Integer.parseInt(currentYear) - Integer.parseInt(parameter)));
+            }
+        }
+        List<Map<String, Object>> dataList = (List<Map<String, Object>>) commonService.selectList(params, PAGE_ID + PROGRAM_ID + ".selectClientSales");
+        List<Map<String, Object>> compareList = (List<Map<String, Object>>) commonService.selectList(params, PAGE_ID + PROGRAM_ID + ".selectClientSalesCompare");
+
+
+        List<Object> period = new ArrayList<>();
+        List<Object> clients = new ArrayList<>();
+        List<Object> datas = new ArrayList<>();
+        Map<String, Object> val = new HashMap<>();
+
+        List<List> graphData = new ArrayList<>();
+
+        for (int i = 0; i < dataList.size(); i++) {
+            if (period.size() == 0) {
+                period.add(dataList.get(i).get("yr_dt"));
+            } else if (period.get(i - 1) == dataList.get(i).get("yr_dt")) {
+                continue;
+            } else {
+                period.add(dataList.get(i).get("yr_dt"));
+            }
+        }
+        for (int i = 0; i < compareList.size(); i++) {
+            clients.add(compareList.get(i).get("cli_nm"));
+        }
+//        for (int i = 0; i < compareList.size(); i++) {
+//            List<Object> compareList.get(i).get("cli_nm") = new ArrayList<>();
+//
+//        }
+
+//        covidGrowth.add(tmpData);
+//
+        Map<String, List<Map<String, Object>>> result = new HashMap<>();
+//
+//        result.put("covidGrowth", covidGrowth);
+
+        return result;
+    }
+
+    //      재무제표 현황
+    @ResponseBody
+    @GetMapping("/api/getCapitalSales")
+    public Map<String, Object> getCapitalSales(String parameter) throws Exception {
+
+        Map<String, String> params = new HashMap<>();
+
+        LocalDate now = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy");
+        String currentYear = now.format(formatter);
+
+        if ("0".equals(parameter)) {
+            params.put("searchDate", Integer.toString(Integer.parseInt(currentYear) - 5));
+        } else {
+            if (parameter.contains("-")) {
+                parameter = parameter.replaceAll("[-]", "");
+                String[] periods = parameter.split("  ");
+
+                params.put("searchDate", periods[0].substring(0, 4));
+            } else {
+                params.put("searchDate", Integer.toString(Integer.parseInt(currentYear) - Integer.parseInt(parameter)));
+            }
+        }
+
+        List<Map<String, Object>> dataList = (List<Map<String, Object>>) commonService.selectList(params, PAGE_ID + PROGRAM_ID + ".selectCapitalAndSales");
+
+        List<Object> ttlAsset = new ArrayList<>();
+        List<Object> capital = new ArrayList<>();
+        List<Object> eqtyCptl = new ArrayList<>();
+        List<Object> crntLblts = new ArrayList<>();
+        List<Object> consulting = new ArrayList<>();
+        List<Object> sysdevPart = new ArrayList<>();
+        List<Object> smPart = new ArrayList<>();
+        List<Object> swPart = new ArrayList<>();
+        List<Object> totalSum = new ArrayList<>();
+        List<Object> period = new ArrayList<>();
+        Object unit = dataList.get(0).get("unit");
+
+        for (int i = 0; i < dataList.size(); i++) {
+            if (ttlAsset.size() == 0) {
+                ttlAsset.add("총자산");
+            }
+            if (capital.size() == 0) {
+                capital.add("자본금");
+            }
+            if (eqtyCptl.size() == 0) {
+                eqtyCptl.add("자기자본");
+            }
+            if (crntLblts.size() == 0) {
+                crntLblts.add("유동부채");
+            }
+            if (consulting.size() == 0) {
+                consulting.add("컨설팅");
+            }
+            if (sysdevPart.size() == 0) {
+                sysdevPart.add("시스템개발");
+            }
+            if (smPart.size() == 0) {
+                smPart.add("유지관리");
+            }
+            if (swPart.size() == 0) {
+                swPart.add("응용S/W");
+            }            if (totalSum.size() == 0) {
+                totalSum.add("총매출");
+            }
+
+            ttlAsset.add(dataList.get(i).get("ttl_asset"));
+            capital.add(dataList.get(i).get("capital"));
+            eqtyCptl.add(dataList.get(i).get("eqty_cptl"));
+            crntLblts.add(dataList.get(i).get("crnt_lblts"));
+            consulting.add(dataList.get(i).get("consulting"));
+            sysdevPart.add(dataList.get(i).get("sysdev_part"));
+            smPart.add(dataList.get(i).get("sm_part"));
+            swPart.add(dataList.get(i).get("sw_part"));
+            totalSum.add(dataList.get(i).get("total_sales"));
+            period.add(dataList.get(i).get("yr_dt"));
+        }
+
+        //
+        Map<String, Object> result = new HashMap<>();
+
+        result.put("ttlAsset", ttlAsset);
+        result.put("capital", capital);
+        result.put("eqtyCptl", eqtyCptl);
+        result.put("crntLblts", crntLblts);
+        result.put("consulting", consulting);
+        result.put("sysdevPart", sysdevPart);
+        result.put("smPart", smPart);
+        result.put("swPart", swPart);
+        result.put("totalSum", totalSum);
+        result.put("period", period);
+        result.put("unit", unit);
+
+        System.out.println(result);
+
+        return result;
+    }
+
+    //      근속년수 현황
+    @ResponseBody
+    @GetMapping("/api/getWorkYears")
+    public List<List<Object>> getWorkYears(String parameter) throws Exception {
+
+        Map<String, String> params = new HashMap<>();
+
+        LocalDate now = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy");
+        String currentYear = now.format(formatter);
+
+        if ("0".equals(parameter)) {
+            params.put("searchDate", Integer.toString(Integer.parseInt(currentYear) - 5));
+        } else {
+            if (parameter.contains("-")) {
+                parameter = parameter.replaceAll("[-]", "");
+                String[] periods = parameter.split("  ");
+
+                params.put("searchStartDate", periods[0].substring(0, 6));
+                params.put("searchEndDate", periods[1].substring(0, 6));
+            }else {
+                params.put("searchDate", Integer.toString(Integer.parseInt(currentYear) - Integer.parseInt(parameter)));
+            }
+        }
+
+        List<Map<String, Object>> dataList = (List<Map<String, Object>>) commonService.selectEmplyList(params, PAGE_ID + PROGRAM_ID + ".selectWorkYears");
+
+        List<List<Object>> graphData = new ArrayList<>();
+
+        for (int i = 0; i < dataList.size(); i++) {
+            List<Object> datas = new ArrayList<>();
+
+//            if(graphData.size() == 0){
+//                datas.add("amount");
+//                datas.add("period");
+//                graphData.add(datas);
+//            }
+            datas.add(dataList.get(i).get("years"));
+            datas.add(dataList.get(i).get("work_yr"));
+
+            graphData.add(datas);
+        }
+
+        System.out.println(graphData);
+
+        return graphData;
+    }
 }

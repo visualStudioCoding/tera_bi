@@ -5,6 +5,9 @@ window.onload = function () {
     getEmployeeStatus();
     getTechnicalList();
     getDepartmentList();
+    fnClientSales();
+    fnCapitalSales();
+    fnWorkYear();
 }
 // 사원현황
 function getEmployeeStatus(){
@@ -32,5 +35,53 @@ function getDepartmentList(){
     commonAjax("/front/managementAnalysis/api/getDepartment", callBackFn, "get", null, errorMsg);
 }
 
+// 거래처별 매출현황
+function fnClientSales() {
 
+    let period = $("input[name=term]:checked").val();
+
+    if (period === 'on') {
+        period = $("input[name=termDatePicker]").val();
+    }
+
+    let param = {parameter: period}
+    let callBackFn = function (data) {
+
+    }
+    commonAjax("/front/managementAnalysis/api/getClientSales", callBackFn, "get", param, errorMsg);
+}
+
+// 재무제표
+function fnCapitalSales() {
+
+    let period = $("input[name=term]:checked").val();
+
+    if (period === 'on') {
+        period = $("input[name=termDatePicker]").val();
+    }
+
+    let param = {parameter: period}
+    let callBackFn = function (data) {
+        console.log(data)
+        fnFinStateChartDom(data)
+    }
+    commonAjax("/front/managementAnalysis/api/getCapitalSales", callBackFn, "get", param, errorMsg);
+}
+
+// 근속년수 현황
+function fnWorkYear() {
+
+    let period = $("input[name=term]:checked").val();
+
+    if (period === 'on') {
+        period = $("input[name=termDatePicker]").val();
+    }
+
+    let param = {parameter: period}
+    let callBackFn = function (data) {
+        console.log(data)
+        fnWorkYearsChartDom(data)
+    }
+    commonAjax("/front/managementAnalysis/api/getWorkYears", callBackFn, "get", param, errorMsg);
+}
 

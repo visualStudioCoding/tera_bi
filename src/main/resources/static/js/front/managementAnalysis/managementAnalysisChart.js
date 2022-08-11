@@ -279,194 +279,227 @@ if (cstmSalesChartDom) {
   cstmSalesChart.setOption(cstmSalesGraphOp);
 }
 
-/* 재무제표 현황 */
-const finStateChartDom = document.getElementById("finStateGraph");
-if (finStateChartDom) {
-  const finStateChart = echarts.init(finStateChartDom);
-  let finStateGraphOp;
+function fnFinStateChartDom(data) {
+  /* 재무제표 현황 */
+  const finStateChartDom = document.getElementById("finStateGraph");
+  if (finStateChartDom) {
+    const finStateChart = echarts.init(finStateChartDom);
+    let finStateGraphOp;
 
-  finStateGraphOp = {
-    // color: [
-    //   "#1e70e7",
-    //   "#3ba272",
-    //   "#fac858",
-    //   "#ee6666",
-    //   "#5aa7de",
-    //   "#fc8452",
-    //   "#7780e4",
-    //   "#eb9ac9",
-    //   "#b2e26e",
-    //   "#007a70",
-    //   "#00b3a4",
-    //   "#7a8489",
-    //   "#bfc5c9",
-    //   "#294700",
-    // ],
-    tooltip: {
-      trigger: "axis",
-      axisPointer: {
-        type: "shadow",
+    finStateGraphOp = {
+      // color: [
+      //   "#1e70e7",
+      //   "#3ba272",
+      //   "#fac858",
+      //   "#ee6666",
+      //   "#5aa7de",
+      //   "#fc8452",
+      //   "#7780e4",
+      //   "#eb9ac9",
+      //   "#b2e26e",
+      //   "#007a70",
+      //   "#00b3a4",
+      //   "#7a8489",
+      //   "#bfc5c9",
+      //   "#294700",
+      // ],
+      tooltip: {
+        trigger: "axis",
+        axisPointer: {
+          type: "shadow",
+        },
       },
-    },
-    legend: {
-      top: "bottom",
-      left: "center",
+      legend: {
+        top: "bottom",
+        left: "center",
+        textStyle: {
+          fontSize: 11,
+        },
+        itemWidth: 14,
+        itemHeight: 10,
+        padding: 0,
+      },
+      grid: {
+        top: "12%",
+        left: "1%",
+        right: "4%",
+        bottom: "10%",
+        containLabel: true,
+      },
+      xAxis: [
+        {
+          type: "category",
+          data: [],
+        },
+      ],
+      yAxis: [
+        {
+          type: "value",
+          name: "단위: ",
+        },
+      ],
+      series: [
+        {
+          name: "",
+          type: "bar",
+          emphasis: {
+            focus: "series",
+          },
+          data: [],
+          barWidth: 16,
+          itemStyle: {
+            color: "#3ba272",
+          },
+        },
+        {
+          name: "",
+          type: "bar",
+          emphasis: {
+            focus: "series",
+          },
+          data: [],
+          barWidth: 16,
+          itemStyle: {
+            color: "#007a70",
+          },
+        },
+        {
+          name: "",
+          type: "bar",
+          emphasis: {
+            focus: "series",
+          },
+          data: [],
+          barWidth: 16,
+          itemStyle: {
+            color: "#b2e26e",
+          },
+        },
+        {
+          name: "",
+          type: "bar",
+          emphasis: {
+            focus: "series",
+          },
+          data: [],
+          barWidth: 16,
+          itemStyle: {
+            color: "#fac858",
+          },
+        },
+        {
+          name: "",
+          type: "bar",
+          stack: "sales",
+          data: [],
+          barWidth: 16,
+          emphasis: {
+            focus: "series",
+          },
+          itemStyle: {
+            color: "#7780e4",
+          },
+        },
+        {
+          name: "",
+          type: "bar",
+          stack: "sales",
+          emphasis: {
+            focus: "series",
+          },
+          data: [],
+          barWidth: 16,
+          itemStyle: {
+            color: "#ee6666",
+          },
+        },
+        {
+          name: "",
+          type: "bar",
+          stack: "sales",
+          emphasis: {
+            focus: "series",
+          },
+          data: [],
+          barWidth: 16,
+          itemStyle: {
+            color: "#5aa7de",
+          },
+        },
+        {
+          name: "",
+          type: "bar",
+          stack: "sales",
+          emphasis: {
+            focus: "series",
+          },
+          data: [],
+          barWidth: 16,
+          itemStyle: {
+            color: "#eb9ac9",
+          },
+        },
+        {
+          name: "",
+          type: "bar",
+          emphasis: {
+            focus: "series",
+          },
+          data: [],
+          barWidth: 16,
+          itemStyle: {
+            color: "#1e70e7",
+          },
+          markLine: {
+            lineStyle: {
+              type: "dashed",
+              color: "#424a54",
+            },
+            label: {
+              position: "insideEndTop",
+              fontSize: 10,
+            },
+            data: [[{type: "min"}, {type: "max"}]],
+          },
+        },
+      ],
       textStyle: {
-        fontSize: 11,
+        fontFamily: "NanumSquare",
       },
-      itemWidth: 14,
-      itemHeight: 10,
-      padding: 0,
-    },
-    grid: {
-      top: "12%",
-      left: "1%",
-      right: "4%",
-      bottom: "10%",
-      containLabel: true,
-    },
-    xAxis: [
-      {
-        type: "category",
-        data: ["2019", "2020", "2021", "2022"],
-      },
-    ],
-    yAxis: [
-      {
-        type: "value",
-        name: "단위: 만원",
-      },
-    ],
-    series: [
-      {
-        name: "총자산",
-        type: "bar",
-        emphasis: {
-          focus: "series",
-        },
-        data: [300000, 510000, 1200000, 1500000],
-        barWidth: 16,
-        itemStyle: {
-          color: "#3ba272",
-        },
-      },
-      {
-        name: "자본금",
-        type: "bar",
-        emphasis: {
-          focus: "series",
-        },
-        data: [10000, 10000, 30000, 50000],
-        barWidth: 16,
-        itemStyle: {
-          color: "#007a70",
-        },
-      },
-      {
-        name: "자기자본",
-        type: "bar",
-        emphasis: {
-          focus: "series",
-        },
-        data: [280000, 450000, 850000, 880000],
-        barWidth: 16,
-        itemStyle: {
-          color: "#b2e26e",
-        },
-      },
-      {
-        name: "유동부채",
-        type: "bar",
-        emphasis: {
-          focus: "series",
-        },
-        data: [20000, 120000, 250000, 300000],
-        barWidth: 16,
-        itemStyle: {
-          color: "#fac858",
-        },
-      },
-      {
-        name: "컨설팅",
-        type: "bar",
-        stack: "sales",
-        data: [25000, 15000, 20000, 40000],
-        barWidth: 16,
-        emphasis: {
-          focus: "series",
-        },
-        itemStyle: {
-          color: "#7780e4",
-        },
-      },
-      {
-        name: "시스템개발",
-        type: "bar",
-        stack: "sales",
-        emphasis: {
-          focus: "series",
-        },
-        data: [40000, 450000, 510000, 530000],
-        barWidth: 16,
-        itemStyle: {
-          color: "#ee6666",
-        },
-      },
-      {
-        name: "유지보수",
-        type: "bar",
-        stack: "sales",
-        emphasis: {
-          focus: "series",
-        },
-        data: [200000, 400000, 800000, 800000],
-        barWidth: 16,
-        itemStyle: {
-          color: "#5aa7de",
-        },
-      },
-      {
-        name: "응용S/W",
-        type: "bar",
-        stack: "sales",
-        emphasis: {
-          focus: "series",
-        },
-        data: [80000, 60000, 400000, 450000],
-        barWidth: 16,
-        itemStyle: {
-          color: "#eb9ac9",
-        },
-      },
-      {
-        name: "총매출액",
-        type: "bar",
-        emphasis: {
-          focus: "series",
-        },
-        data: [345000, 925000, 1730000, 1820000],
-        barWidth: 16,
-        itemStyle: {
-          color: "#1e70e7",
-        },
-        markLine: {
-          lineStyle: {
-            type: "dashed",
-            color: "#424a54",
-          },
-          label: {
-            position: "insideEndTop",
-            fontSize: 10,
-          },
-          data: [[{ type: "min" }, { type: "max" }]],
-        },
-      },
-    ],
-    textStyle: {
-      fontFamily: "NanumSquare",
-    },
-  };
-  finStateChart.setOption(finStateGraphOp);
+    };
+    finStateGraphOp.xAxis[0].data = data.period;
+    finStateGraphOp.yAxis[0].name += data.unit;
+
+    finStateGraphOp.series[0].name = data.ttlAsset[0];
+    finStateGraphOp.series[0].data = data.ttlAsset.splice(1);
+
+    finStateGraphOp.series[1].name = data.capital[0];
+    finStateGraphOp.series[1].data = data.capital.splice(1);
+
+    finStateGraphOp.series[2].name = data.eqtyCptl[0];
+    finStateGraphOp.series[2].data = data.eqtyCptl.splice(1);
+
+    finStateGraphOp.series[3].name = data.crntLblts[0];
+    finStateGraphOp.series[3].data = data.crntLblts.splice(1);
+
+    finStateGraphOp.series[4].name = data.consulting[0];
+    finStateGraphOp.series[4].data = data.consulting.splice(1);
+
+    finStateGraphOp.series[5].name = data.sysdevPart[0];
+    finStateGraphOp.series[5].data = data.sysdevPart.splice(1);
+
+    finStateGraphOp.series[6].name = data.smPart[0];
+    finStateGraphOp.series[6].data = data.smPart.splice(1);
+
+    finStateGraphOp.series[7].name = data.swPart[0];
+    finStateGraphOp.series[7].data = data.swPart.splice(1);
+
+    finStateGraphOp.series[8].name = data.totalSum[0];
+    finStateGraphOp.series[8].data = data.totalSum.splice(1);
+
+    finStateChart.setOption(finStateGraphOp);
+    finStateChart.setOption(finStateGraphOp);
+  }
 }
 
 /* 사원 현황 */
@@ -690,95 +723,98 @@ function fnDepartmentChart(data) {
   }
 }
 
-/* 차트 - 근속년수 현황 */
-const workYearsChartDom = document.getElementById("workYearsGraph");
-if (workYearsChartDom) {
-  const workYearsChart = echarts.init(workYearsChartDom);
-  let workYearsGraphOp;
-  let workYearsData = [
-    [3, "3개월이하"],
-    [10, "3개월이상"],
-    [25, "6개월이상"],
-    [8, "1년이상"],
-    [3, "2년이상"],
-    [4, "3년이상"],
-  ];
-  let workYears = [];
+function fnWorkYearsChartDom(data) {
+  /* 차트 - 근속년수 현황 */
+  const workYearsChartDom = document.getElementById("workYearsGraph");
+  if (workYearsChartDom) {
+    const workYearsChart = echarts.init(workYearsChartDom);
+    let workYearsGraphOp;
+    let workYearsData = [
+      [3, "3개월이하"],
+      [10, "3개월이상"],
+      [25, "6개월이상"],
+      [8, "1년이상"],
+      [3, "2년이상"],
+      [4, "3년이상"],
+    ];
+    let workYears = [];
 
-  workYearsData.forEach((data) => {
-    workYears.push(data[0]);
-    dataMax = Math.max.apply(null, workYears);
-    return dataMax;
-  });
+    workYearsData.forEach((data) => {
+      workYears.push(data[0]);
+      dataMax = Math.max.apply(null, workYears);
+      return dataMax;
+    });
 
-  workYearsGraphOp = {
-    tooltip: {
-      trigger: "axis",
-      axisPointer: {
-        type: "line",
-      },
-    },
-    dataset: {
-      source: [
-        ["amount", "period"],
-        [3, "3개월이하"],
-        [10, "3개월이상"],
-        [25, "6개월이상"],
-        [8, "1년이상"],
-        [3, "2년이상"],
-        [4, "3년이상"],
-      ],
-    },
-    grid: { containLabel: true, left: 2, right: 10, bottom: 0, top: "32%" },
-    yAxis: { name: "단위: 명" },
-    xAxis: {
-      type: "category",
-      axisLabel: {
-        interval: 0,
-        fontSize: 10,
-      },
-    },
-    visualMap: {
-      show: true,
-      type: "continuous",
-      orient: "horizontal",
-      top: 0,
-      left: "center",
-      padding: 0,
-      text: ["max", "min"],
-      min: 0,
-      max: dataMax,
-      itemHeight: "100%",
-      itemWidth: "14%",
-      dimension: 0,
-      textStyle: {
-        fontSize: 11,
-      },
-      inRange: {
-        color: ["#626d7c", "#8ab5f2", "#1e70e7"],
-      },
-    },
-    series: [
-      {
-        type: "bar",
-        encode: {
-          x: "period",
-          y: "amount",
+    workYearsGraphOp = {
+      tooltip: {
+        trigger: "axis",
+        axisPointer: {
+          type: "line",
         },
-        barWidth: 16,
-        label: {
-          show: true,
-          position: "top",
-          distance: 12,
-          align: "center",
-          verticalAlign: "top",
+      },
+      dataset: {
+        source: [
+          // ["amount", "period"],
+          // [3, "3개월이하"],
+          // [10, "3개월이상"],
+          // [25, "6개월이상"],
+          // [8, "1년이상"],
+          // [3, "2년이상"],
+          // [4, "3년이상"],
+        ],
+      },
+      grid: {containLabel: true, left: 2, right: 10, bottom: 0, top: "32%"},
+      yAxis: {name: "단위: 명"},
+      xAxis: {
+        type: "category",
+        axisLabel: {
+          interval: 0,
           fontSize: 10,
         },
       },
-    ],
-    textStyle: {
-      fontFamily: "NanumSquare",
-    },
-  };
-  workYearsChart.setOption(workYearsGraphOp);
+      visualMap: {
+        show: true,
+        type: "continuous",
+        orient: "horizontal",
+        top: 0,
+        left: "center",
+        padding: 0,
+        text: ["max", "min"],
+        min: 0,
+        max: 10,
+        itemHeight: "100%",
+        itemWidth: "14%",
+        dimension: 0,
+        textStyle: {
+          fontSize: 11,
+        },
+        inRange: {
+          color: ["#626d7c", "#8ab5f2", "#1e70e7"],
+        },
+      },
+      series: [
+        {
+          type: "bar",
+          encode: {
+            x: "period",
+            y: "amount",
+          },
+          barWidth: 16,
+          label: {
+            show: true,
+            position: "top",
+            distance: 12,
+            align: "center",
+            verticalAlign: "top",
+            fontSize: 10,
+          },
+        },
+      ],
+      textStyle: {
+        fontFamily: "NanumSquare",
+      },
+    };
+    workYearsGraphOp.dataset.source = data
+    workYearsChart.setOption(workYearsGraphOp);
+  }
 }
