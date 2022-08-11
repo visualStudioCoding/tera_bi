@@ -46,46 +46,69 @@ window.addEventListener("load", function() {
   }
 
   /******************** 공통 *********************/
-  // function countAnimation() {
+  /* 다크모드 */
+  $("#darkModeBtn").one("click", function() {
+    alert("준비중입니다.")
+  })
+
   /* 초기 화면 진입 시, 숫자 카운트 애니메이션 (0 이상의 정수) */
-  /* 적용하고 싶은 텍스트에 'count-ani' 클래스 추가하면 됨 */
-      const count = document.querySelectorAll(".count-ani");
+  /* 적용하고 싶은 텍스트에 'count-ani' 클래스 추가 */
+  const count = document.querySelectorAll(".count-ani");
 
-      count.forEach((cnt) => {
-          let endNum = parseFloat(cnt.textContent.replace(",", ""));
-          let now = endNum;
+  count.forEach((cnt) => {
+    let endNum = parseFloat(cnt.textContent.replaceAll(",", ""));
+    let now = endNum;
 
-          let counter = setInterval(() => {
-              cnt.textContent = Math.ceil(endNum - now).toLocaleString("ko-KR");
+    const counter = setInterval(() => {
+      cnt.textContent = Math.ceil(endNum - now).toLocaleString("ko-KR");
 
-              // 카운트 증가 애니메이션
-              if (now < 1) {
-                  clearInterval(counter);
-              }
-              const step = now / 10;
-              now -= step;
-          }, 30);
-      });
+      // 카운트 증가 애니메이션
+      if (now < 1) {
+        clearInterval(counter);
+      }
+      const step = now / 10;
+      now -= step;
+    }, 30);
+  });
 
-      /* 초기 화면 진입 시, 숫자 카운트 애니메이션 (소수점 2자리 실수 + %) */
-      /* 적용하고 싶은 텍스트에 'count-ani-per' 클래스 추가하면 됨 */
-      const countFloat = document.querySelectorAll(".count-ani-per");
-      countFloat.forEach((cnt) => {
-          let endNum = parseFloat(cnt.textContent.replace(",", ""));
+  /* 초기 화면 진입 시, 숫자 카운트 애니메이션 (소수점 n자리 실수 + %) */
+  /* 적용하고 싶은 텍스트에 'count-ani-per' 클래스 추가 */
+  const countFloat = document.querySelectorAll(".count-ani-per");
 
-          let now = endNum;
-          let counter = setInterval(() => {
-              cnt.textContent = (Math.ceil((endNum - now) * 100) / 100 + 1).toLocaleString("ko-KR", { minimumFractionDigits: 2 }); // 데이터 오차 없애기 위해 +1 처리
+  countFloat.forEach((cnt) => {
+    let endNum = parseFloat(cnt.textContent.replaceAll(",", ""));
+    let now = endNum;
+    const digit = cnt.getAttribute("data-digit");
+    const numLength = cnt.textContent.length; // 숫자 총 길이 구하기
 
-              // 카운트 증가 애니메이션
-              if (now < 1) {
-                  clearInterval(counter);
-              }
-              const step = now / 100 - 0.01; // 데이터 오차 없애기 위해 -0.01 처리
-              now -= step;
-          }, 1);
-      });
-  // }
+    if (numLength >= 4) {
+      // 소수점 포함, 숫자 글자수 4개 이상부터 카운트 속도 증가
+      let dur = 50; // 속도
+      let dec = 0.02; // 데이터 오차 조절
+      setInterval(counter, 1, dur, dec);
+    } else {
+      let dur = 100;
+      let dec = 0.01;
+      setInterval(counter, 1, dur, dec);
+    }
+
+    // 카운트 증가 애니메이션
+    function counter(dur, dec) {
+      cnt.textContent = (
+        Math.ceil((endNum - now) * 100) / 100 +
+        1
+      ).toLocaleString("ko-KR", {
+        minimumFractionDigits: digit,
+        maximumFractionDigits: digit,
+      }); // 데이터 오차 없애기 위해 +1 처리
+
+      if (now < 1) {
+        clearInterval(counter);
+      }
+      const step = now / dur - dec;
+      now -= step;
+    }
+  });
 
   /* 사이드바 토글 버튼 */
   const sideBar = document.querySelector(".side-bar");
