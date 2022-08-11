@@ -214,6 +214,5 @@
 <#include "*/common/front/footer.ftl">
 <!-- /푸터 끝 -->
 </body>
-
 <script src="/js/front/managementAnalysis/managementAnalysis.js"></script>
 <script src="/js/front/managementAnalysis/managementAnalysisChart.js"></script>
