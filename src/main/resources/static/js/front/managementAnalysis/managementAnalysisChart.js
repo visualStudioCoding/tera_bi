@@ -554,54 +554,50 @@ if (techHoldChartDom) {
   let techHoldGraphOp;
 
   techHoldGraphOp = {
-    title: {
-      subtext: "단위: 명",
-      left: "center",
-      top: "bottom",
-      padding: 10,
+    radar: {
+      indicator: [
+        { name: '초급기술자', color: "#424a54" },
+        { name: '중급기술자', color: "#424a54" },
+        { name: '고급기술자', color: "#424a54" },
+        { name: '특급기술자', color: "#424a54" },
+      ],
+      axisName: {
+        fontSize: 11,
+      },
+      radius: "72%",
     },
-    tooltip: {
-      trigger: "item",
-      formatter: "{a} <br/>{b}: {c} ({d}%)",
-    },
-    color: [
-      "#1e70e7",
-      "#3ba272",
-      "#fac858",
-      "#ee6666",
-      "#5aa7de",
-      "#fc8452",
-      "#7780e4",
-      "#eb9ac9",
-      "#b2e26e",
-      "#007a70",
-      "#00b3a4",
-      "#7a8489",
-      "#bfc5c9",
-      "#294700",
-    ],
+    tooltip: {},
     series: [
       {
-        name: "등급",
-        type: "pie",
-        selectedMode: "single",
-        radius: "80%",
-        center: ["50%", "45%"],
+        name: '기술자 보유 현황',
+        type: 'radar',
         label: {
-          position: "inner",
-          fontSize: 10,
-          color: "#fff",
+          show: true,
         },
-        labelLine: {
-          show: false,
+        symbol: "circle",
+        symbolSize: 4,
+        areaStyle: {
+          color: new echarts.graphic.LinearGradient(1, 1, 0, 0, [
+            {
+              offset: 0,
+              color: "rgba(30,112,231,1)",
+            },
+            {
+              offset: 1,
+              color: "rgba(255,255,255,0.5)",
+            },
+          ]),
+        },
+        itemStyle: {
+          color: "#1e70e7"
         },
         data: [
-          { value: 20, name: "초급기술자" },
-          { value: 3, name: "중급기술자" },
-          { value: 11, name: "고급기술자" },
-          { value: 7, name: "특급기술자" },
-        ],
-      },
+          {
+            value: [20, 11, 7, 3],
+            name: ''
+          },
+        ]
+      }
     ],
     textStyle: {
       fontFamily: "NanumSquare",
