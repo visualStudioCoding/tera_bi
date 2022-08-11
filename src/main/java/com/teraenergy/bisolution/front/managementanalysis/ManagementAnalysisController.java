@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,11 +44,57 @@ public class ManagementAnalysisController {
 
     @ResponseBody
     @GetMapping("/api/getEmployeeStatus")
-    public List<Object> employeeStatus(@RequestParam Map<String, Object> paramMap, Model model) throws Exception {
+    public Map<String, List<Object>> employeeStatus(@RequestParam Map<String, Object> paramMap, Model model) throws Exception {
 
-        commonService.selectEmplyList(null, PAGE_ID + PROGRAM_ID + ".selectEmployeeStatusList");
+        List<Map<String, Object>> dataList = (List<Map<String, Object>>) commonService.selectEmplyList(null, PAGE_ID + PROGRAM_ID + ".selectEmployeeStatusList");
 
-        List<Object> result = new ArrayList<>();
+        Map<String, List<Object>> result = new HashMap<>();
+        List<Object> deptList = new ArrayList<>();
+        List<Object> workList = new ArrayList<>();
+        for (Map<String, Object> dataMap : dataList) {
+            Map<String, Object> dept = new HashMap<>();
+            Map<String, Object> work = new HashMap<>();
+            String type = (String) dataMap.get("type");
+            if("dept".equals(type)){
+                dept.put("value", dataMap.get("value"));
+                dept.put("name", dataMap.get("name").toString());
+                deptList.add(dept);
+            } else {
+                work.put("value", dataMap.get("value"));
+                work.put("name", dataMap.get("name").toString());
+                workList.add(work);
+            }
+
+        }
+        result.put("deptList",deptList);
+        result.put("workList",workList);
+
         return result;
     }
+
+    @ResponseBody
+    @GetMapping("/api/getDepartment")
+    public Map<String, List<Map<String, Object>>> departmentList() throws Exception {
+
+        List<Map<String, Object>> departmentList = (List<Map<String, Object>>) commonService.selectEmplyList(null, PAGE_ID + PROGRAM_ID + ".selectDeptList");
+
+        Map<String, List<Map<String, Object>>> result = new HashMap<>();
+
+        result.put("departmentList", departmentList);
+
+        return result;
+    }
+    @ResponseBody
+    @GetMapping("/api/getTechnical")
+    public Map<String, List<Map<String, Object>>> technicalList() throws Exception {
+
+        List<Map<String, Object>> technicalList = (List<Map<String, Object>>) commonService.selectEmplyList(null, PAGE_ID + PROGRAM_ID + ".selectTechnicalList");
+
+        Map<String, List<Map<String, Object>>> result = new HashMap<>();
+
+        result.put("technicalList", technicalList);
+
+        return result;
+    }
+
 }
