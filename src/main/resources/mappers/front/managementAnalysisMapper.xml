@@ -182,4 +182,86 @@
             WHERE dept_id NOT IN ('10200000011', '10200000012') AND NOT id = '10100000001' AND NOT wrk_type = '010404'
             GROUP BY tchLv
     </select>
+
+    <select id="selectClientSales" parameterType="hashMap" resultType="hashMap">
+        SELECT yr_dt, cli_nm, suply_val, unit
+        FROM client_sales
+        WHERE yr_dt BETWEEN #{searchDate} AND (SELECT yr_dt FROM client_sales ORDER BY yr_dt DESC LIMIT 1)
+    </select>
+
+    <select id="selectClientSalesCompare" parameterType="hashMap" resultType="hashMap">
+        SELECT DISTINCT cli_nm
+        FROM client_sales
+    </select>
+
+    <select id="selectCapitalAndSalesPeriod" parameterType="hashMap" resultType="hashMap">
+        SELECT a.yr_dt,
+               ROUND((a.ttl_asset / 10000), 0)   as ttl_asset,
+               ROUND((a.capital / 10000), 0)     AS capital,
+               ROUND((a.eqty_cptl / 10000), 0)   AS eqty_cptl,
+               ROUND((a.crnt_lblts / 10000), 0)  AS crnt_lblts,
+               ROUND((b.consulting / 10000), 0)  AS consulting,
+               ROUND((b.sysdev_part / 10000), 0) AS sysdev_part,
+               ROUND((b.sm_part / 10000), 0)     AS sm_part,
+               ROUND((b.sw_part / 10000), 0)     AS sw_part,
+               ROUND((b.total_sales / 10000), 0) AS total_sales,
+               '만원'                              AS unit
+        FROM capital AS a,
+             sales AS b
+        WHERE a.yr_dt = b.yr_dt
+          AND a.yr_dt BETWEEN #{searchStartDate} AND #{searchEndDate}
+    </select>
+
+    <select id="selectCapitalAndSales" parameterType="hashMap" resultType="hashMap">
+        SELECT a.yr_dt,
+               ROUND((a.ttl_asset / 10000), 0)   as ttl_asset,
+               ROUND((a.capital / 10000), 0)     AS capital,
+               ROUND((a.eqty_cptl / 10000), 0)   AS eqty_cptl,
+               ROUND((a.crnt_lblts / 10000), 0)  AS crnt_lblts,
+               ROUND((b.consulting / 10000), 0)  AS consulting,
+               ROUND((b.sysdev_part / 10000), 0) AS sysdev_part,
+               ROUND((b.sm_part / 10000), 0)     AS sm_part,
+               ROUND((b.sw_part / 10000), 0)     AS sw_part,
+               ROUND((b.total_sales / 10000), 0) AS total_sales,
+               '만원'                              AS unit
+        FROM capital AS a,
+             sales AS b
+        WHERE a.yr_dt = b.yr_dt
+          AND a.yr_dt BETWEEN #{searchDate} AND (SELECT yr_dt FROM capital ORDER BY yr_dt DESC LIMIT 1)
+    </select>
+
+    <select id="selectWorkYears" parameterType="hashMap" resultType="hashMap">
+        select case
+                   when timestampdiff(month, emply_dt, date_format(now(), '%Y-%m-%d'))<![CDATA[ <]]> 3 then '3개월이하'
+                   when 3 <![CDATA[<=]]> timestampdiff(month, emply_dt, date_format(now(), '%Y-%m-%d')) and
+                        timestampdiff(month, emply_dt, date_format(now(), '%Y-%m-%d'))<![CDATA[ <]]> 6 then '3개월이상'
+                   when 6 <![CDATA[<=]]> timestampdiff(month, emply_dt, date_format(now(), '%Y-%m-%d')) and
+                        timestampdiff(month, emply_dt, date_format(now(), '%Y-%m-%d'))<![CDATA[ <]]> 12 then '6개월이상'
+                   when 12 <![CDATA[<=]]> timestampdiff(month, emply_dt, date_format(now(), '%Y-%m-%d')) and
+                        timestampdiff(month, emply_dt, date_format(now(), '%Y-%m-%d'))<![CDATA[ <]]> 24 then '1년이상'
+                   when 24 <![CDATA[<=]]> timestampdiff(month, emply_dt, date_format(now(), '%Y-%m-%d')) and
+                        timestampdiff(month, emply_dt, date_format(now(), '%Y-%m-%d'))<![CDATA[ <]]> 36 then '2년이상'
+                   when timestampdiff(month, emply_dt, date_format(now(), '%Y-%m-%d')) <![CDATA[>=]]> 36 then '3년이상'
+                   end  as years,
+               count(case
+                         when timestampdiff(month, emply_dt, date_format(now(), '%Y-%m-%d'))<![CDATA[ <]]> 3
+                             then '3개월이하'
+                         when 3 <![CDATA[<=]]> timestampdiff(month, emply_dt, date_format(now(), '%Y-%m-%d')) and
+                              timestampdiff(month, emply_dt, date_format(now(), '%Y-%m-%d'))<![CDATA[ <]]> 6
+                             then '3개월이상'
+                         when 6 <![CDATA[<=]]> timestampdiff(month, emply_dt, date_format(now(), '%Y-%m-%d')) and
+                              timestampdiff(month, emply_dt, date_format(now(), '%Y-%m-%d'))<![CDATA[ <]]> 12
+                             then '6개월이상'
+                         when 12 <![CDATA[<=]]> timestampdiff(month, emply_dt, date_format(now(), '%Y-%m-%d')) and
+                              timestampdiff(month, emply_dt, date_format(now(), '%Y-%m-%d'))<![CDATA[ <]]> 24
+                             then '1년이상'
+                         when 24 <![CDATA[<=]]> timestampdiff(month, emply_dt, date_format(now(), '%Y-%m-%d')) and
+                              timestampdiff(month, emply_dt, date_format(now(), '%Y-%m-%d'))<![CDATA[ <]]> 36
+                             then '2년이상'
+                         when timestampdiff(month, emply_dt, date_format(now(), '%Y-%m-%d')) <![CDATA[>=]]> 36 then '3년이상'
+                   end) as work_yr
+        from v_user_info
+        where emply_dt is not null
+        group by years order by field(years, '3개월이하', '3개월이상', '6개월이상', '1년이상', '2년이상')
+    </select>
 </mapper>

@@ -5,7 +5,7 @@
 
 <!-- 본문 시작 -->
 <div class="contents">
-    <div class="inner manage-analysis">
+  <div class="inner manage-analysis">
     <div class="col side-bar on">
       <!--
       <button type="button" class="side-toggle-btn">
@@ -80,8 +80,8 @@
                   <h5 class="count-ani up plus" data-unit="만원">50,000</h5>
                 </div>
                 <div
-                  id="plAchvRateGraph"
-                  style="width: 100%; height: 112px"
+                        id="plAchvRateGraph"
+                        style="width: 100%; height: 112px"
                 ></div>
               </div>
               <div class="right" style="width: 45%">
@@ -99,8 +99,8 @@
                   </div>
                 </div>
                 <div
-                  id="slAchvRateGraph"
-                  style="width: 100%; height: 112px"
+                        id="slAchvRateGraph"
+                        style="width: 100%; height: 112px"
                 ></div>
               </div>
             </div>
@@ -112,8 +112,8 @@
           </div>
           <div class="cont">
             <div
-              id="cstmSalesGraph"
-              style="width: 100%; height: 242px"
+                    id="cstmSalesGraph"
+                    style="width: 100%; height: 242px"
             ></div>
           </div>
         </div>
@@ -123,8 +123,8 @@
           </div>
           <div class="cont">
             <div
-              id="finStateGraph"
-              style="width: 100%; height: 240px"
+                    id="finStateGraph"
+                    style="width: 100%; height: 240px"
             ></div>
           </div>
         </div>
@@ -184,8 +184,8 @@
           <div class="cont">
             <div class="graph-wrap">
               <div
-                id="deptMpGraph"
-                style="width: 100%; height: 192px"
+                      id="deptMpGraph"
+                      style="width: 100%; height: 192px"
               ></div>
             </div>
           </div>
@@ -199,15 +199,15 @@
               <i class="ri-information-fill"></i> 해당년도 자료입니다.
             </p>
             <div
-              id="workYearsGraph"
-              style="width: 100%; height: 162px"
+                    id="workYearsGraph"
+                    style="width: 100%; height: 162px"
             ></div>
           </div>
         </div>
       </div>
     </div>
-    </div>
-    </div>
+  </div>
+</div>
 <!-- /본문 끝 -->
 
 <!-- 푸터 시작 -->
