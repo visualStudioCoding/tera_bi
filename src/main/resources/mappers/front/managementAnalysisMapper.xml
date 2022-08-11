@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="bi.front.ManagementAnalysis">
+    <!--총인원-->
     <select id="selectEmployeeCount" resultType="hashmap">
         SELECT COUNT(*) AS totalCnt
              , (
@@ -69,22 +70,23 @@
             FROM v_user_info
             WHERE wrk_type IN ('010402', '010403') AND NOT id = '10100000001' AND NOT dept_id = '10200000011'
     </select>
+    <!--사원현황-->
     <select id="selectEmployeeStatusList" resultType="hashmap">
-        SELECT COUNT(*) AS value, '본사' AS name
+        SELECT COUNT(*) AS value, '본사' AS name, 'dept' AS type
             FROM v_user_info
             WHERE wrk_plc = '010301'
               AND wrk_type IN ('010402', '010403')
               AND NOT id = '10100000001'
               AND NOT dept_id = '10200000011'
         UNION ALL
-        SELECT COUNT(*) AS value, '재택' AS name
+        SELECT COUNT(*) AS value, '재택' AS name, 'work' AS type
             FROM v_user_info
             WHERE wrk_plc = '010304'
               AND wrk_type IN ('010402', '010403')
               AND NOT id = '10100000001'
               AND NOT dept_id = '10200000011'
         UNION ALL
-        SELECT COUNT(*) AS value, '한전KDN' AS name
+        SELECT COUNT(*) AS value, '한전KDN' AS name, 'work' AS type
             FROM v_user_info
             WHERE wrk_plc IN ('010303', '010302')
               AND wrk_type IN ('010402', '010403')
@@ -92,7 +94,7 @@
               AND NOT dept_id = '10200000011'
               AND dept_id = '10200000007'
         UNION ALL
-        SELECT COUNT(*) AS value, '대전KDN' AS name
+        SELECT COUNT(*) AS value, '대전KDN' AS name, 'work' AS type
             FROM v_user_info
             WHERE wrk_plc IN ('010303', '010302')
               AND wrk_type IN ('010402', '010403')
@@ -100,7 +102,7 @@
               AND NOT dept_id = '10200000011'
               AND dept_id = '10200000009'
         UNION ALL
-        SELECT COUNT(*) AS value, '우정사업정보센터' AS name
+        SELECT COUNT(*) AS value, '우정사업정보센터' AS name, 'work' AS type
             FROM v_user_info
             WHERE wrk_plc IN ('010303', '010302')
               AND wrk_type IN ('010402', '010403')
@@ -108,7 +110,7 @@
               AND NOT dept_id = '10200000011'
               AND dept_id = '10200000005'
         UNION ALL
-        SELECT COUNT(*) AS value, 'KPX' AS name
+        SELECT COUNT(*) AS value, 'KPX' AS name, 'work' AS type
             FROM v_user_info
             WHERE wrk_plc IN ('010303', '010302')
               AND wrk_type IN ('010402', '010403')
@@ -116,31 +118,68 @@
               AND NOT dept_id = '10200000011'
               AND dept_id = '10200000008'
         UNION ALL
-        SELECT COUNT(*) AS value, '프리랜서' AS name
+        SELECT COUNT(*) AS value, '프리랜서' AS name, 'dept' AS type
             FROM v_user_info
             WHERE wrk_plc IN ('010301', '010302', '010303', '010304')
               AND wrk_type = '010403'
               AND NOT id = '10100000001'
         UNION ALL
-        SELECT COUNT(*) AS value, '디자인' AS name
+        SELECT COUNT(*) AS value, '디자인' AS name, 'dept' AS type
             FROM v_user_info
             WHERE wrk_plc IN ('010301', '010302', '010303', '010304')
               AND wrk_type = '010402'
               AND NOT id = '10100000001'
               AND dept_id = '10200000006'
         UNION ALL
-        SELECT COUNT(*) AS value, '개발' AS name
+        SELECT COUNT(*) AS value, '개발' AS name, 'dept' AS type
             FROM v_user_info
             WHERE wrk_plc IN ('010301', '010302', '010303', '010304')
               AND wrk_type = '010402'
               AND NOT id = '10100000001'
               AND dept_id IN ('10200000007', '10200000005', '10200000008', '10200000009')
         UNION ALL
-        SELECT COUNT(*) AS value, '경영' AS name
+        SELECT COUNT(*) AS value, '경영' AS name, 'dept' AS type
             FROM v_user_info
             WHERE wrk_plc IN ('010301', '010302', '010303', '010304')
               AND wrk_type = '010402'
               AND NOT id = '10100000001'
               AND dept_id IN ('10200000002', '10200000003', '10200000004')
+    </select>
+    <!--부서별 인원 현황-->
+    <select id="selectDeptList" resultType="hashmap">
+        SELECT COUNT(CASE
+                         WHEN dept_id = '10200000002' THEN dept_nm
+                         WHEN dept_id = '10200000003' THEN dept_nm
+                         WHEN dept_id = '10200000004' THEN dept_nm
+                         WHEN dept_id = '10200000005' THEN dept_nm
+                         WHEN dept_id = '10200000006' THEN dept_nm
+                         WHEN dept_id = '10200000007' THEN dept_nm
+                         WHEN dept_id = '10200000008' THEN dept_nm
+                         WHEN dept_id = '10200000009' THEN dept_nm
+                     END) AS deptCnt
+             , dept_nm    AS deptNm
+            FROM v_user_info
+            WHERE dept_id NOT IN ('10200000011', '10200000012') AND NOT id = '10100000001'
+            GROUP BY deptNm
+    </select>
+    <!--기술자 보유 현황-->
+    <select id="selectTechnicalList" resultType="hashmap">
+        SELECT COUNT(CASE
+                         WHEN tch_lv = '' OR tch_lv IS NULL THEN '미등록'
+                         WHEN tch_lv = '초급' THEN tch_lv
+                         WHEN tch_lv = '중급' THEN tch_lv
+                         WHEN tch_lv = '고급' THEN tch_lv
+                         WHEN tch_lv = '특급' THEN tch_lv
+                     END) AS tchCnt
+             , CASE
+                   WHEN tch_lv = '' OR tch_lv IS NULL THEN '미등록'
+                   WHEN tch_lv = '초급' THEN tch_lv
+                   WHEN tch_lv = '중급' THEN tch_lv
+                   WHEN tch_lv = '고급' THEN tch_lv
+                   WHEN tch_lv = '특급' THEN tch_lv
+               END        AS tchLv
+            FROM v_user_info
+            WHERE dept_id NOT IN ('10200000011', '10200000012') AND NOT id = '10100000001' AND NOT wrk_type = '010404'
+            GROUP BY tchLv
     </select>
 </mapper>

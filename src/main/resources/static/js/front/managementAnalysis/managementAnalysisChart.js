@@ -470,259 +470,224 @@ if (finStateChartDom) {
 }
 
 /* 사원 현황 */
-const manPowerChartDom = document.getElementById("manPowerGraph");
-if (manPowerChartDom) {
-  const manPowerChart = echarts.init(manPowerChartDom);
-  let manPowerGraphOp;
+function fnEmployeeStatusChart(data) {
+  const manPowerChartDom = document.getElementById("manPowerGraph");
+  if (manPowerChartDom) {
+    const manPowerChart = echarts.init(manPowerChartDom);
+    let manPowerGraphOp;
 
-  manPowerGraphOp = {
-    title: {
-      subtext: "단위: 명",
-      left: "center",
-      top: "bottom",
-      padding: 10,
-    },
-    tooltip: {
-      trigger: "item",
-      formatter: "{a} <br/>{b}: {c} ({d}%)",
-    },
-    color: [
-      "#1e70e7",
-      "#3ba272",
-      "#fac858",
-      "#ee6666",
-      "#5aa7de",
-      "#fc8452",
-      "#7780e4",
-      "#eb9ac9",
-      "#b2e26e",
-      "#007a70",
-      "#00b3a4",
-      "#7a8489",
-      "#bfc5c9",
-      "#294700",
-    ],
-    series: [
-      {
-        name: "부서",
-        type: "pie",
-        selectedMode: "single",
-        radius: [0, "50%"],
-        center: ["50%", "45%"],
-        label: {
-          position: "inner",
-          fontSize: 10,
-          color: "#fff",
-        },
-        labelLine: {
-          show: false,
-        },
-        data: [
-          { value: 20, name: "개발" },
-          { value: 3, name: "프리랜서" },
-          { value: 11, name: "디자인" },
-          { value: 7, name: "경영" },
-          { value: 5, name: "게임" },
-        ],
+    manPowerGraphOp = {
+      title: {
+        subtext: "단위: 명",
+        left: "center",
+        top: "bottom",
+        padding: 10,
       },
-      {
-        name: "근무지",
-        type: "pie",
-        radius: ["65%", "80%"],
-        center: ["50%", "45%"],
-        data: [
-          { value: 26, name: "본사" },
-          { value: 15, name: "한전KDN" },
-          { value: 2, name: "농어촌공사" },
-          { value: 4, name: "우정사업본부" },
-          { value: 2, name: "대전KDN" },
-          { value: 4, name: "전력연구원" },
-        ],
+      tooltip: {
+        trigger: "item",
+        formatter: "{a} <br/>{b}: {c} ({d}%)",
       },
-    ],
-    textStyle: {
-      fontFamily: "NanumSquare",
-    },
-  };
-  manPowerChart.setOption(manPowerGraphOp);
+      color: [
+        "#1e70e7",
+        "#3ba272",
+        "#fac858",
+        "#ee6666",
+        "#5aa7de",
+        "#fc8452",
+        "#7780e4",
+        "#eb9ac9",
+        "#b2e26e",
+        "#007a70",
+        "#00b3a4",
+        "#7a8489",
+        "#bfc5c9",
+        "#294700",
+      ],
+      series: [
+        {
+          name: "부서",
+          type: "pie",
+          selectedMode: "single",
+          radius: [0, "50%"],
+          center: ["50%", "45%"],
+          label: {
+            position: "inner",
+            fontSize: 10,
+            color: "#fff",
+          },
+          labelLine: {
+            show: false,
+          },
+          data: [],
+        },
+        {
+          name: "근무지",
+          type: "pie",
+          radius: ["65%", "80%"],
+          center: ["50%", "45%"],
+          data: [],
+        },
+      ],
+      textStyle: {
+        fontFamily: "NanumSquare",
+      },
+    };
+
+    manPowerGraphOp.series[0].data = data.deptList;
+    manPowerGraphOp.series[1].data = data.workList;
+
+    manPowerChart.setOption(manPowerGraphOp);
+  }
 }
 
 /* 기술자 보유 현황 */
-const techHoldChartDom = document.getElementById("techHoldGraph");
-if (techHoldChartDom) {
-  const techHoldChart = echarts.init(techHoldChartDom);
-  let techHoldGraphOp;
+function fnTechnicalChart(data) {
 
-  techHoldGraphOp = {
-    radar: {
-      indicator: [
-        { name: '초급기술자', color: "#424a54" },
-        { name: '중급기술자', color: "#424a54" },
-        { name: '고급기술자', color: "#424a54" },
-        { name: '특급기술자', color: "#424a54" },
-      ],
-      axisName: {
-        fontSize: 11,
+  let tchCntList = [];
+  let tchLvList = [];
+  let resultList = data.technicalList;
+
+  for (let i = 0; i < resultList.length; i++) {
+    tchCntList.push(resultList[i].tchCnt);
+    tchLvList.push({tchLv: resultList[i].tchLv});
+  }
+
+  const techHoldChartDom = document.getElementById("techHoldGraph");
+  if (techHoldChartDom) {
+    const techHoldChart = echarts.init(techHoldChartDom);
+    let techHoldGraphOp;
+
+    techHoldGraphOp = {
+      radar: {
+        indicator: (function () {
+          let res = [];
+          for (let {tchLv : lv} of tchLvList) {
+            res.push({ text: lv });
+          }
+          return res;
+        })(),
+        axisName: {
+          fontSize: 11,
+          color: "#424a54"
+        },
+        radius: "72%",
       },
-      radius: "72%",
-    },
-    tooltip: {},
-    series: [
-      {
-        name: '기술자 보유 현황',
-        type: 'radar',
-        label: {
-          show: true,
-        },
-        symbol: "circle",
-        symbolSize: 4,
-        areaStyle: {
-          color: new echarts.graphic.LinearGradient(1, 1, 0, 0, [
-            {
-              offset: 0,
-              color: "rgba(30,112,231,1)",
-            },
-            {
-              offset: 1,
-              color: "rgba(255,255,255,0.5)",
-            },
-          ]),
-        },
-        itemStyle: {
-          color: "#1e70e7"
-        },
-        data: [
-          {
-            value: [20, 11, 7, 3],
-            name: ''
+      tooltip: {},
+      series: [
+        {
+          name: '기술자 보유 현황',
+          type: 'radar',
+          label: {
+            show: true,
           },
-        ]
-      }
-    ],
-    textStyle: {
-      fontFamily: "NanumSquare",
-    },
-  };
-  // techHoldGraphOp = {
-  //   tooltip: {
-  //     trigger: "axis",
-  //     axisPointer: {
-  //       type: "shadow",
-  //     },
-  //   },
-  //   legend: {
-  //     padding: 0,
-  //   },
-  //   grid: {
-  //     left: 0,
-  //     top: "30%",
-  //     right: 0,
-  //     bottom: 0,
-  //     containLabel: true,
-  //   },
-  //   xAxis: {
-  //     type: "category",
-  //     data: ["특급기술자", "고급기술자", "중급기술자", "초급기술자"],
-  //     axisLabel: {
-  //       interval: 0,
-  //       fontSize: 11,
-  //     },
-  //   },
-  //   yAxis: {
-  //     type: "value",
-  //     name: "단위: 명",
-  //   },
-  //   label: {
-  //     show: true,
-  //     position: "top",
-  //     fontSize: 10,
-  //   },
-  //   series: [
-  //     {
-  //       name: "기술자",
-  //       type: "bar",
-  //       data: [0, 2, 9, 10, 18],
-  //       barWidth: 16,
-  //       itemStyle: {
-  //         color: "#1e70e7",
-  //       },
-  //     },
-  //   ],
-  //   textStyle: {
-  //     fontFamily: "NanumSquare",
-  //   },
-  // };
-  techHoldChart.setOption(techHoldGraphOp);
+          symbol: "circle",
+          symbolSize: 4,
+          areaStyle: {
+            color: new echarts.graphic.LinearGradient(1, 1, 0, 0, [
+              {
+                offset: 0,
+                color: "rgba(30,112,231,1)",
+              },
+              {
+                offset: 1,
+                color: "rgba(255,255,255,0.5)",
+              },
+            ]),
+          },
+          itemStyle: {
+            color: "#1e70e7"
+          },
+          data: [
+            {
+              value: tchCntList,
+              name: ''
+            },
+          ]
+        }
+      ],
+      textStyle: {
+        fontFamily: "NanumSquare",
+      },
+    };
+
+    techHoldChart.setOption(techHoldGraphOp);
+  }
 }
 
 /* 부서별 인원 현황 */
-const deptMpChartDom = document.getElementById("deptMpGraph");
-if (deptMpChartDom) {
-  const deptMpChart = echarts.init(deptMpChartDom);
-  let deptMpGraphOp;
+function fnDepartmentChart(data) {
+  let deptList = [];
+  let resultList = data.departmentList;
 
-  deptMpGraphOp = {
-    color: [
-      "#1e70e7",
-      "#3ba272",
-      "#fac858",
-      "#ee6666",
-      "#5aa7de",
-      "#fc8452",
-      "#7780e4",
-      "#eb9ac9",
-      "#b2e26e",
-      "#007a70",
-      "#00b3a4",
-      "#7a8489",
-      "#bfc5c9",
-      "#294700",
-    ],
-    title: {
-      subtext: "단위: 명",
-      left: "center",
-      top: "bottom",
-      padding: 10,
-    },
-    tooltip: {
-      trigger: "item",
-    },
-    grid: {
-      top: 0,
-      bottom: 0,
-      containLabel: true,
-    },
-    series: [
-      {
-        name: "부서",
-        type: "pie",
-        radius: [10, 80],
-        center: ["50%", "40%"],
-        roseType: "area",
-        itemStyle: {
-          borderRadius: 8,
-        },
-        label: {
-          formatter: "{b}: {c}",
-          lineHeight: 14,
-        },
-        data: [
-          { value: 8, name: "기업부설연구소" },
-          { value: 2, name: "전략기획" },
-          { value: 3, name: "경영지원" },
-          { value: 7, name: "컨텐츠사업" },
-          { value: 10, name: "솔루션사업" },
-          { value: 22, name: "시스템사업" },
-          { value: 20, name: "공공사업" },
-          { value: 18, name: "전력사업" },
-        ],
+  for (let i = 0; i < resultList.length; i++) {
+    deptList.push({deptCnt: resultList[i].deptCnt, deptNm: resultList[i].deptNm});
+  }
+
+  const deptMpChartDom = document.getElementById("deptMpGraph");
+  if (deptMpChartDom) {
+    const deptMpChart = echarts.init(deptMpChartDom);
+    let deptMpGraphOp;
+
+    deptMpGraphOp = {
+      color: [
+        "#1e70e7",
+        "#3ba272",
+        "#fac858",
+        "#ee6666",
+        "#5aa7de",
+        "#fc8452",
+        "#7780e4",
+        "#eb9ac9",
+        "#b2e26e",
+        "#007a70",
+        "#00b3a4",
+        "#7a8489",
+        "#bfc5c9",
+        "#294700",
+      ],
+      title: {
+        subtext: "단위: 명",
+        left: "center",
+        top: "bottom",
+        padding: 10,
       },
-    ],
-    textStyle: {
-      fontFamily: "NanumSquare",
-    },
-  };
-  deptMpChart.setOption(deptMpGraphOp);
+      tooltip: {
+        trigger: "item",
+      },
+      grid: {
+        top: 0,
+        bottom: 0,
+        containLabel: true,
+      },
+      series: [
+        {
+          name: "부서",
+          type: "pie",
+          radius: [10, 80],
+          center: ["50%", "40%"],
+          roseType: "area",
+          itemStyle: {
+            borderRadius: 8,
+          },
+          label: {
+            formatter: "{b}: {c}",
+            lineHeight: 14,
+          },
+          data: (function () {
+            let res = [];
+            for (let {deptCnt : cnt, deptNm : nm} of deptList) {
+              res.push({ value: cnt, name: nm });
+            }
+            return res;
+          })(),
+        },
+      ],
+      textStyle: {
+        fontFamily: "NanumSquare",
+      },
+    };
+    deptMpChart.setOption(deptMpGraphOp);
+  }
 }
 
 /* 차트 - 근속년수 현황 */
