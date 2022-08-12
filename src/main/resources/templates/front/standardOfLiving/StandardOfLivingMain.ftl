@@ -12,7 +12,7 @@
             <#include "*/common/front/left.ftl" />
         </div>
         <div class="col container">
-            <div class="row">
+
                 <div class="col-inner-4">
                     <div class="title-wrap">
                         <h6 class="tit">생활수준지표</h6>
@@ -29,22 +29,22 @@
                                         <#assign minPayCurrent = minPay.current?replace(",","")>
                                         <#assign minPayPast = minPay.past?replace(",","")>
                                         <#if minPayCurrent?number lt minPayPast?number>
-                                            <b class="center-txt count-ani-per" data-unit="${minPay.unit}">${minPay.current}</b>
+                                            <b class="center-txt count-ani-per" data-unit="${minPay.unit}" data-digit="2">${minPay.current}</b>
                                             <span class="sub-txt down">
                                                 ▼ ${minPay.subtraction} (${minPay.subRate}%)
                                             </span>
                                         <#elseif minPayCurrent?number == minPayPast?number>
-                                            <b class="center-txt count-ani-per" data-unit="${minPay.unit}">${minPay.current} %</b>
+                                            <b class="center-txt count-ani-per" data-unit="${minPay.unit}" data-digit="2">${minPay.current}</b>
                                             <span class="sub-txt">
                                                 변동없음
                                             </span>
                                         <#else>
-                                            <b class="center-txt count-ani-per" data-unit="${minPay.unit}">${minPay.current}</b>
+                                            <b class="center-txt count-ani-per" data-unit="${minPay.unit}" data-digit="2">${minPay.current}</b>
                                             <span class="sub-txt up">
                                                 ▲ ${minPay.subtraction} (${minPay.subRate}%)
                                             </span>
                                         </#if>
-                                        <p class="caption"><i class="ri-information-fill"></i> 기준일 : ${minPay.baseDate}</p>
+                                        <p class="caption txt-xs"><i class="ri-information-fill"></i> 기준일 : ${minPay.baseDate}</p>
                                     </div>
                                 </div>
                                 <div class="card cs-infl">
@@ -56,22 +56,22 @@
                                         <#assign economicGrowthCurrent = economicGrowth.current?replace(",","")>
                                         <#assign economicGrowthPast = economicGrowth.past?replace(",","")>
                                         <#if economicGrowthCurrent?number lt economicGrowthPast?number>
-                                            <b class="center-txt count-ani-per" data-unit="${economicGrowth.unit}">${economicGrowth.current}</b>
+                                            <b class="center-txt count-ani-per" data-unit="${economicGrowth.unit}" data-digit="2">${economicGrowth.current}</b>
                                             <span class="sub-txt down">
                                                 ▼ ${economicGrowth.subtraction} (${economicGrowth.subRate}%)
                                             </span>
                                         <#elseif economicGrowthCurrent?number == economicGrowthPast?number>
-                                            <b class="center-txt count-ani-per" data-unit="${economicGrowth.unit}">${economicGrowth.current} %</b>
+                                            <b class="center-txt count-ani-per" data-unit="${economicGrowth.unit}" data-digit="2">${economicGrowth.current}</b>
                                             <span class="sub-txt">
                                                 변동없음
                                             </span>
                                         <#else>
-                                            <b class="center-txt count-ani-per" data-unit="${economicGrowth.unit}">${economicGrowth.current}</b>
+                                            <b class="center-txt count-ani-per" data-unit="${economicGrowth.unit}" data-digit="2">${economicGrowth.current}</b>
                                             <span class="sub-txt up">
                                                 ▲ ${economicGrowth.subtraction} (${economicGrowth.subRate}%)
                                             </span>
                                         </#if>
-                                        <p class="caption"><i class="ri-information-fill"></i> 기준일 : ${economicGrowth.baseDate}</p>
+                                        <p class="caption txt-xs"><i class="ri-information-fill"></i> 기준일 : ${economicGrowth.baseDate}</p>
                                     </div>
                                 </div>
                             </div>
@@ -85,22 +85,22 @@
                                         <#assign consumerInflationCurrent = consumerInflation.current?replace(",","")>
                                         <#assign consumerInflationPast = consumerInflation.past?replace(",","")>
                                         <#if consumerInflationCurrent?number lt consumerInflationPast?number>
-                                            <b class="center-txt count-ani-per" data-unit="${consumerInflation.unit}">${consumerInflation.current}</b>
+                                            <b class="center-txt count-ani-per" data-unit="${consumerInflation.unit}" data-digit="2">${consumerInflation.current}</b>
                                             <span class="sub-txt down">
                                                 ▼ ${consumerInflation.subtraction} (${consumerInflation.subRate}%)
                                             </span>
                                         <#elseif consumerInflationCurrent?number == consumerInflationPast?number>
-                                            <b class="center-txt count-ani-per" data-unit="${consumerInflation.unit}">${consumerInflation.current} %</b>
+                                            <b class="center-txt count-ani-per" data-unit="${consumerInflation.unit}" data-digit="2">${consumerInflation.current}</b>
                                             <span class="sub-txt">
                                                 변동없음
                                             </span>
                                         <#else>
-                                            <b class="center-txt count-ani-per" data-unit="${consumerInflation.unit}">${consumerInflation.current}</b>
+                                            <b class="center-txt count-ani-per" data-unit="${consumerInflation.unit}" data-digit="2">${consumerInflation.current}</b>
                                             <span class="sub-txt up">
                                                 ▲ ${consumerInflation.subtraction} (${consumerInflation.subRate}%)
                                             </span>
                                         </#if>
-                                        <p class="caption"><i class="ri-information-fill"></i> 기준일 : ${consumerInflation.baseDate}</p>
+                                        <p class="caption txt-xs"><i class="ri-information-fill"></i> 기준일 : ${consumerInflation.baseDate}</p>
                                     </div>
                                 </div>
                                 <div class="card gni">
@@ -112,22 +112,22 @@
                                         <#assign gniCurrent = gni.current?replace(",","")>
                                         <#assign gniPast = gni.past?replace(",","")>
                                         <#if gniCurrent?number lt gniPast?number>
-                                            <b class="center-txt count-ani-per" data-unit="${gni.unit}">${gni.current}</b>
+                                            <b class="center-txt count-ani-per" data-unit="${gni.unit}" data-digit="2">${gni.current}</b>
                                             <span class="sub-txt down">
                                                 ▼ ${gni.subtraction} (${gni.subRate}%)
                                             </span>
                                         <#elseif gniCurrent?number == gniPast?number>
-                                            <b class="center-txt count-ani-per" data-unit="${gni.unit}">${gni.current} %</b>
+                                            <b class="center-txt count-ani-per" data-unit="${gni.unit}" data-digit="2">${gni.current}</b>
                                             <span class="sub-txt">
                                                 변동없음
                                             </span>
                                         <#else>
-                                            <b class="center-txt count-ani-per" data-unit="${gni.unit}">${gni.current}</b>
+                                            <b class="center-txt count-ani-per" data-unit="${gni.unit}" data-digit="2">${gni.current}</b>
                                             <span class="sub-txt up">
                                                 ▲ ${gni.subtraction} (${gni.subRate}%)
                                             </span>
                                         </#if>
-                                        <p class="caption"><i class="ri-information-fill"></i> 기준일 : ${gni.baseDate}</p>
+                                        <p class="caption txt-xs"><i class="ri-information-fill"></i> 기준일 : ${gni.baseDate}</p>
                                     </div>
                                 </div>
                             </div>
@@ -142,13 +142,13 @@
                         <p class="info-txt">
                             전년동월비
                             <#if consumerInflationCurrent?number lt consumerInflationPast?number>
-                                <span class="down"><b class="emp count-ani-per" data-unit="%">${consumerInflation.current}</b></span>
+                                <span class="down"><b class="emp count-ani-per" data-unit="%" data-digit="2">${consumerInflation.current}</b></span>
                                 하락했습니다.
                             <#elseif consumerInflationCurrent?number == consumerInflationPast?number>
-                                <span><b class="emp count-ani-per" data-unit="%">${consumerInflation.current}</b></span>
+                                <span><b class="emp count-ani-per" data-unit="%" data-digit="2">${consumerInflation.current}</b></span>
                                 변동없습니다.
                             <#else>
-                                <span class="up"><b class="emp count-ani-per" data-unit="%">${consumerInflation.current}</b></span>
+                                <span class="up"><b class="emp count-ani-per" data-unit="%" data-digit="2">${consumerInflation.current}</b></span>
                                 상승했습니다.
                             </#if>
                         </p>
@@ -176,8 +176,8 @@
                         <div id="giniGraph" style="width: 100%; height: 236px"></div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
+
+
                 <div class="col-inner-3">
                     <div class="title-wrap">
 <#--                        <h6 class="tit">우크라이나 전쟁 이후 물가상승률</h6>-->
@@ -226,7 +226,7 @@
                         <div id="travelGraph" style="width: 100%; height: 302px"></div>
                     </div>
                 </div>
-            </div>
+
         </div>
     </div>
 </div>
