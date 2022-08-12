@@ -150,7 +150,6 @@
                     <h6 class="tit">물가 상승률 & 상승 추이</h6>
                 </div>
                 <div class="cont">
-                    <p class="caption"><i class="ri-information-fill"></i> 해당년도의 항목별 물가상승률입니다.</p>
                     <div class="diagrams">
                         <div class="left">
                             <div class="card">
@@ -182,7 +181,7 @@
                             </div>
                         </div>
                         <div class="right">
-                            <div id="inflationGraph" style="width:100%; height:300px"></div>
+                            <div id="inflationGraph" style="width:100%; height:330px"></div>
                         </div>
                     </div>
                 </div>

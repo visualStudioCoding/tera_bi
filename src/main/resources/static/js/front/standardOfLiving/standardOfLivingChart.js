@@ -354,7 +354,7 @@ function fnUkrInflChartDom(data) {
                         color: "#ced4da",
                     },
                     barWidth: 8,
-                    barGap: 2,
+                    barGap: 0.25,
                 },
                 {
                     name: "2022/06",
@@ -374,7 +374,7 @@ function fnUkrInflChartDom(data) {
                         color: "#1e70e7",
                     },
                     barWidth: 8,
-                    barGap: 0.5,
+                    barGap: 0.25,
                 },
             ],
             textStyle: {
