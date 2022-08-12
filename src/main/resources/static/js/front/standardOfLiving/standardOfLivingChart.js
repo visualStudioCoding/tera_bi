@@ -176,28 +176,23 @@ function fnPresInflChart(data) {
                             }
                         },
                     },
-                    // itemStyle: {
-                    //   color: "#1e70e7",
-                    // },
                     itemStyle: {
-                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                            { offset: 0, color: "#1e70e7" },
-                            { offset: 0.5, color: "#1e70e7" },
-                            { offset: 1, color: "#1e70e7" },
-                        ]),
+                      color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        { offset: 0, color: "rgba(30,112,231,1)" },
+                        { offset: 1, color: "rgba(30,112,231,0.2)" },
+                      ]),
                     },
-                    barWidth: 10,
+                    barWidth: 12,
                     emphasis: {
                         itemStyle: {
-                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                                { offset: 0, color: "#2378f7" },
-                                { offset: 0.7, color: "#2378f7" },
-                                { offset: 1, color: "#83bff6" },
-                            ]),
+                          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            { offset: 0, color: "#2378f7" },
+                            { offset: 0.7, color: "#2378f7" },
+                            { offset: 1, color: "#83bff6" },
+                          ]),
                         },
                     },
                     markPoint: {
-                        // 최소값, 최대값 label 별도 스타일
                         data: [
                             { type: "max", name: "Max", itemStyle: { color: "#ff3c3c" } },
                             { type: "min", name: "Min", itemStyle: { color: "#3ba272" } },
@@ -237,7 +232,7 @@ function fnGiniCoefficient(data) {
         giniGraphOp = {
             grid: {
                 containLabel: true,
-                top: 10,
+                top: "12%",
                 bottom: 0,
                 left: "1%",
                 right: 0,
@@ -358,6 +353,8 @@ function fnUkrInflChartDom(data) {
                     itemStyle: {
                         color: "#ced4da",
                     },
+                    barWidth: 8,
+                    barGap: 2,
                 },
                 {
                     name: "2022/06",
@@ -376,6 +373,8 @@ function fnUkrInflChartDom(data) {
                     itemStyle: {
                         color: "#1e70e7",
                     },
+                    barWidth: 8,
+                    barGap: 0.5,
                 },
             ],
             textStyle: {
@@ -429,7 +428,7 @@ function fnWageInflChartDom(data) {
         wageInflGraphOp = {
             grid: {
                 containLabel: true,
-                top: "10%",
+                top: "13%",
                 bottom: 0,
                 left: "1%",
                 right: "4%",
@@ -487,7 +486,7 @@ function fnWageInflChartDom(data) {
                     },
                     itemStyle: {
                         color: "#1e70e7",
-                        borderWidth: 1,
+                        borderWidth: 3,
                         borderColor: "#fff",
                     },
                     areaStyle: {
@@ -510,7 +509,8 @@ function fnWageInflChartDom(data) {
                         ],
                         symbolSize: 36,
                         label: {
-                            fontSize: 10,
+                            fontSize: 9.5,
+                            fontWeight: 300,
                         },
                     },
                 },
@@ -529,7 +529,7 @@ function fnWageInflChartDom(data) {
                     },
                     itemStyle: {
                         color: "#3ba272",
-                        borderWidth: 1,
+                        borderWidth: 3,
                         borderColor: "#fff",
                     },
                     areaStyle: {
@@ -552,7 +552,8 @@ function fnWageInflChartDom(data) {
                         ],
                         symbolSize: 36,
                         label: {
-                            fontSize: 10,
+                            fontSize: 9.5,
+                            fontWeight: 300,
                             color: "#fff",
                         },
                     },
@@ -572,7 +573,7 @@ function fnWageInflChartDom(data) {
                     },
                     itemStyle: {
                         color: "#ee6666",
-                        borderWidth: 1,
+                        borderWidth: 3,
                         borderColor: "#fff",
                     },
                     areaStyle: {
@@ -595,7 +596,8 @@ function fnWageInflChartDom(data) {
                         ],
                         symbolSize: 36,
                         label: {
-                            fontSize: 10,
+                            fontSize: 9.5,
+                            fontWeight: 300,
                             color: "#fff",
                         },
                     },
@@ -684,7 +686,7 @@ function fnRegRankChartDom(data) {
                     },
                     color: function (val, idx) {
                         // 3위까지 레이블 강조
-                        return idx + 1 > regRankData.length - 3 ? "#1e70e7" : "#7a8489";
+                        return idx + 1 > regRankData.length - 4 ? "#1e70e7" : "#7a8489";
                     },
                 },
             },
@@ -863,6 +865,10 @@ function fnTravelChartDom(data) {
 
         travelGraphOp.series[5].name = data.seventy[0];
         travelGraphOp.series[5].data = data.seventy.splice(1);
+
+        travelGraphOp.series.forEach((item) => {
+            item.barWidth = 16;
+        })
 
         travelChart.setOption(travelGraphOp);
     }
