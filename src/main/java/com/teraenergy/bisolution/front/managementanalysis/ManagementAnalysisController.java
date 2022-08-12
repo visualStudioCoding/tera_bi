@@ -293,12 +293,11 @@ public class ManagementAnalysisController {
 //                datas.add("period");
 //                graphData.add(datas);
 //            }
-            datas.add(dataList.get(i).get("years"));
             datas.add(dataList.get(i).get("work_yr"));
+            datas.add(dataList.get(i).get("years"));
 
             graphData.add(datas);
         }
-
         System.out.println(graphData);
 
         return graphData;

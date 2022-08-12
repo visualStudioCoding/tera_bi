@@ -160,117 +160,90 @@ if (cstmSalesChartDom) {
   const cstmSalesChart = echarts.init(cstmSalesChartDom);
   let cstmSalesGraphOp;
 
+
   cstmSalesGraphOp = {
     tooltip: {
-      trigger: "axis",
+      trigger: 'axis',
+      axisPointer: {
+        // Use axis to trigger tooltip
+        type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
+      }
     },
-    legend: {
-      data: ["한전KDN", "농어촌공사", "우정사업본부", "R&D"],
-      textStyle: {
-        fontSize: 11,
-      },
-      padding: 0,
-      itemWidth: 20,
-      itemHeight: 12,
-      itemStyle: {
-        borderWidth: 0,
-      },
-    },
+    legend: {},
     grid: {
-      left: "1%",
-      right: "4%",
-      top: "23%",
-      bottom: 0,
-      containLabel: true,
+      left: '3%',
+      right: '4%',
+      bottom: '3%',
+      containLabel: true
     },
     xAxis: {
-      type: "category",
-      boundaryGap: false,
-      data: ["2019", "2020", "2021", "2022"],
-      axisLabel: {
-        textStyle: {
-          fontSize: 11,
-        },
-      },
+      type: 'value'
     },
     yAxis: {
-      type: "value",
-      name: "단위: 만원",
-      axisLabel: {
-        textStyle: {
-          fontSize: 11,
-        },
-      },
+      type: 'category',
+      data: ['2019', '2020', '2021', '2022']
     },
     series: [
       {
-        name: "한전KDN",
-        type: "line",
-        symbol: "circle",
-        symbolSize: 6,
-        showSymbol: false,
-        itemStyle: {
-          color: "#1e70e7",
-          borderWidth: 1,
-          borderColor: "#fff",
+        name: 'Direct',
+        type: 'bar',
+        stack: 'total',
+        label: {
+          show: true
         },
-        areaStyle: {
-          color: "#1e70e7",
+        emphasis: {
+          focus: 'series'
         },
-        data: [320000, 332000, 301000, 334000],
-        zlevel: 0,
+        data: ['', '', '', 334]
       },
       {
-        name: "농어촌공사",
-        type: "line",
-        symbol: "circle",
-        symbolSize: 6,
-        showSymbol: false,
-        itemStyle: {
-          color: "#3ba272",
-          borderWidth: 1,
-          borderColor: "#fff",
+        name: 'Mail Ad',
+        type: 'bar',
+        stack: 'total',
+        label: {
+          show: true
         },
-        areaStyle: {
-          color: "#3ba272",
+        emphasis: {
+          focus: 'series'
         },
-        data: [10000, 12200, 15100, 23000],
-        zlevel: 3,
+        data: [120, 132, 101, 134, 90, 230, 210]
       },
       {
-        name: "우정사업본부",
-        type: "line",
-        symbol: "circle",
-        symbolSize: 6,
-        showSymbol: false,
-        itemStyle: {
-          color: "#fac858",
-          borderWidth: 1,
-          borderColor: "#fff",
+        name: 'Affiliate Ad',
+        type: 'bar',
+        stack: 'total',
+        label: {
+          show: true
         },
-        areaStyle: {
-          color: "#fac858",
+        emphasis: {
+          focus: 'series'
         },
-        data: [13500, 23300, 20100, 15400],
-        zlevel: 2,
+        data: [220, 182, 191, 234, 290, 330, 310]
       },
       {
-        name: "R&D",
-        type: "line",
-        symbol: "circle",
-        symbolSize: 6,
-        showSymbol: false,
-        itemStyle: {
-          color: "#ee6666",
-          borderWidth: 1,
-          borderColor: "#fff",
+        name: 'Video Ad',
+        type: 'bar',
+        stack: 'total',
+        label: {
+          show: true
         },
-        areaStyle: {
-          color: "#ee6666",
+        emphasis: {
+          focus: 'series'
         },
-        data: [98000, 77000, 101000, 99000],
-        zlevel: 1,
+        data: [150, 212, 201, 154, 190, 330, 410]
       },
+      {
+        name: 'Search Engine',
+        type: 'bar',
+        stack: 'total',
+        label: {
+          show: true
+        },
+        emphasis: {
+          focus: 'series'
+        },
+        data: [820, 832, 901, 934, 1290, 1330, 1320]
+      }
     ],
     textStyle: {
       fontFamily: "NanumSquare",
@@ -595,7 +568,7 @@ function fnTechnicalChart(data) {
         indicator: (function () {
           let res = [];
           for (let {tchLv : lv} of tchLvList) {
-            res.push({ text: lv });
+            res.push({ text: lv});
           }
           return res;
         })(),
@@ -724,20 +697,15 @@ function fnDepartmentChart(data) {
 }
 
 function fnWorkYearsChartDom(data) {
+  console.log(data);
   /* 차트 - 근속년수 현황 */
   const workYearsChartDom = document.getElementById("workYearsGraph");
   if (workYearsChartDom) {
     const workYearsChart = echarts.init(workYearsChartDom);
     let workYearsGraphOp;
-    let workYearsData = [
-      [3, "3개월이하"],
-      [10, "3개월이상"],
-      [25, "6개월이상"],
-      [8, "1년이상"],
-      [3, "2년이상"],
-      [4, "3년이상"],
-    ];
+    let workYearsData = data;
     let workYears = [];
+    let dataMax = 0;
 
     workYearsData.forEach((data) => {
       workYears.push(data[0]);
@@ -753,15 +721,14 @@ function fnWorkYearsChartDom(data) {
         },
       },
       dataset: {
-        source: [
-          // ["amount", "period"],
-          // [3, "3개월이하"],
-          // [10, "3개월이상"],
-          // [25, "6개월이상"],
-          // [8, "1년이상"],
-          // [3, "2년이상"],
-          // [4, "3년이상"],
-        ],
+        source: (function () {
+          let res = [];
+          res.push(["amount", "period"]);
+          for (let i = 0; i < data.length; i++) {
+            res.push(data[i]);
+          }
+          return res;
+        })(),
       },
       grid: {containLabel: true, left: 2, right: 10, bottom: 0, top: "32%"},
       yAxis: {name: "단위: 명"},
@@ -781,7 +748,7 @@ function fnWorkYearsChartDom(data) {
         padding: 0,
         text: ["max", "min"],
         min: 0,
-        max: 10,
+        max: dataMax,
         itemHeight: "100%",
         itemWidth: "14%",
         dimension: 0,
@@ -814,7 +781,6 @@ function fnWorkYearsChartDom(data) {
         fontFamily: "NanumSquare",
       },
     };
-    workYearsGraphOp.dataset.source = data
     workYearsChart.setOption(workYearsGraphOp);
   }
 }
