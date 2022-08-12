@@ -58,14 +58,11 @@ div[class*="col-inner"] > div {
 .col-inner-3 {
   width: calc(25% - var(--gap));
 }
-.col-inner-3:first-child {
-  width: 25%;
-}
 .col-inner-4 {
-  width: calc(33.3333% - var(--gap));
+  width: calc(33% - var(--gap));
 }
 .col-inner-5 {
-  width: calc(37.5% - var(--gap));
+  width: calc(42% - var(--gap));
 }
 .col-inner-6 {
   width: calc(50% - var(--gap));
@@ -151,6 +148,9 @@ div[class*="col-inner"].col-inners {
 }
 .cont .caption i {
   vertical-align: middle;
+}
+.cont .sub-txt + .caption {
+  margin-bottom: 0;
 }
 
 /******************** heading *********************/
@@ -897,6 +897,7 @@ header .indicator {
   font-family: "NanumSquare";
   font-size: 0.813rem;
   color: var(--gray-50);
+  line-height: 1.4;
 }
 .card .txt-wrap .sub-txt + .sub-txt {
   margin-top: 0.25rem;
