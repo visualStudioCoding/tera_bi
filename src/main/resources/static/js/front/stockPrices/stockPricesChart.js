@@ -5,7 +5,7 @@ function fnGdpChart(data) {
     // console.log(data);
     const gdpChartDom = document.getElementById("gdpGraph");
     if (gdpChartDom) {
-        const gdpChart = echarts.init(gdpChartDom);
+        let gdpChart = echarts.init(gdpChartDom);
         let gdpGraphOp;
 
         gdpGraphOp = {
@@ -59,6 +59,25 @@ function fnGdpChart(data) {
             },
         };
         gdpChart.setOption(gdpGraphOp);
+
+        /* 반응형 */
+        function chartRpsv(height) {
+          echarts.dispose(gdpChart);
+          gdpChart = echarts.init(gdpChartDom, null, {height: height});
+          gdpChart.setOption(gdpGraphOp);
+        }
+        if (window.innerWidth <= 1280 && window.innerWidth > 650) {
+          chartRpsv(330);
+        } else {
+          chartRpsv(208);
+        }
+        window.addEventListener("resize", function(){
+          if (window.innerWidth <= 1280 && window.innerWidth > 650) {
+            chartRpsv(330);
+          } else {
+            chartRpsv(208);
+          }
+        })
     }
 }
 

@@ -97,14 +97,58 @@ div[class*="col-inner"].col-inners {
 }
 
 @media (max-width: 1280px) {
+    .col-lg-3 {
+        width: calc(25% - var(--gap));
+    }
+    .col-lg-4 {
+        width: calc(32.6% - var(--gap));
+    }
+    .col-lg-5 {
+        width: calc(41% - var(--gap));
+    }
   .col-lg-6 {
     width: calc(50% - var(--gap));
+  }
+  .col-lg-7 {
+    width: calc(59% - var(--gap));
+  }
+  .col-lg-8 {
+    width: calc(66% - var(--gap));
   }
   .col-lg-12 {
     width: 100%;
   }
 }
+@media (max-width: 1024px) {
+    .col-md-4 {
+        width: calc(33% - var(--gap));
+    }
+    .col-md-5 {
+        width: calc(41% - var(--gap));
+    }
+    .col-md-6 {
+        width: calc(50% - var(--gap));
+    }
+    .col-md-7 {
+        width: calc(59% - var(--gap));
+    }
+    .col-md-8 {
+        width: calc(67% - var(--gap));
+    }
+    .col-md-12 {
+        width: 100%;
+    }
+}
 @media (max-width: 650px) {
+    .col-sm-5 {
+        width: calc(41% - var(--gap));
+    }
+    .col-sm-6 {
+        width: calc(50% - var(--gap));
+    }
+    .col-sm-7 {
+        width: calc(59% - var(--gap));
+    }
   .col-sm-12 {
     width: calc(100% - var(--gap));
   }
@@ -116,6 +160,14 @@ div[class*="col-inner"].col-inners {
     float: none;
     width: 100%;
   }
+}
+@media (max-width: 576px) {
+    .col-xs-6 {
+        width: calc(50% - var(--gap));
+    }
+    .col-xs-12 {
+        width: 100%;
+    }
 }
 
 .wrapper {
@@ -925,6 +977,20 @@ header .indicator {
   width: 100%;
   margin-left: 0;
 }
+@media (max-width: 767px) {
+    .card .txt-wrap .center-txt {
+        font-size: 1.625rem;
+    }
+    .circle-wrap .circle {
+        width: 10rem;
+        height: 10rem;
+    }
+}
+@media (max-width: 650px) {
+    .diagrams {
+        flex-wrap: wrap;
+    }
+}
 
 /* graphs */
 .graph-wrap {
@@ -955,7 +1021,7 @@ header .indicator {
 }
 .circle-wrap .circle {
   position: relative;
-  z-index: 2;
+  z-index: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1128,6 +1194,52 @@ header .indicator {
 #baseRate .icon {
   font-size: 1.625rem;
 }
+@media (max-width: 650px) {
+    .economic-growth .diagrams .card {
+        display: inline-block;
+    }
+    .economic-growth .cont .left,
+    .economic-growth .cont .right {
+        width: 100%;
+    }
+    .economic-growth .cont .diagrams > div + div {
+        margin-top: 2rem;
+    }
+    .economic-growth .cont .diagrams .left {
+        display: flex;
+        align-items: center;
+    }
+    .economic-growth .cont .diagrams .left > .card {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        margin-top: 0;
+    }
+    .economic-growth .cont .diagrams .card .txt-wrap {
+        margin-left: 1rem;
+    }
+    .economic-growth .cont .diagrams .icon {
+        width: 2.75rem;
+        height: 2.75rem;
+        font-size: 1.375rem;
+    }
+}
+@media (max-width: 420px) {
+    .economic-growth .cont .diagrams .card .txt-wrap {
+        margin-left: 0.5rem;
+    }
+    .economic-growth .cont .diagrams .card .txt-wrap .tit {
+        font-size: 3.5vw;
+    }
+    .economic-growth .cont .diagrams .card .icon {
+        width: 10.5vw;
+        height: 10.5vw;
+        font-size: 5.5vw;
+    }
+    .card .txt-wrap .center-txt {
+        font-size: 5.25vw;
+    }
+}
 
 /* 생활수준지표 */
 .stnd-living .inner-title {
@@ -1140,6 +1252,54 @@ header .indicator {
 .card.cs-infl .icon {
   font-size: 1.5rem;
 }
+@media (max-width: 650px) {
+    .stnd-living .wrapper > div {
+        float: left;
+        width: 50%;
+    }
+    .stnd-living .wrapper > div + div {
+        margin-top: 0;
+    }
+}
+@media (max-width: 576px) {
+    .stnd-living .card .txt-wrap {
+        margin-left: 0.875rem;
+    }
+    .stnd-living .card .txt-wrap .tit {
+        font-size: 2.75vw;
+    }
+    .stnd-living .card .icon {
+        width: 9.5vw;
+        height: 9.5vw;
+        font-size: 4.5vw;
+    }
+    .stnd-living .card .txt-wrap .center-txt {
+        font-size: 5vw;
+    }
+}
+@media (max-width: 420px) {
+    .stnd-living .wrapper > div {
+        float: none;
+        width: 100%;
+    }
+    .stnd-living .wrapper > div + div {
+        margin-top: 1.5rem;
+    }
+    .stnd-living .card .txt-wrap {
+        margin-left: 0.875rem;
+    }
+    .stnd-living .card .txt-wrap .tit {
+        font-size: 0.875rem;
+    }
+    .stnd-living .card .icon {
+        width: 3rem;
+        height: 3rem;
+        font-size: 1.375rem;
+    }
+    .stnd-living .card .txt-wrap .center-txt {
+        font-size: 1.5rem;
+    }
+}
 
 /* 종합주가지수 */
 .stock-index .inner-title {
@@ -1151,6 +1311,105 @@ header .indicator {
 }
 .stock-index .circle .txt {
   font-size: 2.25rem;
+}
+@media (max-width: 1280px) {
+    #gdpChartBox {
+        order: 1;
+    }
+}
+@media (max-width: 1024px) {
+    .stock-index .card .txt-wrap {
+        margin-left: 0.875rem;
+    }
+    .stock-index .card .icon {
+        width: 5.25vw;
+        height: 5.25vw;
+        font-size: 2.75vw;
+    }
+    .stock-index .card .txt-wrap .center-txt {
+        font-size: 2.875vw;
+    }
+}
+@media (max-width: 768px) {
+    .stock-index .circle-wrap .circle {
+        width: 22vw;
+        height: 22vw;
+    }
+    .stock-index .circle .txt {
+        display: block;
+        font-size: 4.25vw;
+    }
+    .stock-index .card .txt-wrap .center-txt {
+        font-size: 3.25vw;
+    }
+    .stock-index [class*="count"]:after {
+        font-size: 1.5vw;
+    }
+}
+@media (max-width: 700px) {
+    .stock-index .cont .card + .card {
+        margin-top: 3rem;
+    }
+}
+@media (max-width: 650px) {
+    .stock-index .circle-wrap .circle {
+        width: 11rem;
+        height: 11rem;
+    }
+    .stock-index .circle .txt {
+        font-size: 2rem;
+    }
+    .stock-index .card .icon {
+        width: 3.25rem;
+        height: 3.25rem;
+        font-size: 1.625rem;
+    }
+    .stock-index .card .txt-wrap .center-txt {
+        font-size: 1.5rem;
+    }
+    .stock-index .cont .card + .card {
+        margin-top: 0;
+    }
+    .stock-index .cont .card {
+        display: inline-flex;
+        width: 49%;
+    }
+}
+@media (max-width: 480px) {
+    .stock-index .card .icon {
+        width: 9.25vw;
+        height: 9.25vw;
+        font-size: 4.75vw;
+    }
+    .stock-index .card .txt-wrap .center-txt {
+        font-size: 5vw;
+    }
+    .stock-index .card .txt-xs {
+        font-size: 0.5rem !important;
+    }
+}
+@media (max-width: 420px) {
+    .stock-index .cont .card {
+        display: flex;
+        width: 100%;
+    }
+    .stock-index .cont .card + .card {
+        margin-top: 1.5rem;
+    }
+    .stock-index .card .icon {
+        width: 3.25rem;
+        height: 3.25rem;
+        font-size: 1.625rem;
+    }
+    .stock-index .card .txt-wrap .center-txt {
+        font-size: 1.5rem;
+    }
+    .stock-index [class*="count"]:after {
+        font-size: 0.75rem;
+    }
+    .stock-index .card .txt-xs {
+        font-size: 0.75rem !important;
+    }
 }
 
 /* 부동산시장동향 */

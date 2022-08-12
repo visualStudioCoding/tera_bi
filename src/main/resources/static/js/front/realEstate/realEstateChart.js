@@ -785,21 +785,21 @@ function fnCMHousingChartDom(data) {
         cmHousingChart.setOption(cmHousingGraphOp);
 
         /* 반응형 */
-        function cmHousingRpsv(height) {
+        function chartRpsv(height) {
           echarts.dispose(cmHousingChart);
           cmHousingChart = echarts.init(cmHousingChartDom, null, {height: height});
           cmHousingChart.setOption(cmHousingGraphOp);
         }
         if (window.innerWidth <= 1280 && window.innerWidth > 650) {
-          cmHousingRpsv(304);
+          chartRpsv(304);
         } else {
-          cmHousingRpsv(224);
+          chartRpsv(224);
         }
         window.addEventListener("resize", function(){
           if (window.innerWidth <= 1280 && window.innerWidth > 650) {
-            cmHousingRpsv(304);
+            chartRpsv(304);
           } else {
-            cmHousingRpsv(224);
+            chartRpsv(224);
           }
         })
     }

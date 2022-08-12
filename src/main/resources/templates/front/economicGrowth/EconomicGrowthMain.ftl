@@ -7,13 +7,16 @@
 <div class="contents">
     <div class="inner economic-growth">
         <div class="col side-bar">
+            <button type="button" class="side-toggle-btn">
+              <i class="ri-arrow-right-s-line"></i>
+            </button>
             <div class="inner-title">
                 <h3>경제성장지표</h3>
             </div>
             <#include "*/common/front/left.ftl" />
         </div>
         <div class="col container">
-            <div class="col-inner-3">
+            <div class="col-inner-3 col-lg-4 col-md-6 col-sm-12">
                 <div class="title-wrap">
                     <h6 class="tit">전국 경제 성장률</h6>
                 </div>
@@ -31,7 +34,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-inner-3">
+            <div class="col-inner-3 col-lg-4 col-md-6 col-sm-12">
                 <div class="title-wrap">
                     <h6 class="tit">환율 & 기준금리</h6>
                 </div>
@@ -89,7 +92,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-inner-3">
+            <div class="col-inner-3 col-lg-4 col-md-6 col-sm-12">
                 <div class="title-wrap">
                     <h6 class="tit">GDP & GNI</h6>
                 </div>
@@ -117,7 +120,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-inner-3">
+            <div class="col-inner-3 col-lg-6 col-md-6 col-sm-12">
                 <div class="title-wrap">
                     <h6 class="tit">GDP 대비 국가채무</h6>
                 </div>
@@ -126,7 +129,7 @@
                 </div>
             </div>
 
-            <div class="col-inner-3">
+            <div class="col-inner-3 col-lg-6 col-sm-12">
                 <div class="title-wrap">
                     <h6 class="tit">지역별 경제 성장률</h6>
                 </div>
@@ -137,7 +140,7 @@
                     <div id="regionGrowthGraph" style="width:100%; height:300px"></div>
                 </div>
             </div>
-            <div class="col-inner-3">
+            <div class="col-inner-3 col-lg-4 col-md-6 col-sm-12">
                 <div class="title-wrap">
                     <h6 class="tit">코로나 시기 성장률</h6>
                 </div>
@@ -145,7 +148,7 @@
                     <div id="covidGrowthGraph" style="width:100%; height:332px;"></div>
                 </div>
             </div>
-            <div class="col-inner-6">
+            <div class="col-inner-6 col-lg-8 col-sm-12">
                 <div class="title-wrap">
                     <h6 class="tit">물가 상승률 & 상승 추이</h6>
                 </div>
