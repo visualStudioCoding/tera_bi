@@ -31,7 +31,7 @@ window.onload = function () {
     getCovidEconomicGrowth();
     getStateDebtSetPeriod();
     getInflChart();
-    countAnimation();
+//    countAnimation();
 }
 
 $("#termSetting").click(function () {
