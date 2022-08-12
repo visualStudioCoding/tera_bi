@@ -13,8 +13,8 @@ function fnGdpChart(data) {
                 containLabel: true,
                 left: 3,
                 right: 0,
-                top: 35,
-                bottom: 7,
+                top: "25%",
+                bottom: 0,
             },
             legend: {
                 padding: 0,
@@ -28,11 +28,31 @@ function fnGdpChart(data) {
             dataset: {
                 source: data,
             },
-            xAxis: {type: "category", axisLabel: {padding: 7}},
+            xAxis: {type: "category"},
             yAxis: {name: "단위: 조원"},
             series: [
-                {type: "bar", name: "명목"},
-                {type: "bar", name: "실질"},
+                {
+                    type: "bar",
+                    name: "명목",
+                    itemStyle: {
+                      color: "#ced4da",
+                    },
+                    barWidth: 10,
+                    emphasis: {
+                      focus: "series",
+                    },
+                },
+                {
+                    type: "bar",
+                    name: "실질",
+                    itemStyle: {
+                        color: "#1e70e7",
+                    },
+                    barWidth: 10,
+                    emphasis: {
+                        focus: "series",
+                    },
+                },
             ],
             textStyle: {
                 fontFamily: "NanumSquare",
@@ -61,7 +81,7 @@ function fnCovidKospiChart(data) {
         covidKospiGraphOp = {
             grid: {
                 containLabel: true,
-                top: 10,
+                top: "9%",
                 bottom: 70,
                 left: 10,
                 right: 6,
@@ -75,7 +95,6 @@ function fnCovidKospiChart(data) {
                 axisLabel: {
                     padding: 10,
                 },
-                // prettier-ignore
                 data: [],
             },
             yAxis: {
@@ -94,9 +113,13 @@ function fnCovidKospiChart(data) {
                 {
                     name: "KOSPI",
                     type: "line",
-                    symbol: "none",
+                    symbol: "circle",
+                    symbolSize: 8,
+                    showSymbol: false,
                     itemStyle: {
-                        color: "rgb(255, 70, 131)",
+                        color: "#ee6666",
+                        borderWidth: 2,
+                        borderColor: "#fff",
                     },
                     lineStyle: {
                         width: 2.5,
@@ -104,7 +127,40 @@ function fnCovidKospiChart(data) {
                         shadowBlur: 8,
                         shadowOffsetY: 4,
                     },
-                    // prettier-ignore
+                    markPoint: {
+                    data: [
+                      {
+                        type: "max",
+                        name: "Max",
+                        itemStyle: { color: "#ee6666" },
+                        label: {
+                          formatter: (params) => {
+                            return params.value.toFixed(0);
+                          },
+                          color: "#fff",
+                          fontSize: 9.5,
+                          fontWeight: 300,
+                        },
+                        symbolSize: 40,
+                      },
+                      {
+                        type: "min",
+                        name: "Min",
+                        symbolRotate: 180,
+                        itemStyle: { color: "#7a8489" },
+                        label: {
+                          position: ["0", "50%"],
+                          formatter: (params) => {
+                            return params.value.toFixed(0);
+                          },
+                          color: "#fff",
+                          fontSize: 9.5,
+                          fontWeight: 300,
+                        },
+                        symbolSize: 40,
+                      },
+                    ],
+                  },
                     data: [],
                 },
             ],
@@ -144,14 +200,14 @@ function fnBaseRateAndKospi(data) {
         kospiGraphOp = {
             tooltip: {
                 trigger: "axis",
-                axisPointer: {
-                    animation: false,
-                },
             },
             legend: {
-                data: ["기준금리", "KOSPI"],
-                center: "center",
                 padding: 0,
+                itemWidth: 18,
+                itemHeight: 11,
+                itemStyle: {
+                  borderWidth: 0,
+                },
             },
             axisPointer: {
                 link: [
@@ -163,34 +219,35 @@ function fnBaseRateAndKospi(data) {
             dataZoom: [
                 {
                     show: true,
-                    realtime: true,
                     xAxisIndex: [0, 1],
                 },
                 {
                     type: "inside",
-                    realtime: true,
                     xAxisIndex: [0, 1],
                 },
             ],
             grid: [
                 {
-                    top: 30,
-                    left: 40,
-                    right: 6,
-                    height: "27%",
+                  top: 35,
+                  left: 40,
+                  right: 6,
+                  height: "27%",
                 },
                 {
-                    left: 40,
-                    right: 6,
-                    top: "55%",
-                    height: "27%",
+                  left: 40,
+                  right: 6,
+                  top: "55%",
+                  height: "27%",
                 },
             ],
             xAxis: [
                 {
                     type: "category",
                     boundaryGap: false,
-                    axisLine: {onZero: true},
+                    axisLine: { onZero: true },
+                    axisLabel: {
+                        fontSize: 11,
+                    },
                     data: timeData,
                 },
                 {
@@ -200,73 +257,137 @@ function fnBaseRateAndKospi(data) {
                     axisLine: {onZero: true},
                     data: timeData,
                     position: "top",
+                    axisLabel: {
+                        fontSize: 11,
+                    },
                 },
             ],
             yAxis: [
                 {
                     name: "",
                     type: "value",
+                    splitNumber: 3,
+                    axisLabel: {
+                        fontSize: 11,
+                    },
                 },
                 {
                     gridIndex: 1,
                     name: "",
                     type: "value",
                     inverse: true,
+                    splitNumber: 3,
+                    axisLabel: {
+                        fontSize: 11,
+                    },
                 },
             ],
             series: [
                 {
                     name: "기준금리",
                     type: "line",
-                    symbolSize: 0,
+                    showSymbol: false,
+                    symbol: "circle",
+                    symbolSize: 8,
                     lineStyle: {
                         width: 2,
+                        color: "#1e70e7",
                         shadowColor: "rgba(0,0,0,0.3)",
                         shadowBlur: 8,
                         shadowOffsetY: 4,
                     },
+                    itemStyle: {
+                        color: "rgba(30,112,231,1)",
+                        borderWidth: 2,
+                        borderColor: "#fff",
+                    },
                     areaStyle: {
                         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                            {
-                                offset: 1,
-                                color: "rgb(67,203,255)",
-                            },
-                            {
-                                offset: 0,
-                                color: "rgb(115,110,254)",
-                            },
+                          {
+                            offset: 0,
+                            color: "rgba(30,112,231,1)",
+                          },
+                          {
+                            offset: 1,
+                            color: "rgba(255,255,255,0.5)",
+                          },
                         ]),
                     },
-                    // prettier-ignore
+                    markPoint: {
+                        data: [
+                          {
+                            type: "max",
+                            name: "Max",
+                            itemStyle: { color: "#1e70e7" },
+                            symbolSize: 36,
+                            label: {
+                              formatter: (params) => {
+                                return params.value.toFixed(2);
+                              },
+                              color: "#fff",
+                              fontSize: 8,
+                              fontWeight: 300,
+                            },
+                          },
+                        ],
+                    },
                     data: [],
+                    smooth: true,
                 },
                 {
                     name: "KOSPI",
                     type: "line",
                     xAxisIndex: 1,
                     yAxisIndex: 1,
-                    symbolSize: 0,
-                    lineStyle: {
-                        color: "#1db962",
+                    showSymbol: false,
+                    symbol: "circle",
+                    symbolSize: 8,
+                        lineStyle: {
+                        color: "#ee6666",
                         width: 2,
                         shadowColor: "rgba(0,0,0,0.1)",
                         shadowBlur: 8,
                         shadowOffsetY: -4,
                     },
+                    itemStyle: {
+                        color: "#ee6666",
+                        borderWidth: 2,
+                        borderColor: "#fff",
+                    },
                     areaStyle: {
                         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                            {
-                                offset: 0,
-                                color: "rgb(129,251,184)",
-                            },
-                            {
-                                offset: 1,
-                                color: "rgb(40,199,111)",
-                            },
+                          {
+                            offset: 1,
+                            color: "rgba(238,102,102,1)",
+                          },
+                          {
+                            offset: 0,
+                            color: "rgba(255,255,255,0.5)",
+                          },
                         ]),
                     },
-                    // prettier-ignore
+                    markPoint: {
+                        data: [
+                          {
+                            type: "max",
+                            name: "Max",
+                            itemStyle: { color: "#ee6666" },
+                            symbolRotate: 180,
+                            symbolSize: 36,
+                            label: {
+                              position: ["0", "50%"],
+                              formatter: (params) => {
+                                return params.value.toFixed(0);
+                              },
+                              color: "#fff",
+                              fontSize: 8,
+                              fontWeight: 300,
+                            },
+                          },
+                        ],
+                    },
                     data: [],
+                    smooth: true,
                 },
             ],
             textStyle: {
@@ -332,16 +453,26 @@ function fnInflYearChart(data) {
                     type: "line",
                     name: "경제 성장률",
                     symbol: "circle",
-                    symbolSize: 12,
+                    symbolSize: 10,
+                    label: {
+                        show: true,
+                        fontSize: 10,
+                    },
                     lineStyle: {
                         color: "#1e70e7",
                         width: 4,
                         type: "solid",
+                        shadowColor: "rgba(0,0,0,0.3)",
+                        shadowBlur: 8,
+                        shadowOffsetY: 4,
+                        cap: "round",
                     },
                     itemStyle: {
-                        borderWidth: 4,
-                        borderColor: "#d9e7fd",
+                        borderWidth: 3,
+                        borderColor: "#fff",
                         color: "#1e70e7",
+                        shadowColor: "rgba(0, 0, 0, 0.2)",
+                        shadowBlur: 4,
                     },
                 },
             ],

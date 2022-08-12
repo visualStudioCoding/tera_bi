@@ -58,14 +58,11 @@ div[class*="col-inner"] > div {
 .col-inner-3 {
   width: calc(25% - var(--gap));
 }
-.col-inner-3:first-child {
-  width: 25%;
-}
 .col-inner-4 {
-  width: calc(33.3333% - var(--gap));
+  width: calc(33% - var(--gap));
 }
 .col-inner-5 {
-  width: calc(37.5% - var(--gap));
+  width: calc(42% - var(--gap));
 }
 .col-inner-6 {
   width: calc(50% - var(--gap));
@@ -151,6 +148,9 @@ div[class*="col-inner"].col-inners {
 }
 .cont .caption i {
   vertical-align: middle;
+}
+.sub-txt + .caption {
+    line-height: 1.5;
 }
 
 /******************** heading *********************/
@@ -415,6 +415,16 @@ button i {
 }
 .btn-wrap button.w-100 + button {
   margin-top: 0.5rem;
+}
+
+[id*=nullCk] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-size: 0.813rem;
+    color: var(--gray-60);
+    text-align: center;
 }
 
 /******************** header *********************/

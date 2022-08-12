@@ -95,7 +95,7 @@ function getGdp(){
         if(data[0] === "Fail"){
             if($("#nullCkGdp").length <= 0) {
                 echarts.dispose(document.getElementById("gdpGraph"));
-                $("#gdpGraph").append("<p id='nullCkGdp'>해당하는 기간에 데이터가 존재하지 않습니다.<br><p>기간을 다시 설정해주세요</p></p>")
+                $("#gdpGraph").append("<p id='nullCkGdp'>해당하는 기간에 데이터가 존재하지 않습니다.<br>기간을 다시 설정해주세요</p>")
             }
         }else{
             fnGdpChart(data);
@@ -125,7 +125,7 @@ function getBaseRateAndKospi(){
         }else{
             if($("#nullCkBaseKospi").length <= 0) {
                 echarts.dispose(document.getElementById("baseRateKospiGraph"));
-                $("#baseRateKospiGraph").append("<p id='nullCkBaseKospi'>해당하는 기간에 데이터가 존재하지 않습니다.<br><p>기간을 다시 설정해주세요</p></p>")
+                $("#baseRateKospiGraph").append("<p id='nullCkBaseKospi'>해당하는 기간에 데이터가 존재하지 않습니다.<br>기간을 다시 설정해주세요</p>")
             }
         }
     }
@@ -147,7 +147,7 @@ function getInflYear(){
         }else{
             if($("#nullCkInfYear").length <= 0) {
                 echarts.dispose(document.getElementById("inflationYearlyGraph"));
-                $("#inflationYearlyGraph").append("<p id='nullCkInfYear'>해당하는 기간에 데이터가 존재하지 않습니다.<br><p>기간을 다시 설정해주세요</p></p>")
+                $("#inflationYearlyGraph").append("<p id='nullCkInfYear'>해당하는 기간에 데이터가 존재하지 않습니다.<br>기간을 다시 설정해주세요</p>")
             }
         }
     }

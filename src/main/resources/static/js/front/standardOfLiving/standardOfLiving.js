@@ -36,7 +36,7 @@ function getIncomePriceRate() {
         } else {
             if ($("#nullCkWageInfl").length <= 0) {
                 echarts.dispose(document.getElementById("wageInflGraph"));
-                $("#wageInflGraph").append("<p id='nullCkWageInfl'>해당하는 기간에 데이터가 존재하지 않습니다.<br><p>기간을 다시 설정해주세요</p></p>")
+                $("#wageInflGraph").append("<p id='nullCkWageInfl'>해당하는 기간에 데이터가 존재하지 않습니다.<br>기간을 다시 설정해주세요</p>")
             }
         }
     }
@@ -58,7 +58,7 @@ function getEconomicGrowth() {
         } else {
             if ($("#nullCkEconomicGrowth").length <= 0) {
                 echarts.dispose(document.getElementById("regRankGraph"));
-                $("#regRankGraph").append("<p id='nullCkEconomicGrowth'>해당하는 기간에 데이터가 존재하지 않습니다.<br><p>기간을 다시 설정해주세요</p></p>")
+                $("#regRankGraph").append("<p id='nullCkEconomicGrowth'>해당하는 기간에 데이터가 존재하지 않습니다.<br>기간을 다시 설정해주세요</p>")
             }
         }
     }
@@ -91,7 +91,7 @@ function getOverseaTrip() {
         } else {
             if ($("#nullCkTravel").length <= 0) {
                 echarts.dispose(document.getElementById("travelGraph"));
-                $("#travelGraph").append("<p id='nullCkTravel'>해당하는 기간에 데이터가 존재하지 않습니다.<br><p>기간을 다시 설정해주세요</p></p>")
+                $("#travelGraph").append("<p id='nullCkTravel'>해당하는 기간에 데이터가 존재하지 않습니다.<br>기간을 다시 설정해주세요</p>")
             }
         }
     }
@@ -132,7 +132,7 @@ function getGiniCoefficient() {
         } else {
             if ($("#nullCkGini").length <= 0) {
                 echarts.dispose(document.getElementById("giniGraph"));
-                $("#giniGraph").append("<p id='nullCkGini'>해당하는 기간에 데이터가 존재하지 않습니다.<br><p>기간을 다시 설정해주세요</p></p>")
+                $("#giniGraph").append("<p id='nullCkGini'>해당하는 기간에 데이터가 존재하지 않습니다.<br>기간을 다시 설정해주세요</p>")
             }
         }
     }

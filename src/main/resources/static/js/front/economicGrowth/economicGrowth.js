@@ -31,7 +31,7 @@ window.onload = function () {
     getCovidEconomicGrowth();
     getStateDebtSetPeriod();
     getInflChart();
-    countAnimation();
+//    countAnimation();
 }
 
 $("#termSetting").click(function () {
@@ -58,7 +58,7 @@ function getEnmcGrrt() {
         } else {
             if($("#nullCkEconomyGrrt").length <= 0) {
                 echarts.dispose(document.getElementById("regionGrowthGraph"));
-                $("#regionGrowthGraph").append("<p id='nullCkEconomyGrrt'>해당하는 기간에 데이터가 존재하지 않습니다.<br><p>기간을 다시 설정해주세요</p></p>")
+                $("#regionGrowthGraph").append("<p id='nullCkEconomyGrrt'>해당하는 기간에 데이터가 존재하지 않습니다.<br>기간을 다시 설정해주세요</p>")
             }
         }
     }
@@ -91,7 +91,7 @@ function getStateDebtSetPeriod() {
         } else {
             if($("#nullCkStateDebt").length <= 0) {
                 echarts.dispose(document.getElementById("gdpDeptGraph"));
-                $("#gdpDeptGraph").append("<p id='nullCkStateDebt'>해당하는 기간에 데이터가 존재하지 않습니다.<br><p>기간을 다시 설정해주세요</p></p>")
+                $("#gdpDeptGraph").append("<p id='nullCkStateDebt'>해당하는 기간에 데이터가 존재하지 않습니다.<br>기간을 다시 설정해주세요</p>")
             }
         }
 
@@ -112,7 +112,7 @@ function getInflChart() {
         if(data[0][0] === "Fail"){
             if($("#nullCkInfl").length <= 0) {
                 echarts.dispose(document.getElementById("inflationGraph"));
-                $("#inflationGraph").append("<p id='nullCkInfl'>해당하는 기간에 데이터가 존재하지 않습니다.<br><p>기간을 다시 설정해주세요</p></p>")
+                $("#inflationGraph").append("<p id='nullCkInfl'>해당하는 기간에 데이터가 존재하지 않습니다.<br>기간을 다시 설정해주세요</p>")
             }
         }else {
             run(data);
