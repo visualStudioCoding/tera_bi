@@ -196,13 +196,10 @@
                         <h6 class="tit">임금 대비 물가상승률</h6>
                     </div>
                     <div class="cont">
-                        <p class="caption">
-                            <i class="ri-information-fill"></i> 해당년도 자료입니다.
-                        </p>
                         <div class="graph-wrap">
                             <div
                                     id="wageInflGraph"
-                                    style="width: 100%; height: 270px"
+                                    style="width: 100%; height: 304px"
                             ></div>
                         </div>
                     </div>
@@ -212,10 +209,7 @@
                         <h6 class="tit">지역별 경제성장률 순위</h6>
                     </div>
                     <div class="cont">
-                        <p class="caption">
-                            <i class="ri-information-fill"></i> 해당년도 자료입니다.
-                        </p>
-                        <div id="regRankGraph" style="width: 100%; height: 270px"></div>
+                        <div id="regRankGraph" style="width: 100%; height: 304px"></div>
                     </div>
                 </div>
                 <div class="col-inner-3">
@@ -223,7 +217,7 @@
                         <h6 class="tit">연령별 해외여행 통계</h6>
                     </div>
                     <div class="cont">
-                        <div id="travelGraph" style="width: 100%; height: 302px"></div>
+                        <div id="travelGraph" style="width: 100%; height: 304px"></div>
                     </div>
                 </div>
 

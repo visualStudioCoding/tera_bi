@@ -149,8 +149,8 @@ div[class*="col-inner"].col-inners {
 .cont .caption i {
   vertical-align: middle;
 }
-.cont .sub-txt + .caption {
-  margin-bottom: 0;
+.sub-txt + .caption {
+    line-height: 1.5;
 }
 
 /******************** heading *********************/
@@ -415,6 +415,16 @@ button i {
 }
 .btn-wrap button.w-100 + button {
   margin-top: 0.5rem;
+}
+
+[id*=nullCk] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-size: 0.813rem;
+    color: var(--gray-60);
+    text-align: center;
 }
 
 /******************** header *********************/
@@ -897,7 +907,6 @@ header .indicator {
   font-family: "NanumSquare";
   font-size: 0.813rem;
   color: var(--gray-50);
-  line-height: 1.4;
 }
 .card .txt-wrap .sub-txt + .sub-txt {
   margin-top: 0.25rem;
