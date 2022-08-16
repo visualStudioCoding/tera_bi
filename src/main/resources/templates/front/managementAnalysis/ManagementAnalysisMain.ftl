@@ -65,19 +65,34 @@
           <div class="title-wrap">
             <h6 class="tit">손익/매출현황</h6>
           </div>
+          <#assign golPrftLoss = profitSales.trgtPrftLoss>
+          <#assign goltrgSales = profitSales.trgtSales>
+          <#assign prftLoss = profitSales.comparePrftLoss>
+          <#assign sales = profitSales.compareSales>
           <div class="cont">
             <div class="wrapper">
               <div class="left" style="width: 45%">
                 <p class="sub-tit">손익현황</p>
                 <div class="text-box" style="text-align: left">
                   <h6 class="txt-xs tit">목표</h6>
-                  <h5 class="count-ani" data-unit="만원">100,000</h5>
+                  <h5 class="count-ani" data-unit="만원">${golPrftLoss}</h5>
+<#--                  <h5 class="count-ani" data-unit="만원">5151151515</h5>-->
                 </div>
                 <div class="text-box" style="text-align: left">
                   <h6 class="txt-xs tit">전년대비</h6>
                   <!-- '+' 기호: 'plus' 클래스 추가 -->
                   <!-- '-' 기호: 'minus' 클래스 추가 -->
-                  <h5 class="count-ani up plus" data-unit="만원">50,000</h5>
+                  <#if golPrftLoss gt prftLoss>
+                  <h5 class="count-ani up plus" data-unit="만원">${golPrftLoss - prftLoss}</h5>
+
+                    <#elseif golPrftLoss == prftLoss>
+                      <h6>변동없음</h6>
+
+                      <#else>
+                    <h5 class="count-ani down minus" data-unit="만원">${prftLoss - golPrftLoss}</h5>
+
+                        </#if>
+<#--                  <h5 class="count-ani up plus" data-unit="만원">50,000</h5>-->
                 </div>
                 <div
                         id="plAchvRateGraph"
@@ -89,13 +104,24 @@
                 <div class="wrapper">
                   <div class="text-box" style="text-align: left">
                     <h6 class="txt-xs tit">목표</h6>
-                    <h5 class="count-ani" data-unit="만원">300,000</h5>
+                    <h5 class="count-ani" data-unit="만원">${goltrgSales}</h5>
+<#--                    <h5 class="count-ani" data-unit="만원">1515151515</h5>-->
                   </div>
                   <div class="text-box" style="text-align: left">
                     <h6 class="txt-xs tit">전년대비</h6>
-                    <h5 class="count-ani down minus" data-unit="만원">
-                      25,000
-                    </h5>
+
+                    <#if goltrgSales gt sales>
+                      <h5 class="count-ani up plus" data-unit="만원">${goltrgSales - sales}</h5>
+
+                    <#elseif goltrgSales == sales>
+                      <h6>변동 없음</h6>
+                    <#else>
+                      <h5 class="count-ani down minus" data-unit="만원">${sales - goltrgSales}</h5>
+
+                    </#if>
+
+<#--                    <h5 class="count-ani down minus" data-unit="만원">-->
+<#--                      25,000-->
                   </div>
                 </div>
                 <div

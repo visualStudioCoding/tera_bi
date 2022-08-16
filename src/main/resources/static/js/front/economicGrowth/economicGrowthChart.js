@@ -30,7 +30,7 @@ function fnRegionChartOp(data) {
     console.log(dataList)
 
     for (var i = 0; i < ctyNm.length; i++) {
-        if (ctyNm[i] === '전국') {
+        if (ctyNm[i] == '전국') {
             $("#wholeRegion").text(rate[i] + "%")
         }
     }
@@ -377,6 +377,11 @@ let gdpDeptGraphOp;
     for (var i = 0; i < data.debt.length; i++) {
         debt.push(data.debt[i].val);
     }
+    console.log(period)
+    console.log(realGDP)
+    console.log(debt)
+    console.log(nmnlGDP)
+    console.log(unit)
 
     gdpDeptGraphOp = {
         grid: {
@@ -511,8 +516,8 @@ let gdpDeptGraphOp;
 
     gdpDeptGraphOp.xAxis[0].data = period
     gdpDeptGraphOp.series[0].data = debt
-    gdpDeptGraphOp.series[1].data = nmnlGDP
-    gdpDeptGraphOp.series[2].data = realGDP
+    gdpDeptGraphOp.series[1].data = realGDP
+    gdpDeptGraphOp.series[2].data = nmnlGDP
 
 
     gdpDeptChart.setOption(gdpDeptGraphOp);

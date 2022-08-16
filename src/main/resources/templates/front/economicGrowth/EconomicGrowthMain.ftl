@@ -23,7 +23,7 @@
                     </p>
                     <div class="circle-wrap">
                         <div class="circle">
-                            <span class="txt count-ani-per" id="wholeRegion" data-unit="%" data-digit="1">3.5</span>
+                            <span class="txt" id="wholeRegion" data-unit="%" data-digit="1"></span>
                             <div class="wave wave1"></div>
                             <div class="wave wave2"></div>
                             <div class="wave wave3"></div>

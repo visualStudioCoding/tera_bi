@@ -7,9 +7,9 @@ function getExchangeRate() {
     let diff;
 
     let callBackFn = function (data) {
-        console.log(data.current)
-        console.log(data.past)
-        console.log(data.differ)
+        // console.log(data.current)
+        // console.log(data.past)
+        // console.log(data.differ)
 
         current = data.current
         past = data.past
@@ -31,7 +31,6 @@ window.onload = function () {
     getCovidEconomicGrowth();
     getStateDebtSetPeriod();
     getInflChart();
-//    countAnimation();
 }
 
 $("#termSetting").click(function () {

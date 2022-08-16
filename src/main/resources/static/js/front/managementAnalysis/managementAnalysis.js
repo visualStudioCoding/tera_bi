@@ -8,7 +8,18 @@ window.onload = function () {
     fnClientSales();
     fnCapitalSales();
     fnWorkYear();
+    fnProfitLossAndSales();
 }
+// 손익/매출현황
+function fnProfitLossAndSales(){
+    let callBackFn = function (data) {
+        console.log(data)
+        fnProfitLossAndSalesChart(data);
+    }
+    let param = {}
+    commonAjax("/front/managementAnalysis/api/getProfitLossAndSales", callBackFn, "get", param, errorMsg);
+}
+
 // 사원현황
 function getEmployeeStatus(){
     let callBackFn = function (data) {
@@ -46,6 +57,7 @@ function fnClientSales() {
 
     let param = {parameter: period}
     let callBackFn = function (data) {
+        fnCstmSalesChartDom(data)
 
     }
     commonAjax("/front/managementAnalysis/api/getClientSales", callBackFn, "get", param, errorMsg);
