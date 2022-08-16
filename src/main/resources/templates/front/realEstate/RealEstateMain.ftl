@@ -65,7 +65,6 @@
                     </div>
                 </div>
 
-
                 <div class="col-inner-6 col-sm-12">
                     <div class="title-wrap">
                         <h6 class="tit">소비자물가별 미분양주택</h6>

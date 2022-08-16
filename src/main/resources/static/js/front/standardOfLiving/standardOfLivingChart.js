@@ -15,13 +15,6 @@ function fnYearsInflChart(data) {
         let yearsInflGraphOp;
 
         yearsInflGraphOp = {
-            grid: {
-                containLabel: true,
-                top: "25%",
-                bottom: 0,
-                left: "1%",
-                right: "8%",
-            },
             title: {
                 text: "연대별 물가상승률",
                 left: "center",
@@ -89,6 +82,37 @@ function fnYearsInflChart(data) {
             textStyle: {
                 fontFamily: "NanumSquare",
             },
+            media: [
+                {
+                    query: {
+                        minWidth: 312,
+                        maxWidth: 352
+                    },
+                    option: {
+                        grid: {
+                            containLabel: true,
+                            top: "25%",
+                            bottom: 0,
+                            left: "1%",
+                            right: 0,
+                        }
+                    }
+                },
+                {
+                    query: {
+                        maxWidth: 311
+                    },
+                    option: {
+                        grid: {
+                            containLabel: true,
+                            top: "25%",
+                            bottom: 0,
+                            left: "1%",
+                            right: "8%",
+                        }
+                    }
+                },
+            ]
         };
         yearsInflChart.setOption(yearsInflGraphOp);
     }
@@ -226,7 +250,7 @@ function fnGiniCoefficient(data) {
     }
     const giniChartDom = document.getElementById("giniGraph");
     if (giniChartDom) {
-        const giniChart = echarts.init(giniChartDom);
+        let giniChart = echarts.init(giniChartDom);
         let giniGraphOp;
 
         giniGraphOp = {
@@ -291,6 +315,25 @@ function fnGiniCoefficient(data) {
             },
         };
         giniChart.setOption(giniGraphOp);
+
+        /* 반응형 */
+        function chartRpsv(height) {
+          echarts.dispose(giniChart);
+          giniChart = echarts.init(giniChartDom, null, {height: height});
+          giniChart.setOption(giniGraphOp);
+        }
+        if ((window.innerWidth <= 1280 && window.innerWidth > 1024) || (window.innerWidth <= 650 && window.innerWidth > 576)) {
+          chartRpsv(300);
+        } else if (window.innerWidth > 1280 || (window.innerWidth <= 1024 && window.innerWidth > 576)) {
+          chartRpsv(236);
+        }
+        window.addEventListener("resize", function(){
+          if ((window.innerWidth <= 1280 && window.innerWidth > 1024) || (window.innerWidth <= 650 && window.innerWidth > 576)) {
+            chartRpsv(300);
+          } else if (window.innerWidth > 1280 || (window.innerWidth <= 1024 && window.innerWidth > 576) || window.innerWidth <= 576) {
+            chartRpsv(236);
+          }
+        })
     }
 }
 
@@ -737,20 +780,7 @@ function fnTravelChartDom(data) {
                 },
             },
             legend: {
-                left: "right",
-                top: "center",
-                orient: "vertical",
-                textStyle: {
-                    fontSize: 10,
-                },
                 padding: 0,
-            },
-            grid: {
-                left: "1%",
-                right: "21%",
-                top: "10%",
-                bottom: 0,
-                containLabel: true,
             },
             xAxis: {
                 type: "category",
@@ -845,6 +875,58 @@ function fnTravelChartDom(data) {
             textStyle: {
                 fontFamily: "NanumSquare",
             },
+            media: [
+                {
+                    query: {
+                        minWidth: 353,
+                    },
+                    option: {
+                        grid: {
+                            left: "1%",
+                            right: "21%",
+                            top: "10%",
+                            bottom: 0,
+                            containLabel: true,
+                        },
+                        legend: {
+                            left: "right",
+                            top: "center",
+                            orient: "vertical",
+                            itemWidth: 20,
+                            itemHeight: 12,
+                            textStyle: {
+                                fontSize: 10,
+                            },
+                            itemGap: 10,
+                        }
+                    }
+                },
+                {
+                    query: {
+                        maxWidth: 352,
+                    },
+                    option: {
+                        grid: {
+                            left: "1%",
+                            right: 0,
+                            top: "10%",
+                            bottom: "15%",
+                            containLabel: true,
+                        },
+                        legend: {
+                            orient: "horizontal",
+                            left: "center",
+                            top: "bottom",
+                            itemWidth: 12,
+                            itemHeight: 8,
+                            textStyle: {
+                                fontSize: 12,
+                            },
+                            itemGap: 7,
+                        }
+                    }
+                }
+            ]
         };
         travelGraphOp.xAxis.data = data.period;
 

@@ -6,6 +6,9 @@
 <div class="contents">
     <div class="inner stnd-living">
         <div class="col side-bar">
+            <button type="button" class="side-toggle-btn">
+              <i class="ri-arrow-right-s-line"></i>
+            </button>
             <div class="inner-title">
                 <h3>생활수준지표</h3>
             </div>
@@ -13,7 +16,7 @@
         </div>
         <div class="col container">
 
-                <div class="col-inner-4">
+                <div class="col-inner-5 col-lg-7 col-md-12">
                     <div class="title-wrap">
                         <h6 class="tit">생활수준지표</h6>
                     </div>
@@ -134,7 +137,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-inner-4">
+                <div class="col-inner-4 col-lg-5 col-md-8 col-sm-12">
                     <div class="title-wrap">
                         <h6 class="tit">물가상승률 통계</h6>
                     </div>
@@ -168,7 +171,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-inner-4">
+                <div class="col-inner-3 col-lg-3 col-md-4 col-sm-5 col-xs-12">
                     <div class="title-wrap">
                         <h6 class="tit">지니계수</h6>
                     </div>
@@ -177,8 +180,7 @@
                     </div>
                 </div>
 
-
-                <div class="col-inner-3">
+                <div class="col-inner-3 col-lg-3 col-md-6 col-sm-7 col-xs-12">
                     <div class="title-wrap">
 <#--                        <h6 class="tit">우크라이나 전쟁 이후 물가상승률</h6>-->
                         <h6 class="tit">우크라이나 전쟁 이후 물가상승지수</h6>
@@ -191,7 +193,7 @@
                         <div id="ukrInflGraph" style="width: 100%; height: 270px"></div>
                     </div>
                 </div>
-                <div class="col-inner-3">
+                <div class="col-inner-3 col-lg-6 col-sm-12">
                     <div class="title-wrap">
                         <h6 class="tit">임금 대비 물가상승률</h6>
                     </div>
@@ -204,7 +206,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-inner-3">
+                <div class="col-inner-3 col-lg-7 col-sm-6 col-xs-12">
                     <div class="title-wrap">
                         <h6 class="tit">지역별 경제성장률 순위</h6>
                     </div>
@@ -212,7 +214,7 @@
                         <div id="regRankGraph" style="width: 100%; height: 304px"></div>
                     </div>
                 </div>
-                <div class="col-inner-3">
+                <div class="col-inner-3 col-lg-5 col-sm-6 col-xs-12">
                     <div class="title-wrap">
                         <h6 class="tit">연령별 해외여행 통계</h6>
                     </div>

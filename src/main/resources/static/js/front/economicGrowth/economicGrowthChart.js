@@ -358,7 +358,7 @@ let colors = [
 function fngdpDeptGraphOp(data) {
 /* 차트 - GDP 대비 국가채무 */
 const gdpDeptChartDom = document.getElementById("gdpDeptGraph");
-const gdpDeptChart = echarts.init(gdpDeptChartDom);
+let gdpDeptChart = echarts.init(gdpDeptChartDom);
 let gdpDeptGraphOp;
 
     let period = [];
@@ -519,6 +519,24 @@ let gdpDeptGraphOp;
     gdpDeptGraphOp.series[1].data = realGDP
     gdpDeptGraphOp.series[2].data = nmnlGDP
 
-
     gdpDeptChart.setOption(gdpDeptGraphOp);
+
+    /* 반응형 */
+    function chartRpsv(height) {
+      echarts.dispose(gdpDeptChart);
+      gdpDeptChart = echarts.init(gdpDeptChartDom, null, {height: height});
+      gdpDeptChart.setOption(gdpDeptGraphOp);
+    }
+    if (window.innerWidth <= 1280 && window.innerWidth > 1024) {
+      chartRpsv(334);
+    } else {
+      chartRpsv(200);
+    }
+    window.addEventListener("resize", function(){
+      if (window.innerWidth <= 1280 && window.innerWidth > 1024) {
+        chartRpsv(334);
+      } else {
+        chartRpsv(200);
+      }
+    })
 }

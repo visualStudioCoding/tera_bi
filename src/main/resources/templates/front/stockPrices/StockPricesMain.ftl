@@ -6,6 +6,9 @@
 <div class="contents">
     <div class="inner stock-index">
         <div class="col side-bar">
+            <button type="button" class="side-toggle-btn">
+              <i class="ri-arrow-right-s-line"></i>
+            </button>
             <div class="inner-title">
                 <h3>종합주가지수</h3>
             </div>
@@ -13,7 +16,7 @@
         </div>
         <div class="col container">
 
-                <div class="col-inner-3">
+                <div class="col-inner-3 col-lg-4 col-sm-12">
                     <div class="title-wrap">
                         <h6 class="tit">종합 주가 지수(KOSPI)</h6>
                     </div>
@@ -49,7 +52,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-inner-3">
+                <div class="col-inner-3 col-lg-4 col-sm-6 col-xs-12">
                     <div class="title-wrap">
                         <h6 class="tit">환율 & 기준금리</h6>
                     </div>
@@ -116,7 +119,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-inner-3">
+                <div class="col-inner-3 col-lg-4 col-sm-6 col-xs-12">
                     <div class="title-wrap">
                         <h6 class="tit">코스닥 & 유가</h6>
                     </div>
@@ -179,7 +182,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-inner-3">
+                <div class="col-inner-3 col-lg-6 col-sm-12" id="gdpChartBox">
                     <div class="title-wrap">
                         <h6 class="tit">GDP</h6>
                     </div>
@@ -188,7 +191,7 @@
                     </div>
                 </div>
 
-                <div class="col-inner-4">
+                <div class="col-inner-4 col-lg-6 col-sm-12">
                     <div class="title-wrap">
                         <h6 class="tit">코로나 시기 KOSPI</h6>
                     </div>
@@ -197,7 +200,7 @@
                         <div id="covidKospiGraph" style="width:100%; height:300px"></div>
                     </div>
                 </div>
-                <div class="col-inner-4">
+                <div class="col-inner-4 col-lg-6 col-sm-12">
                     <div class="title-wrap">
                         <h6 class="tit">기준금리 & KOSPI</h6>
                     </div>
@@ -205,7 +208,7 @@
                         <div id="baseRateKospiGraph" style="width:100%; height:330px;"></div>
                     </div>
                 </div>
-                <div class="col-inner-4">
+                <div class="col-inner-4 col-lg-6 col-sm-12">
                     <div class="title-wrap">
                         <h6 class="tit">연도별 경제 성장률</h6>
                     </div>
