@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -40,10 +41,46 @@ public class ManagementAnalysisController {
 
         Map<String, Float> emplyCnt = (Map<String, Float>) commonService.selectEmplyContents(null, PAGE_ID + PROGRAM_ID + ".selectEmployeeCount");
         model.addAttribute("emplyCnt", emplyCnt);
+        model.addAttribute("profitSales", getProfitLossAndSales());
+
 
         return PAGE_ID + DIRECTORY + "Main";
     }
 
+    // 손익/매출현황
+    @ResponseBody
+    @GetMapping("/api/getProfitLossAndSales")
+    public Map<String, Object> getProfitLossAndSales() throws Exception {
+
+        List<Map<String, Object>> dataList = (List<Map<String, Object>>) commonService.selectList(null, PAGE_ID + PROGRAM_ID + ".selectProfitLossSales");
+        List<Map<String, Object>> compareList = (List<Map<String, Object>>) commonService.selectList(null, PAGE_ID + PROGRAM_ID + ".selectProfitLossSalesCompare");
+
+        Long prftLoss = Long.valueOf(String.valueOf(dataList.get(0).get("prft_loss")));
+        Long trgtPrftLoss = Long.valueOf(String.valueOf(dataList.get(0).get("trgt_prft_loss")));
+        Long sales = Long.valueOf(String.valueOf(dataList.get(0).get("sales")));
+        Long trgtSales = Long.valueOf(String.valueOf(dataList.get(0).get("trgt_sales")));
+
+        Long cmpPrftLoss = Long.valueOf(String.valueOf(compareList.get(0).get("trgt_prft_loss")));
+        Long cmpSales = Long.valueOf(String.valueOf(compareList.get(0).get("trgt_sales")));
+
+        double profitLossAcheive = (double) prftLoss / trgtPrftLoss * 100;
+        double salesAcheive = (double)sales / trgtSales * 100;
+
+        Map<String, Object> result = new HashMap<>();
+
+        result.put("trgtPrftLoss", trgtPrftLoss / 10000);
+        result.put("trgtSales", trgtSales / 10000);
+        result.put("profitLossAcheive", Math.round(profitLossAcheive));
+        result.put("salesAcheive", Math.round(salesAcheive));
+        result.put("comparePrftLoss", cmpPrftLoss / 10000);
+        result.put("compareSales", cmpSales / 10000);
+
+        System.out.println(result);
+
+        return result;
+    }
+
+    // 사원 현황
     @ResponseBody
     @GetMapping("/api/getEmployeeStatus")
     public Map<String, List<Object>> employeeStatus(@RequestParam Map<String, Object> paramMap, Model model) throws Exception {
@@ -74,6 +111,7 @@ public class ManagementAnalysisController {
         return result;
     }
 
+    // 부서별 인원 현황
     @ResponseBody
     @GetMapping("/api/getDepartment")
     public Map<String, List<Map<String, Object>>> departmentList() throws Exception {
@@ -86,6 +124,8 @@ public class ManagementAnalysisController {
 
         return result;
     }
+
+    // 기술자 보유 현황
     @ResponseBody
     @GetMapping("/api/getTechnical")
     public Map<String, List<Map<String, Object>>> technicalList() throws Exception {
@@ -101,7 +141,7 @@ public class ManagementAnalysisController {
     //      거래처별 매출 현황 Chart
     @ResponseBody
     @GetMapping("/api/getClientSales")
-    public Map<String, List<Map<String, Object>>> getClientSales(String parameter) throws Exception {
+    public List<Map<String, Object>> getClientSales(String parameter) throws Exception {
 
         Map<String, String> params = new HashMap<>();
 
@@ -122,40 +162,29 @@ public class ManagementAnalysisController {
             }
         }
         List<Map<String, Object>> dataList = (List<Map<String, Object>>) commonService.selectList(params, PAGE_ID + PROGRAM_ID + ".selectClientSales");
-        List<Map<String, Object>> compareList = (List<Map<String, Object>>) commonService.selectList(params, PAGE_ID + PROGRAM_ID + ".selectClientSalesCompare");
 
-
-        List<Object> period = new ArrayList<>();
-        List<Object> clients = new ArrayList<>();
-        List<Object> datas = new ArrayList<>();
-        Map<String, Object> val = new HashMap<>();
-
-        List<List> graphData = new ArrayList<>();
+        List<String> years = new ArrayList<>();
 
         for (int i = 0; i < dataList.size(); i++) {
-            if (period.size() == 0) {
-                period.add(dataList.get(i).get("yr_dt"));
-            } else if (period.get(i - 1) == dataList.get(i).get("yr_dt")) {
-                continue;
-            } else {
-                period.add(dataList.get(i).get("yr_dt"));
+                years.add((String) dataList.get(i).get("yr_dt"));
+        }
+        years = years.stream().distinct().collect(Collectors.toList());
+
+        Map<String, Object> data = new HashMap<>();
+        int dataLen = 0;
+        int cnt = 0;
+        for (int i = 0; i < years.size(); i++) {
+            for (dataLen = (dataList.size() / years.size()) * cnt; dataLen < (dataList.size() / years.size()) * (cnt + 1); dataLen++) {
+                System.out.println((String) dataList.get(dataLen).get("cli_nm") + dataList.get(dataLen).get("yr_dt"));
+                data.put((String) dataList.get(dataLen).get("cli_nm") + dataList.get(dataLen).get("yr_dt"), dataList.get(dataLen).get("suply_val"));
             }
+                cnt++;
         }
-        for (int i = 0; i < compareList.size(); i++) {
-            clients.add(compareList.get(i).get("cli_nm"));
-        }
-//        for (int i = 0; i < compareList.size(); i++) {
-//            List<Object> compareList.get(i).get("cli_nm") = new ArrayList<>();
-//
-//        }
 
-//        covidGrowth.add(tmpData);
-//
-        Map<String, List<Map<String, Object>>> result = new HashMap<>();
-//
-//        result.put("covidGrowth", covidGrowth);
 
-        return result;
+        System.out.println(data);
+
+        return dataList;
     }
 
     //      재무제표 현황
@@ -288,16 +317,23 @@ public class ManagementAnalysisController {
         for (int i = 0; i < dataList.size(); i++) {
             List<Object> datas = new ArrayList<>();
 
-//            if(graphData.size() == 0){
-//                datas.add("amount");
-//                datas.add("period");
-//                graphData.add(datas);
-//            }
-            datas.add(dataList.get(i).get("work_yr"));
-            datas.add(dataList.get(i).get("years"));
+            if(graphData.size() < 1){
+                datas.add("amount");
+                datas.add("period");
+                graphData.add(datas);
 
-            graphData.add(datas);
+                datas = new ArrayList<>();
+
+                datas.add(dataList.get(i).get("work_yr"));
+                datas.add(dataList.get(i).get("years"));
+                graphData.add(datas);
+            }else {
+                datas.add(dataList.get(i).get("work_yr"));
+                datas.add(dataList.get(i).get("years"));
+                graphData.add(datas);
+            }
         }
+
         System.out.println(graphData);
 
         return graphData;

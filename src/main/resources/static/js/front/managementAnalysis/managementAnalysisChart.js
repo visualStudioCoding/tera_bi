@@ -1,255 +1,273 @@
-/* 차트 - 손익현황 달성률 */
-const plAchvRateChartDom = document.getElementById("plAchvRateGraph");
-if (plAchvRateChartDom) {
-  const plAchvRateChart = echarts.init(plAchvRateChartDom);
-  let plAchvRateGraphOp;
-  let gaugeData = [
-    {
-      value: 73,
-      name: '달성률',
-      title: {
-        offsetCenter: ['0%', '-15%'],
-        fontSize: 11,
-      },
-      detail: {
-        valueAnimation: true,
-        offsetCenter: ['0%', '20%']
-      }
-    }
-  ];
+function fnProfitLossAndSalesChart(data) {
 
-  plAchvRateGraphOp = {
-    series: [
+  /* 차트 - 손익현황 달성률 */
+  const plAchvRateChartDom = document.getElementById("plAchvRateGraph");
+  if (plAchvRateChartDom) {
+    const plAchvRateChart = echarts.init(plAchvRateChartDom);
+    let plAchvRateGraphOp;
+    let profitData = [
       {
-        type: 'gauge',
-        clockwise: false,
-        startAngle: 90,
-        endAngle: -270,
-        radius: "85%",
-        center: ["50%", "55%"],
-        pointer: {
-          show: false
-        },
-        progress: {
-          show: true,
-          overlap: false,
-          roundCap: true,
-          clip: false,
-          itemStyle: {
-            color: "#1e70e7"
-          }
-        },
-        axisLine: {
-          lineStyle: {
-            width: 15
-          }
-        },
-        splitLine: {
-          show: false,
-          distance: 0,
-          length: 10
-        },
-        axisTick: {
-          show: false
-        },
-        axisLabel: {
-          show: false,
-          distance: 50
-        },
-        data: gaugeData,
+        value: data.profitLossAcheive,
+        name: '달성률',
         title: {
-          fontSize: 12,
+          offsetCenter: ['0%', '-15%'],
+          fontSize: 11,
         },
         detail: {
-          width: 50,
-          height: 14,
-          fontSize: 14,
-          color: '#1e70e7',
-          formatter: '{value}%'
+          valueAnimation: true,
+          offsetCenter: ['0%', '20%']
         }
       }
-    ],
-    textStyle: {
-      fontFamily: "NanumSquare",
-    },
-  };
-  plAchvRateChart.setOption(plAchvRateGraphOp);
-}
+    ];
 
-/* 차트 - 매출현황 달성률 */
-const slAchvRateChartDom = document.getElementById("slAchvRateGraph");
-if (slAchvRateChartDom) {
-  const slAchvRateChart = echarts.init(slAchvRateChartDom);
-  let slAchvRateGraphOp;
-  let gaugeData = [
-    {
-      value: 88,
-      name: '달성률',
-      title: {
-        offsetCenter: ['0%', '-15%'],
-        fontSize: 11,
+    plAchvRateGraphOp = {
+      series: [
+        {
+          type: 'gauge',
+          clockwise: false,
+          startAngle: 90,
+          endAngle: -270,
+          radius: "85%",
+          center: ["50%", "55%"],
+          pointer: {
+            show: false
+          },
+          progress: {
+            show: true,
+            overlap: false,
+            roundCap: true,
+            clip: false,
+            itemStyle: {
+              color: "#1e70e7"
+            }
+          },
+          axisLine: {
+            lineStyle: {
+              width: 15
+            }
+          },
+          splitLine: {
+            show: false,
+            distance: 0,
+            length: 10
+          },
+          axisTick: {
+            show: false
+          },
+          axisLabel: {
+            show: false,
+            distance: 50
+          },
+          data: profitData,
+          title: {
+            fontSize: 12,
+          },
+          detail: {
+            width: 50,
+            height: 14,
+            fontSize: 14,
+            color: '#1e70e7',
+            formatter: '{value}%'
+          }
+        }
+      ],
+      textStyle: {
+        fontFamily: "NanumSquare",
       },
-      detail: {
-        valueAnimation: true,
-        offsetCenter: ['0%', '20%']
-      }
-    }
-  ];
+    };
+    plAchvRateChart.setOption(plAchvRateGraphOp);
+  }
 
-  slAchvRateGraphOp = {
-    series: [
+  /* 차트 - 매출현황 달성률 */
+  const slAchvRateChartDom = document.getElementById("slAchvRateGraph");
+  if (slAchvRateChartDom) {
+    const slAchvRateChart = echarts.init(slAchvRateChartDom);
+    let slAchvRateGraphOp;
+    let salesData = [
       {
-        type: 'gauge',
-        clockwise: false,
-        startAngle: 90,
-        endAngle: -270,
-        radius: "85%",
-        center: ["50%", "55%"],
-        pointer: {
-          show: false
-        },
-        progress: {
-          show: true,
-          overlap: false,
-          roundCap: true,
-          clip: false,
-          itemStyle: {
-            color: "#1e70e7"
-          }
-        },
-        axisLine: {
-          lineStyle: {
-            width: 15
-          }
-        },
-        splitLine: {
-          show: false,
-          distance: 0,
-          length: 10
-        },
-        axisTick: {
-          show: false
-        },
-        axisLabel: {
-          show: false,
-          distance: 50
-        },
-        data: gaugeData,
+        value: data.salesAcheive,
+        name: '달성률',
         title: {
-          fontSize: 12,
+          offsetCenter: ['0%', '-15%'],
+          fontSize: 11,
         },
         detail: {
-          width: 50,
-          height: 14,
-          fontSize: 14,
-          color: '#1e70e7',
-          formatter: '{value}%'
+          valueAnimation: true,
+          offsetCenter: ['0%', '20%']
         }
       }
-    ],
-    textStyle: {
-      fontFamily: "NanumSquare",
-    },
-  };
-  slAchvRateChart.setOption(slAchvRateGraphOp);
+    ];
+
+    slAchvRateGraphOp = {
+      series: [
+        {
+          type: 'gauge',
+          clockwise: false,
+          startAngle: 90,
+          endAngle: -270,
+          radius: "85%",
+          center: ["50%", "55%"],
+          pointer: {
+            show: false
+          },
+          progress: {
+            show: true,
+            overlap: false,
+            roundCap: true,
+            clip: false,
+            itemStyle: {
+              color: "#1e70e7"
+            }
+          },
+          axisLine: {
+            lineStyle: {
+              width: 15
+            }
+          },
+          splitLine: {
+            show: false,
+            distance: 0,
+            length: 10
+          },
+          axisTick: {
+            show: false
+          },
+          axisLabel: {
+            show: false,
+            distance: 50
+          },
+          data: salesData,
+          title: {
+            fontSize: 12,
+          },
+          detail: {
+            width: 50,
+            height: 14,
+            fontSize: 14,
+            color: '#1e70e7',
+            formatter: '{value}%'
+          }
+        }
+      ],
+      textStyle: {
+        fontFamily: "NanumSquare",
+      },
+    };
+    slAchvRateChart.setOption(slAchvRateGraphOp);
+  }
 }
 
-/* 거래처별 매출현황 */
-const cstmSalesChartDom = document.getElementById("cstmSalesGraph");
-if (cstmSalesChartDom) {
-  const cstmSalesChart = echarts.init(cstmSalesChartDom);
-  let cstmSalesGraphOp;
+function fnCstmSalesChartDom(data) {
+  /* 거래처별 매출현황 */
+
+  // for (let i = 0; i < data.lenght / 3; i++) {
+  //   window['array' + i] = [];
+  // }
+
+  // for (let i = 0; i < data.length; i++) {
+  //   for (let j = 0; j < data.length / 3; j++) {
+  //     window['array' + i] = [];
+  //     window['array' + j].push(data[i].yr_dt);
+  //   }
+  //   i += 17
+  // }
+  // console.log(array15);
+  const cstmSalesChartDom = document.getElementById("cstmSalesGraph");
+  if (cstmSalesChartDom) {
+    const cstmSalesChart = echarts.init(cstmSalesChartDom);
+    let cstmSalesGraphOp;
 
 
-  cstmSalesGraphOp = {
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: {
-        // Use axis to trigger tooltip
-        type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
-      }
-    },
-    legend: {},
-    grid: {
-      left: '3%',
-      right: '4%',
-      bottom: '3%',
-      containLabel: true
-    },
-    xAxis: {
-      type: 'value'
-    },
-    yAxis: {
-      type: 'category',
-      data: ['2019', '2020', '2021', '2022']
-    },
-    series: [
-      {
-        name: 'Direct',
-        type: 'bar',
-        stack: 'total',
-        label: {
-          show: true
-        },
-        emphasis: {
-          focus: 'series'
-        },
-        data: ['', '', '', 334]
+    cstmSalesGraphOp = {
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          // Use axis to trigger tooltip
+          type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
+        }
       },
-      {
-        name: 'Mail Ad',
-        type: 'bar',
-        stack: 'total',
-        label: {
-          show: true
-        },
-        emphasis: {
-          focus: 'series'
-        },
-        data: [120, 132, 101, 134, 90, 230, 210]
+      legend: {},
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
       },
-      {
-        name: 'Affiliate Ad',
-        type: 'bar',
-        stack: 'total',
-        label: {
-          show: true
-        },
-        emphasis: {
-          focus: 'series'
-        },
-        data: [220, 182, 191, 234, 290, 330, 310]
+      xAxis: {
+        type: 'value'
       },
-      {
-        name: 'Video Ad',
-        type: 'bar',
-        stack: 'total',
-        label: {
-          show: true
-        },
-        emphasis: {
-          focus: 'series'
-        },
-        data: [150, 212, 201, 154, 190, 330, 410]
+      yAxis: {
+        type: 'category',
+        data: ['2019', '2020', '2021', '2022']
       },
-      {
-        name: 'Search Engine',
-        type: 'bar',
-        stack: 'total',
-        label: {
-          show: true
+      series: [
+        {
+          name: '범우정보기술',
+          type: 'bar',
+          stack: 'total',
+          label: {
+            show: true
+          },
+          emphasis: {
+            focus: 'series'
+          },
+          data: ['', '', '', 334]
         },
-        emphasis: {
-          focus: 'series'
+        {
+          name: '다음정보기술',
+          type: 'bar',
+          stack: 'total',
+          label: {
+            show: true
+          },
+          emphasis: {
+            focus: 'series'
+          },
+          data: [120, 132, 101, 134, 90, 230, 210]
         },
-        data: [820, 832, 901, 934, 1290, 1330, 1320]
-      }
-    ],
-    textStyle: {
-      fontFamily: "NanumSquare",
-    },
-  };
-  cstmSalesChart.setOption(cstmSalesGraphOp);
+        {
+          name: '포네트',
+          type: 'bar',
+          stack: 'total',
+          label: {
+            show: true
+          },
+          emphasis: {
+            focus: 'series'
+          },
+          data: [220, 182, 191, 234, 290, 330, 310]
+        },
+        {
+          name: '오픈노트',
+          type: 'bar',
+          stack: 'total',
+          label: {
+            show: true
+          },
+          emphasis: {
+            focus: 'series'
+          },
+          data: [150, 212, 201, 154, 190, 330, 410]
+        },
+        {
+          name: '한전KDN',
+          type: 'bar',
+          stack: 'total',
+          label: {
+            show: true
+          },
+          emphasis: {
+            focus: 'series'
+          },
+          data: [820, 832, 901, 934, 1290, 1330, 1320]
+        }
+      ],
+      textStyle: {
+        fontFamily: "NanumSquare",
+      },
+    };
+    cstmSalesChart.setOption(cstmSalesGraphOp);
+  }
 }
 
 function fnFinStateChartDom(data) {
@@ -568,7 +586,7 @@ function fnTechnicalChart(data) {
         indicator: (function () {
           let res = [];
           for (let {tchLv : lv} of tchLvList) {
-            res.push({ text: lv});
+            res.push({ text: lv });
           }
           return res;
         })(),
@@ -696,20 +714,25 @@ function fnDepartmentChart(data) {
   }
 }
 
-function fnWorkYearsChartDom(data) {
-  console.log(data);
+function fnWorkYearsChartDom(datas) {
+  let dataList = []
+
+  for (let i = 1; i < datas.length; i++) {
+    dataList.push(datas[i])
+  }
   /* 차트 - 근속년수 현황 */
   const workYearsChartDom = document.getElementById("workYearsGraph");
   if (workYearsChartDom) {
     const workYearsChart = echarts.init(workYearsChartDom);
     let workYearsGraphOp;
-    let workYearsData = data;
+    let workYearsData = dataList;
     let workYears = [];
-    let dataMax = 0;
 
     workYearsData.forEach((data) => {
       workYears.push(data[0]);
       dataMax = Math.max.apply(null, workYears);
+      console.log(workYears)
+
       return dataMax;
     });
 
@@ -721,14 +744,8 @@ function fnWorkYearsChartDom(data) {
         },
       },
       dataset: {
-        source: (function () {
-          let res = [];
-          res.push(["amount", "period"]);
-          for (let i = 0; i < data.length; i++) {
-            res.push(data[i]);
-          }
-          return res;
-        })(),
+        source: [
+        ] ,
       },
       grid: {containLabel: true, left: 2, right: 10, bottom: 0, top: "32%"},
       yAxis: {name: "단위: 명"},
@@ -781,6 +798,8 @@ function fnWorkYearsChartDom(data) {
         fontFamily: "NanumSquare",
       },
     };
+    workYearsGraphOp.dataset.source = datas
+    console.log(workYearsGraphOp.dataset.source)
     workYearsChart.setOption(workYearsGraphOp);
   }
 }

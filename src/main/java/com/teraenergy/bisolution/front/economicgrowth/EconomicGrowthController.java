@@ -29,14 +29,13 @@ public class EconomicGrowthController {
     private CommonService commonService;
 
     @GetMapping("/main")
-    public String economicGrowthMain(Model model) throws Exception {
+    public String economicGrowthMain(String parameter, Model model) throws Exception {
         log.info(PAGE_ID + DIRECTORY + "Main");
 
         model.addAttribute("exchangeRate", getExchangeRate());
         model.addAttribute("baseRate", getBaseRate());
         model.addAttribute("gdpGni", getGDPGNP());
         model.addAttribute("inflationRate", getInflationRate());
-
         model.addAttribute("menuCode", "001");
 
         return PAGE_ID + DIRECTORY + "Main";
@@ -159,9 +158,15 @@ public class EconomicGrowthController {
         String currentYear = now.format(formatter);
 
         List<Map<String, Object>> dataList = new ArrayList<>();
+        Object wholeRegion = new Object();
 
         if(parameter.equals("0")) {
             dataList = (List<Map<String, Object>>) commonService.selectList(params, PAGE_ID + PROGRAM_ID + ".selectEconomicGrowthDefault");
+//            for (int i = 0; i < dataList.size(); i++) {
+//                if("전국".equals(dataList.get(i).get("cty_nm"))){
+//                    wholeRegion = dataList.get(i).get("val");
+//                }
+//            }
         }else{
             if (parameter.contains("-")) {
                 parameter = parameter.replaceAll("[-]", "");
@@ -181,9 +186,11 @@ public class EconomicGrowthController {
 
         if(dataList.size() == 0) {
             result.put("emncGrrt", dataList);
+//            result.put("wholeRegion", wholeRegion);
             result.put("result", "Fail");
         }else{
             result.put("emncGrrt", dataList);
+//            result.put("wholeRegion", wholeRegion);
             result.put("result", "Success");
         }
         return result;
@@ -280,9 +287,9 @@ public class EconomicGrowthController {
         }
         List<String> guid = new ArrayList<>();
 
-        System.out.println(consume);
-        System.out.println(source);
-        System.out.println(living);
+//        System.out.println(consume);
+//        System.out.println(source);
+//        System.out.println(living);
 
         if(consume.size() == 0 || source.size() == 0 || living.size() == 0) {
             guid.add("Fail");
@@ -363,6 +370,8 @@ public class EconomicGrowthController {
             result.put("debt", debt);
             result.put("result", "Success");
         }
+
+        System.out.println(result);
 
         return result;
     }

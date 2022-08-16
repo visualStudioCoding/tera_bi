@@ -181,7 +181,7 @@
     <select id="selectWholeGDP" parameterType="hashMap" resultType="hashMap">
         SELECT yr_dt, unit, real_val, nmnl_val
         FROM gdp
-        WHERE yr_dt BETWEEN (SELECT yr_dt FROM gdp ORDER BY yr_dt DESC LIMIT 1) - #{searchPeriod}
+        WHERE yr_dt BETWEEN (SELECT yr_dt FROM national_debt ORDER BY yr_dt DESC LIMIT 1) - #{searchPeriod}
           AND (
         SELECT yr_dt
         FROM national_debt

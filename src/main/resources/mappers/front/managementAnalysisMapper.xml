@@ -1,149 +1,177 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="bi.front.ManagementAnalysis">
+
+    <!--  손익/매출 현황  -->
+    <select id="selectProfitLossSales" parameterType="hashMap" resultType="hashMap">
+        SELECT yr_dt, prft_loss, trgt_prft_loss, sales, trgt_sales, unit
+        FROM prlss_stts
+        WHERE yr_dt = (SELECT yr_dt FROM prlss_stts ORDER BY yr_dt DESC LIMIT 1)
+    </select>
+
+    <!--  손익/매출 현황 (전년도 비교)  -->
+    <select id="selectProfitLossSalesCompare" parameterType="hashMap" resultType="hashMap">
+        SELECT yr_dt, prft_loss, trgt_prft_loss, sales, trgt_sales, unit
+        FROM prlss_stts
+        WHERE yr_dt = (SELECT yr_dt FROM prlss_stts ORDER BY yr_dt DESC LIMIT 1) - 1
+    </select>
+
     <!--총인원-->
     <select id="selectEmployeeCount" resultType="hashmap">
-        SELECT COUNT(*) AS totalCnt
-             , (
-               SELECT COUNT(*)
-                   FROM v_user_info
-                   WHERE wrk_plc = '010301'
-                     AND wrk_type IN ('010402', '010403')
-                     AND NOT id = '10100000001'
-                     AND NOT dept_id = '10200000011'
-               )        AS hdqrtCnt
-             , (
-               SELECT COUNT(*)
-                   FROM v_user_info
-                   WHERE wrk_plc = '010302'
-                     AND wrk_type IN ('010402', '010403')
-                     AND NOT id = '10100000001'
-                     AND NOT dept_id = '10200000011'
-               )        AS brnchCnt
-             , (
-               SELECT COUNT(*)
-                   FROM v_user_info
-                   WHERE wrk_plc = '010303'
-                     AND wrk_type IN ('010402', '010403')
-                     AND NOT id = '10100000001'
-                     AND NOT dept_id = '10200000011'
-               )        AS dsptcCnt
-             , (
-               SELECT COUNT(*)
-                   FROM v_user_info
-                   WHERE wrk_plc = '010304'
-                     AND wrk_type IN ('010402', '010403')
-                     AND NOT id = '10100000001'
-                     AND NOT dept_id = '10200000011'
-               )        AS homejobCnt
-             , (
-               SELECT COUNT(*)
-                   FROM v_user_info
-                   WHERE wrk_plc IN ('010301', '010302', '010303', '010304')
-                     AND wrk_type = '010403'
-                     AND NOT id = '10100000001'
-               )        AS freeCnt
-             , (
-               SELECT COUNT(*)
-                   FROM v_user_info
-                   WHERE wrk_plc IN ('010301', '010302', '010303', '010304')
-                     AND wrk_type = '010402'
-                     AND NOT id = '10100000001'
-                     AND dept_id = '10200000006'
-               )        AS dsgnrCnt
-             , (
-               SELECT COUNT(*)
-                   FROM v_user_info
-                   WHERE wrk_plc IN ('010301', '010302', '010303', '010304')
-                     AND wrk_type = '010402'
-                     AND NOT id = '10100000001'
-                     AND dept_id IN ('10200000007', '10200000005', '10200000008', '10200000009')
-               )        AS dvlprCnt
-             , (
-               SELECT COUNT(*)
-                   FROM v_user_info
-                   WHERE wrk_plc IN ('010301', '010302', '010303', '010304')
-                     AND wrk_type = '010402'
-                     AND NOT id = '10100000001'
-                     AND dept_id IN ('10200000002', '10200000003', '10200000004')
-               )        AS gnrlJobCnt
-            FROM v_user_info
-            WHERE wrk_type IN ('010402', '010403') AND NOT id = '10100000001' AND NOT dept_id = '10200000011'
+        SELECT COUNT(*)                                                                        AS totalCnt
+             , (SELECT COUNT(*)
+                FROM v_user_info
+                WHERE wrk_plc = '010301'
+                  AND wrk_type IN ('010402', '010403')
+                  AND NOT id = '10100000001'
+                  AND NOT dept_id = '10200000011')                                             AS hdqrtCnt
+             , (SELECT COUNT(*)
+                FROM v_user_info
+                WHERE wrk_plc = '010302'
+                  AND wrk_type IN ('010402', '010403')
+                  AND NOT id = '10100000001'
+                  AND NOT dept_id = '10200000011')                                             AS brnchCnt
+             , (SELECT COUNT(*)
+                FROM v_user_info
+                WHERE wrk_plc = '010303'
+                  AND wrk_type IN ('010402', '010403')
+                  AND NOT id = '10100000001'
+                  AND NOT dept_id = '10200000011')                                             AS dsptcCnt
+             , (SELECT COUNT(*)
+                FROM v_user_info
+                WHERE wrk_plc = '010304'
+                  AND wrk_type IN ('010402', '010403')
+                  AND NOT id = '10100000001'
+                  AND NOT dept_id = '10200000011')                                             AS homejobCnt
+             , (SELECT COUNT(*)
+                FROM v_user_info
+                WHERE wrk_plc IN ('010301', '010302', '010303', '010304')
+                  AND wrk_type = '010403'
+                  AND NOT id = '10100000001')                                                  AS freeCnt
+             , (SELECT COUNT(*)
+                FROM v_user_info
+                WHERE wrk_plc IN ('010301', '010302', '010303', '010304')
+                  AND wrk_type = '010402'
+                  AND NOT id = '10100000001'
+                  AND dept_id = '10200000006')                                                 AS dsgnrCnt
+             , (SELECT COUNT(*)
+                FROM v_user_info
+                WHERE wrk_plc IN ('010301', '010302', '010303', '010304')
+                  AND wrk_type = '010402'
+                  AND NOT id = '10100000001'
+                  AND dept_id IN ('10200000007', '10200000005', '10200000008', '10200000009')) AS dvlprCnt
+             , (SELECT COUNT(*)
+                FROM v_user_info
+                WHERE wrk_plc IN ('010301', '010302', '010303', '010304')
+                  AND wrk_type = '010402'
+                  AND NOT id = '10100000001'
+                  AND dept_id IN ('10200000002', '10200000003', '10200000004'))                AS gnrlJobCnt
+        FROM v_user_info
+        WHERE wrk_type IN ('010402', '010403')
+          AND NOT id = '10100000001'
+          AND NOT dept_id = '10200000011'
     </select>
     <!--사원현황-->
     <select id="selectEmployeeStatusList" resultType="hashmap">
         SELECT COUNT(*) AS value, '본사' AS name, 'dept' AS type
-            FROM v_user_info
-            WHERE wrk_plc = '010301'
-              AND wrk_type IN ('010402', '010403')
-              AND NOT id = '10100000001'
-              AND NOT dept_id = '10200000011'
+        FROM v_user_info
+        WHERE wrk_plc = '010301'
+          AND wrk_type IN ('010402'
+            , '010403')
+          AND NOT id = '10100000001'
+          AND NOT dept_id = '10200000011'
         UNION ALL
         SELECT COUNT(*) AS value, '재택' AS name, 'work' AS type
-            FROM v_user_info
-            WHERE wrk_plc = '010304'
-              AND wrk_type IN ('010402', '010403')
-              AND NOT id = '10100000001'
-              AND NOT dept_id = '10200000011'
+        FROM v_user_info
+        WHERE wrk_plc = '010304'
+          AND wrk_type IN ('010402'
+            , '010403')
+          AND NOT id = '10100000001'
+          AND NOT dept_id = '10200000011'
         UNION ALL
         SELECT COUNT(*) AS value, '한전KDN' AS name, 'work' AS type
-            FROM v_user_info
-            WHERE wrk_plc IN ('010303', '010302')
-              AND wrk_type IN ('010402', '010403')
-              AND NOT id = '10100000001'
-              AND NOT dept_id = '10200000011'
-              AND dept_id = '10200000007'
+        FROM v_user_info
+        WHERE wrk_plc IN ('010303'
+            , '010302')
+          AND wrk_type IN ('010402'
+            , '010403')
+          AND NOT id = '10100000001'
+          AND NOT dept_id = '10200000011'
+          AND dept_id = '10200000007'
         UNION ALL
         SELECT COUNT(*) AS value, '대전KDN' AS name, 'work' AS type
-            FROM v_user_info
-            WHERE wrk_plc IN ('010303', '010302')
-              AND wrk_type IN ('010402', '010403')
-              AND NOT id = '10100000001'
-              AND NOT dept_id = '10200000011'
-              AND dept_id = '10200000009'
+        FROM v_user_info
+        WHERE wrk_plc IN ('010303'
+            , '010302')
+          AND wrk_type IN ('010402'
+            , '010403')
+          AND NOT id = '10100000001'
+          AND NOT dept_id = '10200000011'
+          AND dept_id = '10200000009'
         UNION ALL
         SELECT COUNT(*) AS value, '우정사업정보센터' AS name, 'work' AS type
-            FROM v_user_info
-            WHERE wrk_plc IN ('010303', '010302')
-              AND wrk_type IN ('010402', '010403')
-              AND NOT id = '10100000001'
-              AND NOT dept_id = '10200000011'
-              AND dept_id = '10200000005'
+        FROM v_user_info
+        WHERE wrk_plc IN ('010303'
+            , '010302')
+          AND wrk_type IN ('010402'
+            , '010403')
+          AND NOT id = '10100000001'
+          AND NOT dept_id = '10200000011'
+          AND dept_id = '10200000005'
         UNION ALL
         SELECT COUNT(*) AS value, 'KPX' AS name, 'work' AS type
-            FROM v_user_info
-            WHERE wrk_plc IN ('010303', '010302')
-              AND wrk_type IN ('010402', '010403')
-              AND NOT id = '10100000001'
-              AND NOT dept_id = '10200000011'
-              AND dept_id = '10200000008'
+        FROM v_user_info
+        WHERE wrk_plc IN ('010303'
+            , '010302')
+          AND wrk_type IN ('010402'
+            , '010403')
+          AND NOT id = '10100000001'
+          AND NOT dept_id = '10200000011'
+          AND dept_id = '10200000008'
         UNION ALL
         SELECT COUNT(*) AS value, '프리랜서' AS name, 'dept' AS type
-            FROM v_user_info
-            WHERE wrk_plc IN ('010301', '010302', '010303', '010304')
-              AND wrk_type = '010403'
-              AND NOT id = '10100000001'
+        FROM v_user_info
+        WHERE wrk_plc IN ('010301'
+            , '010302'
+            , '010303'
+            , '010304')
+          AND wrk_type = '010403'
+          AND NOT id = '10100000001'
         UNION ALL
         SELECT COUNT(*) AS value, '디자인' AS name, 'dept' AS type
-            FROM v_user_info
-            WHERE wrk_plc IN ('010301', '010302', '010303', '010304')
-              AND wrk_type = '010402'
-              AND NOT id = '10100000001'
-              AND dept_id = '10200000006'
+        FROM v_user_info
+        WHERE wrk_plc IN ('010301'
+            , '010302'
+            , '010303'
+            , '010304')
+          AND wrk_type = '010402'
+          AND NOT id = '10100000001'
+          AND dept_id = '10200000006'
         UNION ALL
         SELECT COUNT(*) AS value, '개발' AS name, 'dept' AS type
-            FROM v_user_info
-            WHERE wrk_plc IN ('010301', '010302', '010303', '010304')
-              AND wrk_type = '010402'
-              AND NOT id = '10100000001'
-              AND dept_id IN ('10200000007', '10200000005', '10200000008', '10200000009')
+        FROM v_user_info
+        WHERE wrk_plc IN ('010301'
+            , '010302'
+            , '010303'
+            , '010304')
+          AND wrk_type = '010402'
+          AND NOT id = '10100000001'
+          AND dept_id IN ('10200000007'
+            , '10200000005'
+            , '10200000008'
+            , '10200000009')
         UNION ALL
         SELECT COUNT(*) AS value, '경영' AS name, 'dept' AS type
-            FROM v_user_info
-            WHERE wrk_plc IN ('010301', '010302', '010303', '010304')
-              AND wrk_type = '010402'
-              AND NOT id = '10100000001'
-              AND dept_id IN ('10200000002', '10200000003', '10200000004')
+        FROM v_user_info
+        WHERE wrk_plc IN ('010301'
+            , '010302'
+            , '010303'
+            , '010304')
+          AND wrk_type = '010402'
+          AND NOT id = '10100000001'
+          AND dept_id IN ('10200000002'
+            , '10200000003'
+            , '10200000004')
     </select>
     <!--부서별 인원 현황-->
     <select id="selectDeptList" resultType="hashmap">
@@ -156,11 +184,12 @@
                          WHEN dept_id = '10200000007' THEN dept_nm
                          WHEN dept_id = '10200000008' THEN dept_nm
                          WHEN dept_id = '10200000009' THEN dept_nm
-                     END) AS deptCnt
-             , dept_nm    AS deptNm
-            FROM v_user_info
-            WHERE dept_id NOT IN ('10200000011', '10200000012') AND NOT id = '10100000001'
-            GROUP BY deptNm
+            END)       AS deptCnt
+             , dept_nm AS deptNm
+        FROM v_user_info
+        WHERE dept_id NOT IN ('10200000011', '10200000012')
+          AND NOT id = '10100000001'
+        GROUP BY deptNm
     </select>
     <!--기술자 보유 현황-->
     <select id="selectTechnicalList" resultType="hashmap">
@@ -170,48 +199,43 @@
                          WHEN tch_lv = '중급' THEN tch_lv
                          WHEN tch_lv = '고급' THEN tch_lv
                          WHEN tch_lv = '특급' THEN tch_lv
-                     END) AS tchCnt
+            END) AS tchCnt
              , CASE
                    WHEN tch_lv = '' OR tch_lv IS NULL THEN '미등록 기술자'
                    WHEN tch_lv = '초급' THEN CONCAT(tch_lv, ' 기술자')
                    WHEN tch_lv = '중급' THEN CONCAT(tch_lv, ' 기술자')
                    WHEN tch_lv = '고급' THEN CONCAT(tch_lv, ' 기술자')
                    WHEN tch_lv = '특급' THEN CONCAT(tch_lv, ' 기술자')
-               END        AS tchLv
-            FROM v_user_info
-            WHERE dept_id NOT IN ('10200000011', '10200000012') AND NOT id = '10100000001' AND NOT wrk_type = '010404'
-            GROUP BY tchLv
+            END  AS tchLv
+        FROM v_user_info
+        WHERE dept_id NOT IN ('10200000011', '10200000012')
+          AND NOT id = '10100000001'
+          AND NOT wrk_type = '010404'
+        GROUP BY tchLv
     </select>
 
+    <!--  거래처별 매출 현황  -->
     <select id="selectClientSales" parameterType="hashMap" resultType="hashMap">
-        SELECT yr_dt, cli_nm, suply_val, unit
-        FROM client_sales
-        WHERE yr_dt BETWEEN #{searchDate} AND (SELECT yr_dt FROM client_sales ORDER BY yr_dt DESC LIMIT 1)
+        SELECT IFNULL(A.yr_dt, 2019)      AS yr_dt,
+               IFNULL(A.cli_nm, B.cli_nm) AS cli_nm,
+               IFNULL(A.suply_val, '-')   AS suply_val
+        FROM client_sales AS A
+                 RIGHT OUTER JOIN clients_list AS B On A.cli_nm = B.cli_nm AND A.yr_dt = 2019
+        UNION ALL
+        SELECT IFNULL(A.yr_dt, 2020)      AS yr_dt,
+               IFNULL(A.cli_nm, B.cli_nm) AS cli_nm,
+               IFNULL(A.suply_val, '-')   AS suply_val
+        FROM client_sales AS A
+                 RIGHT OUTER JOIN clients_list AS B On A.cli_nm = B.cli_nm AND A.yr_dt = 2020
+        UNION ALL
+        SELECT IFNULL(A.yr_dt, 2021)      AS yr_dt,
+               IFNULL(A.cli_nm, B.cli_nm) AS cli_nm,
+               IFNULL(A.suply_val, '-')   AS suply_val
+        FROM client_sales AS A
+                 RIGHT OUTER JOIN clients_list AS B On A.cli_nm = B.cli_nm AND A.yr_dt = 2021
     </select>
 
-    <select id="selectClientSalesCompare" parameterType="hashMap" resultType="hashMap">
-        SELECT DISTINCT cli_nm
-        FROM client_sales
-    </select>
-
-    <select id="selectCapitalAndSalesPeriod" parameterType="hashMap" resultType="hashMap">
-        SELECT a.yr_dt,
-               ROUND((a.ttl_asset / 10000), 0)   as ttl_asset,
-               ROUND((a.capital / 10000), 0)     AS capital,
-               ROUND((a.eqty_cptl / 10000), 0)   AS eqty_cptl,
-               ROUND((a.crnt_lblts / 10000), 0)  AS crnt_lblts,
-               ROUND((b.consulting / 10000), 0)  AS consulting,
-               ROUND((b.sysdev_part / 10000), 0) AS sysdev_part,
-               ROUND((b.sm_part / 10000), 0)     AS sm_part,
-               ROUND((b.sw_part / 10000), 0)     AS sw_part,
-               ROUND((b.total_sales / 10000), 0) AS total_sales,
-               '만원'                              AS unit
-        FROM capital AS a,
-             sales AS b
-        WHERE a.yr_dt = b.yr_dt
-          AND a.yr_dt BETWEEN #{searchStartDate} AND #{searchEndDate}
-    </select>
-
+    <!--  재무제표 현황  -->
     <select id="selectCapitalAndSales" parameterType="hashMap" resultType="hashMap">
         SELECT a.yr_dt,
                ROUND((a.ttl_asset / 10000), 0)   as ttl_asset,
@@ -230,6 +254,26 @@
           AND a.yr_dt BETWEEN #{searchDate} AND (SELECT yr_dt FROM capital ORDER BY yr_dt DESC LIMIT 1)
     </select>
 
+    <!--  재무제표 현황 (기간설정)  -->
+    <select id="selectCapitalAndSalesPeriod" parameterType="hashMap" resultType="hashMap">
+        SELECT a.yr_dt,
+               ROUND((a.ttl_asset / 10000), 0)   as ttl_asset,
+               ROUND((a.capital / 10000), 0)     AS capital,
+               ROUND((a.eqty_cptl / 10000), 0)   AS eqty_cptl,
+               ROUND((a.crnt_lblts / 10000), 0)  AS crnt_lblts,
+               ROUND((b.consulting / 10000), 0)  AS consulting,
+               ROUND((b.sysdev_part / 10000), 0) AS sysdev_part,
+               ROUND((b.sm_part / 10000), 0)     AS sm_part,
+               ROUND((b.sw_part / 10000), 0)     AS sw_part,
+               ROUND((b.total_sales / 10000), 0) AS total_sales,
+               '만원'                              AS unit
+        FROM capital AS a,
+             sales AS b
+        WHERE a.yr_dt = b.yr_dt
+          AND a.yr_dt BETWEEN #{searchStartDate} AND #{searchEndDate}
+    </select>
+
+    <!-- 근속년수 현황  -->
     <select id="selectWorkYears" parameterType="hashMap" resultType="hashMap">
         select case
                    when timestampdiff(month, emply_dt, date_format(now(), '%Y-%m-%d'))<![CDATA[ <]]> 3 then '3개월이하'
@@ -262,6 +306,8 @@
                    end) as work_yr
         from v_user_info
         where emply_dt is not null
-        group by years order by field(years, '3개월이하', '3개월이상', '6개월이상', '1년이상', '2년이상')
+        group by years
+        order by field(years, '3개월이하', '3개월이상', '6개월이상', '1년이상', '2년이상', '3년이상')
     </select>
+
 </mapper>
