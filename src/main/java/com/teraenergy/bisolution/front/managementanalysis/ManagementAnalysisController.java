@@ -64,7 +64,7 @@ public class ManagementAnalysisController {
         Long cmpSales = Long.valueOf(String.valueOf(compareList.get(0).get("trgt_sales")));
 
         double profitLossAcheive = (double) prftLoss / trgtPrftLoss * 100;
-        double salesAcheive = (double)sales / trgtSales * 100;
+        double salesAcheive = (double) sales / trgtSales * 100;
 
         Map<String, Object> result = new HashMap<>();
 
@@ -94,7 +94,7 @@ public class ManagementAnalysisController {
             Map<String, Object> dept = new HashMap<>();
             Map<String, Object> work = new HashMap<>();
             String type = (String) dataMap.get("type");
-            if("dept".equals(type)){
+            if ("dept".equals(type)) {
                 dept.put("value", dataMap.get("value"));
                 dept.put("name", dataMap.get("name").toString());
                 deptList.add(dept);
@@ -105,8 +105,8 @@ public class ManagementAnalysisController {
             }
 
         }
-        result.put("deptList",deptList);
-        result.put("workList",workList);
+        result.put("deptList", deptList);
+        result.put("workList", workList);
 
         return result;
     }
@@ -138,10 +138,11 @@ public class ManagementAnalysisController {
 
         return result;
     }
+
     //      거래처별 매출 현황 Chart
     @ResponseBody
     @GetMapping("/api/getClientSales")
-    public List<Map<String, Object>> getClientSales(String parameter) throws Exception {
+    public Map<String, Object> getClientSales(String parameter) throws Exception {
 
         Map<String, String> params = new HashMap<>();
 
@@ -166,25 +167,36 @@ public class ManagementAnalysisController {
         List<String> years = new ArrayList<>();
 
         for (int i = 0; i < dataList.size(); i++) {
-                years.add((String) dataList.get(i).get("yr_dt"));
+            years.add((String) dataList.get(i).get("yr_dt"));
         }
         years = years.stream().distinct().collect(Collectors.toList());
 
-        Map<String, Object> data = new HashMap<>();
-        int dataLen = 0;
+        List<Object> data = new ArrayList<>();
         int cnt = 0;
-        for (int i = 0; i < years.size(); i++) {
-            for (dataLen = (dataList.size() / years.size()) * cnt; dataLen < (dataList.size() / years.size()) * (cnt + 1); dataLen++) {
-                System.out.println((String) dataList.get(dataLen).get("cli_nm") + dataList.get(dataLen).get("yr_dt"));
-                data.put((String) dataList.get(dataLen).get("cli_nm") + dataList.get(dataLen).get("yr_dt"), dataList.get(dataLen).get("suply_val"));
-            }
+
+        for (int i = 0; i < dataList.size(); i++) {
+            List<Object> salesData = new ArrayList<>();
+            for (int j = 0; j < years.size(); j++) {
+                if (j == 0) {
+                    salesData.add(dataList.get(cnt).get("cli_nm"));
+                }
+                if ("-".equals(dataList.get(cnt).get("suply_val"))) {
+                    salesData.add(dataList.get(cnt).get("suply_val"));
+                } else {
+                    salesData.add(Integer.parseInt((String) dataList.get(cnt).get("suply_val")) / 10000);
+                }
                 cnt++;
+            }
+            i += 3;
+            data.add(salesData);
         }
 
+        Map<String, Object> result = new HashMap<>();
 
-        System.out.println(data);
+        result.put("salesData", data);
+        result.put("years", years);
 
-        return dataList;
+        return result;
     }
 
     //      재무제표 현황
@@ -249,7 +261,8 @@ public class ManagementAnalysisController {
             }
             if (swPart.size() == 0) {
                 swPart.add("응용S/W");
-            }            if (totalSum.size() == 0) {
+            }
+            if (totalSum.size() == 0) {
                 totalSum.add("총매출");
             }
 
@@ -305,7 +318,7 @@ public class ManagementAnalysisController {
 
                 params.put("searchStartDate", periods[0].substring(0, 6));
                 params.put("searchEndDate", periods[1].substring(0, 6));
-            }else {
+            } else {
                 params.put("searchDate", Integer.toString(Integer.parseInt(currentYear) - Integer.parseInt(parameter)));
             }
         }
@@ -317,7 +330,7 @@ public class ManagementAnalysisController {
         for (int i = 0; i < dataList.size(); i++) {
             List<Object> datas = new ArrayList<>();
 
-            if(graphData.size() < 1){
+            if (graphData.size() < 1) {
                 datas.add("amount");
                 datas.add("period");
                 graphData.add(datas);
@@ -327,7 +340,7 @@ public class ManagementAnalysisController {
                 datas.add(dataList.get(i).get("work_yr"));
                 datas.add(dataList.get(i).get("years"));
                 graphData.add(datas);
-            }else {
+            } else {
                 datas.add(dataList.get(i).get("work_yr"));
                 datas.add(dataList.get(i).get("years"));
                 graphData.add(datas);
