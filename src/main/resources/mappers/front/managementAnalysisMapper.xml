@@ -233,6 +233,7 @@
                IFNULL(A.suply_val, '-')   AS suply_val
         FROM client_sales AS A
                  RIGHT OUTER JOIN clients_list AS B On A.cli_nm = B.cli_nm AND A.yr_dt = 2021
+        ORDER BY cli_nm DESC, yr_dt
     </select>
 
     <!--  재무제표 현황  -->

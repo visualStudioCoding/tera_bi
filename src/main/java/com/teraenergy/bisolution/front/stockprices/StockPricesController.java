@@ -52,7 +52,7 @@ public class StockPricesController {
         model.addAttribute("baseRate", volatilityService.getOffsetMap(dateParam, ECONOMIC_PROGRAM_ID, PAGE_ID, ".selectBaseRate"));
         model.addAttribute("exchangeRate", volatilityService.getOffsetMap(dateParam, ECONOMIC_PROGRAM_ID, PAGE_ID, ".selectExchangeRate"));
 
-        commonService.selectEmplyList(null, PAGE_ID + PROGRAM_ID + ".selectEmplyList");
+//        commonService.selectEmplyList(null, PAGE_ID + PROGRAM_ID + ".selectEmplyList");
         return PAGE_ID + DIRECTORY + "Main";
     }
 

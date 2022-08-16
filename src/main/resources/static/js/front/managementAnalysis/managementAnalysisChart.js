@@ -160,18 +160,6 @@ function fnProfitLossAndSalesChart(data) {
 function fnCstmSalesChartDom(data) {
   /* 거래처별 매출현황 */
 
-  // for (let i = 0; i < data.lenght / 3; i++) {
-  //   window['array' + i] = [];
-  // }
-
-  // for (let i = 0; i < data.length; i++) {
-  //   for (let j = 0; j < data.length / 3; j++) {
-  //     window['array' + i] = [];
-  //     window['array' + j].push(data[i].yr_dt);
-  //   }
-  //   i += 17
-  // }
-  // console.log(array15);
   const cstmSalesChartDom = document.getElementById("cstmSalesGraph");
   if (cstmSalesChartDom) {
     const cstmSalesChart = echarts.init(cstmSalesChartDom);
@@ -186,7 +174,7 @@ function fnCstmSalesChartDom(data) {
           type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
         }
       },
-      legend: {},
+      legend: {type: 'scroll'},
       grid: {
         left: '3%',
         right: '4%',
@@ -198,74 +186,93 @@ function fnCstmSalesChartDom(data) {
       },
       yAxis: {
         type: 'category',
-        data: ['2019', '2020', '2021', '2022']
+        data: []
+        // data: ['2019', '2020', '2021', '2022']
       },
       series: [
-        {
-          name: '범우정보기술',
-          type: 'bar',
-          stack: 'total',
-          label: {
-            show: true
-          },
-          emphasis: {
-            focus: 'series'
-          },
-          data: ['', '', '', 334]
-        },
-        {
-          name: '다음정보기술',
-          type: 'bar',
-          stack: 'total',
-          label: {
-            show: true
-          },
-          emphasis: {
-            focus: 'series'
-          },
-          data: [120, 132, 101, 134, 90, 230, 210]
-        },
-        {
-          name: '포네트',
-          type: 'bar',
-          stack: 'total',
-          label: {
-            show: true
-          },
-          emphasis: {
-            focus: 'series'
-          },
-          data: [220, 182, 191, 234, 290, 330, 310]
-        },
-        {
-          name: '오픈노트',
-          type: 'bar',
-          stack: 'total',
-          label: {
-            show: true
-          },
-          emphasis: {
-            focus: 'series'
-          },
-          data: [150, 212, 201, 154, 190, 330, 410]
-        },
-        {
-          name: '한전KDN',
-          type: 'bar',
-          stack: 'total',
-          label: {
-            show: true
-          },
-          emphasis: {
-            focus: 'series'
-          },
-          data: [820, 832, 901, 934, 1290, 1330, 1320]
-        }
+        // {
+        //   name: '범우정보기술',
+        //   type: 'bar',
+        //   stack: 'total',
+        //   label: {
+        //     show: true
+        //   },
+        //   emphasis: {
+        //     focus: 'series'
+        //   },
+        //   data: ['', '', '', 334]
+        // },
+        // {
+        //   name: '다음정보기술',
+        //   type: 'bar',
+        //   stack: 'total',
+        //   label: {
+        //     show: true
+        //   },
+        //   emphasis: {
+        //     focus: 'series'
+        //   },
+        //   data: [120, 132, 101, 134, 90, 230, 210]
+        // },
+        // {
+        //   name: '포네트',
+        //   type: 'bar',
+        //   stack: 'total',
+        //   label: {
+        //     show: true
+        //   },
+        //   emphasis: {
+        //     focus: 'series'
+        //   },
+        //   data: [220, 182, 191, 234, 290, 330, 310]
+        // },
+        // {
+        //   name: '오픈노트',
+        //   type: 'bar',
+        //   stack: 'total',
+        //   label: {
+        //     show: true
+        //   },
+        //   emphasis: {
+        //     focus: 'series'
+        //   },
+        //   data: [150, 212, 201, 154, 190, 330, 410]
+        // },
+        // {
+        //   name: '한전KDN',
+        //   type: 'bar',
+        //   stack: 'total',
+        //   label: {
+        //     show: true
+        //   },
+        //   emphasis: {
+        //     focus: 'series'
+        //   },
+        //   data: [820, 832, 901, 934, 1290, 1330, 1320]
+        // }
       ],
       textStyle: {
         fontFamily: "NanumSquare",
       },
     };
+    for (let i = 0; i < data.salesData.length; i++) {
+      cstmSalesGraphOp.series.push(
+      {
+        name: data.salesData[i][0],
+            type: 'bar',
+          stack: 'total',
+      //     label: {
+      //   show: true
+      // },
+        color: setGraphColor(),
+        emphasis: {
+          focus: 'series'
+        },
+        data: data.salesData[i].splice(1)
+      })
+
+    }
+    cstmSalesGraphOp.yAxis.data = data.years;
     cstmSalesChart.setOption(cstmSalesGraphOp);
   }
 }

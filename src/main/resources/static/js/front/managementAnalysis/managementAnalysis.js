@@ -97,3 +97,12 @@ function fnWorkYear() {
     commonAjax("/front/managementAnalysis/api/getWorkYears", callBackFn, "get", param, errorMsg);
 }
 
+function setGraphColor(){
+    var colorCode = "#" + Math.round(Math.random() * 0xffffff).toString(16);
+
+    if(colorCode === "#ffffff"){
+        setGraphColor();
+    }
+    return colorCode;
+}
+
