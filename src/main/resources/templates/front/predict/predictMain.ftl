@@ -32,5 +32,5 @@
 <!-- /푸터 끝 -->
 </body>
 
-<script src="/js/front/temp/temp.js"></script>
-<script src="/js/front/temp/tempChart.js"></script>
+<script src="/js/front/predict/predict.js"></script>
+<script src="/js/front/predict/predictChart.js"></script>

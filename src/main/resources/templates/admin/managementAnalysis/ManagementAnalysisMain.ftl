@@ -13,11 +13,11 @@
                     <div class="card-body">
                         <div class="row" style="margin-top:15px; margin-bottom:0px; padding:5px">
                             <span>시작 년도 선택</span>
-                        <input type="date" name="startDt">
+                            <input type="date" name="startDt">
                         </div>
                         <div class="row" style="margin-top:5px; margin-bottom:5px; padding:5px">
                             <span>끝 년도 선택</span>
-                        <input type="date" name="endDt">
+                            <input type="date" name="endDt">
                         </div>
                         <#assign name_list = ["serviceNm", "resultType", "tableCode", "cycle","itmCode"]>
                         <#assign val_list = ["StatisticSearch", "json", "722Y001", "D", "0101000"]>
@@ -267,4 +267,4 @@
 
 </body>
 <#include "*/common/admin/footer.ftl"/>
-<script src="/js/admin/economicGrowth/economicGrowth.js"></script>
+<#--<script src="/js/admin/economicGrowth/economicGrowth.js"></script>-->

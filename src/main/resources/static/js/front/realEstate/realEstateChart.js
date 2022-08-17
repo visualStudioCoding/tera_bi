@@ -435,6 +435,7 @@ function fnPopRegionGraphOp(data) {
                     type: "treemap",
                     width: "100%",
                     height: "88%",
+                    data: [],
                     top: "top",
                     name: "전체",
                     roam: false,
@@ -482,7 +483,7 @@ function fnCMHousingChartDom(data) {
     console.log(unsoldList)
     console.log(cnsmrList)
 
-    /* 차트 - 기준금리별 미분양주택 */
+    /* 차트 - 소비자물가별 미분양주택 */
     const cmHousingChartDom = document.getElementById("cmHousingGraph");
     if (cmHousingChartDom) {
         let cmHousingChart = echarts.init(cmHousingChartDom);

@@ -205,7 +205,7 @@
             , #{val}
             )
             ON DUPLICATE KEY UPDATE
-                                 yr_dt   = #{yrdt}
+                                 yr_dt = #{yrDt}
                                  , ages = #{ages}
     </insert>
 

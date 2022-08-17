@@ -1,4 +1,4 @@
-package com.teraenergy.bisolution.admin.insight;
+package com.teraenergy.bisolution.admin.predict;
 
 import com.teraenergy.global.service.CommonService;
 import lombok.extern.slf4j.Slf4j;
@@ -18,12 +18,12 @@ import java.util.Map;
 
 @Slf4j
 @Controller
-@RequestMapping("/front/temp")
+@RequestMapping("/front/predict")
 public class insight {
 
-    private static final String PROGRAM_ID = ".temp";
+    private static final String PROGRAM_ID = ".predict";
     private static final String PAGE_ID = "front";
-    private static final String DIRECTORY = "/temp/temp";
+    private static final String DIRECTORY = "/predict/predict";
 
     @Resource(name = "commonService")
     private CommonService commonService;
@@ -31,11 +31,11 @@ public class insight {
     @GetMapping("/main")
     public String tempMain(Model model) throws Exception {
         log.info(PAGE_ID + DIRECTORY + "Main");
-        model.addAttribute("menuCode", "001");
+        model.addAttribute("menuCode", "003");
         return PAGE_ID + DIRECTORY + "Main";
     }
 
-    //kospi 데이터 가져오기 - tempChart.js 에서 호출
+    //kospi 데이터 가져오기 - predictChart.js 에서 호출
     @ResponseBody
     @GetMapping("/api/getKospi")
     public Map<String, List<Map<String, Object>>> covidKospi() throws Exception {
