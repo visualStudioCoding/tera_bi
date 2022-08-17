@@ -321,7 +321,7 @@ public class RealEstateController {
         Map<String, Object> manData = new HashMap<>();
         Map<String, Object> wmnData = new HashMap<>();
 
-        if(dataList.size() == 0){
+        if(dataList == null){
             result.add("Fail");
         }else{
 
@@ -382,7 +382,6 @@ public class RealEstateController {
                 result.add(data);
             }
         }
-
         return result;
     }
 }

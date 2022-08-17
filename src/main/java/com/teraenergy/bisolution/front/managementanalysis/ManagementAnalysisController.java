@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -235,6 +237,8 @@ public class ManagementAnalysisController {
         List<Object> swPart = new ArrayList<>();
         List<Object> totalSum = new ArrayList<>();
         List<Object> period = new ArrayList<>();
+
+        List<Object> cagrTarget = new ArrayList<>();
         Object unit = dataList.get(0).get("unit");
 
         for (int i = 0; i < dataList.size(); i++) {
@@ -275,7 +279,21 @@ public class ManagementAnalysisController {
             smPart.add(dataList.get(i).get("sm_part"));
             swPart.add(dataList.get(i).get("sw_part"));
             totalSum.add(dataList.get(i).get("total_sales"));
+            cagrTarget.add(dataList.get(i).get("total_sales"));
             period.add(dataList.get(i).get("yr_dt"));
+        }
+
+        List<Object> cagr = new ArrayList<>();
+
+        for (int i = 0; i < cagrTarget.size(); i++) {
+            if(i == cagrTarget.size() - 1){
+                break;
+            }
+            Float cal = ((BigDecimal) cagrTarget.get(i + 1)).floatValue() /  ((BigDecimal) cagrTarget.get(i)).floatValue() - 1;
+            if(cagr.size() == 0){
+                cagr.add(0);
+            }
+            cagr.add(Math.round(cal * 100));
         }
 
         //
@@ -292,6 +310,7 @@ public class ManagementAnalysisController {
         result.put("totalSum", totalSum);
         result.put("period", period);
         result.put("unit", unit);
+        result.put("cagr", cagr);
 
         System.out.println(result);
 

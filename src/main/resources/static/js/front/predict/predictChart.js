@@ -69,7 +69,7 @@ function fnInsightKospiChart(data) {
                     // prettier-ignore
                     data: [],
                 }, {
-                    name: "INSIGHT",
+                    name: "Predicted value",
                     type: "line",
                     symbol: "none",
                     itemStyle: {

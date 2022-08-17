@@ -85,7 +85,7 @@
     </button>
 </form>
 <div class="btn-wrap">
-    <button type="button" class="btn-secondary w-100">
+    <button type="button" class="btn-secondary w-100" onclick="location.href='/front/predict/main'">
         AI Display
     </button>
     <button type="button" class="btn-secondary w-100">

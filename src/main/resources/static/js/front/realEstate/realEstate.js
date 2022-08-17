@@ -1,7 +1,7 @@
 /******************** 부동산시장동향 *********************/
 let errorMsg = "데이터 호출 에러";
 
-window.onload = function(){
+window.onload = function () {
     fnAptSalesStatus();
     fnAgeTrade();
     fnBuiltYear();
@@ -11,7 +11,7 @@ window.onload = function(){
     fnOwnerByAge();
 }
 
-$("#termSetting").click(function(){
+$("#termSetting").click(function () {
     fnAptSalesStatus();
     fnAgeTrade();
     fnBuiltYear();
@@ -23,11 +23,11 @@ $("#termSetting").click(function(){
 
 
 // 행정구역별 매매거래
-function fnAptSalesStatus(){
-    let period =  $("input[name=term]:checked").val();
+function fnAptSalesStatus() {
+    let period = $("input[name=term]:checked").val();
 
-    if(period === 'on'){
-        period =  $("input[name=termDatePicker]").val();
+    if (period === 'on') {
+        period = $("input[name=termDatePicker]").val();
     }
     let param = {parameter: period}
 
@@ -37,7 +37,7 @@ function fnAptSalesStatus(){
         } else {
             if ($("#nullCkAptSales").length <= 0) {
                 echarts.dispose(document.getElementById("admDivTradeGraph"));
-                $("#admDivTradeGraph").append("<p id='nullCkAptSales'>해당하는 기간에 데이터가 존재하지 않습니다.<br><p>기간을 다시 설정해주세요</p></p>")
+                $("#admDivTradeGraph").append("<p id='nullCkAptSales'>해당하는 기간에 데이터가 존재하지 않습니다.<br>기간을 다시 설정해주세요</p>")
             }
         }
     }
@@ -46,12 +46,12 @@ function fnAptSalesStatus(){
 }
 
 // 연령대별 매매거래
-function fnAgeTrade(){
+function fnAgeTrade() {
 
-    let period =  $("input[name=term]:checked").val();
+    let period = $("input[name=term]:checked").val();
 
-    if(period === 'on'){
-        period =  $("input[name=termDatePicker]").val();
+    if (period === 'on') {
+        period = $("input[name=termDatePicker]").val();
     }
     let param = {parameter: period}
 
@@ -59,10 +59,16 @@ function fnAgeTrade(){
         if (data.result === "Fail") {
             if ($("#nullCkAgeTrade").length <= 0) {
                 echarts.dispose(document.getElementById("ageTradeGraph"));
-                $("#ageTradeGraph").append("<p id='nullCkAgeTrade'>해당하는 기간에 데이터가 존재하지 않습니다.<br><p>기간을 다시 설정해주세요</p></p>")
+                $("#ageTradeGraph").removeClass("graph-wrap")
+                $("#ageTradeGraph").append("<p id='nullCkAgeTrade'>해당하는 기간에 데이터가 존재하지 않습니다.<br>기간을 다시 설정해주세요</p>")
             }
         } else {
-            fnAgeTradeGraphOp(data);
+            if($("#ageTradeGraph").hasClass("graph-wrap")){
+                fnAgeTradeGraphOp(data);
+            }else{
+                $("#ageTradeGraph").addClass("graph-wrap");
+                fnAgeTradeGraphOp(data);
+            }
         }
     }
     commonAjax("/front/realEstate/api/ageAptSales", callBackFn, "get", param, errorMsg);
@@ -70,22 +76,28 @@ function fnAgeTrade(){
 }
 
 // 건축년수별 매매거래
-function fnBuiltYear(){
-    let period =  $("input[name=term]:checked").val();
+function fnBuiltYear() {
+    let period = $("input[name=term]:checked").val();
 
-    if(period === 'on'){
-        period =  $("input[name=termDatePicker]").val();
+    if (period === 'on') {
+        period = $("input[name=termDatePicker]").val();
     }
     let param = {parameter: period}
 
     let callBackFn = function (data) {
-        fnConstTradeGraphOp(data);
+        console.log(data)
         if (data.result === "Success") {
-            fnAgeTradeGraphOp(data);
+            if($("#constTradeGraph").hasClass("graph-wrap")){
+                fnConstTradeGraphOp(data);
+            }else{
+                $("#constTradeGraph").addClass("graph-wrap");
+                fnConstTradeGraphOp(data);
+            }
         } else {
-            if ($("#nullCkAgeTrade").length <= 0) {
-                echarts.dispose(document.getElementById("ageTradeGraph"));
-                $("#ageTradeGraph").append("<p id='nullCkAgeTrade'>해당하는 기간에 데이터가 존재하지 않습니다.<br><p>기간을 다시 설정해주세요</p></p>")
+            if ($("#nullCkBuiltYear").length <= 0) {
+                echarts.dispose(document.getElementById("constTradeGraph"));
+                $("#constTradeGraph").removeClass("graph-wrap")
+                $("#constTradeGraph").append("<p id='nullCkBuiltYear'>해당하는 기간에 데이터가 존재하지 않습니다.<br>기간을 다시 설정해주세요</p>")
             }
         }
     }
@@ -94,11 +106,11 @@ function fnBuiltYear(){
 }
 
 // 지역별 인구수
-function fnRegionPopulation(){
-    let period =  $("input[name=term]:checked").val();
+function fnRegionPopulation() {
+    let period = $("input[name=term]:checked").val();
 
-    if(period === 'on'){
-        period =  $("input[name=termDatePicker]").val();
+    if (period === 'on') {
+        period = $("input[name=termDatePicker]").val();
     }
     let param = {parameter: period}
 
@@ -108,7 +120,7 @@ function fnRegionPopulation(){
         } else {
             if ($("#nullCkRegPop").length <= 0) {
                 echarts.dispose(document.getElementById("popRegionGraph"));
-                $("#popRegionGraph").append("<p id='nullCkRegPop'>해당하는 기간에 데이터가 존재하지 않습니다.<br><p>기간을 다시 설정해주세요</p></p>")
+                $("#popRegionGraph").append("<p id='nullCkRegPop'>해당하는 기간에 데이터가 존재하지 않습니다.<br>기간을 다시 설정해주세요</p>")
             }
         }
     }
@@ -117,11 +129,11 @@ function fnRegionPopulation(){
 }
 
 // 소비자 물가 상승률 및 미분양 주택 수
-function fnUnsoldCnsmr(){
-    let period =  $("input[name=term]:checked").val();
+function fnUnsoldCnsmr() {
+    let period = $("input[name=term]:checked").val();
 
-    if(period === 'on'){
-        period =  $("input[name=termDatePicker]").val();
+    if (period === 'on') {
+        period = $("input[name=termDatePicker]").val();
     }
     let param = {parameter: period}
 
@@ -131,7 +143,7 @@ function fnUnsoldCnsmr(){
         } else {
             if ($("#nullCkUnsold").length <= 0) {
                 echarts.dispose(document.getElementById("cmHousingGraph"));
-                $("#cmHousingGraph").append("<p id='nullCkUnsold'>해당하는 기간에 데이터가 존재하지 않습니다.<br><p>기간을 다시 설정해주세요</p></p>")
+                $("#cmHousingGraph").append("<p id='nullCkUnsold'>해당하는 기간에 데이터가 존재하지 않습니다.<br>기간을 다시 설정해주세요</p>")
             }
         }
     }
@@ -140,19 +152,22 @@ function fnUnsoldCnsmr(){
 }
 
 // 성별 부동산 소유자 수
-function fnOwnerByGender(){
-    let period =  $("input[name=term]:checked").val();
+function fnOwnerByGender() {
+    let period = $("input[name=term]:checked").val();
 
-    if(period === 'on'){
-        period =  $("input[name=termDatePicker]").val();
+    if (period === 'on') {
+        period = $("input[name=termDatePicker]").val();
     }
     let param = {parameter: period}
 
     let callBackFn = function (data) {
-        if (data.result === "Fail") {
+        console.log(data);
+        if (data[0] === "Fail") {
+            console.log("text")
             if ($("#nullCkOwnerGender").length <= 0) {
+                console.log("test")
                 echarts.dispose(document.getElementById("ownerByGenderGraph"));
-                $("#ownerByGenderGraph").append("<p id='nullCkOwnerGender'>해당하는 기간에 데이터가 존재하지 않습니다.<br><p>기간을 다시 설정해주세요</p></p>")
+                $("#ownerByGenderGraph").append("<p id='nullCkOwnerGender'>해당하는 기간에 데이터가 존재하지 않습니다.<br>기간을 다시 설정해주세요</p>")
             }
         } else {
             fnPopulationByGenderChartDom(data);
@@ -163,19 +178,20 @@ function fnOwnerByGender(){
 }
 
 // 연령대별 부동산 소유자 수
-function fnOwnerByAge(){
-    let period =  $("input[name=term]:checked").val();
+function fnOwnerByAge() {
+    let period = $("input[name=term]:checked").val();
 
-    if(period === 'on'){
-        period =  $("input[name=termDatePicker]").val();
+    if (period === 'on') {
+        period = $("input[name=termDatePicker]").val();
     }
     let param = {parameter: period}
 
     let callBackFn = function (data) {
-        if (data.result === "Fail") {
+        console.log(data);
+        if (data[0]=== "Fail") {
             if ($("#nullCkOwnerAge").length <= 0) {
                 echarts.dispose(document.getElementById("ownerByAgeGraph"));
-                $("#ownerByAgeGraph").append("<p id='nullCkOwnerAge'>해당하는 기간에 데이터가 존재하지 않습니다.<br><p>기간을 다시 설정해주세요</p></p>")
+                $("#ownerByAgeGraph").append("<p id='nullCkOwnerAge'>해당하는 기간에 데이터가 존재하지 않습니다.<br>기간을 다시 설정해주세요</p>")
             }
         } else {
             fnOwnerByAgeChartDom(data);

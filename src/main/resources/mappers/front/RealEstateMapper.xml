@@ -50,6 +50,7 @@
         END
         AS term
         FROM trade_apt WHERE built_year != 'None' AND
+        trade_year =
         #{searchDate}
         GROUP
         BY
@@ -69,7 +70,9 @@
         SELECT cty_nm, SUM(val) AS val
         FROM gender_population
         WHERE yr_dt = #{searchDate}
+          AND mon_dt = (SELECT mon_dt FROM gender_population WHERE yr_dt = #{searchDate} ORDER BY mon_dt DESC LIMIT 1)
           AND cty_nm != '전국'
+          AND cty_nm = dst_nm
         GROUP BY cty_nm
     </select>
 

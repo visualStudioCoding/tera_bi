@@ -11,7 +11,7 @@ function getInsightKospi(){
     let callBackFn = function (data) {
         fnInsightKospiChart(data);
     }
-    commonAjax("/front/temp/api/getKospi", callBackFn, "get", null, errorMsg);
+    commonAjax("/front/predict/api/getKospi", callBackFn, "get", null, errorMsg);
 }
 
 // 경제성장률 AJAX
@@ -20,5 +20,5 @@ function getTemp() {
     let callBackFn = function (data) {
         fnTempChart(data);
     }
-    commonAjax("/front/temp/api/getTemp", callBackFn, "get", param, errorMsg);
+    commonAjax("/front/predict/api/getTemp", callBackFn, "get", param, errorMsg);
 }
