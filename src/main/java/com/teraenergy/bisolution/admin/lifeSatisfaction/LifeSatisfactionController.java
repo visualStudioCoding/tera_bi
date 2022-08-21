@@ -45,6 +45,7 @@ public class LifeSatisfactionController {
     @GetMapping("/admin/lifeSatisfaction/main")
 //    public String mainIndex(HttpServletResponse response,Model model) throws IOException {
     public String mainIndex(Model model) throws Exception {
+        model.addAttribute("menuCode", "003");
         log.info(PAGE_ID + DIRECTORY + "Main");
         //return PAGE_ID + DIRECTORY + PROGRAM_ID + "Main";
         //response.setContentType("text/html;charset=euc-kr");

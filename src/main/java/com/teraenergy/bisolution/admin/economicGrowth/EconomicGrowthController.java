@@ -7,6 +7,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -36,9 +37,10 @@ public class EconomicGrowthController {
     private EconomicGrowthService economicGrowthService;
 
     @GetMapping("/main")
-    public String economicGrowthMain() throws Exception {
+    public String economicGrowthMain(Model model) throws Exception {
         log.info(PAGE_ID + DIRECTORY + "List");
         commonService.selectList(null, PAGE_ID + PROGRAM_ID + ".selectStateDebt");
+        model.addAttribute("menuCode", "001");
         return PAGE_ID + DIRECTORY + "Main";
     }
 

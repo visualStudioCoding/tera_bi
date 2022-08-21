@@ -7,6 +7,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -39,8 +40,9 @@ public class StandardOfLivingController {
     private ApiParseService apiParseService;
 
     @GetMapping("/main")
-        public String standardLivingMain() {
+        public String standardLivingMain(Model model) {
         log.info(PAGE_ID + DIRECTORY + "main");
+        model.addAttribute("menuCode", "002");
         return PAGE_ID + DIRECTORY + "Main";
     }
     // 1인당 개인소득

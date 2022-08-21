@@ -39,7 +39,7 @@
                 </li>
                 -->
                 <li>
-                    <a href="/admin" class="nav-link"
+                    <a href="/admin/economicGrowth/main?menuCode=001" class="nav-link"
                     ><span><i class="ri-dashboard-2-fill"></i>API 호출</span>
                     </a>
                 </li>
