@@ -1,270 +1,265 @@
-<#ftl encoding="utf-8"/>
-<#include "*/common/admin/navigation.ftl"/>
+<#include "*/common/admin/header.ftl">
 <#assign nowDate = .now/>
+
 <body>
-<div class="container">
+<#include "*/common/admin/navigation.ftl"/>
+<div class="contents">
     <div class="row">
         <div class="col">
             <div class="card">
                 <div class="card-header">
-                    한국은행 기준금리
+                    <h5>재무제표 (자산)</h5>
                 </div>
-                <form name="getBaseRate_opt">
-                    <div class="card-body">
-                        <div class="row" style="margin-top:15px; margin-bottom:0px; padding:5px">
-                            <span>시작 년도 선택</span>
-                            <input type="date" name="startDt">
+                <hr>
+                <div class="card-body">
+                    <form>
+                        <div class="col">
+                            <div class="row">
+                                <span>년도</span>
+                            </div>
+                            <div class="row">
+                                <input type="number" min="2019" max="2030">
+                            </div>
+                            <div class="row">
+                                <span>총자산</span>
+                            </div>
+                            <div class="row">
+                                <input type="text" onkeyup="inputCommaValues(this)">
+                            </div>
+                            <div class="row">
+                                <span>자본금</span>
+                            </div>
+                            <div class="row">
+                                <input type="text" onkeyup="inputCommaValues(this)">
+                            </div>
+                            <div class="row">
+                                <span>자기자본</span>
+                            </div>
+                            <div class="row">
+                                <input type="text" onkeyup="inputCommaValues(this)">
+                            </div>
+                            <div class="row">
+                                <span>유동부채</span>
+                            </div>
+                            <div class="row">
+                                <input type="text" onkeyup="inputCommaValues(this)">
+                            </div>
+                            <div class="row">
+                                <span>부채총액</span>
+                            </div>
+                            <div class="row">
+                                <input type="text" onkeyup="inputCommaValues(this)">
+                            </div>
+                            <div class="row">
+                                <span>유동자산</span>
+                            </div>
+                            <div class="row">
+                                <input type="text" onkeyup="inputCommaValues(this)">
+                            </div>
                         </div>
-                        <div class="row" style="margin-top:5px; margin-bottom:5px; padding:5px">
-                            <span>끝 년도 선택</span>
-                            <input type="date" name="endDt">
-                        </div>
-                        <#assign name_list = ["serviceNm", "resultType", "tableCode", "cycle","itmCode"]>
-                        <#assign val_list = ["StatisticSearch", "json", "722Y001", "D", "0101000"]>
-                        <#list 0..4 as k>
-                            <input type="hidden" name=${name_list[k]} value=${val_list[k]}  />
-                        </#list>
-                    </div>
-                </form>
-                <button type="button" id="MonthlyExchangeRate" class="btn btn-outline-secondary activator" onclick="getBaseRate()">실행</button>
+                    </form>
+                    <hr>
+                    <button type="button" class="btn btn-primary w-100">확인
+                    </button>
+                </div>
             </div>
         </div>
         <div class="col">
             <div class="card">
                 <div class="card-header">
-                    한국은행 환율
+                    <h5>재무제표 (매출)</h5>
                 </div>
-                <form name="getExchangeRate_opt">
-                    <div class="card-body">
-                        <div class="row" style="margin-top:15px; margin-bottom:0px; padding:5px">
-                            <span>시작 년도 선택</span>
-                            <input type="date" name="startDt">
+                <hr>
+                <div class="card-body">
+                    <form>
+                        <div class="col">
+                            <div class="row">
+                                <span>년도</span>
+                            </div>
+                            <div class="row">
+                                <input type="number" min="2019" max="2030">
+                            </div>
+                            <div class="row">
+                                <span>컨설팅 부문</span>
+                            </div>
+                            <div class="row">
+                                <input type="text" onkeyup="inputCommaValues(this)">
+                            </div>
+                            <div class="row">
+                                <span>시스템개발 부문</span>
+                            </div>
+                            <div class="row">
+                                <input type="text" onkeyup="inputCommaValues(this)">
+                            </div>
+                            <div class="row">
+                                <span>유지관리 부문</span>
+                            </div>
+                            <div class="row">
+                                <input type="text" onkeyup="inputCommaValues(this)">
+                            </div>
+                            <div class="row">
+                                <span>응용S/W 부문</span>
+                            </div>
+                            <div class="row">
+                                <input type="text" onkeyup="inputCommaValues(this)">
+                            </div>
                         </div>
-                        <div class="row" style="margin-top:5px; margin-bottom:5px; padding:5px">
-                            <span>끝 년도 선택</span>
-                            <input type="date" name="endDt">
+                    </form>
+                    <hr>
+                    <button type="button" class="btn btn-primary w-100">확인
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    <h5>손익 / 매출현황</h5>
+                </div>
+                <hr>
+                <div class="card-body">
+                    <form>
+                        <div class="col">
+                            <div class="row">
+                                <span>목표 손익</span>
+                            </div>
+                            <div class="row">
+                                <input type="text" onkeyup="inputCommaValues(this)">
+                            </div>
+                            <div class="row">
+                                <span>현재 손익</span>
+                            </div>
+                            <div class="row">
+                                <input type="text" onkeyup="inputCommaValues(this)">
+                            </div>
+                            <div class="row">
+                                <span>목표 매출</span>
+                            </div>
+                            <div class="row">
+                                <input type="text" onkeyup="inputCommaValues(this)">
+                            </div>
+                            <div class="row">
+                                <span>현재 매출</span>
+                            </div>
+                            <div class="row">
+                                <input type="text" onkeyup="inputCommaValues(this)">
+                            </div>
                         </div>
-                        <#assign name_list = ["serviceNm", "resultType", "tableCode", "cycle","itmCode"]>
-                        <#assign val_list = ["StatisticSearch", "json", "731Y001", "D", "0000001"]>
-                        <#list 0..4 as k>
-                            <input type="hidden" name=${name_list[k]} value=${val_list[k]}  />
-                        </#list>
-                    </div>
-                </form>
-                <button type="button" id="MonthlyExchangeRate" class="btn btn-outline-secondary activator" onclick="getExchangeRate()">실행</button>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <div class="card">
-                <div class="card-header">
-                    소비자/근원/생활 물가상승률
+                    </form>
+                    <hr>
+                    <button type="button" class="btn btn-primary w-100">확인
+                    </button>
                 </div>
-                <form name="getInflationRate_opt">
-                    <div class="card-body">
-                        <span>년도 선택</span>
-                        <select class="form-select" name="prdDe_Y" aria-label="Default select example">
-                            <option selected>데이터를 호출할 년도를 선택하세요</option>
-                            <#list 1966..1999 as i>
-                                <option value=${i?replace(",","")}>${i?replace(",","")}년</option>
-                            </#list>
-                            <#list 2000..2022 as j>
-                                <option value=${j?replace(",","")}>${j?replace(",","")}년</option>
-                            </#list>
-                        </select>
-                        <br>
-                        <select class="form-select" name="prdDe_M" aria-label="Default select example">
-                            <option selected>데이터를 호출할 년도를 선택하세요</option>
-                            <#list 1..12 as i>
-                                <option value=${i}>${i}월</option>
-                            </#list>
-
-                        </select>
-                        <#assign name_list = ["itmId", "objL1", "prdSe", "loadGubun", "orgId", "tblId"]>
-                        <#assign val_list = ["T03+", "0+1+3+", "M", "2", "101", "DT_1J20042"]>
-                        <#list 0..5 as k>
-                            <input type="hidden" name=${name_list[k]} value=${val_list[k]}  />
-                        </#list>
-                    </div>
-                </form>
-                <button type="button" class="btn btn-outline-secondary activator" onclick="getInflationRate()">실행</button>
             </div>
         </div>
         <div class="col">
             <div class="card">
                 <div class="card-header">
-                    GDP
+                    <h5>거래처별 매출</h5>
                 </div>
-                <form name="getGDP_opt">
-                    <div class="card-body">
-                        <span>년도 선택</span>
-                        <select class="form-select" name="startDt" aria-label="Default select example">
-                            <option selected>조회를 시작할 년도를 선택하세요</option>
-                            <#list 1953..1999 as i>
-                                <option value=${i?replace(",","")}>${i?replace(",","")}년</option>
-                            </#list>
-                            <#list 2000..2021 as j>
-                                <option value=${j?replace(",","")}>${j?replace(",","")}년</option>
-                            </#list>
-                        </select>
-                        <br>
-                        <select class="form-select" name="endDt" aria-label="Default select example">
-                            <option selected>조회할 마지막 년도를 선택하세요</option>
-                            <#list 1953..1999 as i>
-                                <option value=${i?replace(",","")}>${i?replace(",","")}년</option>
-                            </#list>
-                            <#list 2000..2021 as j>
-                                <option value=${j?replace(",","")}>${j?replace(",","")}년</option>
-                            </#list>
-                        </select>
-                        <#assign name_list = ["serviceNm", "resultType", "tableCode", "cycle","itmCode"]>
-                        <#assign val_list = ["StatisticSearch", "json", "200Y009", "A", "10601"]>
-                        <#list 0..4 as k>
-                            <input type="hidden" name=${name_list[k]} value=${val_list[k]}  />
-                        </#list>
-                    </div>
-                </form>
-                <button type="button" class="btn btn-outline-secondary activator" onclick="getGDP()">실행</button>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <div class="card">
-                <div class="card-header">
-                    경제활동별 GDI 및 GNI
-                </div>
-                <form name="gdpAndgni_opt">
-                    <div class="card-body">
-                        <span>년도 선택</span>
-                        <select class="form-select" name="prdDe" aria-label="Default select example">
-                            <option selected>데이터를 호출할 년도를 선택하세요</option>
-                            <#list 1953..1999 as i>
-                                <option value=${i?replace(",","")}>${i?replace(",","")}년</option>
-                            </#list>
-                            <#list 2000..2021 as j>
-                                <option value=${j?replace(",","")}>${j?replace(",","")}년</option>
-                            </#list>
-                        </select>
-                        <#assign name_list = ["itmId", "objL1", "prdSe", "loadGubun", "orgId", "tblId"]>
-                        <#assign val_list = ["13103134593999+", "13102134593ACC_ITEM.1400+13102134593ACC_ITEM.1600+13102134593ACC_ITEM.1800+", "Y", "2", "301", "DT_200Y006"]>
-                        <#list 0..5 as k>
-                            <input type="hidden" name=${name_list[k]} value=${val_list[k]}  />
-                        </#list>
-                    </div>
-                </form>
-                <button type="button" id="GdpAndGni" class="btn btn-outline-secondary activator" onclick="getGdpAndGni()">실행</button>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card">
-                <div class="card-header">
-                    국가채무현황
-                </div>
-                <form name="stateDebt_opt">
-                    <div class="card-body">
-                        <span>년도 선택</span>
-                        <select class="form-select" name="prdDe" aria-label="Default select example">
-                            <option selected>데이터를 호출할 년도를 선택하세요</option>
-                            <#list 1997..1999 as i>
-                                <option value=${i?replace(",","")}>${i?replace(",","")}년</option>
-                            </#list>
-                            <#list 2000..2021 as j>
-                                <option value=${j?replace(",","")}>${j?replace(",","")}년</option>
-                            </#list>
-                        </select>
-                        <#assign name_list = ["itmId", "objL1", "prdSe", "loadGubun", "orgId", "tblId"]>
-                        <#assign val_list = ["T01+", "01", "Y", "2", "102", "DT_102N_A001"]>
-                        <#list 0..5 as k>
-                            <input type="hidden" name=${name_list[k]} value=${val_list[k]} />
-                        </#list>
-                    </div>
-                </form>
-                <button type="button" class="btn btn-outline-secondary activator" onclick="getStateDebt()">실행</button>
-            </div>
-        </div>
-
-    </div>
-    <div class="row">
-        <div class="col">
-            <div class="card" style="height:100%">
-                <div class="card-header">
-                    시도별 경제성장률
-                </div>
-                <form name="growthRate_opt">
-                    <div class="card-body">
-                        <span>년도 선택</span>
-                        <select class="form-select" name="prdDe" aria-label="Default select example">
-                            <option selected>데이터를 호출할 년도를 선택하세요</option>
-                            <#list 1986..1999 as i>
-                                <option value=${i?replace(",","")}>${i?replace(",","")}년</option>
-                            </#list>
-                            <#list 2000..2022 as j>
-                                <option value=${j?replace(",","")}>${j?replace(",","")}년</option>
-                            </#list>
-                        </select>
-                        <#assign name_list = ["itmId", "objL1", "prdSe", "loadGubun", "orgId", "tblId"]>
-                        <#assign val_list = ["T10+", "ALL", "Y", "2", "101", "DT_1YL20571"]>
-                        <#list 0..5 as k>
-                            <input type="hidden" name=${name_list[k]} value=${val_list[k]}  />
-                        </#list>
-                    </div>
-                </form>
-                <button type="button" class="btn btn-outline-secondary activator" onclick="getGrowthRate()">실행</button>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card" style="height:100%">
-                <div class="card-header">
-                    국제 주요국 경제성장률
-                </div>
-                <form name="growthRateInternational_opt">
-                    <div class="card-body">
-                        <span>년도 선택</span>
-                        <select class="form-select" name="prdDe" aria-label="Default select example" disabled>
-                            <option selected>해당 API는 년도를 선택할 수 없습니다.</option>
-                        </select>
-                        <#assign name_list = ["serviceNm", "resultType", "tableCode", "cycle","itmCode"]>
-                        <#assign val_list = ["StatisticSearch", "json", "902Y015", "A", "KOR"]>
-                        <#list 0..4 as k>
-                            <input type="hidden" name=${name_list[k]} value=${val_list[k]}  />
-                        </#list>
-                        <input type="hidden" name="startDt" value="1950"/>
-                        <input type="hidden" name="endDt" value="${nowDate?string("yyyy")}"/>
-                    </div>
-                </form>
-                <button type="button" class="btn btn-outline-secondary activator" onclick="getGrowthRateInternational()">실행</button>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card">
-                <div class="card-header">
-                    국제 주요국 물가상승률
-                </div>
-                <form name="priceIncreaseInternational_opt">
-                    <div class="card-body">
-                        <div class="row" style="margin-top:15px; margin-bottom:0px; padding:5px">
-                            <span>시작 년도 선택</span>
-                            <input type="month" name="startDt">
+                <hr>
+                <div class="card-body">
+                    <form class="addFormsCurrent">
+                        <div class="col" id="defaultForm">
+                            <div class="row">
+                                <span>거래처</span>
+                                <div style="margin-left: 75%;">
+                                    <#--                                <button type="button" class="subContents"><i class="ri-subtract-line"></i></button>-->
+                                    <button type="button" class="addContents" onclick="addFormCurrent()"><i
+                                                class="ri-add-line"></i></button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <#--                                <#assign clientsList = "${clients}">-->
+                                <select>
+                                    <option>거래처를 선택해주세요</option>
+                                    <#list clients as cli>
+                                        <option>${cli}</option>
+                                    </#list>
+                                </select>
+                            </div>
+                            <div class="row">
+                                <span>거래 년도</span>
+                            </div>
+                            <div class="row">
+                                <input type="text" onkeyup="inputCommaValues(this)">
+                            </div>
+                            <div class="row">
+                                <span>거래 횟수</span>
+                            </div>
+                            <div class="row">
+                                <input type="text" onkeyup="inputCommaValues(this)">
+                            </div>
+                            <div class="row">
+                                <span>매출</span>
+                            </div>
+                            <div class="row">
+                                <input type="text" onkeyup="inputCommaValues(this)">
+                            </div>
                         </div>
-                        <div class="row" style="margin-top:5px; margin-bottom:5px; padding:5px">
-                            <span>끝 년도 선택</span>
-                            <input type="month" name="endDt">
+                    </form>
+                    <hr>
+                    <button type="button" class="btn btn-primary w-100">확인
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    <h5>신규 거래처 등록</h5>
+                </div>
+                <hr>
+                <div class="card-body">
+                    <form class="addFormsNew">
+                        <div class="col" id="defaultForm">
+                            <div class="row">
+                                <span>거래처</span>
+                                <div style="margin-left: 75%;">
+                                    <#--                                <button type="button" class="subContents"><i class="ri-subtract-line"></i></button>-->
+                                    <button type="button" class="addContents" onclick="addFormNew()">
+                                        <i class="ri-add-line"></i></button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <#--                                <#assign clientsList = "${clients}">-->
+                                <input type="text">
+                            </div>
+                            <div class="row">
+                                <span>거래 년도</span>
+                            </div>
+                            <div class="row">
+                                <input type="text" onkeyup="inputCommaValues(this)">
+                            </div>
+                            <div class="row">
+                                <span>거래 횟수</span>
+                            </div>
+                            <div class="row">
+                                <input type="text" onkeyup="inputCommaValues(this)">
+                            </div>
+                            <div class="row">
+                                <span>매출</span>
+                            </div>
+                            <div class="row">
+                                <input type="text" onkeyup="inputCommaValues(this)">
+                            </div>
                         </div>
-                        <#assign name_list = ["serviceNm", "resultType", "tableCode", "cycle","itmCode"]>
-                        <#assign val_list = ["StatisticSearch", "json", "902Y008", "M", "KR"]>
-                        <#list 0..4 as k>
-                            <input type="hidden" name=${name_list[k]} value=${val_list[k]}  />
-                        </#list>
-                    </div>
-                </form>
-                <button type="button" class="btn btn-outline-secondary activator" onclick="getPriceIncreaseInternational()">실행</button>
+                    </form>
+                    <hr>
+                    <button type="button" class="btn btn-primary w-100">확인
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
 </body>
 <#include "*/common/admin/footer.ftl"/>
-<#--<script src="/js/admin/economicGrowth/economicGrowth.js"></script>-->
+<script src="/js/admin/managementAnalysis/managementAnalysis.js"></script>
+<script type="text/javascript">
+    let variables = [];
+    <#list clients as cli>
+    variables.push("${cli}");
+    </#list>
+</script>
+

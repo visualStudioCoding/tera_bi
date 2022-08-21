@@ -9,6 +9,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -44,9 +45,10 @@ public class RealEstateController {
     private RealEstateService realEstateService;
 
     @GetMapping("/main")
-    public String realEstateMain() throws Exception {
+    public String realEstateMain(Model model) throws Exception {
         log.info(PAGE_ID + DIRECTORY + "Main");
         RealEstateDTO realEstateDTO = new RealEstateDTO();
+        model.addAttribute("menuCode", "005");
 //        List<RealEstateDTO> list = (List<RealEstateDTO>) commonService.selectList(realEstateDTO,PAGE_ID + PROGRAM_ID + ".getTradeRealAptList");
         return PAGE_ID + DIRECTORY + "Main";
     }

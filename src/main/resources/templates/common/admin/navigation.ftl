@@ -1,28 +1,64 @@
-<!doctype html>
-<html lang="ko">
-<head>
-    <#include "header.ftl">
-</head>
-<header class="p-3 bg-dark text-white">
-    <div class="container">
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <h2 style="font-weight: bold">
-                <a href="/admin" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-                    BI_Solution
-                </a>
-            </h2>
-
-            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="/admin/economicGrowth/main" class="nav-link px-2 text-white">경제성장지표</a></li>
-                <li><a href="/admin/standardOfLiving/main" class="nav-link px-2 text-white">생활수준지표</a></li>
-                <li><a href="/admin/stockPrices/main" class="nav-link px-2 text-white">종합주가지수</a></li>
-                <li><a href="/admin/realEstate/main" class="nav-link px-2 text-white">부동산시장동향</a></li>
-                <li><a href="/admin/lifeSatisfaction/main" class="nav-link px-2 text-white">삶의 만족도</a></li>
-                <li><a href="/admin/managementAnalysis/main" class="nav-link px-2 text-white">경영지표분석</a></li>
-                <li><a href="/" class="nav-link px-2 text-white">메인</a></li>
-            </ul>
-
+<header>
+    <div class="header-wrap">
+        <div class="logo-wrap">
+            <a href="/" class="logo"><img alt="Bismuth 로고" src="/img/logo.png"/></a>
         </div>
+        <div class="nav-wrap">
+            <ul class="nav">
+                <li>
+                    <a href="/admin/economicGrowth/main?menuCode=001" class="nav-link <#if menuCode = '001'>on</#if>" aria-current="page">
+                        <span><i class="ri-funds-box-fill"></i>경제성장지표</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/standardOfLiving/main?menuCode=002" class="nav-link <#if menuCode = '002'>on</#if>">
+                        <span><i class="ri-pie-chart-2-fill"></i>생활수준지표</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/lifeSatisfaction/main?menuCode=003" class="nav-link <#if menuCode = '003'>on</#if>">
+                        <span><i class="ri-user-star-line"></i>삶의만족도</span>
+                    </a>
+                </li>                <li>
+                    <a href="/admin/stockPrices/main?menuCode=004" class="nav-link <#if menuCode = '004'>on</#if>">
+                        <span><i class="ri-line-chart-fill"></i>종합주가지수</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/realEstate/main?menuCode=005" class="nav-link <#if menuCode = '005'>on</#if>"
+                    ><span><i class="ri-building-fill"></i>부동산시장동향</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/managementAnalysis/main?menuCode=006" class="nav-link <#if menuCode = '006'>on</#if>">
+                        <span><i class="ri-file-list-3-fill"></i>경영지표분석</span>
+                    </a>
+                </li>
+                <!--
+                <li>
+                    <a href="/" class="nav-link"
+                    ><span><i class="ri-flashlight-fill"></i>전력수급현황</span>
+                    </a>
+                </li>
+                -->
+<#--                <li>-->
+<#--                    <a href="/admin" class="nav-link"-->
+<#--                    ><span><i class="ri-dashboard-2-fill"></i>API 호출</span>-->
+<#--                    </a>-->
+<#--                </li>-->
+            </ul>
+            <span class="indicator"></span>
+        </div>
+        <div id="darkModeBtn" class="dark-toggle-btn">
+            <input type="checkbox" id="checkbox"/>
+            <label for="checkbox" class="label">
+                <i class="ri-moon-fill dark-btn"></i>
+                <i class="ri-sun-fill light-btn"></i>
+                <span class="ball"></span>
+            </label>
+        </div>
+        <button type="button" class="btn mobile-btn">
+            <i class="ri-menu-3-line"></i>
+        </button>
     </div>
 </header>
-</html>

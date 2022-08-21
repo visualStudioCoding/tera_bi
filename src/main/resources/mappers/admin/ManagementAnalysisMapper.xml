@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bi.admin.ManagementAnalysis">
+
+    <select id="selectClients" resultType="hashMap">
+        SELECT DISTINCT cli_nm
+        FROM client_sales
+    </select>
+
+    <insert id="insertCapital" parameterType="hashMap">
+        INSERT INTO capital(yr_dt, ttl_asset, capital, eqty_cptl, crnt_lblts, ttl_lblts, lqd_asset, unit)
+        VALUES (yr_dt = ${yrDt}, ttl_asset = ${ttlAsset}, capital = ${capital}, eqty_cptl = ${eqty_cptl},
+                crnt_lblts = ${crntLblts}, ttl_lblts = ${ttlLblts}, lqd_asset = ${lqdAsset},
+                unit = '원') ON DUPLICATE KEY
+        UPDATE
+            yr_dt = ${yrDt}
+    </insert>
+
+    <insert id="insertSales" parameterType="hashMap">
+        INSERT INTO sales(yr_dt, consulting, sysdev_part, sm_part, sw_part, total_sales, unit)
+        VALUES (yr_dt = ${yrDt}, consulting = ${consulting}, sysdev_part = ${sysdevPart}, sm_part = ${smPart},
+                sw_part = ${swPart}, total_sales = ${totalSales}, unit = '원') ON DUPLICATE KEY
+        UPDATE yr_dt = ${yrDt}
+    </insert>
+
+    <insert id="insertProfitLossSalesStatus" parameterType="hashMap">
+        INSERT INTO prlss_stts(yr_dt, prft_loss, trgt_prft_loss, sales, trgt_sales, unit)
+        VALUES (yr_dt = ${yrDt}, prft_loss = ${prftLoss}, trgt_prft_loss = ${trgtPrftLoss}, sales = ${sales},
+                trgt_sales = ${trgrSales}, unit = '원') ON DUPLICATE KEY
+        UPDATE yr_dt = ${yrDt}
+    </insert>
+
+    <select id="findClientsRecord" parameterType="hashMap" resultType="hashMap">
+        SELECT *
+        FROM client_sales
+        WHERE cli_nm = ${cliNm}
+          AND yr_dt = ${yrDT}
+    </select>
+
+    <update id="updateClientsRecord" parameterType="hashMap">
+        UPDATE client_sales
+        SET cnt       = ${cnt},
+            suply_val = ${suplyVal}
+        WHERE yr_dt = ${yrDt}
+          AND cli_nm = ${cliNm}
+    </update>
+
+    <update id="updateClientsRecordYear" parameterType="hashMap">
+        UPDATE client_sales
+        SET yr_dt = ${yrDt} cnt = ${cnt}, suply_val = ${suplyVal}
+        WHERE cli_nm = ${cliNm}
+    </update>
+
+    <insert id="insertClientsRecord" parameterType="hashMap">
+        INSERT INTO client_sales(yr_dt, cli_nm, cnt, suply_val, tax_amt, unit)
+        VALUES (yr_dt = ${yrDt}, cli_nm = ${cliNm}, cnt = ${cnt}, suply_val = ${suplyVal}, tax_amt = ${taxAmt},
+                unit = '원') ON DUPLICATE KEY
+        UPDATE yr_dt = ${yrDT}, cli_nm = ${cliNm}
+    </insert>
+
+</mapper>
